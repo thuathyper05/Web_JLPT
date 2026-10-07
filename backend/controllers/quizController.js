@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// Helper to shuffle array
 function shuffleArray(array) {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -10,16 +9,15 @@ function shuffleArray(array) {
   return arr;
 }
 
-// Generate Quiz Questions
-// query params: lesson (optional, single or range or empty for all), count (default 10 or 20), types ('mean_to_jp', 'jp_to_mean', 'kanji_to_reading', 'input_kana')
+// Generate Quiz Questions with Clean Meaning and Clean Kana
 const getQuiz = async (req, res) => {
   try {
     const { lesson, lesson_start, lesson_end, count = 20, mode = 'mixed' } = req.query;
 
-    let query = 'SELECT * FROM vocabularies';
+    let query = 'SELECT *, COALESCE(clean_vietnamese, vietnamese) as display_vi, COALESCE(clean_kana, kana) as display_kana FROM vocabularies';
     const params = [];
 
-    if (lesson) {
+    if (lesson && lesson !== 'all') {
       params.push(parseInt(lesson));
       query += ` WHERE lesson_number = $${params.length}`;
     } else if (lesson_start && lesson_end) {
@@ -35,17 +33,23 @@ const getQuiz = async (req, res) => {
       return res.status(400).json({ message: 'Không có dữ liệu từ vựng cho bài này' });
     }
 
-    // Also get all vocabularies for strong distractors
-    const allVocabResult = await db.query('SELECT id, kanji, kana, romaji, vietnamese FROM vocabularies');
+    // Get all vocabularies for distractors
+    const allVocabResult = await db.query(`
+      SELECT id, kanji, kana, 
+             COALESCE(clean_kana, kana) as display_kana, 
+             vietnamese, 
+             COALESCE(clean_vietnamese, vietnamese) as display_vi,
+             usage_note
+      FROM vocabularies
+    `);
     const allVocabs = allVocabResult.rows;
 
     const shuffled = shuffleArray(pool);
     const selected = shuffled.slice(0, Math.min(parseInt(count), pool.length));
 
     const questions = selected.map((item, index) => {
-      // Pick question type
       let availableTypes = ['jp_to_vi', 'vi_to_jp', 'kana_input'];
-      if (item.kanji) {
+      if (item.kanji && item.kanji !== '–' && item.kanji !== '-') {
         availableTypes.push('kanji_to_reading');
       }
 
@@ -56,45 +60,46 @@ const getQuiz = async (req, res) => {
         qType = mcTypes[Math.floor(Math.random() * mcTypes.length)];
       }
 
-      // Generate options for multiple choice
       let questionText = '';
       let prompt = '';
       let correctAnswer = '';
       let options = [];
 
+      const cleanMeaning = item.display_vi;
+      const cleanK = item.display_kana;
+
       if (qType === 'jp_to_vi') {
         prompt = 'Chọn nghĩa tiếng Việt chính xác';
-        questionText = item.kanji ? `${item.kanji} (${item.kana})` : item.kana;
-        correctAnswer = item.vietnamese;
+        questionText = item.kanji ? `${item.kanji} (${cleanK})` : cleanK;
+        correctAnswer = cleanMeaning;
 
-        // Distractors
-        const distractors = shuffleArray(allVocabs.filter(v => v.id !== item.id && v.vietnamese !== item.vietnamese))
-          .slice(0, 3)
-          .map(v => v.vietnamese);
+        const distractors = shuffleArray(
+          allVocabs.filter(v => v.id !== item.id && v.display_vi !== cleanMeaning)
+        ).slice(0, 3).map(v => v.display_vi);
         options = shuffleArray([correctAnswer, ...distractors]);
       } else if (qType === 'vi_to_jp') {
         prompt = 'Chọn từ tiếng Nhật tương ứng';
-        questionText = item.vietnamese;
-        correctAnswer = item.kanji ? `${item.kanji} (${item.kana})` : item.kana;
+        questionText = cleanMeaning;
+        correctAnswer = item.kanji ? `${item.kanji} (${cleanK})` : cleanK;
 
-        const distractors = shuffleArray(allVocabs.filter(v => v.id !== item.id))
-          .slice(0, 3)
-          .map(v => v.kanji ? `${v.kanji} (${v.kana})` : v.kana);
+        const distractors = shuffleArray(
+          allVocabs.filter(v => v.id !== item.id)
+        ).slice(0, 3).map(v => v.kanji ? `${v.kanji} (${v.display_kana})` : v.display_kana);
         options = shuffleArray([correctAnswer, ...distractors]);
       } else if (qType === 'kanji_to_reading') {
         prompt = 'Chọn cách đọc Hiragana đúng cho chữ Hán';
         questionText = item.kanji;
-        correctAnswer = item.kana;
+        correctAnswer = cleanK;
 
-        const distractors = shuffleArray(allVocabs.filter(v => v.id !== item.id && v.kana !== item.kana))
-          .slice(0, 3)
-          .map(v => v.kana);
+        const distractors = shuffleArray(
+          allVocabs.filter(v => v.id !== item.id && v.display_kana !== cleanK)
+        ).slice(0, 3).map(v => v.display_kana);
         options = shuffleArray([correctAnswer, ...distractors]);
       } else {
         // kana_input
         prompt = 'Nhập cách đọc Hiragana/Katakana chính xác';
-        questionText = item.kanji ? `${item.kanji} (${item.vietnamese})` : item.vietnamese;
-        correctAnswer = item.kana;
+        questionText = item.kanji ? `${item.kanji} (${cleanMeaning})` : cleanMeaning;
+        correctAnswer = cleanK;
       }
 
       return {
@@ -105,12 +110,15 @@ const getQuiz = async (req, res) => {
         prompt,
         question: questionText,
         correct_answer: correctAnswer,
-        options, // empty if input_kana
-        audio_text: item.kana,
+        options,
+        audio_text: cleanK,
         kanji: item.kanji,
         kana: item.kana,
+        clean_kana: cleanK,
         romaji: item.romaji,
-        vietnamese: item.vietnamese
+        vietnamese: item.vietnamese,
+        clean_vietnamese: cleanMeaning,
+        usage_note: item.usage_note
       };
     });
 
@@ -125,7 +133,7 @@ const getQuiz = async (req, res) => {
   }
 };
 
-// Submit Quiz Result (Authenticated or Guest)
+// Submit Quiz Result
 const submitQuiz = async (req, res) => {
   try {
     const { session_type = 'quiz', lesson_number, total_questions, correct_answers, results = [] } = req.body;
@@ -138,7 +146,6 @@ const submitQuiz = async (req, res) => {
     let sessionId = null;
 
     if (userId) {
-      // Insert study session
       const sessRes = await db.query(
         `INSERT INTO study_sessions (user_id, session_type, lesson_number, total_questions, correct_answers, score_percentage)
          VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
@@ -146,12 +153,10 @@ const submitQuiz = async (req, res) => {
       );
       sessionId = sessRes.rows[0].id;
 
-      // Update user_progress for answered items
       for (const resItem of results) {
         if (!resItem.vocabulary_id) continue;
         const isCorrect = resItem.is_correct;
 
-        // Upsert progress
         await db.query(`
           INSERT INTO user_progress (user_id, vocabulary_id, status, correct_count, wrong_count, last_studied_at)
           VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)
@@ -176,7 +181,6 @@ const submitQuiz = async (req, res) => {
       }
     }
 
-    // Evaluation message based on score
     let evaluation = 'Cần ôn tập thêm';
     if (scorePercentage >= 90) evaluation = 'Xuất sắc! 🎉';
     else if (scorePercentage >= 80) evaluation = 'Tốt! 👏';

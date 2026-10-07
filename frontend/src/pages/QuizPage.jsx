@@ -21,7 +21,8 @@ import {
   XCircle,
   ArrowRight,
   HelpCircle,
-  Sparkles
+  Sparkles,
+  Info
 } from 'lucide-react';
 import * as wanakana from 'wanakana';
 import { quizService, speakJapanese } from '../services/api';
@@ -100,15 +101,16 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       user_answer: userAnswerText,
       is_correct: isCorrect,
       kanji: currentQ.kanji,
-      kana: currentQ.kana,
-      vietnamese: currentQ.vietnamese
+      kana: currentQ.clean_kana || currentQ.kana,
+      vietnamese: currentQ.clean_vietnamese || currentQ.vietnamese,
+      usage_note: currentQ.usage_note
     };
 
     setUserAnswers(prev => [...prev, answerRecord]);
     setIsAnswerSubmitted(true);
 
-    // Phát âm tiếng Nhật
-    speakJapanese(currentQ.audio_text || currentQ.kana);
+    // Phát âm tiếng Nhật chuẩn
+    speakJapanese(currentQ.audio_text || currentQ.clean_kana || currentQ.kana);
   };
 
   const handleNextQuestion = () => {
@@ -157,9 +159,9 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             <div className="bg-success bg-opacity-10 text-success p-3 rounded-circle d-inline-flex mb-3">
               <CheckSquare size={36} />
             </div>
-            <h3 className="fw-bold text-navy-dark">Kiểm tra Trắc nghiệm N5</h3>
+            <h3 className="fw-bold text-navy-dark">Kiểm tra Trắc nghiệm Từ vựng N5</h3>
             <p className="text-muted small">
-              Đầy đủ 4 dạng câu hỏi: Chọn nghĩa tiếng Việt, Chọn từ tiếng Nhật, Đọc chữ Hán và Nhập đáp án Kana.
+              Đầy đủ 4 dạng câu hỏi: Chọn nghĩa tiếng Việt, Chọn từ tiếng Nhật, Đọc chữ Hán và Nhập Kana.
             </p>
           </div>
 
@@ -243,8 +245,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 <Button
                   color="light"
                   size="sm"
-                  className="rounded-pill px-3 py-1 text-primary d-inline-flex align-items-center gap-1"
-                  onClick={() => speakJapanese(currentQ.audio_text || currentQ.kana)}
+                  className="rounded-pill px-3 py-1 text-primary d-inline-flex align-items-center gap-1 border"
+                  onClick={() => speakJapanese(currentQ.audio_text || currentQ.clean_kana || currentQ.kana)}
                 >
                   <Volume2 size={16} /> Nghe phát âm
                 </Button>
@@ -299,7 +301,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <Input
                     type="text"
                     size="lg"
-                    placeholder="Gõ cách đọc Hiragana / Katakana..."
+                    placeholder="Gõ Hiragana/Katakana (hỗ trợ chuyển tự động)..."
                     value={inputAnswer}
                     onChange={(e) => setInputAnswer(wanakana.toKana(e.target.value, { IMEMode: true }))}
                     disabled={isAnswerSubmitted}
@@ -320,6 +322,16 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       <strong className="text-success fs-5">{currentQ.correct_answer}</strong>
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* POST-ANSWER EXPLANATION NOTE: Hiện chú thích sau khi trả lời */}
+              {isAnswerSubmitted && currentQ.usage_note && (
+                <div className="alert alert-info py-2 px-3 mt-3 d-flex align-items-center gap-2 small border-0 rounded-3">
+                  <Info size={16} className="text-primary flex-shrink-0" />
+                  <div>
+                    <strong>Lưu ý ngữ pháp / ngữ cảnh:</strong> {currentQ.usage_note}
+                  </div>
                 </div>
               )}
 
@@ -387,6 +399,11 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <small>
                     Bạn chọn: <strong>{ans.user_answer || '(Trống)'}</strong> | Đáp án: <strong>{ans.correct_answer}</strong>
                   </small>
+                  {ans.usage_note && (
+                    <div className="text-muted small mt-1">
+                      💡 {ans.usage_note}
+                    </div>
+                  )}
                 </div>
                 <div className="d-flex align-items-center gap-1">
                   <Button

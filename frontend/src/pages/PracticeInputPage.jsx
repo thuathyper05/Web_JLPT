@@ -9,8 +9,7 @@ import {
   Badge,
   Input,
   Spinner,
-  FormGroup,
-  Label
+  ButtonGroup
 } from 'reactstrap';
 import {
   Keyboard,
@@ -18,10 +17,10 @@ import {
   CheckCircle,
   XCircle,
   RotateCcw,
-  Eye,
-  EyeOff,
   Sparkles,
-  HelpCircle
+  HelpCircle,
+  ArrowRightLeft,
+  Info
 } from 'lucide-react';
 import * as wanakana from 'wanakana';
 import { vocabService, speakJapanese } from '../services/api';
@@ -33,8 +32,11 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
   const [vocabList, setVocabList] = useState([]);
   const [userInputs, setUserInputs] = useState({});
   const [checkResults, setCheckResults] = useState({});
-  const [autoKana, setAutoKana] = useState(true); // Tự động chuyển romaji -> hiragana khi gõ
+  const [autoKana, setAutoKana] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  // Practice Mode: 'vi_to_jp' (Nhìn nghĩa Tiếng Việt nhập Tiếng Nhật) or 'jp_to_jp' (Nhìn chữ Hán nhập Kana)
+  const [inputMode, setInputMode] = useState('vi_to_jp');
 
   useEffect(() => {
     fetchLessonVocab(lessonNum);
@@ -55,7 +57,6 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
   };
 
   const handleInputChange = (id, rawValue, expectedKana) => {
-    // If autoKana is on, convert romaji keystrokes like 'ka' -> 'か' immediately
     let finalValue = rawValue;
     if (autoKana) {
       finalValue = wanakana.toKana(rawValue, { IMEMode: true });
@@ -73,8 +74,9 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
       return;
     }
 
-    // Direct check
-    const isCorrect = trimmedInput === expectedKana.trim();
+    const cleanExpected = expectedKana.replace(/[［\[］\]]/g, '').trim();
+    const isCorrect = trimmedInput === cleanExpected || trimmedInput === expectedKana.trim();
+    
     setCheckResults(prev => ({
       ...prev,
       [id]: isCorrect
@@ -82,7 +84,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
 
     if (isCorrect) {
       sounds.playCorrect();
-      speakJapanese(expectedKana);
+      speakJapanese(cleanExpected);
     }
   };
 
@@ -108,17 +110,17 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
 
   return (
     <Container className="py-3 py-md-4">
-      {/* Sticky Top Header with Stats */}
+      {/* Sticky Top Header with Stats and Mode Switcher */}
       <div className="bg-white p-3 p-md-4 rounded-4 shadow-sm border mb-4 sticky-top" style={{ top: '65px', zIndex: 1010 }}>
-        <Row className="align-items-center g-3">
+        <Row className="align-items-center g-3 mb-2">
           <Col md={5}>
             <div className="d-flex align-items-center gap-2">
               <div className="bg-warning bg-opacity-10 text-dark p-2 rounded-circle">
                 <Keyboard size={24} className="text-warning" />
               </div>
               <div>
-                <h5 className="fw-bold mb-0 text-navy-dark">Luyện gõ đáp án Kana (Không gợi ý)</h5>
-                <small className="text-muted">Tự nhớ và gõ Hiragana/Katakana. Tự động chấm thời gian thực!</small>
+                <h5 className="fw-bold mb-0 text-navy-dark">Luyện Gõ Đáp Án Kana (Không Gợi Ý)</h5>
+                <small className="text-muted">Nhìn câu hỏi, tự nhớ và gõ Hiragana/Katakana chuẩn xác</small>
               </div>
             </div>
           </Col>
@@ -145,12 +147,12 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                 size="sm"
                 onClick={() => setAutoKana(!autoKana)}
                 title="Bật/Tắt gõ tiếng Nhật tự động"
-                className={`d-flex align-items-center gap-1 ${autoKana ? 'text-primary fw-bold' : 'text-muted'}`}
+                className={`d-flex align-items-center gap-1 border ${autoKana ? 'text-primary fw-bold' : 'text-muted'}`}
               >
-                <span>Kana IME</span>
+                <span>IME {autoKana ? 'Bật' : 'Tắt'}</span>
               </Button>
 
-              <Button color="light" size="sm" onClick={handleReset} title="Làm lại từ đầu">
+              <Button color="light" size="sm" onClick={handleReset} title="Làm lại từ đầu" className="border">
                 <RotateCcw size={15} />
               </Button>
             </div>
@@ -158,25 +160,46 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
 
           <Col md={4}>
             <div className="d-flex justify-content-between text-center gap-2">
-              <div className="bg-light p-2 rounded flex-fill">
+              <div className="bg-light p-2 rounded-3 flex-fill border">
                 <div className="small text-muted" style={{ fontSize: '11px' }}>Đã gõ</div>
                 <div className="fw-bold fs-6">{answeredCount} / {total}</div>
               </div>
-              <div className="bg-success bg-opacity-10 text-success p-2 rounded flex-fill">
+              <div className="bg-success bg-opacity-10 text-success p-2 rounded-3 flex-fill">
                 <div className="small" style={{ fontSize: '11px' }}>Số câu đúng</div>
                 <div className="fw-bold fs-6">{correctCount}</div>
               </div>
-              <div className="bg-danger bg-opacity-10 text-danger p-2 rounded flex-fill">
+              <div className="bg-danger bg-opacity-10 text-danger p-2 rounded-3 flex-fill">
                 <div className="small" style={{ fontSize: '11px' }}>Số câu sai</div>
                 <div className="fw-bold fs-6">{wrongCount}</div>
               </div>
-              <div className="bg-primary bg-opacity-10 text-primary p-2 rounded flex-fill">
+              <div className="bg-primary bg-opacity-10 text-primary p-2 rounded-3 flex-fill">
                 <div className="small" style={{ fontSize: '11px' }}>Chính xác</div>
                 <div className="fw-bold fs-6">{accuracyRate}%</div>
               </div>
             </div>
           </Col>
         </Row>
+
+        {/* Input Mode Selector: Nhìn tiếng Việt gõ tiếng Nhật HOẶC Nhìn Kanji gõ Kana */}
+        <div className="pt-2 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <span className="small text-muted fw-semibold">Hình thức câu hỏi:</span>
+          <ButtonGroup size="sm">
+            <Button
+              color={inputMode === 'vi_to_jp' ? 'primary' : 'outline-secondary'}
+              onClick={() => { setInputMode('vi_to_jp'); handleReset(); }}
+              className="fw-bold px-3"
+            >
+              🇻🇳 Nhìn Nghĩa Tiếng Việt ➔ Nhập Tiếng Nhật
+            </Button>
+            <Button
+              color={inputMode === 'jp_to_jp' ? 'primary' : 'outline-secondary'}
+              onClick={() => { setInputMode('jp_to_jp'); handleReset(); }}
+              className="fw-bold px-3"
+            >
+              🇯🇵 Nhìn Chữ Hán (Kanji) ➔ Nhập Cách đọc Kana
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
 
       {loading ? (
@@ -191,16 +214,25 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
               <table className="table table-hover align-middle mb-0">
                 <thead className="table-light">
                   <tr>
-                    <th style={{ width: '50px' }} className="text-center">STT</th>
-                    <th style={{ width: '180px' }}>Chữ Hán (Kanji)</th>
-                    <th>Nghĩa Tiếng Việt</th>
-                    <th style={{ minWidth: '220px' }}>
-                      Nhập đáp án (Kana) ✍️
-                      <small className="text-muted d-block fw-normal" style={{ fontSize: '10px' }}>
-                        (Gõ romaji máy tự chuyển sang Hiragana)
+                    <th style={{ width: '45px' }} className="text-center">STT</th>
+                    {inputMode === 'vi_to_jp' ? (
+                      <>
+                        <th style={{ minWidth: '220px' }}>Nghĩa Tiếng Việt chuẩn</th>
+                        <th style={{ width: '160px' }}>Chữ Hán (Kanji)</th>
+                      </>
+                    ) : (
+                      <>
+                        <th style={{ width: '180px' }}>Chữ Hán (Kanji)</th>
+                        <th style={{ minWidth: '220px' }}>Nghĩa Tiếng Việt</th>
+                      </>
+                    )}
+                    <th style={{ minWidth: '240px' }}>
+                      Nhập đáp án Kana ✍️
+                      <small className="text-muted d-block fw-normal" style={{ fontSize: '11px' }}>
+                        (Gõ romaji máy tự chuyển thành Hiragana)
                       </small>
                     </th>
-                    <th style={{ width: '130px' }} className="text-center">Kết quả</th>
+                    <th style={{ width: '140px' }} className="text-center">Kết quả</th>
                     <th style={{ width: '60px' }} className="text-center">Nghe</th>
                   </tr>
                 </thead>
@@ -208,6 +240,8 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                   {vocabList.map((item, idx) => {
                     const result = checkResults[item.id];
                     const val = userInputs[item.id] || '';
+                    const cleanMeaning = item.clean_vietnamese || item.vietnamese;
+                    const cleanK = item.clean_kana || item.kana;
 
                     return (
                       <tr
@@ -221,15 +255,44 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                         }
                       >
                         <td className="text-center text-muted small">{idx + 1}</td>
-                        <td className="fw-bold fs-5 text-dark font-monospace">{item.kanji || '–'}</td>
-                        <td className="text-dark fw-medium">{item.vietnamese}</td>
+
+                        {inputMode === 'vi_to_jp' ? (
+                          <>
+                            <td>
+                              <span className="text-dark fw-bold fs-6">{cleanMeaning}</span>
+                              {item.usage_note && (
+                                <small className="text-muted d-block mt-1">
+                                  💡 {item.usage_note}
+                                </small>
+                              )}
+                            </td>
+                            <td className="fw-bold fs-5 text-secondary font-monospace">
+                              {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : '—'}
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="fw-bold fs-5 text-dark font-monospace">
+                              {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : item.kana}
+                            </td>
+                            <td>
+                              <span className="text-dark fw-medium">{cleanMeaning}</span>
+                              {item.usage_note && (
+                                <small className="text-muted d-block mt-1">
+                                  💡 {item.usage_note}
+                                </small>
+                              )}
+                            </td>
+                          </>
+                        )}
+
                         <td>
                           <Input
                             type="text"
                             placeholder="Gõ Kana..."
                             value={val}
-                            onChange={(e) => handleInputChange(item.id, e.target.value, item.kana)}
-                            className={`fw-semibold ${
+                            onChange={(e) => handleInputChange(item.id, e.target.value, cleanK)}
+                            className={`fw-bold fs-6 ${
                               result === true ? 'is-valid' : result === false ? 'is-invalid' : ''
                             }`}
                             style={{ maxWidth: '240px' }}
@@ -246,7 +309,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                               <Badge color="danger" pill className="px-3 py-1">
                                 ✕ Sai
                               </Badge>
-                              <div className="text-danger small mt-1 font-monospace">({item.kana})</div>
+                              <div className="text-danger small mt-1 font-monospace fw-bold">({cleanK})</div>
                             </div>
                           )}
                           {result === undefined && (
@@ -258,7 +321,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                             color="light"
                             size="sm"
                             className="p-1 rounded-circle"
-                            onClick={() => speakJapanese(item.kana)}
+                            onClick={() => speakJapanese(cleanK)}
                             title="Nghe phát âm"
                           >
                             <Volume2 size={16} className="text-primary" />

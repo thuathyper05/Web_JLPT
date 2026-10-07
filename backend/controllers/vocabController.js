@@ -14,8 +14,11 @@ const getVocabularies = async (req, res) => {
         v.order_num,
         v.kanji,
         v.kana,
+        COALESCE(v.clean_kana, v.kana) as clean_kana,
         v.romaji,
         v.vietnamese,
+        COALESCE(v.clean_vietnamese, v.vietnamese) as clean_vietnamese,
+        v.usage_note,
         v.example_jp,
         v.example_vi,
         ${userId ? `COALESCE(up.status, 'learning') as user_status,` : `'learning' as user_status,`}
@@ -52,7 +55,8 @@ const getVocabularies = async (req, res) => {
         LOWER(COALESCE(v.kanji, '')) LIKE $${pIdx} OR 
         LOWER(v.kana) LIKE $${pIdx} OR 
         LOWER(v.romaji) LIKE $${pIdx} OR 
-        LOWER(v.vietnamese) LIKE $${pIdx}
+        LOWER(v.vietnamese) LIKE $${pIdx} OR
+        LOWER(COALESCE(v.clean_vietnamese, '')) LIKE $${pIdx}
       )`);
     }
 
@@ -91,7 +95,19 @@ const getVocabularyById = async (req, res) => {
 
     let query = `
       SELECT 
-        v.*,
+        v.id,
+        v.lesson_id,
+        v.lesson_number,
+        v.order_num,
+        v.kanji,
+        v.kana,
+        COALESCE(v.clean_kana, v.kana) as clean_kana,
+        v.romaji,
+        v.vietnamese,
+        COALESCE(v.clean_vietnamese, v.vietnamese) as clean_vietnamese,
+        v.usage_note,
+        v.example_jp,
+        v.example_vi,
         ${userId ? `COALESCE(up.status, 'learning') as user_status,` : `'learning' as user_status,`}
         ${userId ? `COALESCE(up.correct_count, 0) as correct_count,` : `0 as correct_count,`}
         ${userId ? `COALESCE(up.wrong_count, 0) as wrong_count,` : `0 as wrong_count,`}
@@ -135,7 +151,11 @@ const searchVocabulary = async (req, res) => {
 
     const query = `
       SELECT 
-        v.id, v.lesson_number, v.order_num, v.kanji, v.kana, v.romaji, v.vietnamese,
+        v.id, v.lesson_number, v.order_num, v.kanji, v.kana, 
+        COALESCE(v.clean_kana, v.kana) as clean_kana,
+        v.romaji, v.vietnamese, 
+        COALESCE(v.clean_vietnamese, v.vietnamese) as clean_vietnamese,
+        v.usage_note,
         l.title as lesson_title
       FROM vocabularies v
       JOIN lessons l ON v.lesson_id = l.id
@@ -143,16 +163,18 @@ const searchVocabulary = async (req, res) => {
         LOWER(COALESCE(v.kanji, '')) LIKE $1 OR 
         LOWER(v.kana) LIKE $1 OR 
         LOWER(v.romaji) LIKE $1 OR 
-        LOWER(v.vietnamese) LIKE $1
+        LOWER(v.vietnamese) LIKE $1 OR
+        LOWER(COALESCE(v.clean_vietnamese, '')) LIKE $1
       ORDER BY 
         CASE 
           WHEN LOWER(COALESCE(v.kanji, '')) = $2 THEN 1
           WHEN LOWER(v.kana) = $2 THEN 2
           WHEN LOWER(v.romaji) = $2 THEN 3
-          WHEN LOWER(v.vietnamese) = $2 THEN 4
-          WHEN LOWER(COALESCE(v.kanji, '')) LIKE $2 || '%' THEN 5
-          WHEN LOWER(v.kana) LIKE $2 || '%' THEN 6
-          ELSE 7
+          WHEN LOWER(COALESCE(v.clean_vietnamese, '')) = $2 THEN 4
+          WHEN LOWER(v.vietnamese) = $2 THEN 5
+          WHEN LOWER(COALESCE(v.kanji, '')) LIKE $2 || '%' THEN 6
+          WHEN LOWER(v.kana) LIKE $2 || '%' THEN 7
+          ELSE 8
         END,
         v.lesson_number ASC, 
         v.order_num ASC

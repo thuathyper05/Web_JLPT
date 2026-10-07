@@ -3,16 +3,17 @@ import React from 'react';
 const Logo = ({ size = 38, showText = true, className = '' }) => {
   return (
     <div className={`d-inline-flex align-items-center ${className}`} style={{ gap: '10px' }}>
-      {/* Modern High-End Geometric Badge Logo */}
+      {/* High-End Geometric Emblem Logo */}
       <div
-        className="position-relative d-flex align-items-center justify-content-center shadow-sm"
+        className="position-relative d-flex align-items-center justify-content-center"
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          borderRadius: '10px',
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #38bdf8 100%)',
+          borderRadius: `${size * 0.28}px`,
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%)',
           padding: '2px',
-          boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)',
+          boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4), inset 0 1px 1px rgba(255,255,255,0.4)',
+          border: '1px solid rgba(255, 255, 255, 0.2)'
         }}
       >
         <svg
@@ -22,28 +23,38 @@ const Logo = ({ size = 38, showText = true, className = '' }) => {
           style={{ overflow: 'visible' }}
         >
           <defs>
-            <linearGradient id="hyperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="logoPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#e0f2fe" />
+              <stop offset="100%" stopColor="#93c5fd" />
             </linearGradient>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="#0284c7" floodOpacity="0.4" />
+            <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fbbf24" />
+              <stop offset="100%" stopColor="#f59e0b" />
+            </linearGradient>
+            <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#38bdf8" floodOpacity="0.5" />
             </filter>
           </defs>
 
-          {/* Torii Gate + Lightning / Speed Monogram Geometric Symbol */}
-          {/* Top Beam */}
-          <rect x="18" y="22" width="64" height="7" rx="3.5" fill="url(#hyperGrad)" filter="url(#glow)" />
-          {/* Sub Beam */}
-          <rect x="24" y="36" width="52" height="5" rx="2.5" fill="url(#hyperGrad)" opacity="0.95" />
+          {/* Minimalist Architectural Torii Silhouette */}
+          {/* Main Top Curved Bar */}
+          <path
+            d="M 16,26 C 36,22 64,22 84,26 C 85,27 83,31 82,31 C 64,28 36,28 18,31 Z"
+            fill="url(#logoPrimary)"
+            filter="url(#subtleGlow)"
+          />
+          {/* Secondary Horizontal Bar */}
+          <rect x="22" y="38" width="56" height="5" rx="2.5" fill="url(#logoPrimary)" opacity="0.9" />
+
           {/* Left Pillar */}
-          <rect x="30" y="26" width="6" height="52" rx="3" fill="url(#hyperGrad)" />
+          <rect x="30" y="29" width="6.5" height="48" rx="3.25" fill="url(#logoPrimary)" />
           {/* Right Pillar */}
-          <rect x="64" y="26" width="6" height="52" rx="3" fill="url(#hyperGrad)" />
-          {/* Center Hyper Dynamic Accent Arrow / Spark */}
+          <rect x="63.5" y="29" width="6.5" height="48" rx="3.25" fill="url(#logoPrimary)" />
+
+          {/* Center Hyper Dynamic Flash: Lightning Bolt */}
           <polygon
-            points="50,42 56,54 48,54 53,68 42,52 49,52"
-            fill="#f59e0b"
+            points="50.5,39 58,52 49,52 54,67 42,50 51,50"
+            fill="url(#goldAccent)"
           />
         </svg>
       </div>
@@ -55,29 +66,29 @@ const Logo = ({ size = 38, showText = true, className = '' }) => {
               className="fw-bold tracking-tight text-white"
               style={{
                 fontSize: `${size * 0.48}px`,
-                letterSpacing: '-0.5px',
-                fontFamily: 'system-ui, -apple-system, sans-serif'
+                letterSpacing: '-0.4px',
+                fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
             >
               HYPER
             </span>
             <span
-              className="fw-black text-warning"
+              className="text-warning"
               style={{
                 fontSize: `${size * 0.52}px`,
                 fontWeight: '900',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.4px'
               }}
             >
               JLPT
             </span>
           </div>
           <span
-            className="text-white text-opacity-75"
+            className="text-white text-opacity-80"
             style={{
               fontSize: `${Math.max(size * 0.22, 10)}px`,
-              fontWeight: '600',
-              letterSpacing: '0.8px',
+              fontWeight: '700',
+              letterSpacing: '0.9px',
               textTransform: 'uppercase'
             }}
           >
