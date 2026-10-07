@@ -35,25 +35,19 @@ import {
   User,
   LogOut,
   LogIn,
-  KeyRound,
-  Mail,
-  Lock,
-  ArrowRight,
-  CheckCircle2,
-  HelpCircle
+  PenTool,
+  ChevronDown
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { authService } from '../services/api';
 import Logo from './Logo';
 
-const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
+const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, onChangeLevel }) => {
   const { user, login, register, logout } = useApp();
 
-  // Modal mode: 'login' | 'register' | 'forgot' | 'reset'
   const [modalMode, setModalMode] = useState('login');
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Form states
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -123,6 +117,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
   const navItems = [
     { id: 'home', label: 'Trang chủ', icon: Home },
     { id: 'lessons', label: 'Bài học', icon: BookOpen },
+    { id: 'kanji', label: 'Kanji', icon: PenTool },
     { id: 'flashcard', label: 'Flashcard', icon: Layers },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
     { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
@@ -132,19 +127,54 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
     { id: 'dashboard', label: 'Tiến độ', icon: BarChart2 },
   ];
 
+  const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
+
   return (
     <>
       <Navbar dark expand="md" className="navbar-custom sticky-top py-2 px-2 px-md-3">
         <Container fluid className="d-flex justify-content-between align-items-center">
-          {/* Brand Logo */}
-          <NavbarBrand
-            href="#"
-            onClick={(e) => { e.preventDefault(); setActiveTab('home'); }}
-            className="p-0 m-0 text-decoration-none"
-            style={{ cursor: 'pointer' }}
-          >
-            <Logo size={36} />
-          </NavbarBrand>
+          {/* Brand Logo & Level Selector */}
+          <div className="d-flex align-items-center gap-2">
+            <NavbarBrand
+              href="#"
+              onClick={(e) => { e.preventDefault(); setActiveTab('home'); }}
+              className="p-0 m-0 text-decoration-none"
+              style={{ cursor: 'pointer' }}
+            >
+              <Logo size={36} />
+            </NavbarBrand>
+
+            {/* JLPT Level Selector Dropdown */}
+            <UncontrolledDropdown>
+              <DropdownToggle
+                caret
+                color="light"
+                size="sm"
+                className="rounded-pill fw-bold bg-white bg-opacity-20 text-white border-white border-opacity-30 d-flex align-items-center gap-1 px-3 py-1 shadow-sm"
+                style={{ fontSize: '13px' }}
+              >
+                <span>{currentLevel || 'N5'}</span>
+              </DropdownToggle>
+              <DropdownMenu className="shadow-lg border-0 rounded-3">
+                <DropdownItem header className="fw-bold">Chọn cấp độ JLPT</DropdownItem>
+                {levels.map(lvl => (
+                  <DropdownItem
+                    key={lvl}
+                    active={currentLevel === lvl}
+                    onClick={() => onChangeLevel && onChangeLevel(lvl)}
+                    className="d-flex justify-content-between align-items-center"
+                  >
+                    <span>Cấp độ {lvl}</span>
+                    {lvl === 'N5' ? (
+                      <Badge color="success" pill className="ms-2">Hiện tại</Badge>
+                    ) : (
+                      <Badge color="secondary" pill className="ms-2">Mở rộng</Badge>
+                    )}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
 
           {/* Desktop Nav Items */}
           <Nav className="d-none d-lg-flex align-items-center" navbar style={{ gap: '2px' }}>
@@ -159,9 +189,9 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
                     className={`d-flex align-items-center px-2 py-1 rounded-3 transition-all ${
                       isActive ? 'bg-primary text-white fw-bold shadow-sm' : 'text-light opacity-80'
                     }`}
-                    style={{ cursor: 'pointer', gap: '6px', fontSize: '0.88rem' }}
+                    style={{ cursor: 'pointer', gap: '5px', fontSize: '0.86rem' }}
                   >
-                    <IconComp size={16} />
+                    <IconComp size={15} />
                     <span>{item.label}</span>
                   </NavLink>
                 </NavItem>
@@ -196,10 +226,10 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
                 </DropdownToggle>
                 <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2">
                   <DropdownItem header className="fw-bold text-navy-dark">
-                    Tài khoản cá nhân
+                    Tài khoản: {user.username}
                   </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2">
-                    <BarChart2 size={16} className="text-primary" /> Tiến độ N5
+                    <BarChart2 size={16} className="text-primary" /> Tiến độ học tập
                   </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('favorites')} className="d-flex align-items-center gap-2">
                     <Star size={16} className="text-warning" /> Từ yêu thích
@@ -253,7 +283,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
         })}
       </div>
 
-      {/* High-End Auth Modal (Login / Register / Forgot / Reset Password) */}
+      {/* Auth Modal (Login / Register / Forgot / Reset Password) */}
       <Modal isOpen={modalOpen} toggle={toggleModal} centered className="auth-modal">
         <ModalHeader toggle={toggleModal} className="border-0 pb-0">
           <div className="d-flex align-items-center gap-2">
@@ -268,14 +298,13 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
         </ModalHeader>
         <ModalBody className="p-4 pt-3">
           <div className="alert alert-light border small text-muted mb-3 py-2">
-            💡 <strong>Không bắt buộc đăng nhập</strong> để học 25 bài. Đăng nhập để đồng bộ kết quả và ghi chú lên cơ sở dữ liệu.
+            💡 <strong>Không bắt buộc đăng nhập</strong> để học 25 bài. Đăng nhập để đồng bộ kết quả và ghi chú lên PostgreSQL.
           </div>
 
           {errorMsg && <Alert color="danger" className="py-2 small">{errorMsg}</Alert>}
           {successMsg && <Alert color="success" className="py-2 small">{successMsg}</Alert>}
 
           <Form onSubmit={handleAuthSubmit}>
-            {/* LOGIN MODE */}
             {modalMode === 'login' && (
               <>
                 <FormGroup>
@@ -325,7 +354,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
               </>
             )}
 
-            {/* REGISTER MODE */}
             {modalMode === 'register' && (
               <>
                 <FormGroup>
@@ -384,7 +412,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
               </>
             )}
 
-            {/* FORGOT PASSWORD MODE */}
             {modalMode === 'forgot' && (
               <>
                 <p className="small text-muted mb-3">
@@ -415,7 +442,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch }) => {
               </>
             )}
 
-            {/* RESET PASSWORD MODE */}
             {modalMode === 'reset' && (
               <>
                 <FormGroup>

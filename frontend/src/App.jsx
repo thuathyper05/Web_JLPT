@@ -10,14 +10,20 @@ import ReviewWrongPage from './pages/ReviewWrongPage';
 import FavoritesPage from './pages/FavoritesPage';
 import NotesPage from './pages/NotesPage';
 import DashboardPage from './pages/DashboardPage';
+import KanjiPage from './pages/KanjiPage';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedLesson, setSelectedLesson] = useState(1);
+  const [currentLevel, setCurrentLevel] = useState('N5');
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
   const handleSelectLesson = (lessonNum) => {
     setSelectedLesson(lessonNum);
+  };
+
+  const handleChangeLevel = (lvl) => {
+    setCurrentLevel(lvl);
   };
 
   const renderContent = () => {
@@ -27,6 +33,7 @@ function App() {
           <HomePage
             onNavigate={(tab) => setActiveTab(tab)}
             onSelectLesson={handleSelectLesson}
+            currentLevel={currentLevel}
           />
         );
       case 'lessons':
@@ -37,6 +44,8 @@ function App() {
             onNavigate={(tab) => setActiveTab(tab)}
           />
         );
+      case 'kanji':
+        return <KanjiPage currentLevel={currentLevel} />;
       case 'flashcard':
         return <FlashcardPage initialLesson={selectedLesson} />;
       case 'quiz':
@@ -76,6 +85,7 @@ function App() {
           <HomePage
             onNavigate={(tab) => setActiveTab(tab)}
             onSelectLesson={handleSelectLesson}
+            currentLevel={currentLevel}
           />
         );
     }
@@ -88,6 +98,8 @@ function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenSearch={() => setSearchModalOpen(true)}
+        currentLevel={currentLevel}
+        onChangeLevel={handleChangeLevel}
       />
 
       {/* Global Search Modal */}
@@ -109,10 +121,10 @@ function App() {
       <footer className="bg-white border-top py-4 text-center text-muted small d-none d-lg-block">
         <div className="container">
           <p className="mb-1 fw-bold text-navy-dark fs-6">
-            HYPER JLPT — Hệ Thống Học & Ôn Tập Từ Vựng Tiếng Nhật N5 Toàn Diện
+            HYPER JLPT — Hệ Thống Học & Ôn Tập Tiếng Nhật N5 Toàn Diện
           </p>
           <p className="mb-0 text-secondary">
-            Bản quyền © 2026 HYPER JLPT. Chuẩn giáo trình Minna no Nihongo 25 bài toàn tập với 1,589 từ vựng.
+            Bản quyền © 2026 HYPER JLPT. Chuẩn giáo trình Minna no Nihongo 25 bài toàn tập với 1,589 từ vựng và Chữ Hán Kanji.
           </p>
         </div>
       </footer>

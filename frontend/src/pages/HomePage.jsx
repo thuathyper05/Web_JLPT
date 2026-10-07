@@ -24,13 +24,14 @@ import {
   Volume2,
   TrendingUp,
   Search,
-  Star
+  Star,
+  PenTool
 } from 'lucide-react';
 import { lessonService, progressService } from '../services/api';
 import { useApp } from '../context/AppContext';
 import Logo from '../components/Logo';
 
-const HomePage = ({ onNavigate, onSelectLesson }) => {
+const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
   const { user, guestProgress } = useApp();
   const [lessons, setLessons] = useState([]);
   const [stats, setStats] = useState(null);
@@ -88,41 +89,42 @@ const HomePage = ({ onNavigate, onSelectLesson }) => {
 
   return (
     <Container className="py-3 py-md-4">
-      {/* High-End Hero Banner */}
+      {/* High-End Hero Banner: Fixed all text colors to pure white and bright amber for 100% contrast */}
       <div
-        className="p-4 p-md-5 mb-4 rounded-4 shadow-lg text-white position-relative overflow-hidden"
+        className="p-4 p-md-5 mb-4 rounded-4 shadow-lg position-relative overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%)',
-          border: '1px solid rgba(255,255,255,0.1)'
+          background: 'linear-gradient(135deg, #091224 0%, #0f2552 50%, #1d4ed8 100%)',
+          border: '1px solid rgba(255,255,255,0.15)',
+          color: '#ffffff'
         }}
       >
-        {/* Subtle background glow effect */}
+        {/* Decorative background glow */}
         <div
           className="position-absolute"
           style={{
-            top: '-50px',
-            right: '-50px',
-            width: '280px',
-            height: '280px',
+            top: '-60px',
+            right: '-60px',
+            width: '320px',
+            height: '320px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(37, 99, 235, 0) 70%)',
+            background: 'radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(37, 99, 235, 0) 70%)',
             pointerEvents: 'none'
           }}
         />
 
         <Row className="align-items-center position-relative" style={{ zIndex: 1 }}>
           <Col lg={8}>
-            <div className="d-inline-flex align-items-center bg-white bg-opacity-20 px-3 py-1 rounded-pill mb-3 text-white small fw-bold">
-              <Sparkles size={14} className="me-1 text-warning" /> Nền tảng Học Từ vựng Tiếng Nhật N5 Toàn diện
+            <div className="d-inline-flex align-items-center px-3 py-1 rounded-pill mb-3 text-white small fw-bold" style={{ backgroundColor: 'rgba(255, 255, 255, 0.18)', border: '1px solid rgba(255,255,255,0.25)' }}>
+              <Sparkles size={14} className="me-1 text-warning" /> Nền tảng Học Tiếng Nhật Thông Minh • Cấp độ {currentLevel}
             </div>
-            <h1 className="fw-black mb-2 display-5 tracking-tight text-white">
-              HYPER JLPT N5
+            <h1 className="fw-black mb-2 display-5 tracking-tight text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+              HYPER JLPT {currentLevel}
             </h1>
-            <h4 className="fw-medium opacity-90 mb-3 fs-5 text-light">
-              Giáo trình chuẩn Minna no Nihongo 25 Bài • 1,589 Từ vựng
+            <h4 className="fw-bold mb-3 fs-5" style={{ color: '#fbbf24', textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
+              Giáo trình chuẩn Minna no Nihongo 25 Bài • 1,589 Từ vựng • Chữ Hán Kanji
             </h4>
-            <p className="lead opacity-80 mb-4 fs-6" style={{ maxWidth: '640px' }}>
-              Học độc lập từng bài, Flashcard 3D tự động phát âm chuẩn bản xứ, luyện gõ Kana thông minh và làm bài trắc nghiệm tính điểm thời gian thực.
+            <p className="lead mb-4 fs-6" style={{ color: '#f1f5f9', maxWidth: '640px', lineHeight: '1.6' }}>
+              Học theo từng bài độc lập, thẻ nhớ Flashcard 3D tự động phát âm bản xứ, luyện gõ Kana thông minh và làm bài trắc nghiệm tính điểm thời gian thực.
             </p>
             <div className="d-flex flex-wrap gap-2">
               <Button
@@ -134,38 +136,46 @@ const HomePage = ({ onNavigate, onSelectLesson }) => {
                   onNavigate('lessons');
                 }}
               >
-                <span>Học ngay Bài 01</span>
+                <span>Vào học Bài 01</span>
                 <ArrowRight size={18} />
               </Button>
               <Button
                 color="light"
                 outline
-                className="fw-bold px-4 py-2 text-white border-white border-opacity-60 d-flex align-items-center rounded-pill hover-bg"
-                style={{ gap: '8px' }}
-                onClick={() => onNavigate('flashcard')}
+                className="fw-bold px-4 py-2 text-white border-white d-flex align-items-center rounded-pill"
+                style={{ gap: '8px', backgroundColor: 'rgba(255, 255, 255, 0.12)' }}
+                onClick={() => onNavigate('kanji')}
               >
-                <Layers size={18} />
-                <span>Thẻ Flashcard 3D</span>
+                <PenTool size={18} />
+                <span>Học Chữ Hán Kanji</span>
               </Button>
             </div>
           </Col>
 
+          {/* Right Card Widget */}
           <Col lg={4} className="d-none d-lg-block text-center">
-            <div className="bg-white bg-opacity-10 p-4 rounded-4 border border-white border-opacity-20 shadow-sm glass-effect text-white">
+            <div
+              className="p-4 rounded-4 shadow-sm text-white"
+              style={{
+                backgroundColor: 'rgba(15, 23, 42, 0.65)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                backdropFilter: 'blur(10px)'
+              }}
+            >
               <Logo size={46} showText={false} />
               <div className="fs-3 fw-black text-warning mt-2 mb-0">25 BÀI N5</div>
-              <div className="text-white text-opacity-75 small mb-3">Toàn bộ 1,589 Từ vựng</div>
+              <div className="small mb-3" style={{ color: '#e2e8f0' }}>1,589 Từ vựng • 80+ Kanji</div>
               <div className="row g-2 text-center">
                 <div className="col-6">
-                  <div className="bg-white bg-opacity-15 p-2 rounded-3">
-                    <div className="fw-black fs-5">100%</div>
-                    <div className="small text-white-50" style={{ fontSize: '11px' }}>Phát âm chuẩn</div>
+                  <div className="p-2 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }}>
+                    <div className="fw-black fs-5 text-white">100%</div>
+                    <div className="small" style={{ color: '#cbd5e1', fontSize: '11px' }}>Phát âm chuẩn</div>
                   </div>
                 </div>
                 <div className="col-6">
-                  <div className="bg-white bg-opacity-15 p-2 rounded-3">
-                    <div className="fw-black fs-5">Kana IME</div>
-                    <div className="small text-white-50" style={{ fontSize: '11px' }}>Tự chuyển Hiragana</div>
+                  <div className="p-2 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }}>
+                    <div className="fw-black fs-5 text-warning">Kana IME</div>
+                    <div className="small" style={{ color: '#cbd5e1', fontSize: '11px' }}>Tự chuyển Hiragana</div>
                   </div>
                 </div>
               </div>
@@ -243,82 +253,98 @@ const HomePage = ({ onNavigate, onSelectLesson }) => {
         </Row>
       )}
 
-      {/* Methods Feature Row */}
+      {/* Methods Feature Row including Kanji */}
       <h5 className="fw-bold mb-3 text-navy-dark d-flex align-items-center gap-2">
         <Sparkles size={18} className="text-primary" />
         <span>Chế độ luyện tập chuyên sâu</span>
       </h5>
       <Row className="g-3 mb-4">
-        <Col md={3} xs={6}>
+        <Col md={2} xs={6} className="col-lg">
           <Card
             className="jlpt-card border-0 shadow-sm h-100 text-center"
             style={{ cursor: 'pointer' }}
             onClick={() => onNavigate('lessons')}
           >
-            <CardBody className="p-3 p-md-4">
-              <div className="bg-primary bg-opacity-10 text-primary mx-auto p-3 rounded-circle mb-2" style={{ width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <BookOpen size={26} />
+            <CardBody className="p-3">
+              <div className="bg-primary bg-opacity-10 text-primary mx-auto p-2 p-md-3 rounded-circle mb-2" style={{ width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <BookOpen size={24} />
               </div>
               <h6 className="fw-bold mb-1">Học theo bài</h6>
-              <p className="text-muted small mb-0 d-none d-sm-block">Từng từ hoặc dạng bảng không lẫn lộn</p>
+              <p className="text-muted small mb-0 d-none d-sm-block">25 bài N5 chuẩn</p>
             </CardBody>
           </Card>
         </Col>
 
-        <Col md={3} xs={6}>
+        <Col md={2} xs={6} className="col-lg">
+          <Card
+            className="jlpt-card border-0 shadow-sm h-100 text-center border-primary"
+            style={{ cursor: 'pointer', background: 'linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%)' }}
+            onClick={() => onNavigate('kanji')}
+          >
+            <CardBody className="p-3">
+              <div className="bg-success bg-opacity-10 text-success mx-auto p-2 p-md-3 rounded-circle mb-2" style={{ width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <PenTool size={24} />
+              </div>
+              <h6 className="fw-bold mb-1 text-success">Chữ Hán Kanji</h6>
+              <p className="text-muted small mb-0 d-none d-sm-block">Hán Việt & số nét</p>
+            </CardBody>
+          </Card>
+        </Col>
+
+        <Col md={2} xs={6} className="col-lg">
           <Card
             className="jlpt-card border-0 shadow-sm h-100 text-center"
             style={{ cursor: 'pointer' }}
             onClick={() => onNavigate('flashcard')}
           >
-            <CardBody className="p-3 p-md-4">
-              <div className="bg-info bg-opacity-10 text-info mx-auto p-3 rounded-circle mb-2" style={{ width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Layers size={26} />
+            <CardBody className="p-3">
+              <div className="bg-info bg-opacity-10 text-info mx-auto p-2 p-md-3 rounded-circle mb-2" style={{ width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Layers size={24} />
               </div>
               <h6 className="fw-bold mb-1">Flashcard 3D</h6>
-              <p className="text-muted small mb-0 d-none d-sm-block">Tiếng Việt ➔ Tiếng Nhật & Audio</p>
+              <p className="text-muted small mb-0 d-none d-sm-block">Lật thẻ & âm thanh</p>
             </CardBody>
           </Card>
         </Col>
 
-        <Col md={3} xs={6}>
+        <Col md={2} xs={6} className="col-lg">
           <Card
             className="jlpt-card border-0 shadow-sm h-100 text-center"
             style={{ cursor: 'pointer' }}
             onClick={() => onNavigate('quiz')}
           >
-            <CardBody className="p-3 p-md-4">
-              <div className="bg-success bg-opacity-10 text-success mx-auto p-3 rounded-circle mb-2" style={{ width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CheckSquare size={26} />
+            <CardBody className="p-3">
+              <div className="bg-success bg-opacity-10 text-success mx-auto p-2 p-md-3 rounded-circle mb-2" style={{ width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <CheckSquare size={24} />
               </div>
               <h6 className="fw-bold mb-1">Trắc nghiệm</h6>
-              <p className="text-muted small mb-0 d-none d-sm-block">4 dạng câu hỏi tính điểm tự động</p>
+              <p className="text-muted small mb-0 d-none d-sm-block">4 dạng câu hỏi</p>
             </CardBody>
           </Card>
         </Col>
 
-        <Col md={3} xs={6}>
+        <Col md={2} xs={6} className="col-lg">
           <Card
             className="jlpt-card border-0 shadow-sm h-100 text-center"
             style={{ cursor: 'pointer' }}
             onClick={() => onNavigate('practice')}
           >
-            <CardBody className="p-3 p-md-4">
-              <div className="bg-warning bg-opacity-10 text-warning mx-auto p-3 rounded-circle mb-2" style={{ width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Keyboard size={26} />
+            <CardBody className="p-3">
+              <div className="bg-warning bg-opacity-10 text-warning mx-auto p-2 p-md-3 rounded-circle mb-2" style={{ width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Keyboard size={24} />
               </div>
               <h6 className="fw-bold mb-1">Luyện gõ Kana</h6>
-              <p className="text-muted small mb-0 d-none d-sm-block">Không gợi ý, tự gõ chuyển Kana</p>
+              <p className="text-muted small mb-0 d-none d-sm-block">Nhìn nghĩa gõ Kana</p>
             </CardBody>
           </Card>
         </Col>
       </Row>
 
-      {/* 25 Lessons Grid with instant search */}
+      {/* 25 Lessons Grid */}
       <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <h5 className="fw-bold text-navy-dark mb-0 d-flex align-items-center gap-2">
           <BookOpen size={18} className="text-primary" />
-          <span>Danh sách 25 Bài học Minna no Nihongo N5</span>
+          <span>Danh sách 25 Bài học Minna no Nihongo {currentLevel}</span>
         </h5>
         <div className="d-flex align-items-center gap-2">
           <Input
@@ -368,7 +394,7 @@ const HomePage = ({ onNavigate, onSelectLesson }) => {
                     <Button
                       color="light"
                       size="sm"
-                      className="p-1 px-2 text-secondary rounded"
+                      className="p-1 px-2 text-secondary rounded border"
                       onClick={(e) => {
                         e.stopPropagation();
                         if (onSelectLesson) onSelectLesson(lesson.lesson_number);
@@ -381,7 +407,7 @@ const HomePage = ({ onNavigate, onSelectLesson }) => {
                     <Button
                       color="light"
                       size="sm"
-                      className="p-1 px-2 text-secondary rounded"
+                      className="p-1 px-2 text-secondary rounded border"
                       onClick={(e) => {
                         e.stopPropagation();
                         if (onSelectLesson) onSelectLesson(lesson.lesson_number);

@@ -9,6 +9,7 @@ const quizRoutes = require('./routes/quizRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const noteRoutes = require('./routes/noteRoutes');
+const kanjiRoutes = require('./routes/kanjiRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/vocabulary', vocabRoutes);
+app.use('/api/kanji', kanjiRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/favorites', favoriteRoutes);

@@ -92,6 +92,11 @@ export const favoriteService = {
   toggleFavorite: (vocabulary_id) => api.post('/favorites/toggle', { vocabulary_id }),
 };
 
+export const kanjiService = {
+  getKanjiList: (params) => api.get('/kanji', { params }),
+  getKanjiById: (id) => api.get(`/kanji/${id}`),
+};
+
 export const noteService = {
   getNotes: (params) => api.get('/notes', { params }),
   saveNote: (data) => api.post('/notes', data),
