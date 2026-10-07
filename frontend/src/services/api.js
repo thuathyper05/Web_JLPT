@@ -18,24 +18,43 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Speech Synthesis Helper
+// Robust Japanese Speech Synthesis Engine with fallback and natural pitch
 export const speakJapanese = (text) => {
+  if (!text) return;
   if (!('speechSynthesis' in window)) {
-    console.warn('Speech synthesis not supported in this browser.');
+    console.warn('Speech synthesis not supported.');
     return;
   }
-  window.speechSynthesis.cancel(); // Stop any pending speech
+
+  // Cancel any ongoing speech to prevent queue build-up
+  window.speechSynthesis.cancel();
+
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'ja-JP';
-  utterance.rate = 0.85; // Slightly slower for clear learning
-  
-  // Try to find a Japanese voice
-  const voices = window.speechSynthesis.getVoices();
-  const jaVoice = voices.find(v => v.lang.startsWith('ja') || v.lang.includes('JP'));
-  if (jaVoice) {
-    utterance.voice = jaVoice;
+  utterance.rate = 0.88; // Natural learning speed
+  utterance.pitch = 1.0;
+
+  const setVoice = () => {
+    const voices = window.speechSynthesis.getVoices();
+    // Prioritize high-quality Japanese voices (Google 日本語, Microsoft Nanami/Haruka/Ichiro, Apple Kyoko/Otoya)
+    const jaVoice = voices.find(v => (v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja')) && !v.name.includes('Low Quality'))
+      || voices.find(v => v.lang.startsWith('ja'));
+
+    if (jaVoice) {
+      utterance.voice = jaVoice;
+    }
+  };
+
+  setVoice();
+
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      setVoice();
+      window.speechSynthesis.speak(utterance);
+    };
+  } else {
+    window.speechSynthesis.speak(utterance);
   }
-  window.speechSynthesis.speak(utterance);
 };
 
 // API Services

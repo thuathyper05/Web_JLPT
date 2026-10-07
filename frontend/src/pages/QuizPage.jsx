@@ -23,15 +23,17 @@ import {
   HelpCircle,
   Sparkles
 } from 'lucide-react';
+import * as wanakana from 'wanakana';
 import { quizService, speakJapanese } from '../services/api';
+import { sounds } from '../services/sounds';
 import confetti from 'canvas-confetti';
 
 const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   const [lessonNum, setLessonNum] = useState(initialLesson);
   const [questionCount, setQuestionCount] = useState(15);
-  const [quizMode, setQuizMode] = useState('multiple_choice'); // 'multiple_choice' or 'mixed'
+  const [quizMode, setQuizMode] = useState('multiple_choice');
 
-  const [quizState, setQuizState] = useState('setup'); // 'setup', 'playing', 'result'
+  const [quizState, setQuizState] = useState('setup');
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -42,6 +44,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   const [resultSummary, setResultSummary] = useState(null);
 
   const startQuiz = async () => {
+    sounds.playFlip();
     setLoading(true);
     try {
       const params = {
@@ -77,11 +80,16 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
     if (currentQ.type === 'kana_input') {
       userAnswerText = inputAnswer.trim();
-      // Case-insensitive / kana match
       isCorrect = userAnswerText === currentQ.correct_answer.trim();
     } else {
       userAnswerText = selectedOption;
       isCorrect = selectedOption === currentQ.correct_answer;
+    }
+
+    if (isCorrect) {
+      sounds.playCorrect();
+    } else {
+      sounds.playWrong();
     }
 
     const answerRecord = {
@@ -99,11 +107,12 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     setUserAnswers(prev => [...prev, answerRecord]);
     setIsAnswerSubmitted(true);
 
-    // Auto speak the word
+    // Phát âm tiếng Nhật
     speakJapanese(currentQ.audio_text || currentQ.kana);
   };
 
   const handleNextQuestion = () => {
+    sounds.playFlip();
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelectedOption(null);
@@ -128,7 +137,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       setResultSummary(submitRes.data);
       setQuizState('result');
 
-      if ((correctCount / questions.length) >= 0.8) {
+      if ((correctCount / questions.length) >= 0.75) {
+        sounds.playComplete();
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
       }
     } catch (err) {
@@ -139,22 +149,22 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   };
 
   return (
-    <Container className="py-4" style={{ maxWidth: '800px' }}>
+    <Container className="py-3 py-md-4" style={{ maxWidth: '780px' }}>
       {/* 1. SETUP STATE */}
       {quizState === 'setup' && (
-        <Card className="jlpt-card border-0 shadow-lg p-4 p-md-5">
+        <Card className="jlpt-card border-0 shadow-lg p-3 p-md-5">
           <div className="text-center mb-4">
             <div className="bg-success bg-opacity-10 text-success p-3 rounded-circle d-inline-flex mb-3">
               <CheckSquare size={36} />
             </div>
-            <h3 className="fw-bold text-navy-dark">Kiểm tra Trắc nghiệm Từ vựng N5</h3>
-            <p className="text-muted">
-              Hệ thống trắc nghiệm thông minh theo chuẩn Minna no Nihongo với 4 dạng câu hỏi: Chọn nghĩa, Chọn từ, Chọn cách đọc Kanji và Nhập Kana.
+            <h3 className="fw-bold text-navy-dark">Kiểm tra Trắc nghiệm N5</h3>
+            <p className="text-muted small">
+              Đầy đủ 4 dạng câu hỏi: Chọn nghĩa tiếng Việt, Chọn từ tiếng Nhật, Đọc chữ Hán và Nhập đáp án Kana.
             </p>
           </div>
 
           <Row className="g-3 mb-4">
-            <Col md={6}>
+            <Col sm={6}>
               <label className="fw-semibold small text-muted mb-1">Chọn phạm vi bài học:</label>
               <Input
                 type="select"
@@ -162,7 +172,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 onChange={(e) => setLessonNum(e.target.value)}
                 className="py-2"
               >
-                <option value="all">Toàn bộ N5 (Tổng hợp 25 bài)</option>
+                <option value="all">Toàn bộ N5 (25 bài)</option>
                 {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>
                     Bài {n < 10 ? `0${n}` : n}
@@ -171,7 +181,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               </Input>
             </Col>
 
-            <Col md={6}>
+            <Col sm={6}>
               <label className="fw-semibold small text-muted mb-1">Số lượng câu hỏi:</label>
               <Input
                 type="select"
@@ -179,7 +189,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 onChange={(e) => setQuestionCount(parseInt(e.target.value))}
                 className="py-2"
               >
-                <option value={10}>10 câu hỏi ngắn</option>
+                <option value={10}>10 câu hỏi nhanh</option>
                 <option value={15}>15 câu hỏi tiêu chuẩn</option>
                 <option value={20}>20 câu hỏi luyện tập</option>
                 <option value={30}>30 câu hỏi thử thách</option>
@@ -204,8 +214,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       {/* 2. PLAYING STATE */}
       {quizState === 'playing' && currentQ && (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <Badge color="primary" pill className="px-3 py-2 fs-6">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <Badge color="primary" pill className="px-3 py-1 fs-6">
               Câu {currentIndex + 1} / {questions.length}
             </Badge>
             <span className="text-muted small">
@@ -216,12 +226,12 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           <Progress
             value={((currentIndex + 1) / questions.length) * 100}
             color="success"
-            className="mb-4"
+            className="mb-3"
             style={{ height: '6px' }}
           />
 
-          <Card className="jlpt-card border-0 shadow-lg mb-4">
-            <CardBody className="p-4 p-md-5">
+          <Card className="jlpt-card border-0 shadow-lg mb-3">
+            <CardBody className="p-3 p-md-5">
               {/* Question Text */}
               <div className="text-center mb-4 pb-3 border-bottom">
                 <span className="text-muted small d-block mb-1">
@@ -242,7 +252,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
               {/* Multiple Choice Options */}
               {currentQ.type !== 'kana_input' ? (
-                <div className="d-grid gap-3">
+                <div className="d-grid gap-2 gap-md-3">
                   {currentQ.options.map((option, idx) => {
                     let btnColor = 'outline-primary';
                     let extraClass = '';
@@ -263,7 +273,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       <Button
                         key={idx}
                         color={btnColor}
-                        className={`text-start py-3 px-4 rounded-3 d-flex justify-content-between align-items-center fs-6 fw-semibold ${extraClass}`}
+                        className={`text-start py-3 px-3 px-md-4 rounded-3 d-flex justify-content-between align-items-center fs-6 fw-semibold ${extraClass}`}
                         onClick={() => !isAnswerSubmitted && setSelectedOption(option)}
                         disabled={isAnswerSubmitted}
                       >
@@ -291,7 +301,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     size="lg"
                     placeholder="Gõ cách đọc Hiragana / Katakana..."
                     value={inputAnswer}
-                    onChange={(e) => setInputAnswer(e.target.value)}
+                    onChange={(e) => setInputAnswer(wanakana.toKana(e.target.value, { IMEMode: true }))}
                     disabled={isAnswerSubmitted}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !isAnswerSubmitted && inputAnswer.trim()) {
@@ -344,7 +354,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
       {/* 3. RESULT STATE */}
       {quizState === 'result' && resultSummary && (
-        <Card className="jlpt-card border-0 shadow-lg p-4 p-md-5">
+        <Card className="jlpt-card border-0 shadow-lg p-3 p-md-5">
           <div className="text-center mb-4">
             <div className="bg-warning bg-opacity-10 text-warning p-4 rounded-circle d-inline-flex mb-3">
               <Award size={48} />
@@ -361,9 +371,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </Badge>
           </div>
 
-          {/* Details breakdown */}
-          <h5 className="fw-bold mb-3 border-bottom pb-2">Chi tiết từng câu hỏi:</h5>
-          <div className="list-group mb-4" style={{ maxHeight: '380px', overflowY: 'auto' }}>
+          <h5 className="fw-bold mb-3 border-bottom pb-2">Chi tiết từng câu:</h5>
+          <div className="list-group mb-4" style={{ maxHeight: '350px', overflowY: 'auto' }}>
             {userAnswers.map((ans, i) => (
               <div
                 key={i}
@@ -376,7 +385,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     Câu {i + 1}: {ans.question}
                   </div>
                   <small>
-                    Bạn chọn: <strong>{ans.user_answer || '(Trống)'}</strong> | Đáp án đúng: <strong>{ans.correct_answer}</strong>
+                    Bạn chọn: <strong>{ans.user_answer || '(Trống)'}</strong> | Đáp án: <strong>{ans.correct_answer}</strong>
                   </small>
                 </div>
                 <div className="d-flex align-items-center gap-1">
@@ -394,7 +403,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             ))}
           </div>
 
-          <div className="d-flex justify-content-center gap-3">
+          <div className="d-flex justify-content-center gap-2 flex-wrap">
             <Button
               color="primary"
               size="lg"

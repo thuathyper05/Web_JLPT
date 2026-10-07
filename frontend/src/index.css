@@ -16,14 +16,15 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
@@ -36,22 +37,23 @@ body {
   background: #94a3b8;
 }
 
-/* Professional card styling */
+/* Card Styling */
 .jlpt-card {
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 16px;
   background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .jlpt-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
 }
 
-/* Flashcard 3D flip */
+/* 3D Flashcard flip */
 .perspective-1000 {
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
 .transform-style-3d {
@@ -67,13 +69,56 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Audio button pulse */
-.audio-btn:hover {
-  transform: scale(1.08);
+/* Interactive elements */
+.audio-btn {
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.audio-btn:active {
+  transform: scale(0.92);
 }
 
-/* Header styles */
+/* Header */
 .navbar-custom {
   background-color: #1e3a8a !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 70px; /* Space for bottom navigation */
+  }
+
+  .display-4 {
+    font-size: 2.2rem !important;
+  }
+
+  .display-5 {
+    font-size: 1.8rem !important;
+  }
+
+  .display-6 {
+    font-size: 1.4rem !important;
+  }
+
+  .jlpt-card {
+    border-radius: 12px;
+  }
+
+  .btn {
+    touch-action: manipulation;
+  }
+
+  /* Compact table on mobile */
+  .table {
+    font-size: 0.85rem;
+  }
+}
+
+/* Glass effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
