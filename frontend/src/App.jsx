@@ -108,11 +108,11 @@ function App() {
       {/* Desktop Footer */}
       <footer className="bg-white border-top py-4 text-center text-muted small d-none d-lg-block">
         <div className="container">
-          <p className="mb-1 fw-semibold text-dark">
-            Hệ thống Website Hỗ trợ Học & Ôn tập Từ vựng Tiếng Nhật N5 (Minna no Nihongo)
+          <p className="mb-1 fw-bold text-navy-dark fs-6">
+            HYPER JLPT — Hệ Thống Học & Ôn Tập Từ Vựng Tiếng Nhật N5 Toàn Diện
           </p>
           <p className="mb-0 text-secondary">
-            Bản quyền © 2026. Thiết kế theo tiêu chuẩn giáo trình Minna no Nihongo 25 bài toàn tập với 1,589 từ vựng.
+            Bản quyền © 2026 HYPER JLPT. Chuẩn giáo trình Minna no Nihongo 25 bài toàn tập với 1,589 từ vựng.
           </p>
         </div>
       </footer>

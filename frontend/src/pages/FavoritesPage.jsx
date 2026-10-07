@@ -15,14 +15,18 @@ import {
   Trash2,
   BookOpen,
   Layers,
-  CheckSquare
+  CheckSquare,
+  Search,
+  Sparkles
 } from 'lucide-react';
 import { favoriteService, vocabService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
+import { sounds } from '../services/sounds';
 
 const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
   const { user, guestFavorites, toggleFavorite } = useApp();
   const [favorites, setFavorites] = useState([]);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,9 +50,21 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
   };
 
   const handleRemoveFavorite = async (item) => {
+    sounds.playFlip();
     await toggleFavorite(item);
     setFavorites(prev => prev.filter(v => v.id !== item.id));
   };
+
+  const filtered = favorites.filter(item => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      item.vietnamese?.toLowerCase().includes(q) ||
+      item.kana?.toLowerCase().includes(q) ||
+      item.kanji?.toLowerCase().includes(q) ||
+      item.romaji?.toLowerCase().includes(q)
+    );
+  });
 
   if (loading) {
     return (
@@ -60,43 +76,55 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
   }
 
   return (
-    <Container className="py-4">
-      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <Container className="py-3 py-md-4">
+      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div className="d-flex align-items-center gap-2">
           <div className="bg-warning bg-opacity-10 text-warning p-2 rounded-circle">
             <Star size={24} fill="#f59e0b" />
           </div>
           <div>
-            <h4 className="fw-bold mb-0">Từ vựng yêu thích & Đánh dấu quan trọng</h4>
+            <h4 className="fw-bold mb-0 text-navy-dark">Từ vựng yêu thích & Đánh dấu quan trọng</h4>
             <p className="text-muted small mb-0">
               Danh sách các từ bạn đã lưu lại để tiện tra cứu và ôn tập nhanh
             </p>
           </div>
         </div>
 
-        <Badge color="warning" className="text-dark fs-6 px-3 py-2" pill>
-          {favorites.length} từ đã lưu
-        </Badge>
+        <div className="d-flex align-items-center gap-2">
+          <input
+            type="text"
+            placeholder="Tìm trong từ yêu thích..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="form-control form-control-sm"
+            style={{ width: '200px' }}
+          />
+          <Badge color="warning" className="text-dark fs-6 px-3 py-2 rounded-pill" pill>
+            {favorites.length} từ đã lưu
+          </Badge>
+        </div>
       </div>
 
-      {favorites.length === 0 ? (
+      {filtered.length === 0 ? (
         <Card className="jlpt-card border-0 shadow-sm p-5 text-center">
           <div className="bg-light text-muted p-3 rounded-circle d-inline-flex mx-auto mb-3">
             <Star size={40} />
           </div>
-          <h4 className="fw-bold text-dark">Chưa có từ vựng yêu thích nào</h4>
+          <h4 className="fw-bold text-dark">
+            {search ? 'Không tìm thấy từ vựng nào khớp' : 'Chưa có từ vựng yêu thích nào'}
+          </h4>
           <p className="text-muted mb-4">
-            Trong lúc học bài hoặc xem từ vựng, hãy bấm biểu tượng ngôi sao ⭐ để thêm từ vào đây.
+            {search ? 'Thử tìm kiếm với từ khóa khác' : 'Khi học từ vựng, bấm biểu tượng ngôi sao ⭐ để thêm từ vào danh sách ưu tiên.'}
           </p>
           <div>
-            <Button color="primary" className="fw-bold px-4" onClick={() => onNavigate('lessons')}>
+            <Button color="primary" className="fw-bold px-4 rounded-pill" onClick={() => onNavigate('lessons')}>
               Khám phá bài học
             </Button>
           </div>
         </Card>
       ) : (
         <Row className="g-3">
-          {favorites.map((item) => (
+          {filtered.map((item) => (
             <Col md={6} lg={4} key={item.id}>
               <Card className="jlpt-card border-0 shadow-sm h-100">
                 <CardBody className="d-flex flex-column justify-content-between p-3">
@@ -119,6 +147,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                           size="sm"
                           className="p-1 rounded-circle"
                           onClick={() => speakJapanese(item.kana)}
+                          title="Nghe phát âm"
                         >
                           <Volume2 size={16} className="text-primary" />
                         </Button>

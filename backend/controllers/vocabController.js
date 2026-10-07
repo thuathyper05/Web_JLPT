@@ -40,7 +40,7 @@ const getVocabularies = async (req, res) => {
     const whereClauses = [];
     const params = [];
 
-    if (lesson) {
+    if (lesson && lesson !== 'all') {
       params.push(parseInt(lesson));
       whereClauses.push(`v.lesson_number = $${params.length}`);
     }
@@ -61,8 +61,12 @@ const getVocabularies = async (req, res) => {
     }
 
     if (userId && status) {
-      params.push(status);
-      whereClauses.push(`up.status = $${params.length}`);
+      if (status === 'needs_review') {
+        whereClauses.push(`(up.status = 'needs_review' OR up.wrong_count > 0)`);
+      } else {
+        params.push(status);
+        whereClauses.push(`up.status = $${params.length}`);
+      }
     }
 
     if (whereClauses.length > 0) {
@@ -118,15 +122,17 @@ const getVocabularyById = async (req, res) => {
   }
 };
 
-// Search vocabulary
+// Search vocabulary across all fields with smart match and sorting
 const searchVocabulary = async (req, res) => {
   try {
     const { q } = req.query;
-    if (!q) {
+    if (!q || !q.trim()) {
       return res.json([]);
     }
 
     const term = `%${q.trim().toLowerCase()}%`;
+    const exact = q.trim().toLowerCase();
+
     const query = `
       SELECT 
         v.id, v.lesson_number, v.order_num, v.kanji, v.kana, v.romaji, v.vietnamese,
@@ -138,10 +144,21 @@ const searchVocabulary = async (req, res) => {
         LOWER(v.kana) LIKE $1 OR 
         LOWER(v.romaji) LIKE $1 OR 
         LOWER(v.vietnamese) LIKE $1
-      ORDER BY v.lesson_number ASC, v.order_num ASC
+      ORDER BY 
+        CASE 
+          WHEN LOWER(COALESCE(v.kanji, '')) = $2 THEN 1
+          WHEN LOWER(v.kana) = $2 THEN 2
+          WHEN LOWER(v.romaji) = $2 THEN 3
+          WHEN LOWER(v.vietnamese) = $2 THEN 4
+          WHEN LOWER(COALESCE(v.kanji, '')) LIKE $2 || '%' THEN 5
+          WHEN LOWER(v.kana) LIKE $2 || '%' THEN 6
+          ELSE 7
+        END,
+        v.lesson_number ASC, 
+        v.order_num ASC
       LIMIT 100
     `;
-    const result = await db.query(query, [term]);
+    const result = await db.query(query, [term, exact]);
     res.json(result.rows);
   } catch (error) {
     console.error('searchVocabulary error:', error);

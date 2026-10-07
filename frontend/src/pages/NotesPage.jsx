@@ -22,10 +22,12 @@ import {
   Trash2,
   Edit,
   Search,
-  BookOpen
+  BookOpen,
+  Plus
 } from 'lucide-react';
 import { noteService, vocabService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
+import { sounds } from '../services/sounds';
 
 const NotesPage = ({ onNavigate, onSelectLesson }) => {
   const { user, guestNotes, saveNote } = useApp();
@@ -49,7 +51,6 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
         const res = await noteService.getNotes();
         setNotes(res.data);
       } else {
-        // Build guest notes list
         const vocabIds = Object.keys(guestNotes).filter(id => guestNotes[id]?.trim());
         if (vocabIds.length === 0) {
           setNotes([]);
@@ -79,6 +80,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
 
   const handleDelete = async (note) => {
     if (window.confirm('Bạn có chắc muốn xóa ghi chú này không?')) {
+      sounds.playWrong();
       if (user) {
         await noteService.deleteNote(note.note_id || note.vocabulary_id);
       } else {
@@ -89,6 +91,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
   };
 
   const openEdit = (note) => {
+    sounds.playFlip();
     setEditingItem(note);
     setEditContent(note.content);
     setEditModal(true);
@@ -96,6 +99,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
 
   const handleSaveEdit = async () => {
     if (editingItem) {
+      sounds.playCorrect();
       await saveNote(editingItem.vocabulary_id, editContent);
       setNotes(prev => prev.map(n => n.vocabulary_id === editingItem.vocabulary_id ? { ...n, content: editContent } : n));
     }
@@ -123,14 +127,14 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
   }
 
   return (
-    <Container className="py-4">
-      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <Container className="py-3 py-md-4">
+      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div className="d-flex align-items-center gap-2">
           <div className="bg-info bg-opacity-10 text-info p-2 rounded-circle">
             <FileText size={24} />
           </div>
           <div>
-            <h4 className="fw-bold mb-0">Sổ tay ghi chú cá nhân</h4>
+            <h4 className="fw-bold mb-0 text-navy-dark">Sổ tay ghi chú cá nhân</h4>
             <p className="text-muted small mb-0">
               Lưu lại mẹo nhớ, ví dụ thực tế và giải thích ngữ cảnh của từng từ
             </p>
@@ -140,13 +144,12 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
         <div className="d-flex align-items-center gap-2">
           <Input
             type="text"
-            placeholder="Tìm kiếm trong ghi chú..."
+            placeholder="Tìm trong ghi chú..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-auto"
-            size="sm"
+            className="w-auto form-control-sm"
           />
-          <Badge color="info" pill className="fs-6 px-3 py-2">
+          <Badge color="info" pill className="fs-6 px-3 py-2 rounded-pill">
             {notes.length} ghi chú
           </Badge>
         </div>
@@ -157,12 +160,14 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
           <div className="bg-light text-muted p-3 rounded-circle d-inline-flex mx-auto mb-3">
             <FileText size={40} />
           </div>
-          <h4 className="fw-bold text-dark">Chưa có ghi chú nào</h4>
+          <h4 className="fw-bold text-dark">
+            {search ? 'Không tìm thấy ghi chú nào khớp' : 'Chưa có ghi chú nào'}
+          </h4>
           <p className="text-muted mb-4">
-            Khi học từ vựng theo bài, bấm biểu tượng văn bản 📝 để thêm ghi chú của riêng bạn.
+            {search ? 'Thử tìm với từ khóa khác' : 'Khi học từ vựng theo bài, bấm biểu tượng văn bản 📝 để ghi chú mẹo nhớ của riêng bạn.'}
           </p>
           <div>
-            <Button color="primary" className="fw-bold px-4" onClick={() => onNavigate('lessons')}>
+            <Button color="primary" className="fw-bold px-4 rounded-pill" onClick={() => onNavigate('lessons')}>
               Đến danh sách bài học
             </Button>
           </div>
@@ -192,6 +197,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
                           size="sm"
                           className="p-1 rounded-circle"
                           onClick={() => speakJapanese(item.kana)}
+                          title="Nghe phát âm"
                         >
                           <Volume2 size={16} className="text-primary" />
                         </Button>
@@ -200,7 +206,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
                           size="sm"
                           className="p-1 rounded-circle text-info"
                           onClick={() => openEdit(item)}
-                          title="Sửa"
+                          title="Sửa ghi chú"
                         >
                           <Edit size={16} />
                         </Button>
@@ -209,7 +215,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
                           size="sm"
                           className="p-1 rounded-circle text-danger"
                           onClick={() => handleDelete(item)}
-                          title="Xóa"
+                          title="Xóa ghi chú"
                         >
                           <Trash2 size={16} />
                         </Button>
@@ -232,7 +238,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
                       <strong>Nghĩa:</strong> {item.vietnamese}
                     </div>
 
-                    <div className="bg-light p-3 rounded border-start border-4 border-info">
+                    <div className="bg-light p-3 rounded-3 border-start border-4 border-info">
                       <div className="text-muted small fw-semibold mb-1">Ghi chú của bạn:</div>
                       <div className="text-dark small" style={{ whiteSpace: 'pre-wrap' }}>
                         {item.content}
@@ -253,7 +259,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label className="small fw-semibold">Nội dung ghi chú:</Label>
+            <Label className="small fw-semibold">Nội dung ghi chú cá nhân:</Label>
             <Input
               type="textarea"
               rows={4}
