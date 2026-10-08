@@ -250,8 +250,9 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   return (
     <Container className="py-3 py-md-4" style={{ maxWidth: '780px' }}>
       {/* ── 1. Top Header Box & Configuration ── */}
-      <div className="page-header-box mb-3">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-3">
+      <div className="page-header-box mb-2 p-2 p-md-3">
+        {/* Desktop Header */}
+        <div className="d-none d-md-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-3">
           <div className="d-flex align-items-center gap-3">
             <div
               className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0"
@@ -313,8 +314,69 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
         </div>
 
-        {/* Direction Switcher (Việt -> Nhật / Nhật -> Việt) */}
-        <div className="d-flex justify-content-center">
+        {/* Mobile Header: Ultra-compact 1-Row layout (Under 40px) */}
+        <div className="d-flex d-md-none align-items-center justify-content-between gap-1.5">
+          <Input
+            type="select"
+            value={lessonNum}
+            onChange={(e) => setLessonNum(e.target.value)}
+            className="fw-bold form-control-sm rounded-pill border"
+            style={{ fontSize: '12px', flex: 1, minWidth: 0, height: '34px', paddingLeft: '10px' }}
+          >
+            <option value="all">25 bài ({cards.length})</option>
+            {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+              <option key={n} value={n}>
+                Bài {n < 10 ? `0${n}` : n}
+              </option>
+            ))}
+          </Input>
+
+          {/* Quick Direction Toggle Pill */}
+          <button
+            type="button"
+            onClick={() => {
+              setCardDirection(cardDirection === 'vi_to_jp' ? 'jp_to_vi' : 'vi_to_jp');
+              setIsFlipped(false);
+              sounds.playFlip();
+            }}
+            className="btn btn-sm btn-light border rounded-pill px-2 d-flex align-items-center gap-1"
+            style={{ fontSize: '11px', height: '34px', whiteSpace: 'nowrap' }}
+            title="Đổi chiều lật thẻ"
+          >
+            <ArrowRightLeft size={11} className="text-primary" />
+            <span>{cardDirection === 'vi_to_jp' ? '🇻🇳 ➔ 🇯🇵' : '🇯🇵 ➔ 🇻🇳'}</span>
+          </button>
+
+          {/* Audio toggle button */}
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playFlip();
+              setAutoPlayAudio(!autoPlayAudio);
+            }}
+            className={`btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center border ${
+              autoPlayAudio ? 'btn-primary' : 'btn-light'
+            }`}
+            style={{ width: '34px', height: '34px', flexShrink: 0 }}
+            title={autoPlayAudio ? 'Tắt phát âm' : 'Bật phát âm'}
+          >
+            {autoPlayAudio ? <Volume2 size={14} /> : <VolumeX size={14} />}
+          </button>
+
+          {/* Shuffle button */}
+          <button
+            type="button"
+            onClick={handleShuffle}
+            className="btn btn-sm btn-light border rounded-circle p-0 d-flex align-items-center justify-content-center"
+            style={{ width: '34px', height: '34px', flexShrink: 0 }}
+            title="Trộn ngẫu nhiên"
+          >
+            <Shuffle size={13} className="text-secondary" />
+          </button>
+        </div>
+
+        {/* Direction Switcher (Desktop Only) */}
+        <div className="d-none d-md-flex justify-content-center">
           <div className="segmented-control shadow-xs">
             <button
               type="button"

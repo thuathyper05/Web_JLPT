@@ -159,10 +159,10 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
   ];
 
   return (
-    <Container className="py-3 py-md-4">
+    <Container className="py-2 py-md-4">
       {/* 1. HERO BANNER WITH HYPER JAPAN BRANDING */}
       <div
-        className="p-4 p-md-5 mb-4 rounded-4 shadow-lg position-relative overflow-hidden"
+        className="p-3 p-md-5 mb-3 mb-md-4 rounded-4 shadow-sm position-relative overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, #091224 0%, #0f2552 45%, #1d4ed8 100%)',
           border: '1px solid rgba(255,255,255,0.15)',
@@ -171,7 +171,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       >
         {/* Glow circles */}
         <div
-          className="position-absolute"
+          className="position-absolute d-none d-md-block"
           style={{
             top: '-50px',
             right: '-50px',
@@ -186,116 +186,86 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         <Row className="align-items-center position-relative" style={{ zIndex: 1 }}>
           <Col lg={8}>
             <div
-              className="d-inline-flex align-items-center px-3 py-1 rounded-pill mb-3 text-white small fw-bold"
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)', border: '1px solid rgba(255,255,255,0.25)' }}
+              className="d-inline-flex align-items-center px-2.5 py-0.5 rounded-pill mb-2 text-white small fw-bold"
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)', border: '1px solid rgba(255,255,255,0.25)', fontSize: '11px' }}
             >
-              <Sparkles size={14} className="me-1 text-warning" /> Nền Tảng Học Tiếng Nhật Toàn Diện • Cấp Độ {currentLevel}
+              <Sparkles size={12} className="me-1 text-warning" /> JLPT N5 Master System
             </div>
 
-            <h1 className="fw-black mb-2 display-4 tracking-tight text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+            <h1 className="fw-black mb-1 tracking-tight text-white" style={{ fontSize: 'clamp(1.75rem, 6vw, 3rem)', textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
               HYPER <span style={{ color: '#ef4444' }}>JAPAN</span>
             </h1>
 
-            <h4 className="fw-bold mb-3 fs-5" style={{ color: '#fbbf24', textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
-              Giáo trình chuẩn Minna no Nihongo 25 Bài • 1,589 Từ vựng • Chữ Hán Kanji N5
-            </h4>
+            <h6 className="fw-bold mb-2 text-warning" style={{ fontSize: 'clamp(0.85rem, 3vw, 1.15rem)', textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
+              25 Bài Minna no Nihongo • 1,589 Từ vựng • 80+ Kanji N5
+            </h6>
 
-            <p className="lead mb-4 fs-6 text-white text-opacity-90" style={{ maxWidth: '640px', lineHeight: '1.6' }}>
+            <p className="d-none d-md-block lead mb-3 fs-6 text-white text-opacity-90" style={{ maxWidth: '640px', lineHeight: '1.6' }}>
               Hệ thống học tiếng Nhật thông minh với lộ trình bài bản: Học từng từ có phát âm giọng Tokyo chuẩn, luyện Flashcard 3D, luyện gõ Kana không gợi ý và làm bài trắc nghiệm tính điểm chuẩn xác.
             </p>
 
-            <div className="d-flex flex-wrap align-items-center" style={{ gap: '14px' }}>
+            <div className="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-3">
               <button
                 type="button"
                 className="btn text-white fw-bold d-inline-flex align-items-center rounded-pill"
                 style={{
-                  gap: '8px',
-                  padding: '12px 24px',
-                  fontSize: '14.5px',
+                  gap: '6px',
+                  padding: '9px 18px',
+                  fontSize: '13.5px',
                   background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                   border: 'none',
-                  boxShadow: '0 4px 18px rgba(239, 68, 68, 0.42)',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 24px rgba(239, 68, 68, 0.55)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 18px rgba(239, 68, 68, 0.42)';
+                  boxShadow: '0 4px 14px rgba(239, 68, 68, 0.4)',
+                  transition: 'all 0.2s ease'
                 }}
                 onClick={() => {
                   if (onSelectLesson) onSelectLesson(1);
                   onNavigate('lessons');
                 }}
               >
-                <span>Bắt đầu Bài 01 ngay</span>
-                <ArrowRight size={17} />
+                <span>Học Bài 01 ngay</span>
+                <ArrowRight size={15} />
               </button>
 
               <button
                 type="button"
                 className="btn text-white fw-semibold d-inline-flex align-items-center rounded-pill"
                 style={{
-                  gap: '8px',
-                  padding: '12px 22px',
-                  fontSize: '14px',
+                  gap: '6px',
+                  padding: '9px 14px',
+                  fontSize: '13px',
                   backgroundColor: 'rgba(255, 255, 255, 0.12)',
                   border: '1px solid rgba(255, 255, 255, 0.22)',
-                  backdropFilter: 'blur(10px)',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.38)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.22)';
+                  backdropFilter: 'blur(10px)'
                 }}
                 onClick={() => onNavigate('kanji')}
               >
-                <PenTool size={16} className="text-info" />
-                <span>Học Chữ Hán Kanji</span>
+                <PenTool size={14} className="text-info" />
+                <span>Chữ Hán</span>
               </button>
 
               <button
                 type="button"
                 className="btn text-white fw-semibold d-inline-flex align-items-center rounded-pill"
                 style={{
-                  gap: '8px',
-                  padding: '12px 22px',
-                  fontSize: '14px',
+                  gap: '6px',
+                  padding: '9px 14px',
+                  fontSize: '13px',
                   backgroundColor: 'rgba(255, 255, 255, 0.12)',
                   border: '1px solid rgba(255, 255, 255, 0.22)',
-                  backdropFilter: 'blur(10px)',
-                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.38)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.22)';
+                  backdropFilter: 'blur(10px)'
                 }}
                 onClick={() => onNavigate('quiz')}
               >
-                <CheckSquare size={16} style={{ color: '#fbbf24' }} />
-                <span>Kiểm tra trắc nghiệm</span>
+                <CheckSquare size={14} style={{ color: '#fbbf24' }} />
+                <span>Trắc nghiệm</span>
               </button>
             </div>
           </Col>
 
-          {/* Right Logo Display Card */}
+          {/* Right Logo Display Card (Desktop Only) */}
           <Col lg={4} className="d-none d-lg-block text-center">
             <div
-              className="p-4 rounded-4 shadow-sm text-white"
+              className="p-3.5 rounded-4 shadow-sm text-white"
               style={{
                 backgroundColor: 'rgba(15, 23, 42, 0.75)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -306,24 +276,24 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 <img
                   src="/logo.png"
                   alt="HYPER JAPAN"
-                  style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+                  style={{ width: '70px', height: '70px', objectFit: 'contain' }}
                 />
               </div>
 
-              <div className="fs-4 fw-black text-white mt-1 mb-0">HYPER JAPAN</div>
-              <div className="small mb-3 text-warning fw-bold">Chuẩn N5 • 25 Bài Minna no Nihongo</div>
+              <div className="fs-5 fw-black text-white mt-1 mb-0">HYPER JAPAN</div>
+              <div className="small mb-2.5 text-warning fw-bold" style={{ fontSize: '11px' }}>Chuẩn N5 • 25 Bài Minna no Nihongo</div>
 
               <div className="row g-2 text-center">
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="fw-black fs-5 text-white">1,589</div>
-                    <div className="small text-white text-opacity-75" style={{ fontSize: '11px' }}>Từ vựng N5</div>
+                  <div className="p-1.5 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="fw-black fs-6 text-white">1,589</div>
+                    <div className="text-white text-opacity-75" style={{ fontSize: '10px' }}>Từ vựng N5</div>
                   </div>
                 </div>
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
-                    <div className="fw-black fs-5 text-warning">80+</div>
-                    <div className="small text-white text-opacity-75" style={{ fontSize: '11px' }}>Hán tự Kanji</div>
+                  <div className="p-1.5 rounded-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <div className="fw-black fs-6 text-warning">80+</div>
+                    <div className="text-white text-opacity-75" style={{ fontSize: '10px' }}>Hán tự Kanji</div>
                   </div>
                 </div>
               </div>
@@ -332,81 +302,81 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         </Row>
       </div>
 
-      {/* 2. STATS & PROGRESS QUICK WIDGET */}
+      {/* 2. STATS & PROGRESS QUICK WIDGET (Compact 2x2 Grid on Mobile) */}
       {stats && (
-        <Row className="g-3 mb-4">
-          <Col sm={6} lg={3}>
+        <Row className="g-2 g-md-3 mb-3 mb-md-4">
+          <Col xs={6} lg={3}>
             <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-3.5">
+              <CardBody className="p-2.5 p-md-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>Đã học</small>
-                    <h3 className="fw-bold text-navy-dark mb-0 mt-0.5">{stats.studied_vocabularies}</h3>
-                    <small className="text-muted" style={{ fontSize: '12px' }}>/ 1,589 từ vựng</small>
+                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10px', letterSpacing: '0.04em' }}>Đã học</small>
+                    <h4 className="fw-bold text-navy-dark mb-0 mt-0.5">{stats.studied_vocabularies}</h4>
+                    <small className="text-muted" style={{ fontSize: '11px' }}>/ 1,589 từ</small>
                   </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3" style={{ width: '42px', height: '42px', background: '#eff6ff', color: '#2563eb' }}>
-                    <BookOpen size={20} />
+                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '36px', height: '36px', background: '#eff6ff', color: '#2563eb' }}>
+                    <BookOpen size={18} />
                   </div>
                 </div>
               </CardBody>
             </Card>
           </Col>
 
-          <Col sm={6} lg={3}>
+          <Col xs={6} lg={3}>
             <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-3.5">
+              <CardBody className="p-2.5 p-md-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>Đã thuộc</small>
-                    <h3 className="fw-bold text-emerald-600 mb-0 mt-0.5" style={{ color: '#059669' }}>{stats.mastered_count}</h3>
-                    <small className="fw-semibold" style={{ color: '#059669', fontSize: '12px' }}>
-                      {Math.round((stats.mastered_count / stats.total_vocabularies) * 100)}% thành thạo
+                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10px', letterSpacing: '0.04em' }}>Đã thuộc</small>
+                    <h4 className="fw-bold mb-0 mt-0.5" style={{ color: '#059669' }}>{stats.mastered_count}</h4>
+                    <small className="fw-semibold" style={{ color: '#059669', fontSize: '11px' }}>
+                      {Math.round((stats.mastered_count / stats.total_vocabularies) * 100)}% thuộc
                     </small>
                   </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3" style={{ width: '42px', height: '42px', background: '#ecfdf5', color: '#059669' }}>
-                    <CheckCircle size={20} />
+                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '36px', height: '36px', background: '#ecfdf5', color: '#059669' }}>
+                    <CheckCircle size={18} />
                   </div>
                 </div>
               </CardBody>
             </Card>
           </Col>
 
-          <Col sm={6} lg={3}>
+          <Col xs={6} lg={3}>
             <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-3.5">
+              <CardBody className="p-2.5 p-md-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>Cần ôn tập</small>
-                    <h3 className="fw-bold mb-0 mt-0.5" style={{ color: '#dc2626' }}>{stats.needs_review_count}</h3>
-                    <small style={{ fontSize: '12px' }}>
+                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10px', letterSpacing: '0.04em' }}>Cần ôn lại</small>
+                    <h4 className="fw-bold mb-0 mt-0.5" style={{ color: '#dc2626' }}>{stats.needs_review_count}</h4>
+                    <small style={{ fontSize: '11px' }}>
                       {stats.needs_review_count > 0 ? (
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('review'); }} className="text-danger fw-semibold text-decoration-none">
-                          Ôn từ sai ngay ➔
+                          Ôn từ sai ➔
                         </a>
                       ) : (
-                        <span className="text-muted">Không có từ sai</span>
+                        <span className="text-muted">Tốt</span>
                       )}
                     </small>
                   </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3" style={{ width: '42px', height: '42px', background: '#fef2f2', color: '#dc2626' }}>
-                    <Flame size={20} />
+                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '36px', height: '36px', background: '#fef2f2', color: '#dc2626' }}>
+                    <Flame size={18} />
                   </div>
                 </div>
               </CardBody>
             </Card>
           </Col>
 
-          <Col sm={6} lg={3}>
+          <Col xs={6} lg={3}>
             <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-3.5">
+              <CardBody className="p-2.5 p-md-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>Độ chính xác</small>
-                    <h3 className="fw-bold mb-0 mt-0.5" style={{ color: '#d97706' }}>{stats.accuracy_rate}%</h3>
-                    <small className="text-muted" style={{ fontSize: '12px' }}>Qua bài tập & trắc nghiệm</small>
+                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10px', letterSpacing: '0.04em' }}>Độ đúng</small>
+                    <h4 className="fw-bold mb-0 mt-0.5" style={{ color: '#d97706' }}>{stats.accuracy_rate}%</h4>
+                    <small className="text-muted" style={{ fontSize: '11px' }}>Tỷ lệ điểm</small>
                   </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3" style={{ width: '42px', height: '42px', background: '#fffbeb', color: '#d97706' }}>
-                    <Award size={20} />
+                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '36px', height: '36px', background: '#fffbeb', color: '#d97706' }}>
+                    <Award size={18} />
                   </div>
                 </div>
               </CardBody>
@@ -415,44 +385,48 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         </Row>
       )}
 
-      {/* 3. 6 FEATURE METHOD CARDS */}
-      <div className="mb-4">
-        <h4 className="fw-black text-navy-dark tracking-tight mb-1">Phương Pháp Học Tập Đa Dạng</h4>
-        <p className="text-muted small mb-3">Tối ưu hóa khả năng ghi nhớ dài hạn qua nhiều hình thức tương tác</p>
+      {/* 3. 6 FEATURE METHOD CARDS (2-Column Grid on Mobile) */}
+      <div className="mb-3 mb-md-4">
+        <div className="d-flex justify-content-between align-items-end mb-2">
+          <div>
+            <h5 className="fw-black text-navy-dark tracking-tight mb-0">Phương Pháp Rèn Luyện</h5>
+            <small className="text-muted d-none d-sm-inline">Lộ trình học bài bản đạt chuẩn JLPT N5</small>
+          </div>
+        </div>
 
-        <Row className="g-3">
+        <Row className="g-2 g-md-3">
           {features.map((feat) => {
             const IconComp = feat.icon;
             return (
-              <Col md={6} lg={4} key={feat.id}>
+              <Col xs={6} md={6} lg={4} key={feat.id}>
                 <Card
-                  className="jlpt-card border-0 shadow-sm h-100 rounded-4 cursor-pointer hover-shadow"
+                  className="jlpt-card border-0 shadow-sm h-100 rounded-3 cursor-pointer hover-shadow"
                   onClick={() => onNavigate(feat.id)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <CardBody className="p-4 d-flex flex-column justify-content-between">
+                  <CardBody className="p-2.5 p-md-3 d-flex flex-column justify-content-between">
                     <div>
-                      <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div className="d-flex justify-content-between align-items-center mb-1.5">
                         <div
-                          className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm"
-                          style={{ width: '44px', height: '44px', backgroundColor: feat.color }}
+                          className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs"
+                          style={{ width: '34px', height: '34px', backgroundColor: feat.color }}
                         >
-                          <IconComp size={22} />
+                          <IconComp size={17} />
                         </div>
-                        <Badge color="light" pill className="border text-secondary px-2.5 py-1">
+                        <Badge color="light" pill className="border text-secondary px-1.5 py-0.5 d-none d-sm-inline" style={{ fontSize: '10px' }}>
                           {feat.badge}
                         </Badge>
                       </div>
 
-                      <h5 className="fw-bold text-navy-dark mb-1">{feat.title}</h5>
-                      <p className="text-muted small mb-3" style={{ lineHeight: '1.5' }}>
+                      <h6 className="fw-bold text-navy-dark mb-1" style={{ fontSize: 'clamp(12px, 3.5vw, 15px)' }}>{feat.title}</h6>
+                      <p className="text-muted small mb-0 d-none d-md-block" style={{ fontSize: '12px', lineHeight: '1.4' }}>
                         {feat.desc}
                       </p>
                     </div>
 
-                    <div className="d-flex align-items-center gap-1 text-primary fw-bold small">
-                      <span>Bắt đầu ngay</span>
-                      <ArrowRight size={14} />
+                    <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-1.5" style={{ fontSize: '11.5px' }}>
+                      <span>Vào học</span>
+                      <ArrowRight size={11} />
                     </div>
                   </CardBody>
                 </Card>
@@ -462,54 +436,54 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         </Row>
       </div>
 
-      {/* 4. LESSON DIRECTORY (25 MINNA LESSONS) */}
-      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      {/* 4. LESSON DIRECTORY (25 MINNA LESSONS - 2-Column Grid on Mobile) */}
+      <div className="bg-white p-3 p-md-4 rounded-4 shadow-sm border mb-4">
+        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2.5">
           <div>
-            <h4 className="fw-black text-navy-dark mb-0">Danh Sách 25 Bài Học Minna no Nihongo N5</h4>
-            <small className="text-muted">Chọn một bài bất kỳ để bắt đầu học và luyện tập</small>
+            <h5 className="fw-black text-navy-dark mb-0">25 Bài Học Minna no Nihongo</h5>
+            <small className="text-muted">Chọn bài để học từ vựng, flashcard hoặc trắc nghiệm</small>
           </div>
 
-          <div className="position-relative">
+          <div className="position-relative flex-grow-1 flex-sm-grow-0" style={{ maxWidth: '240px' }}>
             <Input
               type="text"
-              placeholder="Tìm theo số bài hoặc chủ đề..."
+              placeholder="Tìm bài..."
               value={lessonSearch}
               onChange={(e) => setLessonSearch(e.target.value)}
               className="form-control-sm rounded-pill pe-4"
-              style={{ minWidth: '260px' }}
+              style={{ fontSize: '12px' }}
             />
-            <Search size={14} className="position-absolute top-50 end-0 translate-middle-y me-2.5 text-muted" />
+            <Search size={13} className="position-absolute top-50 end-0 translate-middle-y me-2.5 text-muted" />
           </div>
         </div>
 
-        <Row className="g-2.5">
+        <Row className="g-2 g-md-2.5">
           {filteredLessons.map((l) => (
-            <Col sm={6} md={4} lg={3} key={l.id}>
+            <Col xs={6} md={4} lg={3} key={l.id}>
               <div
                 onClick={() => {
                   if (onSelectLesson) onSelectLesson(l.lesson_number);
                   onNavigate('lessons');
                 }}
-                className="p-3 rounded-3 border bg-light bg-opacity-50 hover-shadow transition-all cursor-pointer h-100 d-flex flex-column justify-content-between"
+                className="p-2 p-md-2.5 rounded-3 border bg-light bg-opacity-50 hover-shadow transition-all cursor-pointer h-100 d-flex flex-column justify-content-between"
                 style={{ cursor: 'pointer' }}
               >
                 <div>
-                  <div className="d-flex justify-content-between align-items-center mb-1.5">
-                    <span className="badge rounded-pill bg-primary fw-bold px-2 py-0.5" style={{ fontSize: '11px' }}>
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <span className="badge rounded-pill bg-primary fw-bold px-1.5 py-0.5" style={{ fontSize: '10px' }}>
                       Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}
                     </span>
-                    <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>
+                    <small className="text-muted fw-semibold" style={{ fontSize: '10.5px' }}>
                       {l.vocab_count} từ
                     </small>
                   </div>
-                  <h6 className="fw-bold text-dark mb-1 small text-truncate" title={l.title}>
+                  <div className="fw-bold text-dark small text-truncate" title={l.title} style={{ fontSize: '11.5px', lineHeight: '1.3' }}>
                     {l.title}
-                  </h6>
+                  </div>
                 </div>
-                <div className="d-flex align-items-center gap-1 text-primary small mt-2" style={{ fontSize: '11.5px' }}>
-                  <span>Vào học</span>
-                  <ArrowRight size={12} />
+                <div className="d-flex align-items-center gap-1 text-primary small mt-1.5" style={{ fontSize: '10.5px' }}>
+                  <span>Chi tiết</span>
+                  <ArrowRight size={11} />
                 </div>
               </div>
             </Col>
