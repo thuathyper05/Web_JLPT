@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fallback = require('../data/fallbackData');
 
 // Get all 25 lessons with vocabulary counts
 const getLessons = async (req, res) => {
@@ -15,10 +16,15 @@ const getLessons = async (req, res) => {
       GROUP BY l.id, l.lesson_number, l.title, l.description
       ORDER BY l.lesson_number ASC
     `);
-    res.json(result.rows);
+    
+    if (result.rows && result.rows.length > 0) {
+      return res.json(result.rows);
+    }
+    // Fallback if table is empty
+    return res.json(fallback.getFallbackLessons());
   } catch (error) {
-    console.error('getLessons error:', error);
-    res.status(500).json({ message: 'Lỗi tải danh sách bài học' });
+    console.warn('[getLessons DB Notice] Using local fallback lessons:', error.message);
+    res.json(fallback.getFallbackLessons());
   }
 };
 
@@ -31,15 +37,22 @@ const getLessonById = async (req, res) => {
       [parseInt(id)]
     );
 
-    if (lessonResult.rows.length === 0) {
-      return res.status(404).json({ message: 'Không tìm thấy bài học' });
+    if (lessonResult.rows.length > 0) {
+      return res.json(lessonResult.rows[0]);
     }
 
-    const lesson = lessonResult.rows[0];
-    res.json(lesson);
+    const fbLesson = fallback.getFallbackLessonById(id);
+    if (fbLesson) {
+      return res.json(fbLesson);
+    }
+    return res.status(404).json({ message: 'Không tìm thấy bài học' });
   } catch (error) {
-    console.error('getLessonById error:', error);
-    res.status(500).json({ message: 'Lỗi khi lấy thông tin bài học' });
+    console.warn('[getLessonById DB Notice] Using local fallback lesson:', error.message);
+    const fbLesson = fallback.getFallbackLessonById(req.params.id);
+    if (fbLesson) {
+      return res.json(fbLesson);
+    }
+    res.status(404).json({ message: 'Không tìm thấy bài học' });
   }
 };
 

@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fallback = require('../data/fallbackData');
 
 // Get vocabularies with optional filters (lesson, search, favorite, status)
 const getVocabularies = async (req, res) => {
@@ -80,10 +81,17 @@ const getVocabularies = async (req, res) => {
     query += ' ORDER BY v.lesson_number ASC, v.order_num ASC';
 
     const result = await db.query(query, params);
-    res.json(result.rows);
+    if (result.rows && result.rows.length > 0) {
+      return res.json(result.rows);
+    }
+    // Fallback if empty and not user-specific filter
+    if (!userId && !status && !favorite) {
+      return res.json(fallback.getFallbackVocabularies(req.query));
+    }
+    res.json(result.rows || []);
   } catch (error) {
-    console.error('getVocabularies error:', error);
-    res.status(500).json({ message: 'Lỗi tải danh sách từ vựng' });
+    console.warn('[getVocabularies DB Notice] Using local fallback vocabularies:', error.message);
+    res.json(fallback.getFallbackVocabularies(req.query));
   }
 };
 

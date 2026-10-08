@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fallback = require('../data/fallbackData');
 
 function shuffleArray(array) {
   const arr = [...array];
@@ -26,23 +27,42 @@ const getQuiz = async (req, res) => {
       query += ` WHERE lesson_number >= $1 AND lesson_number <= $2`;
     }
 
-    const vocabResult = await db.query(query, params);
-    const pool = vocabResult.rows;
+    let pool = [];
+    let allVocabs = [];
 
-    if (pool.length === 0) {
-      return res.status(400).json({ message: 'Không có dữ liệu từ vựng cho bài này' });
+    try {
+      const vocabResult = await db.query(query, params);
+      pool = vocabResult.rows;
+
+      // Get all vocabularies for distractors
+      const allVocabResult = await db.query(`
+        SELECT id, kanji, kana, 
+               COALESCE(clean_kana, kana) as display_kana, 
+               vietnamese, 
+               COALESCE(clean_vietnamese, vietnamese) as display_vi,
+               usage_note
+        FROM vocabularies
+      `);
+      allVocabs = allVocabResult.rows;
+    } catch (dbErr) {
+      console.warn('[getQuiz DB Notice] Using fallback for quiz pool:', dbErr.message);
     }
 
-    // Get all vocabularies for distractors
-    const allVocabResult = await db.query(`
-      SELECT id, kanji, kana, 
-             COALESCE(clean_kana, kana) as display_kana, 
-             vietnamese, 
-             COALESCE(clean_vietnamese, vietnamese) as display_vi,
-             usage_note
-      FROM vocabularies
-    `);
-    const allVocabs = allVocabResult.rows;
+    if (!pool || pool.length === 0) {
+      const fbList = fallback.getFallbackVocabularies({
+        lesson: lesson && lesson !== 'all' ? parseInt(lesson) : undefined
+      });
+      pool = fbList.map(v => ({
+        ...v,
+        display_vi: v.clean_vietnamese || v.vietnamese,
+        display_kana: v.clean_kana || v.kana
+      }));
+      allVocabs = fallback.getFallbackVocabularies().map(v => ({
+        ...v,
+        display_vi: v.clean_vietnamese || v.vietnamese,
+        display_kana: v.clean_kana || v.kana
+      }));
+    }
 
     const shuffled = shuffleArray(pool);
     const selected = shuffled.slice(0, Math.min(parseInt(count), pool.length));

@@ -226,6 +226,23 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     );
   }
 
+  if (!cards || cards.length === 0) {
+    return (
+      <Container className="py-3 py-md-4 text-center" style={{ maxWidth: '780px' }}>
+        <div className="page-header-box text-center py-5">
+          <Layers size={48} className="text-muted mb-3 opacity-50" />
+          <h5 className="fw-bold text-navy-dark">Đang đồng bộ dữ liệu từ vựng...</h5>
+          <p className="text-muted small mb-3">Hệ thống đang tải danh sách bài học hoặc bạn có thể thử lại.</p>
+          <div className="d-flex justify-content-center gap-2">
+            <Button color="primary" onClick={() => fetchCards(lessonNum)} className="rounded-pill px-4">
+              <RefreshCw size={16} className="me-1" /> Tải lại dữ liệu
+            </Button>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
   const progressPercent = cards.length > 0
     ? Math.round(((currentIndex + (sessionDone ? 1 : 0)) / cards.length) * 100)
     : 0;

@@ -694,19 +694,76 @@ p {
 }
 
 /* ==========================================================================
-   RESPONSIVE LAYOUT FIXES
+   RESPONSIVE LAYOUT & MOBILE TOUCH OPTIMIZATIONS
    ========================================================================== */
 
 @media (max-width: 991px) {
   body {
-    padding-bottom: 70px;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-box {
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 14px;
+  }
+  
+  .quiz-option-card {
+    padding: 11px 14px;
+    font-size: 13.5px;
   }
 }
 
 @media (max-width: 576px) {
-  h1, .h1 { font-size: 1.625rem; }
-  h2, .h2 { font-size: 1.375rem; }
-  h3, .h3 { font-size: 1.1875rem; }
-  .segmented-item { padding: 5px 10px; font-size: 12px; }
-  .btn { padding: 7px 12px; font-size: 13px; }
+  h1, .h1 { font-size: 1.5rem !important; }
+  h2, .h2 { font-size: 1.3rem !important; }
+  h3, .h3 { font-size: 1.15rem !important; }
+  
+  .segmented-control {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .segmented-control::-webkit-scrollbar {
+    display: none;
+  }
+  .segmented-item {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 11.5px;
+    text-align: center;
+  }
+
+  /* Flashcard compact on mobile */
+  .flashcard-container {
+    min-height: 310px !important;
+  }
+  .flashcard-inner {
+    min-height: 310px !important;
+  }
+  .flashcard-face {
+    min-height: 310px !important;
+    padding: 18px 16px !important;
+    border-radius: var(--radius-lg) !important;
+  }
+  
+  /* Buttons on mobile */
+  .btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  
+  /* Touch target sizes */
+  .quiz-option-card {
+    min-height: 52px;
+  }
+  
+  /* Safe padding */
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }

@@ -45,7 +45,17 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
     const fetchData = async () => {
       try {
         const lessonRes = await lessonService.getLessons();
-        setLessons(lessonRes.data);
+        if (lessonRes.data && Array.isArray(lessonRes.data) && lessonRes.data.length > 0) {
+          setLessons(lessonRes.data);
+        } else {
+          setLessons(Array.from({ length: 25 }, (_, i) => ({
+            id: i + 1,
+            lesson_number: i + 1,
+            title: `Bài ${i + 1}`,
+            description: `Từ vựng Minna no Nihongo Bài ${i + 1}`,
+            vocab_count: 64
+          })));
+        }
 
         if (user) {
           const progRes = await progressService.getProgress();
@@ -64,6 +74,13 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         }
       } catch (err) {
         console.error('Error fetching home data:', err);
+        setLessons(Array.from({ length: 25 }, (_, i) => ({
+          id: i + 1,
+          lesson_number: i + 1,
+          title: `Bài ${i + 1}`,
+          description: `Từ vựng Minna no Nihongo Bài ${i + 1}`,
+          vocab_count: 64
+        })));
       } finally {
         setLoading(false);
       }

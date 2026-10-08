@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fallback = require('../data/fallbackData');
 
 // Get all Kanji with filters (level, search, han_viet)
 const getKanjiList = async (req, res) => {
@@ -27,10 +28,13 @@ const getKanjiList = async (req, res) => {
     query += ' ORDER BY stroke_count ASC, id ASC';
 
     const result = await db.query(query, params);
-    res.json(result.rows);
+    if (result.rows && result.rows.length > 0) {
+      return res.json(result.rows);
+    }
+    return res.json(fallback.getFallbackKanji(req.query));
   } catch (error) {
-    console.error('getKanjiList error:', error);
-    res.status(500).json({ message: 'Lỗi tải danh sách chữ Hán (Kanji)' });
+    console.warn('[getKanjiList DB Notice] Using local fallback kanji:', error.message);
+    res.json(fallback.getFallbackKanji(req.query));
   }
 };
 
