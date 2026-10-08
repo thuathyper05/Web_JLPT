@@ -312,9 +312,9 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
       </div>
 
       {/* ── Mobile Compact Header (< 768px) ── */}
-      <div className="d-md-none page-header-box p-2.5 mb-2.5">
+      <div className="d-md-none page-header-box p-2.5 mb-2.5" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
         {/* Row 1: Title + Lesson Dropdown */}
-        <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
+        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100 min-w-0">
           <div className="d-flex align-items-center gap-2 flex-grow-1 min-w-0">
             <div
               className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
@@ -322,11 +322,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             >
               <BookOpen size={16} />
             </div>
-            <div className="flex-grow-1 text-truncate">
-              <h6 className="fw-bold mb-0 text-navy-dark text-truncate" style={{ fontSize: '13.5px' }}>
+            <div className="flex-grow-1 text-truncate" style={{ minWidth: 0 }}>
+              <h6 className="fw-bold mb-0 text-navy-dark text-truncate" style={{ fontSize: '13px' }}>
                 Bài {currentLessonNum}: {lessonInfo?.title || 'Từ vựng'}
               </h6>
-              <small className="text-muted" style={{ fontSize: '11px' }}>{vocabularies.length} từ vựng N5</small>
+              <small className="text-muted text-truncate d-block" style={{ fontSize: '10.5px' }}>{vocabularies.length} từ vựng N5</small>
             </div>
           </div>
 
@@ -339,7 +339,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               if (onSelectLesson) onSelectLesson(nextL);
             }}
             className="form-control-sm rounded-pill fw-bold border flex-shrink-0 py-1 px-2"
-            style={{ width: 'auto', fontSize: '12px' }}
+            style={{ width: 'auto', maxWidth: '95px', fontSize: '11.5px' }}
           >
             {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -350,21 +350,21 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
         </div>
 
         {/* Row 2: View Mode Control + Audio toggle */}
-        <div className="d-flex align-items-center justify-content-between gap-1.5 mb-2">
-          <div className="segmented-control flex-grow-1" style={{ padding: '2px' }}>
+        <div className="d-flex align-items-center justify-content-between gap-1.5 mb-2 w-100 min-w-0">
+          <div className="segmented-control flex-grow-1" style={{ padding: '2px', minWidth: 0 }}>
             <button
               type="button"
               onClick={() => setViewMode('step_by_step')}
-              className={`segmented-item flex-fill py-1 px-2 ${viewMode === 'step_by_step' ? 'active' : ''}`}
-              style={{ fontSize: '12px' }}
+              className={`segmented-item flex-fill py-1 px-1.5 ${viewMode === 'step_by_step' ? 'active' : ''}`}
+              style={{ fontSize: '11.5px', minWidth: 0 }}
             >
               <span>📖 Từng từ</span>
             </button>
             <button
               type="button"
               onClick={() => setViewMode('table_view')}
-              className={`segmented-item flex-fill py-1 px-2 ${viewMode === 'table_view' ? 'active' : ''}`}
-              style={{ fontSize: '12px' }}
+              className={`segmented-item flex-fill py-1 px-1.5 ${viewMode === 'table_view' ? 'active' : ''}`}
+              style={{ fontSize: '11.5px', minWidth: 0 }}
             >
               <span>📋 Danh sách</span>
             </button>
@@ -377,7 +377,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               className={`btn btn-sm rounded-pill border py-1 px-2 flex-shrink-0 ${
                 autoPlayAudio ? 'btn-primary text-white' : 'btn-light text-muted'
               }`}
-              style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
+              style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
               title="Tự động phát âm Tokyo"
             >
               {autoPlayAudio ? '🔊 Bật' : '🔇 Tắt'}
@@ -385,46 +385,49 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           )}
         </div>
 
-        {/* Row 3: 3 sleek action pills */}
-        <div className="d-flex align-items-center gap-1.5 overflow-x-auto pb-0.5" style={{ scrollbarWidth: 'none' }}>
+        {/* Row 3: 3 sleek action pills (safely constrained) */}
+        <div className="d-flex align-items-center gap-1.5 w-100" style={{ minWidth: 0 }}>
           <button
             type="button"
-            className="btn btn-sm rounded-pill border bg-white text-primary flex-fill py-1 px-2 shadow-xs"
-            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+            className="btn btn-sm rounded-pill border bg-white text-primary flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
+            style={{ fontSize: '11px', minWidth: 0 }}
             onClick={() => onNavigate('flashcard')}
           >
-            <Layers size={12} className="me-1" /> Flashcard
+            <Layers size={12} className="me-1 flex-shrink-0" />
+            <span className="text-truncate">Flashcard</span>
           </button>
           <button
             type="button"
-            className="btn btn-sm rounded-pill border bg-white text-danger flex-fill py-1 px-2 shadow-xs"
-            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+            className="btn btn-sm rounded-pill border bg-white text-danger flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
+            style={{ fontSize: '11px', minWidth: 0 }}
             onClick={() => onNavigate('quiz')}
           >
-            <CheckSquare size={12} className="me-1" /> Trắc nghiệm
+            <CheckSquare size={12} className="me-1 flex-shrink-0" />
+            <span className="text-truncate">Trắc nghiệm</span>
           </button>
           <button
             type="button"
-            className="btn btn-sm rounded-pill border bg-white text-dark flex-fill py-1 px-2 shadow-xs"
-            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+            className="btn btn-sm rounded-pill border bg-white text-dark flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
+            style={{ fontSize: '11px', minWidth: 0 }}
             onClick={() => onNavigate('practice')}
           >
-            <Keyboard size={12} className="me-1" /> Luyện gõ
+            <Keyboard size={12} className="me-1 flex-shrink-0" />
+            <span className="text-truncate">Luyện gõ</span>
           </button>
         </div>
       </div>
 
       {/* ── MODE 1: STEP-BY-STEP WORD CARD ── */}
       {viewMode === 'step_by_step' && currentWord && (
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <div className="d-flex justify-content-between align-items-center mb-2 px-1 text-muted small">
+        <div style={{ maxWidth: '640px', margin: '0 auto', width: '100%' }}>
+          <div className="d-flex justify-content-between align-items-center mb-2 px-1 text-muted small w-100">
             <span>Từ số {currentIndex + 1} / {vocabularies.length}</span>
             <span className="d-none d-sm-inline">Dùng phím mũi tên <strong>Trái / Phải</strong> hoặc <strong>Phím Cách</strong></span>
           </div>
 
-          <Card className="jlpt-card border-0 shadow-sm p-3 p-md-5 rounded-4 mb-3 position-relative">
+          <Card className="jlpt-card border-0 shadow-sm p-2.5 p-sm-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
             {/* Top Tools */}
-            <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-2.5 w-100">
               <Badge color="primary" pill className="px-2.5 py-1 fw-bold" style={{ fontSize: '11.5px' }}>
                 Bài {currentLessonNum} • #{currentWord.order_num || currentIndex + 1}
               </Badge>
@@ -433,61 +436,77 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 <Button
                   color="light"
                   size="sm"
-                  className="rounded-circle border p-1.5 text-warning"
+                  className="rounded-circle border p-1 text-warning d-flex align-items-center justify-content-center"
+                  style={{ width: 32, height: 32 }}
                   onClick={() => toggleFavorite(currentWord)}
                   title="Đánh dấu yêu thích"
                 >
-                  <Star size={16} fill={isFavorite(currentWord.id, currentWord.is_favorite) ? '#f59e0b' : 'transparent'} />
+                  <Star size={15} fill={isFavorite(currentWord.id, currentWord.is_favorite) ? '#f59e0b' : 'transparent'} />
                 </Button>
                 <Button
                   color="light"
                   size="sm"
-                  className="rounded-circle border p-1.5 text-info"
+                  className="rounded-circle border p-1 text-info d-flex align-items-center justify-content-center"
+                  style={{ width: 32, height: 32 }}
                   onClick={() => openNoteModal(currentWord)}
                   title="Ghi chú cá nhân"
                 >
-                  <FileText size={16} />
+                  <FileText size={15} />
                 </Button>
               </div>
             </div>
 
             {/* Main Word Display */}
-            <div className="text-center my-2 my-md-3">
+            <div className="text-center my-2 my-md-3 w-100 overflow-hidden">
               {currentWord.kanji && currentWord.kanji !== '–' && currentWord.kanji !== '-' && (
                 <h1
                   className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
-                  style={{ fontSize: 'clamp(1.75rem, 6vw, 2.8rem)' }}
+                  style={{
+                    fontSize: 'clamp(1.6rem, 6vw, 2.8rem)',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere'
+                  }}
                 >
                   {currentWord.kanji}
                 </h1>
               )}
 
-              <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <div className="d-flex align-items-center justify-content-center gap-2 mb-1 flex-wrap">
                 <h2
-                  className="text-primary fw-bold mb-0 font-monospace"
-                  style={{ fontSize: 'clamp(1.35rem, 5vw, 2.2rem)' }}
+                  className="text-primary fw-bold mb-0 font-monospace text-center"
+                  style={{
+                    fontSize: 'clamp(1.25rem, 5vw, 2.2rem)',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere'
+                  }}
                 >
                   {currentWord.clean_kana || currentWord.kana}
                 </h2>
                 <Button
                   color="light"
                   size="sm"
-                  className="p-1.5 rounded-circle border text-primary audio-btn"
+                  className="p-1 rounded-circle border text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{ width: 32, height: 32 }}
                   onClick={() => speakJapanese(currentWord.clean_kana || currentWord.kana)}
                   title="Nghe phát âm chuẩn Tokyo"
                 >
-                  <Volume2 size={18} />
+                  <Volume2 size={16} />
                 </Button>
               </div>
 
-              <div className="text-muted fst-italic small mb-3">
+              <div className="text-muted fst-italic small mb-2.5" style={{ fontSize: '12px' }}>
                 [{currentWord.romaji}]
               </div>
 
               {/* Clean Vietnamese Meaning */}
               <div
                 className="p-2.5 p-md-3 rounded-3 fw-bold text-dark fs-6 fs-md-5 mb-2.5"
-                style={{ background: 'var(--slate-50)', border: '1px solid var(--slate-200)' }}
+                style={{
+                  background: 'var(--slate-50)',
+                  border: '1px solid var(--slate-200)',
+                  wordBreak: 'break-word',
+                  overflowWrap: 'anywhere'
+                }}
               >
                 {currentWord.clean_vietnamese || currentWord.vietnamese}
               </div>
@@ -496,10 +515,17 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               {currentWord.usage_note && (
                 <div
                   className="p-2.5 rounded-3 text-start small mb-2.5"
-                  style={{ background: 'var(--warning-subtle)', border: '1px solid var(--warning-border)', color: '#92400e', fontSize: '12px' }}
+                  style={{
+                    background: 'var(--warning-subtle)',
+                    border: '1px solid var(--warning-border)',
+                    color: '#92400e',
+                    fontSize: '11.5px',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere'
+                  }}
                 >
                   <div className="d-flex align-items-center gap-1 fw-bold mb-0.5">
-                    <Info size={13} /> Chú thích:
+                    <Info size={13} className="flex-shrink-0" /> Chú thích:
                   </div>
                   <div>{currentWord.usage_note}</div>
                 </div>
@@ -509,7 +535,14 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               {(currentWord.user_note || getNote(currentWord.id)) && (
                 <div
                   className="p-2 rounded-3 text-start small mb-2.5"
-                  style={{ background: 'var(--info-subtle)', border: '1px solid var(--info-border)', color: '#0369a1', fontSize: '12px' }}
+                  style={{
+                    background: 'var(--info-subtle)',
+                    border: '1px solid var(--info-border)',
+                    color: '#0369a1',
+                    fontSize: '11.5px',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere'
+                  }}
                 >
                   📝 <strong>Ghi chú:</strong> {currentWord.user_note || getNote(currentWord.id)}
                 </div>
@@ -517,75 +550,78 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             </div>
 
             {/* Status Memory Assessment Bar */}
-            <div className="pt-2.5 border-top text-center">
-              <span className="small text-muted d-block mb-1.5 fw-semibold" style={{ fontSize: '11.5px' }}>Đánh giá ghi nhớ:</span>
-              <div className="d-flex justify-content-center gap-1.5 gap-sm-2">
+            <div className="pt-2.5 border-top text-center w-100">
+              <span className="small text-muted d-block mb-1.5 fw-semibold" style={{ fontSize: '11px' }}>Đánh giá ghi nhớ:</span>
+              <div className="d-flex justify-content-between align-items-center gap-1 gap-sm-2 w-100" style={{ minWidth: 0 }}>
                 <Button
                   color={currentWord.user_status === 'needs_review' ? 'danger' : 'light'}
                   size="sm"
                   disabled={isRatingLocked}
-                  className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
+                  className={`flex-fill rounded-pill py-1.5 px-1 px-sm-2 fw-bold border d-flex align-items-center justify-content-center ${
                     currentWord.user_status === 'needs_review' ? 'text-white shadow-xs' : 'text-danger'
                   } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
-                  style={{ fontSize: '12px' }}
+                  style={{ fontSize: 'clamp(10.5px, 2.9vw, 12px)', minWidth: 0 }}
                   onClick={() => handleStatusChange('needs_review')}
                 >
-                  <XCircle size={13} className="me-1" /> Chưa nhớ
+                  <XCircle size={12} className="me-1 flex-shrink-0" />
+                  <span className="text-truncate">Chưa nhớ</span>
                 </Button>
                 <Button
                   color={currentWord.user_status === 'learning' ? 'warning' : 'light'}
                   size="sm"
                   disabled={isRatingLocked}
-                  className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
+                  className={`flex-fill rounded-pill py-1.5 px-1 px-sm-2 fw-bold border d-flex align-items-center justify-content-center ${
                     currentWord.user_status === 'learning' ? 'text-dark shadow-xs' : 'text-secondary'
                   } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
-                  style={{ fontSize: '12px' }}
+                  style={{ fontSize: 'clamp(10.5px, 2.9vw, 12px)', minWidth: 0 }}
                   onClick={() => handleStatusChange('learning')}
                 >
-                  <HelpCircle size={13} className="me-1" /> Đang học
+                  <HelpCircle size={12} className="me-1 flex-shrink-0" />
+                  <span className="text-truncate">Đang học</span>
                 </Button>
                 <Button
                   color={currentWord.user_status === 'mastered' ? 'success' : 'light'}
                   size="sm"
                   disabled={isRatingLocked}
-                  className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
+                  className={`flex-fill rounded-pill py-1.5 px-1 px-sm-2 fw-bold border d-flex align-items-center justify-content-center ${
                     currentWord.user_status === 'mastered' ? 'text-white shadow-xs' : 'text-success'
                   } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
-                  style={{ fontSize: '12px' }}
+                  style={{ fontSize: 'clamp(10.5px, 2.9vw, 12px)', minWidth: 0 }}
                   onClick={() => handleStatusChange('mastered')}
                 >
-                  <CheckCircle2 size={13} className="me-1" /> Đã thuộc
+                  <CheckCircle2 size={12} className="me-1 flex-shrink-0" />
+                  <span className="text-truncate">Đã thuộc</span>
                 </Button>
               </div>
             </div>
           </Card>
 
           {/* Navigation Controls */}
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex justify-content-between align-items-center w-100 gap-2" style={{ minWidth: 0 }}>
             <Button
               color="light"
-              className="rounded-pill px-3 px-md-4 py-1.5 py-md-2 fw-bold border shadow-xs d-flex align-items-center gap-1"
-              style={{ fontSize: '12.5px' }}
+              className="rounded-pill px-2.5 px-sm-4 py-1.5 py-md-2 fw-bold border shadow-xs d-flex align-items-center gap-1 flex-shrink-0"
+              style={{ fontSize: '12px' }}
               disabled={currentIndex === 0}
               onClick={handlePrevWord}
             >
-              <ChevronLeft size={15} />
+              <ChevronLeft size={14} />
               <span>Từ trước</span>
             </Button>
 
-            <span className="fw-bold small text-muted" style={{ fontSize: '12px' }}>
+            <span className="fw-bold small text-muted text-center flex-grow-1" style={{ fontSize: '11.5px' }}>
               {currentIndex + 1} / {vocabularies.length}
             </span>
 
             <Button
               color="primary"
-              className="rounded-pill px-3 px-md-4 py-1.5 py-md-2 fw-bold shadow-xs d-flex align-items-center gap-1"
-              style={{ fontSize: '12.5px' }}
+              className="rounded-pill px-2.5 px-sm-4 py-1.5 py-md-2 fw-bold shadow-xs d-flex align-items-center gap-1 flex-shrink-0"
+              style={{ fontSize: '12px' }}
               disabled={currentIndex === vocabularies.length - 1}
               onClick={handleNextWord}
             >
-              <span>Từ tiếp theo</span>
-              <ChevronRight size={15} />
+              <span>Từ tiếp</span>
+              <ChevronRight size={14} />
             </Button>
           </div>
         </div>
@@ -593,47 +629,48 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
 
       {/* ── MODE 2: TABLE LIST VIEW ── */}
       {viewMode === 'table_view' && (
-        <Card className="jlpt-card border-0 shadow-sm rounded-4">
-          <CardBody className="p-2.5 p-md-3">
+        <Card className="jlpt-card border-0 shadow-sm rounded-4 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+          <CardBody className="p-2 p-sm-3">
             {/* Filter and Search Bar */}
-            <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-              <div className="d-flex align-items-center gap-1.5 flex-wrap">
+            <div className="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 mb-3 w-100">
+              <div className="d-flex align-items-center gap-1.5 w-100 w-sm-auto flex-wrap">
                 <Button
                   color={hideMeaning ? 'warning' : 'light'}
                   size="sm"
                   onClick={() => setHideMeaning(!hideMeaning)}
-                  className={`rounded-pill border py-1 px-2.5 small ${hideMeaning ? 'fw-bold text-dark' : 'text-muted'}`}
-                  style={{ fontSize: '12px' }}
+                  className={`rounded-pill border py-1 px-2.5 small flex-fill flex-sm-grow-0 ${hideMeaning ? 'fw-bold text-dark' : 'text-muted'}`}
+                  style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
                 >
                   {hideMeaning ? <EyeOff size={13} className="me-1" /> : <Eye size={13} className="me-1" />}
-                  {hideMeaning ? 'Đang che nghĩa' : 'Che nghĩa'}
+                  {hideMeaning ? 'Hiện nghĩa' : 'Che nghĩa'}
                 </Button>
                 <Button
                   color={hideKana ? 'warning' : 'light'}
                   size="sm"
                   onClick={() => setHideKana(!hideKana)}
-                  className={`rounded-pill border py-1 px-2.5 small ${hideKana ? 'fw-bold text-dark' : 'text-muted'}`}
-                  style={{ fontSize: '12px' }}
+                  className={`rounded-pill border py-1 px-2.5 small flex-fill flex-sm-grow-0 ${hideKana ? 'fw-bold text-dark' : 'text-muted'}`}
+                  style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
                 >
                   {hideKana ? <EyeOff size={13} className="me-1" /> : <Eye size={13} className="me-1" />}
-                  {hideKana ? 'Đang che Kana' : 'Che Kana'}
+                  {hideKana ? 'Hiện Kana' : 'Che Kana'}
                 </Button>
               </div>
 
-              <div className="position-relative flex-grow-1 flex-md-grow-0" style={{ minWidth: '180px' }}>
+              <div className="position-relative w-100 w-sm-auto flex-grow-1" style={{ maxWidth: '320px', minWidth: 0 }}>
                 <Input
                   type="text"
                   placeholder="Tìm từ trong bài..."
                   value={tableSearch}
                   onChange={(e) => setTableSearch(e.target.value)}
                   className="form-control-sm rounded-pill pe-4 w-100"
+                  style={{ fontSize: '13px' }}
                 />
                 <Search size={14} className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted" />
               </div>
             </div>
 
             {/* Desktop Table (>= 768px) */}
-            <div className="d-none d-md-block table-responsive">
+            <div className="d-none d-md-block table-responsive w-100">
               <table className="table table-hover align-middle mb-0">
                 <thead className="table-light">
                   <tr>
@@ -715,7 +752,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             </div>
 
             {/* Mobile Vocabulary Card List (< 768px) */}
-            <div className="d-md-none d-flex flex-column gap-2">
+            <div className="d-md-none d-flex flex-column gap-2" style={{ width: '100%', maxWidth: '100%' }}>
               {filteredTableVocabs.length === 0 ? (
                 <div className="text-center py-4 text-muted small">Không tìm thấy từ vựng phù hợp</div>
               ) : (
@@ -728,29 +765,44 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                     <div
                       key={item.id}
                       className="p-2.5 rounded-3 bg-white border shadow-xs d-flex flex-column gap-1.5"
-                      style={{ borderColor: 'var(--slate-200)' }}
+                      style={{
+                        borderColor: 'var(--slate-200)',
+                        width: '100%',
+                        maxWidth: '100%',
+                        overflow: 'hidden'
+                      }}
                     >
                       {/* Top Row: STT, Kanji, Kana & Audio, Star */}
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="d-flex align-items-center gap-2 min-w-0 flex-wrap">
-                          <span className="badge bg-light text-secondary border fw-bold" style={{ fontSize: '10.5px' }}>
+                      <div className="d-flex justify-content-between align-items-center w-100 gap-1.5">
+                        <div className="d-flex align-items-center gap-1.5 min-w-0 flex-grow-1 flex-wrap">
+                          <span className="badge bg-light text-secondary border fw-bold flex-shrink-0" style={{ fontSize: '10.5px' }}>
                             #{idx + 1}
                           </span>
                           {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
-                            <span className="fw-black text-navy-dark fs-5 font-monospace">
+                            <span
+                              className="fw-black text-navy-dark fs-5 font-monospace"
+                              style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
+                            >
                               {item.kanji}
                             </span>
                           )}
                           {hideKana ? (
                             <span
-                              className="badge bg-secondary opacity-50 px-2 py-0.5 cursor-pointer"
+                              className="badge bg-secondary opacity-50 px-2 py-0.5 cursor-pointer flex-shrink-0"
                               style={{ fontSize: '11px' }}
                               onClick={() => setHideKana(false)}
                             >
                               Xem Kana
                             </span>
                           ) : (
-                            <span className="fw-bold text-primary font-monospace" style={{ fontSize: '14.5px' }}>
+                            <span
+                              className="fw-bold text-primary font-monospace"
+                              style={{
+                                fontSize: '14px',
+                                wordBreak: 'break-word',
+                                overflowWrap: 'anywhere'
+                              }}
+                            >
                               {cleanK}
                             </span>
                           )}
@@ -780,7 +832,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                       </div>
 
                       {/* Meaning Row */}
-                      <div>
+                      <div style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
                         {hideMeaning ? (
                           <span
                             className="badge bg-secondary opacity-50 px-2 py-0.5 cursor-pointer"
