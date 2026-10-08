@@ -38,6 +38,33 @@ app.get(['/', '/health', '/api/health'], (req, res) => {
   });
 });
 
+// Database diagnostics endpoint
+app.get('/api/db-check', async (req, res) => {
+  const db = require('./config/db');
+  try {
+    const hasDbUrl = Boolean(process.env.DATABASE_URL);
+    const dbUrlMasked = process.env.DATABASE_URL
+      ? process.env.DATABASE_URL.replace(/:([^:@]+)@/, ':****@')
+      : 'NOT_SET';
+
+    const testResult = await db.query('SELECT NOW() as current_time, COUNT(*)::int as lesson_count FROM lessons');
+    res.json({
+      status: 'connected',
+      hasDbUrl,
+      dbUrl: dbUrlMasked,
+      data: testResult.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      hasDbUrl: Boolean(process.env.DATABASE_URL),
+      dbUrl: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:([^:@]+)@/, ':****@') : 'NOT_SET',
+      errorMessage: err.message,
+      errorCode: err.code
+    });
+  }
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`JLPT N5 Backend Server is running on port ${PORT}`);
