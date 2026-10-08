@@ -26,19 +26,19 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
   };
 
   const mainNavItems = [
-    { id: 'home', label: 'Trang chủ', icon: Home },
-    { id: 'lessons', label: 'Bài học', icon: BookOpen },
-    { id: 'kanji', label: 'Kanji', icon: PenTool },
-    { id: 'flashcard', label: 'Flashcard', icon: Layers },
-    { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
-    { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
+    { id: 'home', label: 'Trang chủ', icon: Home, color: '#2563eb', bg: '#eff6ff', desc: 'Lộ trình & Tổng quan học tập' },
+    { id: 'lessons', label: 'Bài học', icon: BookOpen, color: '#4f46e5', bg: '#eef2ff', desc: '25 Bài từ vựng Minna no Nihongo I' },
+    { id: 'kanji', label: 'Kanji', icon: PenTool, color: '#7c3aed', bg: '#f5f3ff', desc: 'Học bộ thủ, nét viết & Hán tự N5' },
+    { id: 'flashcard', label: 'Flashcard', icon: Layers, color: '#f59e0b', bg: '#fffbeb', desc: 'Lật thẻ 3D tự chuyển từ thông minh' },
+    { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare, color: '#ef4444', bg: '#fef2f2', desc: 'Kiểm tra 4 lựa chọn ABCD bấm giờ' },
+    { id: 'practice', label: 'Luyện gõ', icon: Keyboard, color: '#10b981', bg: '#ecfdf5', desc: 'Tự gõ bàn phím phản xạ tiếng Nhật' },
   ];
 
   const moreNavItems = [
-    { id: 'review', label: 'Ôn tập sai', icon: RefreshCw },
-    { id: 'favorites', label: 'Yêu thích', icon: Star },
-    { id: 'notes', label: 'Ghi chú', icon: FileText },
-    { id: 'dashboard', label: 'Tiến độ', icon: BarChart2 },
+    { id: 'review', label: 'Ôn tập sai', icon: RefreshCw, color: '#dc2626', bg: '#fef2f2', desc: 'Khắc phục các câu đã làm sai' },
+    { id: 'favorites', label: 'Yêu thích', icon: Star, color: '#d97706', bg: '#fffbeb', desc: 'Kho từ vựng đã đánh dấu sao' },
+    { id: 'notes', label: 'Ghi chú', icon: FileText, color: '#0ea5e9', bg: '#f0f9ff', desc: 'Sổ tay lưu mẹo nhớ của bạn' },
+    { id: 'dashboard', label: 'Tiến độ', icon: BarChart2, color: '#0d9488', bg: '#f0fdfa', desc: 'Báo cáo thống kê % thuộc bài' },
   ];
 
   // Mobile Bottom Bar: 5 primary actions
@@ -247,70 +247,172 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
         toggle={() => setMobileMenuOpen(false)}
         centered
         className="jlpt-modal d-lg-none"
-        style={{ maxWidth: '400px' }}
+        style={{ maxWidth: '420px', margin: 'auto 12px' }}
       >
-        <ModalBody className="p-0 rounded-4 overflow-hidden bg-white">
-          <div className="p-3 text-white d-flex justify-content-between align-items-center" style={{ background: 'linear-gradient(135deg, #091224 0%, #1e3a8a 100%)' }}>
+        <ModalBody className="p-0 rounded-4 overflow-hidden bg-white shadow-xl border-0">
+          {/* Header */}
+          <div className="p-3 text-white d-flex justify-content-between align-items-center" style={{ background: 'linear-gradient(135deg, #091224 0%, #172554 50%, #1e3a8a 100%)' }}>
             <div className="d-flex align-items-center gap-2">
-              <Logo size={28} showText={false} />
+              <Logo size={32} showText={false} />
               <div>
-                <h6 className="fw-bold mb-0">Menu Tính Năng Toàn Diện</h6>
-                <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>HYPER JAPAN JLPT N5</small>
+                <div className="d-flex align-items-center gap-1.5">
+                  <h6 className="fw-bold mb-0 text-white">HYPER JAPAN</h6>
+                  <span className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-2" style={{ fontSize: '10px' }}>
+                    {currentLevel || 'N5'}
+                  </span>
+                </div>
+                <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>Hệ thống học tiếng Nhật toàn diện</small>
               </div>
             </div>
-            <button type="button" className="btn-close btn-close-white" onClick={() => setMobileMenuOpen(false)} />
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Đóng"
+            />
           </div>
 
-          <div className="p-3 d-flex flex-column gap-2" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-            <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>
-              Phương pháp học tập
-            </small>
-
-            {mainNavItems.map(item => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleMobileNav(item.id)}
-                  className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between cursor-pointer transition-all ${
-                    isActive ? 'bg-primary bg-opacity-10 border-primary text-primary fw-bold' : 'bg-light text-dark'
-                  }`}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div className="d-flex align-items-center gap-2">
-                    <Icon size={18} className={isActive ? 'text-primary' : 'text-secondary'} />
-                    <span className="small">{item.label}</span>
+          <div className="p-3 d-flex flex-column gap-3" style={{ maxHeight: '72vh', overflowY: 'auto' }}>
+            {/* User Profile / Login Card */}
+            {user ? (
+              <div className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between" style={{ background: 'var(--slate-50)', borderColor: 'var(--slate-200)' }}>
+                <div className="d-flex align-items-center gap-2.5 min-w-0">
+                  {user.avatar_url ? (
+                    <img src={user.avatar_url} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, color: '#fff', flexShrink: 0 }}>
+                      {user.username.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <div className="fw-bold text-dark text-truncate" style={{ fontSize: '13.5px' }}>{user.username}</div>
+                    <div className="text-muted text-truncate" style={{ fontSize: '11px' }}>{user.email}</div>
                   </div>
-                  <ChevronRight size={14} className="text-muted" />
                 </div>
-              );
-            })}
-
-            <small className="text-muted fw-bold text-uppercase mt-2" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>
-              Sổ tay & Củng cố
-            </small>
-
-            {moreNavItems.map(item => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleMobileNav(item.id)}
-                  className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between cursor-pointer transition-all ${
-                    isActive ? 'bg-primary bg-opacity-10 border-primary text-primary fw-bold' : 'bg-light text-dark'
-                  }`}
-                  style={{ cursor: 'pointer' }}
+                <button
+                  type="button"
+                  onClick={() => { logout(); setMobileMenuOpen(false); }}
+                  className="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-1 d-flex align-items-center gap-1 flex-shrink-0"
+                  style={{ fontSize: '11px' }}
                 >
-                  <div className="d-flex align-items-center gap-2">
-                    <Icon size={18} className={isActive ? 'text-primary' : 'text-secondary'} />
-                    <span className="small">{item.label}</span>
-                  </div>
-                  <ChevronRight size={14} className="text-muted" />
+                  <LogOut size={12} />
+                  <span>Thoát</span>
+                </button>
+              </div>
+            ) : (
+              <div className="p-3 rounded-3 border d-flex align-items-center justify-content-between" style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)', borderColor: 'var(--primary-border)' }}>
+                <div>
+                  <div className="fw-bold text-navy-dark" style={{ fontSize: '13px' }}>Đồng bộ tiến độ học tập</div>
+                  <div className="text-muted" style={{ fontSize: '11px' }}>Lưu từ vựng, điểm thi & streak trên cloud</div>
                 </div>
-              );
-            })}
+                <button
+                  type="button"
+                  onClick={() => { openAuth('login'); setMobileMenuOpen(false); }}
+                  className="btn btn-sm btn-primary rounded-pill px-3 py-1.5 fw-bold shadow-xs flex-shrink-0"
+                  style={{ fontSize: '12px' }}
+                >
+                  Đăng nhập
+                </button>
+              </div>
+            )}
+
+            {/* Group 1: Study Modes */}
+            <div>
+              <div className="text-muted fw-bold text-uppercase mb-2 px-1" style={{ fontSize: '10.5px', letterSpacing: '0.06em' }}>
+                Phương pháp học tập & Luyện tập
+              </div>
+
+              <div className="d-flex flex-column gap-1.5">
+                {mainNavItems.map(item => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => handleMobileNav(item.id)}
+                      className={`p-2 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
+                        isActive
+                          ? 'border-primary bg-primary bg-opacity-10 text-primary'
+                          : 'bg-white text-dark hover-shadow'
+                      }`}
+                      style={{ cursor: 'pointer', transition: 'all 0.18s ease' }}
+                    >
+                      <div className="d-flex align-items-center gap-2.5 min-w-0">
+                        <div
+                          className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
+                          style={{
+                            width: 32,
+                            height: 32,
+                            background: isActive ? item.color : item.bg,
+                            color: isActive ? '#fff' : item.color
+                          }}
+                        >
+                          <Icon size={16} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13px' }}>
+                            {item.label}
+                          </div>
+                          <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className={isActive ? 'text-primary' : 'text-muted'} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Group 2: Tools & Retention */}
+            <div>
+              <div className="text-muted fw-bold text-uppercase mb-2 px-1" style={{ fontSize: '10.5px', letterSpacing: '0.06em' }}>
+                Sổ tay cá nhân & Củng cố
+              </div>
+
+              <div className="d-flex flex-column gap-1.5">
+                {moreNavItems.map(item => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => handleMobileNav(item.id)}
+                      className={`p-2 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
+                        isActive
+                          ? 'border-primary bg-primary bg-opacity-10 text-primary'
+                          : 'bg-white text-dark hover-shadow'
+                      }`}
+                      style={{ cursor: 'pointer', transition: 'all 0.18s ease' }}
+                    >
+                      <div className="d-flex align-items-center gap-2.5 min-w-0">
+                        <div
+                          className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
+                          style={{
+                            width: 32,
+                            height: 32,
+                            background: isActive ? item.color : item.bg,
+                            color: isActive ? '#fff' : item.color
+                          }}
+                        >
+                          <Icon size={16} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13px' }}>
+                            {item.label}
+                          </div>
+                          <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className={isActive ? 'text-primary' : 'text-muted'} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </ModalBody>
       </Modal>

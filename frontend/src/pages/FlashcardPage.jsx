@@ -46,6 +46,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const [masteredIds, setMasteredIds] = useState(new Set());
   const [reviewIds, setReviewIds] = useState(new Set());
   const [sessionDone, setSessionDone] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionAnim, setTransitionAnim] = useState(''); // 'slide-mastered' | 'slide-review' | ''
 
   // Sync with initialLesson prop if changed externally
   useEffect(() => {
@@ -61,6 +63,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     setMasteredIds(new Set());
     setReviewIds(new Set());
     setSessionDone(false);
+    setIsTransitioning(false);
+    setTransitionAnim('');
     try {
       const params = lesson === 'all' ? {} : { lesson: parseInt(lesson) };
       const res = await vocabService.getVocabularies(params);
@@ -82,61 +86,74 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
 
   // Auto-play pronunciation when card becomes active or flips to Japanese
   useEffect(() => {
-    if (!currentCard || !autoPlayAudio || loading || sessionDone) return;
+    if (!currentCard || !autoPlayAudio || loading || sessionDone || isTransitioning) return;
 
     if (cardDirection === 'jp_to_vi' && !isFlipped) {
       speakJapanese(cleanKana);
     } else if (cardDirection === 'vi_to_jp' && isFlipped) {
       speakJapanese(cleanKana);
     }
-  }, [currentIndex, isFlipped, cardDirection, autoPlayAudio, currentCard, cleanKana, loading, sessionDone]);
+  }, [currentIndex, isFlipped, cardDirection, autoPlayAudio, currentCard, cleanKana, loading, sessionDone, isTransitioning]);
 
   // Flip the 3D card
   const handleFlip = useCallback(() => {
+    if (isTransitioning) return;
     sounds.playFlip();
     setIsFlipped((prev) => !prev);
-  }, []);
+  }, [isTransitioning]);
 
-  // Answer card: Remembered vs Need Review
-  const handleAnswer = useCallback(async (remembered) => {
-    if (!currentCard) return;
+  // Answer card: Remembered vs Need Review (Locked against rapid multiple clicking)
+  const handleAnswer = useCallback((remembered) => {
+    if (isTransitioning || sessionDone || !currentCard) return;
 
+    // 1. Immediately lock against any rapid clicks
+    setIsTransitioning(true);
+    setTransitionAnim(remembered ? 'slide-mastered' : 'slide-review');
+
+    // 2. Play tactile sound and record state
     if (remembered) {
       sounds.playCorrect();
       setMasteredIds((prev) => new Set(prev).add(currentCard.id));
-      await updateProgress(currentCard.id, 'mastered', true);
+      updateProgress(currentCard.id, 'mastered', true).catch(() => {});
     } else {
       sounds.playWrong();
       setReviewIds((prev) => new Set(prev).add(currentCard.id));
-      await updateProgress(currentCard.id, 'needs_review', false);
+      updateProgress(currentCard.id, 'needs_review', false).catch(() => {});
     }
 
-    if (currentIndex < cards.length - 1) {
-      setIsFlipped(false);
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      sounds.playComplete();
-      setSessionDone(true);
-      confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 } });
-    }
-  }, [currentCard, currentIndex, cards.length, updateProgress]);
+    // 3. Smooth automatic transition to the next card
+    setTimeout(() => {
+      if (currentIndex < cards.length - 1) {
+        setIsFlipped(false);
+        setCurrentIndex((prev) => prev + 1);
+        setTransitionAnim('');
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 120);
+      } else {
+        sounds.playComplete();
+        setSessionDone(true);
+        setTransitionAnim('');
+        setIsTransitioning(false);
+        confetti({ particleCount: 140, spread: 90, origin: { y: 0.6 } });
+      }
+    }, 280);
+  }, [currentCard, currentIndex, cards.length, isTransitioning, sessionDone, updateProgress]);
 
   // Navigation: Next / Prev
   const handleNext = useCallback(() => {
-    if (currentIndex < cards.length - 1) {
-      sounds.playFlip();
-      setIsFlipped(false);
-      setCurrentIndex((prev) => prev + 1);
-    }
-  }, [currentIndex, cards.length]);
+    if (isTransitioning || currentIndex >= cards.length - 1) return;
+    sounds.playFlip();
+    setIsFlipped(false);
+    setCurrentIndex((prev) => prev + 1);
+  }, [currentIndex, cards.length, isTransitioning]);
 
   const handlePrev = useCallback(() => {
-    if (currentIndex > 0) {
-      sounds.playFlip();
-      setIsFlipped(false);
-      setCurrentIndex((prev) => prev - 1);
-    }
-  }, [currentIndex]);
+    if (isTransitioning || currentIndex <= 0) return;
+    sounds.playFlip();
+    setIsFlipped(false);
+    setCurrentIndex((prev) => prev - 1);
+  }, [currentIndex, isTransitioning]);
 
   // Replay Japanese speech
   const handleSpeak = useCallback((e) => {
@@ -182,7 +199,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     const handleKeyDown = (e) => {
       // Don't intercept if an input is focused
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
-      if (sessionDone || !currentCard) return;
+      if (sessionDone || !currentCard || isTransitioning) return;
 
       if (e.key === ' ' || e.code === 'Space') {
         e.preventDefault();
@@ -516,7 +533,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
 
           {/* ── 3D FLIP CARD CONTAINER ── */}
-          <div className="flashcard-container mb-3" onClick={handleFlip}>
+          <div className={`flashcard-container mb-3 ${transitionAnim}`} onClick={handleFlip}>
             <div className={`flashcard-inner ${isFlipped ? 'is-flipped' : ''}`}>
 
               {/* ── CARD FRONT FACE ── */}
@@ -793,8 +810,11 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
               <Button
                 block
                 color="danger"
+                disabled={isTransitioning}
                 onClick={() => handleAnswer(false)}
-                className="flashcard-answer-btn py-2.5 py-md-3 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm border-0"
+                className={`flashcard-answer-btn py-2.5 py-md-3 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm border-0 ${
+                  isTransitioning ? 'opacity-75 pe-none' : ''
+                }`}
                 style={{
                   background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                   fontSize: '14.5px'
@@ -812,8 +832,11 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
               <Button
                 block
                 color="success"
+                disabled={isTransitioning}
                 onClick={() => handleAnswer(true)}
-                className="flashcard-answer-btn py-2.5 py-md-3 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm border-0"
+                className={`flashcard-answer-btn py-2.5 py-md-3 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm border-0 ${
+                  isTransitioning ? 'opacity-75 pe-none' : ''
+                }`}
                 style={{
                   background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                   fontSize: '14.5px'
@@ -833,7 +856,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             <Button
               color="light"
               size="sm"
-              disabled={currentIndex === 0}
+              disabled={currentIndex === 0 || isTransitioning}
               onClick={handlePrev}
               className="rounded-pill border px-3 fw-semibold d-inline-flex align-items-center gap-1 shadow-xs"
               style={{ fontSize: '12.5px' }}
@@ -845,6 +868,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             <Button
               color="light"
               size="sm"
+              disabled={isTransitioning}
               onClick={handleFlip}
               className="rounded-pill border px-3 fw-bold text-primary d-inline-flex align-items-center gap-1.5 shadow-xs"
               style={{ fontSize: '12.5px', background: '#eff6ff', borderColor: '#bfdbfe' }}
@@ -856,7 +880,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             <Button
               color="light"
               size="sm"
-              disabled={currentIndex === cards.length - 1}
+              disabled={currentIndex === cards.length - 1 || isTransitioning}
               onClick={handleNext}
               className="rounded-pill border px-3 fw-semibold d-inline-flex align-items-center gap-1 shadow-xs"
               style={{ fontSize: '12.5px' }}

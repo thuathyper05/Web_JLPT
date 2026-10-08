@@ -145,14 +145,30 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
     setNoteModalOpen(false);
   };
 
-  const handleStatusChange = async (status) => {
-    if (!currentWord) return;
+  const [isRatingLocked, setIsRatingLocked] = useState(false);
+
+  const handleStatusChange = (status) => {
+    if (!currentWord || isRatingLocked) return;
+    setIsRatingLocked(true);
+
     if (status === 'mastered') sounds.playCorrect();
     else if (status === 'needs_review') sounds.playWrong();
     else sounds.playFlip();
 
-    await updateProgress(currentWord.id, status, status === 'mastered');
+    // Optimistic local update
     setVocabularies(prev => prev.map(v => v.id === currentWord.id ? { ...v, user_status: status } : v));
+
+    // Background server sync without blocking UI
+    updateProgress(currentWord.id, status, status === 'mastered').catch(() => {});
+
+    // In step-by-step mode, smoothly auto-advance to next word
+    setTimeout(() => {
+      if (viewMode === 'step_by_step' && currentIndex < vocabularies.length - 1) {
+        sounds.playFlip();
+        setCurrentIndex(prev => prev + 1);
+      }
+      setIsRatingLocked(false);
+    }, 280);
   };
 
   const filteredTableVocabs = vocabularies.filter(v => {
@@ -507,9 +523,10 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 <Button
                   color={currentWord.user_status === 'needs_review' ? 'danger' : 'light'}
                   size="sm"
+                  disabled={isRatingLocked}
                   className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
                     currentWord.user_status === 'needs_review' ? 'text-white shadow-xs' : 'text-danger'
-                  }`}
+                  } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
                   style={{ fontSize: '12px' }}
                   onClick={() => handleStatusChange('needs_review')}
                 >
@@ -518,9 +535,10 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 <Button
                   color={currentWord.user_status === 'learning' ? 'warning' : 'light'}
                   size="sm"
+                  disabled={isRatingLocked}
                   className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
                     currentWord.user_status === 'learning' ? 'text-dark shadow-xs' : 'text-secondary'
-                  }`}
+                  } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
                   style={{ fontSize: '12px' }}
                   onClick={() => handleStatusChange('learning')}
                 >
@@ -529,9 +547,10 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 <Button
                   color={currentWord.user_status === 'mastered' ? 'success' : 'light'}
                   size="sm"
+                  disabled={isRatingLocked}
                   className={`rounded-pill px-2.5 px-md-3 py-1 py-md-1.5 fw-bold border ${
                     currentWord.user_status === 'mastered' ? 'text-white shadow-xs' : 'text-success'
-                  }`}
+                  } ${isRatingLocked ? 'opacity-75 pe-none' : ''}`}
                   style={{ fontSize: '12px' }}
                   onClick={() => handleStatusChange('mastered')}
                 >

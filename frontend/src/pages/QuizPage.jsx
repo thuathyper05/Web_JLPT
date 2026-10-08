@@ -55,6 +55,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   const [loading, setLoading] = useState(false);
   const [resultSummary, setResultSummary] = useState(null);
   const [currentStreak, setCurrentStreak] = useState(0);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const hasTimer = timerSetting !== 'none';
   const timerDuration = parseInt(timerSetting) || 20;
@@ -144,6 +145,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
   const handleCheckAnswer = () => {
     if (!currentQ || isAnswerSubmitted || !selectedOption) return;
+    setIsAnswerSubmitted(true);
 
     const isCorrect = selectedOption === currentQ.correct_answer;
     if (isCorrect) {
@@ -159,7 +161,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
   const submitAnswerRecord = (userAnswerText, isCorrect) => {
     if (currentQ.vocabulary_id) {
-      updateProgress(currentQ.vocabulary_id, isCorrect ? 'mastered' : 'needs_review', isCorrect);
+      updateProgress(currentQ.vocabulary_id, isCorrect ? 'mastered' : 'needs_review', isCorrect).catch(() => {});
     }
 
     const answerRecord = {
@@ -184,18 +186,23 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   };
 
   const handleNextQuestion = () => {
+    if (isNavigating || loading) return;
+    setIsNavigating(true);
     sounds.playFlip();
+
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelectedOption(null);
       setIsAnswerSubmitted(false);
       setTimeLeft(timerDuration);
+      setTimeout(() => setIsNavigating(false), 220);
     } else {
       finishQuiz();
     }
   };
 
   const finishQuiz = async () => {
+    if (loading) return;
     setLoading(true);
     const correctCount = userAnswers.filter(a => a.is_correct).length;
     try {
@@ -800,7 +807,10 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-primary px-4 px-md-5 py-2 py-md-2.5 fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto"
+                    disabled={isNavigating || loading}
+                    className={`btn btn-primary px-4 px-md-5 py-2 py-md-2.5 fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto ${
+                      isNavigating || loading ? 'opacity-75 pe-none' : ''
+                    }`}
                     style={{ minWidth: '200px', fontSize: '14px' }}
                     onClick={handleNextQuestion}
                   >

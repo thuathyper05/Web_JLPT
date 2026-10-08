@@ -55,14 +55,15 @@ const KanjiPage = ({ currentLevel = 'N5' }) => {
             </div>
           </div>
 
-          <div className="d-flex align-items-center gap-2">
-            <div className="position-relative">
+          <div className="d-flex align-items-center gap-2 flex-grow-1 flex-md-grow-0 justify-content-between justify-content-md-end w-100 w-md-auto mt-2 mt-md-0">
+            <div className="position-relative flex-grow-1" style={{ maxWidth: 300 }}>
               <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
               <Input type="text" placeholder="Tìm Kanji, Hán Việt, Nghĩa..." value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13, width: 220 }} />
+                className="w-100"
+                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13 }} />
             </div>
-            <span style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#1d4ed8' }}>
+            <span style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#1d4ed8', whiteSpace: 'nowrap' }}>
               {kanjiList.length} Kanji
             </span>
           </div>

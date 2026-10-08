@@ -88,10 +88,12 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
 
     // Instant match check: If user typed the full correct word, immediately trigger SUCCESS!
     if (trimmedInput === cleanExpected || trimmedInput === expectedKana.trim()) {
-      setCheckResults(prev => ({ ...prev, [id]: true }));
-      sounds.playCorrect();
-      speakJapanese(cleanExpected);
-      updateProgress(id, 'mastered', true);
+      if (checkResults[id] !== true) {
+        setCheckResults(prev => ({ ...prev, [id]: true }));
+        sounds.playCorrect();
+        speakJapanese(cleanExpected);
+        updateProgress(id, 'mastered', true).catch(() => {});
+      }
     }
   };
 
@@ -99,6 +101,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
   const handleEvaluate = (id, expectedKana) => {
     const val = (userInputs[id] || '').trim();
     if (!val) return;
+    if (checkResults[id] === true) return; // already marked correct, avoid duplicate progress update
 
     const cleanExpected = expectedKana.replace(/[［\[］\]]/g, '').trim();
     const isCorrect = val === cleanExpected || val === expectedKana.trim();
@@ -108,10 +111,10 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
     if (isCorrect) {
       sounds.playCorrect();
       speakJapanese(cleanExpected);
-      updateProgress(id, 'mastered', true);
+      updateProgress(id, 'mastered', true).catch(() => {});
     } else {
       sounds.playWrong();
-      updateProgress(id, 'needs_review', false);
+      updateProgress(id, 'needs_review', false).catch(() => {});
     }
   };
 
