@@ -51,7 +51,7 @@ const Logo = ({ size = 38, showText = true, className = '', light = false }) => 
             </span>
           </div>
           <span
-            className={light ? 'text-secondary' : 'text-white text-opacity-80'}
+            className={`d-none d-sm-block ${light ? 'text-secondary' : 'text-white text-opacity-80'}`}
             style={{
               fontSize: `${Math.max(size * 0.22, 10)}px`,
               fontWeight: '700',

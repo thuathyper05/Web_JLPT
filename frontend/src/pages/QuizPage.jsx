@@ -281,8 +281,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       {/* ── 1. SETUP STATE ── */}
       {quizState === 'setup' && (
         <>
-          {/* Header Banner */}
-          <div className="page-header-box mb-4">
+          {/* Header Banner Desktop */}
+          <div className="d-none d-md-block page-header-box mb-4">
             <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
               <div className="d-flex align-items-center gap-3">
                 <div
@@ -311,15 +311,35 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </div>
           </div>
 
-          {/* Presets Row: 3 Quick Start Exam Packages */}
-          <div className="mb-4">
-            <div className="d-flex justify-content-between align-items-center mb-2.5">
-              <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11.5px' }}>
-                🚀 Gói đề thi nhanh (1-Click để bắt đầu)
+          {/* Header Banner Mobile */}
+          <div className="d-md-none page-header-box p-2.5 mb-2.5">
+            <div className="d-flex align-items-center gap-2">
+              <div
+                className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
+                style={{ width: '34px', height: '34px', background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)' }}
+              >
+                <CheckSquare size={18} />
+              </div>
+              <div className="flex-grow-1 min-w-0">
+                <h6 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: '13.5px' }}>Trắc Nghiệm JLPT N5</h6>
+                <small className="text-muted" style={{ fontSize: '11px' }}>4 lựa chọn ABCD chuẩn đề thi</small>
+              </div>
+              <span className="badge bg-primary text-white rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
+                ABCD
+              </span>
+            </div>
+          </div>
+
+          {/* Presets: 3 Quick Start Exam Packages */}
+          <div className="mb-3 mb-md-4">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11px' }}>
+                🚀 Gói đề thi nhanh (1-Click)
               </span>
             </div>
 
-            <Row className="g-2.5">
+            {/* Desktop 3-column row */}
+            <div className="d-none d-md-flex row g-2.5">
               <Col md={4}>
                 <div
                   className="p-3 rounded-3 bg-white border hover-shadow cursor-pointer transition-all h-100 d-flex flex-column justify-content-between"
@@ -413,22 +433,95 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   </div>
                 </div>
               </Col>
-            </Row>
+            </div>
+
+            {/* Mobile Horizontal Scrollable Cards */}
+            <div className="d-flex d-md-none gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+              <div
+                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
+                style={{ width: '210px', borderColor: 'var(--slate-200)' }}
+                onClick={() => {
+                  sounds.playFlip();
+                  setQuestionCount(10);
+                  setTimerSetting('15');
+                  setQuizMode('mixed');
+                  startQuizWithConfig({ count: 10, timer: '15', mode: 'mixed' });
+                }}
+              >
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <span className="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
+                    10 Câu Cấp Tốc
+                  </span>
+                  <small className="text-muted" style={{ fontSize: '10.5px' }}>⚡ 15s</small>
+                </div>
+                <div className="fw-bold text-dark" style={{ fontSize: '13px' }}>Khởi Động Phản Xạ</div>
+                <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-1.5" style={{ fontSize: '11px' }}>
+                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
+                </div>
+              </div>
+
+              <div
+                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
+                style={{ width: '210px', borderColor: 'var(--primary)', background: 'linear-gradient(180deg, #ffffff 0%, #eff6ff 100%)' }}
+                onClick={() => {
+                  sounds.playFlip();
+                  setQuestionCount(15);
+                  setTimerSetting('20');
+                  setQuizMode('mixed');
+                  startQuizWithConfig({ count: 15, timer: '20', mode: 'mixed' });
+                }}
+              >
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <span className="badge bg-primary text-white fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
+                    ★ Tiêu Chuẩn N5
+                  </span>
+                  <small className="text-primary fw-bold" style={{ fontSize: '10.5px' }}>⏱️ 20s</small>
+                </div>
+                <div className="fw-bold text-primary" style={{ fontSize: '13px' }}>Đề 15 Câu Chuẩn</div>
+                <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-1.5" style={{ fontSize: '11px' }}>
+                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
+                </div>
+              </div>
+
+              <div
+                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
+                style={{ width: '210px', borderColor: 'var(--slate-200)' }}
+                onClick={() => {
+                  sounds.playFlip();
+                  setQuestionCount(25);
+                  setTimerSetting('20');
+                  setLessonNum('all');
+                  setQuizMode('mixed');
+                  startQuizWithConfig({ count: 25, timer: '20', lesson: 'all', mode: 'mixed' });
+                }}
+              >
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <span className="badge bg-danger bg-opacity-10 text-danger fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
+                    25 Câu Toàn Bộ
+                  </span>
+                  <small className="text-muted" style={{ fontSize: '10.5px' }}>🔥 25 Bài</small>
+                </div>
+                <div className="fw-bold text-dark" style={{ fontSize: '13px' }}>Tổng Ôn Toàn N5</div>
+                <div className="d-flex align-items-center gap-1 text-danger fw-bold mt-1.5" style={{ fontSize: '11px' }}>
+                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Interactive Mode Cards (2x2 Grid) */}
-          <div className="mb-4">
-            <span className="small text-muted fw-bold text-uppercase tracking-wider d-block mb-2.5" style={{ fontSize: '11.5px' }}>
+          <div className="mb-3 mb-md-4">
+            <span className="small text-muted fw-bold text-uppercase tracking-wider d-block mb-2" style={{ fontSize: '11px' }}>
               🎯 Chọn dạng câu hỏi trắc nghiệm
             </span>
 
-            <Row className="g-2.5">
+            <Row className="g-2 g-md-2.5">
               {modeCards.map(m => {
                 const isSelected = quizMode === m.id;
                 return (
-                  <Col sm={6} key={m.id}>
+                  <Col xs={6} key={m.id}>
                     <div
-                      className={`p-3 rounded-3 border transition-all cursor-pointer h-100 d-flex flex-column justify-content-between ${
+                      className={`p-2.5 p-md-3 rounded-3 border transition-all cursor-pointer h-100 d-flex flex-column justify-content-between ${
                         isSelected
                           ? 'bg-primary bg-opacity-10 border-primary shadow-xs'
                           : 'bg-white hover-shadow'
@@ -443,24 +536,20 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       }}
                     >
                       <div>
-                        <div className="d-flex justify-content-between align-items-center mb-1.5">
-                          <div className="d-flex align-items-center gap-2">
-                            <span className="fs-5">{m.icon}</span>
-                            <span className={`fw-bold small ${isSelected ? 'text-primary' : 'text-dark'}`}>
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                          <div className="d-flex align-items-center gap-1.5 min-w-0">
+                            <span className="fs-6">{m.icon}</span>
+                            <span className={`fw-bold text-truncate ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '12.5px' }}>
                               {m.title}
                             </span>
                           </div>
-                          {isSelected ? (
-                            <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center" style={{ width: 18, height: 18 }}>
-                              <Check size={11} color="#fff" />
-                            </span>
-                          ) : (
-                            <span className="badge bg-light text-muted border" style={{ fontSize: '10px' }}>
-                              {m.badge}
+                          {isSelected && (
+                            <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 16, height: 16 }}>
+                              <Check size={10} color="#fff" />
                             </span>
                           )}
                         </div>
-                        <p className="text-muted small mb-0" style={{ fontSize: '12px', lineHeight: '1.45' }}>
+                        <p className="text-muted small mb-0 d-none d-sm-block" style={{ fontSize: '11.5px', lineHeight: '1.4' }}>
                           {m.desc}
                         </p>
                       </div>
@@ -472,22 +561,22 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           </div>
 
           {/* Detailed Customization Settings Panel */}
-          <Card className="jlpt-card border-0 shadow-sm p-4 rounded-4 bg-white mb-4">
-            <h6 className="fw-bold text-navy-dark mb-3 d-flex align-items-center gap-2">
-              <Target size={16} className="text-primary" />
+          <Card className="jlpt-card border-0 shadow-sm p-3 p-md-4 rounded-4 bg-white mb-3 mb-md-4">
+            <h6 className="fw-bold text-navy-dark mb-2.5 d-flex align-items-center gap-2" style={{ fontSize: '13.5px' }}>
+              <Target size={15} className="text-primary" />
               <span>Tùy chỉnh thông số bài thi</span>
             </h6>
 
-            <Row className="g-3">
+            <Row className="g-2.5">
               {/* Scope */}
-              <Col md={4}>
-                <label className="fw-semibold small text-secondary mb-1.5 d-block">Phạm vi bài học</label>
+              <Col xs={12} md={4}>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Phạm vi bài học</label>
                 <Input
                   type="select"
                   value={lessonNum}
                   onChange={(e) => setLessonNum(e.target.value)}
-                  className="py-2 rounded-3 fw-medium form-select"
-                  style={{ fontSize: '13.5px' }}
+                  className="py-1.5 rounded-3 fw-medium form-select"
+                  style={{ fontSize: '13px' }}
                 >
                   <option value="all">Toàn bộ 25 bài N5 (1,589 từ)</option>
                   {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
@@ -499,8 +588,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               </Col>
 
               {/* Question Count Pills */}
-              <Col md={4}>
-                <label className="fw-semibold small text-secondary mb-1.5 d-block">Số lượng câu hỏi</label>
+              <Col xs={6} md={4}>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Số câu hỏi</label>
                 <div className="d-flex gap-1">
                   {[10, 15, 20, 25].map(cnt => (
                     <button
@@ -512,17 +601,17 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                           ? 'btn-primary text-white'
                           : 'btn-light text-dark'
                       }`}
-                      style={{ fontSize: '12px', padding: '7px 4px' }}
+                      style={{ fontSize: '11.5px', padding: '6px 2px' }}
                     >
-                      {cnt} câu
+                      {cnt}
                     </button>
                   ))}
                 </div>
               </Col>
 
               {/* Timer Setting Pills */}
-              <Col md={4}>
-                <label className="fw-semibold small text-secondary mb-1.5 d-block">Thời gian / câu</label>
+              <Col xs={6} md={4}>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Thời gian / câu</label>
                 <div className="d-flex gap-1">
                   {[
                     { id: '15', label: '15s' },
@@ -539,8 +628,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                           ? 'btn-primary text-white'
                           : 'btn-light text-dark'
                       }`}
-                      style={{ fontSize: '12px', padding: '7px 4px' }}
-                      title={t.id === 'none' ? 'Không giới hạn thời gian' : `${t.id} giây`}
+                      style={{ fontSize: '11.5px', padding: '6px 2px' }}
+                      title={t.id === 'none' ? 'Không giới hạn' : `${t.id}s`}
                     >
                       {t.label}
                     </button>
@@ -550,22 +639,22 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </Row>
 
             {/* Launch CTA Button */}
-            <div className="text-center pt-4 mt-2 border-top">
+            <div className="text-center pt-3 mt-2 border-top">
               <button
                 type="button"
-                className="btn text-white fw-bold d-inline-flex align-items-center justify-content-center gap-2 rounded-pill shadow-sm"
+                className="btn text-white fw-bold d-inline-flex align-items-center justify-content-center gap-2 rounded-pill shadow-sm w-100 w-md-auto"
                 style={{
                   background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                  padding: '13px 42px',
-                  fontSize: '15px',
-                  minWidth: '280px',
+                  padding: '11px 36px',
+                  fontSize: '14.5px',
+                  minWidth: '240px',
                   border: 'none',
-                  boxShadow: '0 4px 18px rgba(37, 99, 235, 0.4)'
+                  boxShadow: '0 4px 18px rgba(37, 99, 235, 0.35)'
                 }}
                 onClick={() => startQuizWithConfig()}
                 disabled={loading}
               >
-                {loading ? <Spinner size="sm" /> : <Sparkles size={18} />}
+                {loading ? <Spinner size="sm" /> : <Sparkles size={16} />}
                 <span>Bắt đầu làm bài thi ngay</span>
               </button>
             </div>
@@ -577,40 +666,40 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       {quizState === 'playing' && currentQ && (
         <>
           {/* Top Status Bar */}
-          <div className="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-            <div className="d-flex align-items-center gap-2">
+          <div className="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-1.5">
+            <div className="d-flex align-items-center gap-1.5">
               <Badge
                 color="primary"
                 pill
-                className="px-3 py-1.5 fw-bold"
-                style={{ fontSize: '12.5px' }}
+                className="px-2.5 py-1 fw-bold"
+                style={{ fontSize: '11.5px' }}
               >
                 Câu {currentIndex + 1} / {questions.length}
               </Badge>
               <Badge
                 color="light"
                 pill
-                className="px-2.5 py-1 text-secondary border fw-semibold"
-                style={{ fontSize: '12px' }}
+                className="px-2 py-0.5 text-secondary border fw-semibold"
+                style={{ fontSize: '11px' }}
               >
                 Bài {currentQ.lesson_number}
               </Badge>
               {currentStreak >= 2 && (
-                <Badge color="warning" pill className="text-dark fw-bold px-2.5 py-1 d-flex align-items-center gap-1">
-                  <Flame size={12} color="#dc2626" />
-                  <span>Chuỗi {currentStreak} đúng</span>
+                <Badge color="warning" pill className="text-dark fw-bold px-2 py-0.5 d-flex align-items-center gap-1" style={{ fontSize: '11px' }}>
+                  <Flame size={11} color="#dc2626" />
+                  <span>Chuỗi {currentStreak}</span>
                 </Badge>
               )}
             </div>
 
             {hasTimer && (
               <div
-                className={`d-flex align-items-center gap-1.5 fw-bold px-3 py-1 rounded-pill ${
+                className={`d-flex align-items-center gap-1 fw-bold px-2.5 py-0.5 rounded-pill ${
                   timeLeft <= 5 ? 'bg-danger text-white' : 'bg-white text-dark border shadow-xs'
                 }`}
-                style={{ fontSize: '13px' }}
+                style={{ fontSize: '12px' }}
               >
-                <Clock size={14} />
+                <Clock size={13} />
                 <span>{timeLeft}s</span>
               </div>
             )}
@@ -620,39 +709,39 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           <Progress
             value={((currentIndex + 1) / questions.length) * 100}
             color="primary"
-            className="mb-3 rounded-pill"
-            style={{ height: '6px' }}
+            className="mb-2.5 rounded-pill"
+            style={{ height: '5px' }}
           />
 
           <Card className="jlpt-card border-0 shadow-sm mb-3 rounded-4 bg-white">
-            <CardBody className="p-4 p-md-5">
+            <CardBody className="p-3 p-md-5">
               {/* Question Prompt Area */}
-              <div className="text-center mb-4 pb-3 border-bottom">
-                <span className="text-secondary small fw-semibold text-uppercase tracking-wider d-block mb-2" style={{ fontSize: '11.5px' }}>
+              <div className="text-center mb-3 mb-md-4 pb-2.5 pb-md-3 border-bottom">
+                <span className="text-secondary small fw-semibold text-uppercase tracking-wider d-block mb-1.5" style={{ fontSize: '11px' }}>
                   {currentQ.prompt}
                 </span>
 
-                <div className="d-flex align-items-center justify-content-center gap-2.5">
+                <div className="d-flex align-items-center justify-content-center gap-2">
                   <h2
                     className="fw-bold text-navy-dark mb-0 font-monospace"
-                    style={{ fontSize: 'clamp(1.6rem, 5vw, 2.3rem)' }}
+                    style={{ fontSize: 'clamp(1.4rem, 5vw, 2.2rem)' }}
                   >
                     {currentQ.question}
                   </h2>
                   <Button
                     color="light"
                     size="sm"
-                    className="p-2 rounded-circle border text-primary audio-btn"
+                    className="p-1.5 rounded-circle border text-primary audio-btn"
                     onClick={() => speakJapanese(currentQ.audio_text || currentQ.clean_kana || currentQ.kana)}
                     title="Nghe phát âm chuẩn"
                   >
-                    <Volume2 size={18} />
+                    <Volume2 size={16} />
                   </Button>
                 </div>
               </div>
 
               {/* 4 Options Grid (Pure ABCD Multiple Choice) */}
-              <Row className="g-3 mb-4">
+              <Row className="g-2 g-md-3 mb-3 mb-md-4">
                 {currentQ.options?.map((opt, idx) => {
                   let cardClass = 'quiz-option-card';
                   if (isAnswerSubmitted) {
@@ -668,7 +757,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   }
 
                   return (
-                    <Col sm={6} key={idx}>
+                    <Col xs={12} sm={6} key={idx}>
                       <div
                         onClick={() => {
                           if (!isAnswerSubmitted) {
@@ -677,18 +766,18 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                           }
                         }}
                         className={cardClass}
-                        style={{ minHeight: '62px' }}
+                        style={{ minHeight: '48px', padding: '10px 14px' }}
                       >
                         <span className="quiz-option-badge">
                           {String.fromCharCode(65 + idx)}
                         </span>
-                        <span className="fs-6 fw-semibold flex-grow-1 text-slate-800 font-monospace">{opt}</span>
+                        <span className="fs-6 fw-semibold flex-grow-1 text-slate-800 font-monospace" style={{ fontSize: '13.5px' }}>{opt}</span>
 
                         {isAnswerSubmitted && opt === currentQ.correct_answer && (
-                          <CheckCircle size={18} className="text-success flex-shrink-0" />
+                          <CheckCircle size={17} className="text-success flex-shrink-0" />
                         )}
                         {isAnswerSubmitted && selectedOption === opt && opt !== currentQ.correct_answer && (
-                          <XCircle size={18} className="text-danger flex-shrink-0" />
+                          <XCircle size={17} className="text-danger flex-shrink-0" />
                         )}
                       </div>
                     </Col>
@@ -697,12 +786,12 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               </Row>
 
               {/* Action Buttons */}
-              <div className="d-flex justify-content-center gap-2">
+              <div className="d-flex justify-content-center">
                 {!isAnswerSubmitted ? (
                   <button
                     type="button"
-                    className="btn btn-primary px-5 py-2.5 fw-bold rounded-pill shadow-sm"
-                    style={{ minWidth: '220px', fontSize: '14.5px' }}
+                    className="btn btn-primary px-4 px-md-5 py-2 py-md-2.5 fw-bold rounded-pill shadow-sm w-100 w-sm-auto"
+                    style={{ minWidth: '200px', fontSize: '14px' }}
                     disabled={!selectedOption}
                     onClick={handleCheckAnswer}
                   >
@@ -711,14 +800,14 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-primary px-5 py-2.5 fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2"
-                    style={{ minWidth: '220px', fontSize: '14.5px' }}
+                    className="btn btn-primary px-4 px-md-5 py-2 py-md-2.5 fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto"
+                    style={{ minWidth: '200px', fontSize: '14px' }}
                     onClick={handleNextQuestion}
                   >
                     <span>
                       {currentIndex < questions.length - 1 ? 'Câu tiếp theo' : 'Xem kết quả bài thi'}
                     </span>
-                    <ArrowRight size={17} />
+                    <ArrowRight size={16} />
                   </button>
                 )}
               </div>

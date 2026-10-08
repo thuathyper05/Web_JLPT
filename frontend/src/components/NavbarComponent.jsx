@@ -57,14 +57,14 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   return (
     <>
-      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-2 px-md-3">
-        <Container fluid className="d-flex justify-content-between align-items-center px-0">
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-1.5 py-md-2 px-2 px-md-3">
+        <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
           {/* ── Left: Logo + Level ── */}
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
             <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
               className="p-0 m-0 text-decoration-none" style={{ cursor: 'pointer' }}>
-              <Logo size={36} />
+              <Logo size={34} />
             </NavbarBrand>
             <LevelSelector currentLevel={currentLevel} onChangeLevel={onChangeLevel} />
           </div>
@@ -124,14 +124,23 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
           </Nav>
 
           {/* ── Right: Search + Account + Mobile Menu Toggle ── */}
-          <div className="d-flex align-items-center" style={{ gap: 8 }}>
-            {/* Search Pill */}
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
+            {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
-              style={{ background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(4px)' }}
+              className="d-none d-sm-flex align-items-center"
+              style={{ background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: 9999, padding: '6px 12px', color: '#fff', fontSize: 12.5, fontWeight: 500, cursor: 'pointer', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(4px)' }}
               onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,.17)'; }}
               onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; }}>
               <Search size={14} />
-              <span className="d-none d-sm-inline">Tìm từ vựng...</span>
+              <span>Tìm từ vựng...</span>
+            </button>
+
+            {/* Mobile-only Circular Search Button */}
+            <button type="button" onClick={onOpenSearch}
+              className="d-flex d-sm-none align-items-center justify-content-center"
+              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: '50%', color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(4px)', padding: 0 }}
+              title="Tìm kiếm từ vựng">
+              <Search size={15} />
             </button>
 
             {/* Account dropdown / Login button */}
@@ -171,27 +180,39 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
-              <button type="button" onClick={() => openAuth('login')}
-                style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 9999, padding: '6px 16px', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 8px rgba(245,158,11,.4)', transition: 'all .18s ease' }}>
-                <LogIn size={14} /> <span className="d-none d-sm-inline">Đăng nhập</span>
-              </button>
+              <>
+                {/* Desktop / Tablet Login Button */}
+                <button type="button" onClick={() => openAuth('login')}
+                  className="d-none d-sm-inline-flex align-items-center gap-1.5"
+                  style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', transition: 'all .18s ease' }}>
+                  <LogIn size={13} /> <span>Đăng nhập</span>
+                </button>
+
+                {/* Mobile-only Login Button */}
+                <button type="button" onClick={() => openAuth('login')}
+                  className="d-inline-flex d-sm-none align-items-center justify-content-center"
+                  style={{ width: 34, height: 34, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
+                  title="Đăng nhập">
+                  <LogIn size={15} />
+                </button>
+              </>
             )}
 
             {/* Mobile Menu Drawer Toggle Button */}
             <button
               type="button"
-              className="d-lg-none"
+              className="d-lg-none d-flex align-items-center justify-content-center"
               onClick={() => setMobileMenuOpen(true)}
               style={{
+                width: 34,
+                height: 34,
                 background: 'rgba(255,255,255,0.1)',
                 border: '1px solid rgba(255,255,255,0.18)',
-                borderRadius: 8,
-                padding: '6px 8px',
+                borderRadius: 10,
                 color: '#fff',
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                backdropFilter: 'blur(4px)',
+                padding: 0
               }}
               title="Menu mở rộng"
             >
@@ -202,7 +223,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
       </Navbar>
 
       {/* ── Mobile Bottom Nav (Sticky) ── */}
-      <div className="d-lg-none fixed-bottom mobile-bottom-nav d-flex justify-content-around py-1 px-1" style={{ zIndex: 1020 }}>
+      <div className="d-lg-none fixed-bottom mobile-bottom-nav d-flex justify-content-around py-1 px-1" style={{ zIndex: 1020, paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 3px)' }}>
         {bottomItems.map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;

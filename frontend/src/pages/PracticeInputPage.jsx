@@ -152,8 +152,8 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
 
   return (
     <Container className="py-3 py-md-4">
-      {/* ── Top Header & Stats KPI Bar ── */}
-      <div className="page-header-box mb-4">
+      {/* ── Top Header & Stats KPI Bar (Desktop >= 768px) ── */}
+      <div className="d-none d-md-block page-header-box mb-4">
         <Row className="align-items-center g-3">
           <Col lg={4}>
             <div className="d-flex align-items-center gap-3">
@@ -313,7 +313,150 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
         </div>
       </div>
 
-      {/* ── Vocabulary Practice Table ── */}
+      {/* ── Mobile Compact Header (< 768px) ── */}
+      <div className="d-md-none page-header-box p-2.5 mb-2.5">
+        {/* Row 1: Title, Lesson select, Reset */}
+        <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
+          <div className="d-flex align-items-center gap-2 flex-grow-1 min-w-0">
+            <div
+              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
+              style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #1e3a8a, #2563eb)' }}
+            >
+              <Keyboard size={16} />
+            </div>
+            <div className="flex-grow-1 text-truncate">
+              <h6 className="fw-bold mb-0 text-navy-dark text-truncate" style={{ fontSize: '13.5px' }}>Luyện Gõ Kana</h6>
+              <small className="text-muted" style={{ fontSize: '11px' }}>{total} từ vựng</small>
+            </div>
+          </div>
+
+          <div className="d-flex align-items-center gap-1">
+            <Input
+              type="select"
+              value={lessonNum}
+              onChange={(e) => setLessonNum(parseInt(e.target.value))}
+              className="form-control-sm rounded-pill fw-bold border py-1 px-2"
+              style={{ width: 'auto', fontSize: '12px' }}
+            >
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  Bài {n < 10 ? `0${n}` : n}
+                </option>
+              ))}
+            </Input>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="btn btn-sm btn-light rounded-circle border p-1"
+              style={{ width: 30, height: 30 }}
+              title="Làm lại"
+            >
+              <RotateCcw size={13} />
+            </button>
+          </div>
+        </div>
+
+        {/* Row 2: 4-metric KPI chips */}
+        <div className="d-flex text-center gap-1 mb-2">
+          <div className="bg-light p-1.5 rounded-2 flex-fill border">
+            <div className="small text-muted" style={{ fontSize: '10px' }}>Đã làm</div>
+            <div className="fw-bold text-navy-dark" style={{ fontSize: '12.5px' }}>{answeredCount}/{total}</div>
+          </div>
+          <div className="p-1.5 rounded-2 flex-fill border" style={{ background: 'var(--success-subtle)', borderColor: 'var(--success-border)', color: 'var(--success)' }}>
+            <div className="small" style={{ fontSize: '10px' }}>Đúng</div>
+            <div className="fw-bold" style={{ fontSize: '12.5px' }}>{correctCount}</div>
+          </div>
+          <div className="p-1.5 rounded-2 flex-fill border" style={{ background: 'var(--danger-subtle)', borderColor: 'var(--danger-border)', color: 'var(--danger)' }}>
+            <div className="small" style={{ fontSize: '10px' }}>Sai</div>
+            <div className="fw-bold" style={{ fontSize: '12.5px' }}>{wrongCount}</div>
+          </div>
+          <div className="p-1.5 rounded-2 flex-fill border" style={{ background: 'var(--primary-subtle)', borderColor: 'var(--primary-border)', color: 'var(--primary)' }}>
+            <div className="small" style={{ fontSize: '10px' }}>Đúng %</div>
+            <div className="fw-bold" style={{ fontSize: '12.5px' }}>{accuracyRate}%</div>
+          </div>
+        </div>
+
+        {/* Row 3: Mode Switcher + AutoKana */}
+        <div className="d-flex align-items-center justify-content-between gap-1.5 mb-2">
+          <div className="segmented-control flex-grow-1" style={{ padding: '2px' }}>
+            <button
+              type="button"
+              onClick={() => {
+                if (inputMode !== 'vi_to_jp') {
+                  setInputMode('vi_to_jp');
+                  handleReset();
+                  sounds.playFlip();
+                }
+              }}
+              className={`segmented-item flex-fill py-1 px-2 ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
+              style={{ fontSize: '11.5px' }}
+            >
+              <span>🇻🇳 Nghĩa ➔ Kana</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (inputMode !== 'jp_to_jp') {
+                  setInputMode('jp_to_jp');
+                  handleReset();
+                  sounds.playFlip();
+                }
+              }}
+              className={`segmented-item flex-fill py-1 px-2 ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
+              style={{ fontSize: '11.5px' }}
+            >
+              <span>🈴 Kanji ➔ Kana</span>
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setAutoKana(!autoKana)}
+            className={`btn btn-sm rounded-pill border py-1 px-2 ${autoKana ? 'btn-primary text-white' : 'btn-light text-muted'}`}
+            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+          >
+            IME: {autoKana ? 'Bật' : 'Tắt'}
+          </button>
+        </div>
+
+        {/* Row 4: Filter chips */}
+        <div className="d-flex align-items-center gap-1 overflow-x-auto pb-0.5" style={{ scrollbarWidth: 'none' }}>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('all')}
+            className={`btn btn-sm rounded-pill border py-0.5 px-2 flex-fill ${activeFilter === 'all' ? 'btn-primary text-white' : 'btn-light text-dark'}`}
+            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+          >
+            Tất cả ({total})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('unanswered')}
+            className={`btn btn-sm rounded-pill border py-0.5 px-2 flex-fill ${activeFilter === 'unanswered' ? 'btn-secondary text-white' : 'btn-light text-dark'}`}
+            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+          >
+            Chưa gõ ({total - answeredCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('wrong')}
+            className={`btn btn-sm rounded-pill border py-0.5 px-2 flex-fill ${activeFilter === 'wrong' ? 'btn-danger text-white' : 'btn-light text-dark'}`}
+            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+          >
+            Sai ({wrongCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter('correct')}
+            className={`btn btn-sm rounded-pill border py-0.5 px-2 flex-fill ${activeFilter === 'correct' ? 'btn-success text-white' : 'btn-light text-dark'}`}
+            style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
+          >
+            Đúng ({correctCount})
+          </button>
+        </div>
+      </div>
+
+      {/* ── Vocabulary Practice Content ── */}
       {loading ? (
         <div className="text-center py-5">
           <Spinner color="primary" />
@@ -322,7 +465,8 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
       ) : (
         <Card className="jlpt-card border-0 shadow-sm rounded-4">
           <CardBody className="p-0">
-            <div className="table-responsive">
+            {/* Desktop Table (>= 768px) */}
+            <div className="d-none d-md-block table-responsive">
               <table className="table table-hover align-middle mb-0">
                 <thead className="table-light">
                   <tr>
@@ -490,6 +634,145 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Typing Card List (< 768px) */}
+            <div className="d-md-none d-flex flex-column gap-2 p-2.5">
+              {filteredVocabList.length === 0 ? (
+                <div className="text-center py-4 text-muted small">Không tìm thấy từ vựng phù hợp</div>
+              ) : (
+                filteredVocabList.map((item, idx) => {
+                  const result = checkResults[item.id];
+                  const val = userInputs[item.id] || '';
+                  const isRevealed = revealedIds[item.id];
+                  const cleanMeaning = item.clean_vietnamese || item.vietnamese;
+                  const cleanK = item.clean_kana || item.kana;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="p-2.5 rounded-3 bg-white border shadow-xs d-flex flex-column gap-2"
+                      style={{
+                        borderColor:
+                          result === true
+                            ? 'var(--success-border)'
+                            : result === false
+                            ? 'var(--danger-border)'
+                            : 'var(--slate-200)',
+                        background:
+                          result === true
+                            ? 'var(--success-subtle)'
+                            : result === false
+                            ? 'var(--danger-subtle)'
+                            : '#ffffff'
+                      }}
+                    >
+                      {/* Top Prompt Row */}
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div className="d-flex align-items-center gap-1.5 flex-wrap min-w-0">
+                          <span className="badge bg-light text-secondary border fw-bold" style={{ fontSize: '10.5px' }}>
+                            #{idx + 1}
+                          </span>
+                          {inputMode === 'vi_to_jp' ? (
+                            <>
+                              <span className="fw-bold text-dark" style={{ fontSize: '13.5px' }}>
+                                {cleanMeaning}
+                              </span>
+                              {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                                <span className="badge bg-light text-navy-dark border font-monospace fw-bold" style={{ fontSize: '12px' }}>
+                                  {item.kanji}
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <span className="fw-black text-navy-dark font-monospace fs-5">
+                                {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : item.kana}
+                              </span>
+                              <span className="text-muted small">({cleanMeaning})</span>
+                            </>
+                          )}
+                        </div>
+
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0"
+                          style={{ width: 30, height: 30 }}
+                          onClick={() => speakJapanese(cleanK)}
+                          title="Nghe phát âm"
+                        >
+                          <Volume2 size={14} />
+                        </button>
+                      </div>
+
+                      {/* Typing Input & Actions Row */}
+                      <div className="d-flex align-items-center gap-1.5">
+                        <Input
+                          type="text"
+                          placeholder="Nhập Kana (VD: arigatou)..."
+                          value={val}
+                          onChange={(e) => handleInputChange(item.id, e.target.value, cleanK)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleEvaluate(item.id, cleanK);
+                            }
+                          }}
+                          onBlur={() => {
+                            if (val.trim()) {
+                              handleEvaluate(item.id, cleanK);
+                            }
+                          }}
+                          className={`fw-bold font-monospace flex-grow-1 ${
+                            result === true ? 'is-valid' : result === false ? 'is-invalid' : ''
+                          }`}
+                          style={{ fontSize: '15px', padding: '7px 10px' }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-primary rounded-3 px-2.5 py-1.5 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0"
+                          style={{ height: 36 }}
+                          onClick={() => handleEvaluate(item.id, cleanK)}
+                          title="Kiểm tra"
+                        >
+                          <Check size={16} />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-light border rounded-3 px-2 py-1.5 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0"
+                          style={{ height: 36 }}
+                          onClick={() => handleRevealAnswer(item.id)}
+                          title="Gợi ý"
+                        >
+                          <Eye size={15} />
+                        </button>
+                      </div>
+
+                      {/* Status / Revealed Hint Feedback */}
+                      {(result !== undefined || isRevealed) && (
+                        <div className="d-flex align-items-center gap-2 flex-wrap pt-1 border-top" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                          {result === true && (
+                            <Badge color="success" pill className="px-2 py-0.5" style={{ fontSize: '11px' }}>
+                              ✓ Chính xác!
+                            </Badge>
+                          )}
+                          {result === false && (
+                            <Badge color="danger" pill className="px-2 py-0.5" style={{ fontSize: '11px' }}>
+                              ✗ Chưa đúng, hãy thử lại!
+                            </Badge>
+                          )}
+                          {isRevealed && (
+                            <div className="small text-dark d-inline-flex align-items-center gap-1.5" style={{ fontSize: '11.5px' }}>
+                              <span className="text-muted">Đáp án:</span>
+                              <strong className="text-primary font-monospace">{cleanK}</strong>
+                              <span className="text-muted fst-italic">[{item.romaji}]</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
             </div>
           </CardBody>
         </Card>
