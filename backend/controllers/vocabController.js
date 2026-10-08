@@ -66,7 +66,7 @@ const getVocabularies = async (req, res) => {
 
     if (userId && status) {
       if (status === 'needs_review') {
-        whereClauses.push(`(up.status = 'needs_review' OR up.wrong_count > 0)`);
+        whereClauses.push(`(up.status = 'needs_review')`);
       } else {
         params.push(status);
         whereClauses.push(`up.status = $${params.length}`);

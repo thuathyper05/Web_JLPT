@@ -9,10 +9,9 @@ import {
   ListGroupItem,
   Badge,
   Button,
-  Spinner,
-  ButtonGroup
+  Spinner
 } from 'reactstrap';
-import { Search, Volume2, Star, BookOpen, X, Sparkles, Filter } from 'lucide-react';
+import { Search, Volume2, Star, X, Filter } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -51,29 +50,29 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
   });
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered className="search-modal">
+    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered className="jlpt-modal">
       <ModalHeader toggle={toggle} className="border-bottom pb-2">
         <div className="d-flex align-items-center gap-2">
           <div className="bg-primary bg-opacity-10 text-primary p-2 rounded-circle">
             <Search size={18} />
           </div>
           <div>
-            <span className="fw-bold fs-5 text-navy-dark">Tra cứu từ vựng N5 thông minh</span>
+            <h6 className="fw-bold mb-0 text-navy-dark">Tra cứu từ vựng N5 thông minh</h6>
             <small className="text-muted d-block" style={{ fontSize: '11px' }}>
-              Tìm kiếm tức thì theo Kanji, Hiragana, Katakana, Romaji hoặc nghĩa Tiếng Việt
+              Tìm kiếm theo Kanji, Hiragana, Katakana, Romaji hoặc nghĩa Tiếng Việt
             </small>
           </div>
         </div>
       </ModalHeader>
       <ModalBody className="p-3">
-        <InputGroup className="mb-3 shadow-sm border rounded-3 overflow-hidden">
+        <InputGroup className="mb-3 shadow-xs border rounded-3 overflow-hidden">
           <Input
             type="text"
-            placeholder="Nhập từ cần tìm (VD: 先生, gakusei, học sinh, thèm, ikimasu...)"
+            placeholder="Nhập từ cần tìm (VD: 先生, gakusei, học sinh, ikimasu...)"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             autoFocus
-            className="py-2 border-0 shadow-none fs-6"
+            className="py-2.5 border-0 shadow-none fs-6"
           />
           {searchTerm && (
             <Button color="light" className="border-0 text-muted" onClick={() => setSearchTerm('')}>
@@ -89,13 +88,13 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
               Tìm thấy <strong className="text-primary">{displayedResults.length}</strong> từ vựng phù hợp:
             </span>
             <div className="d-flex align-items-center gap-1">
-              <Filter size={14} className="text-muted" />
+              <Filter size={13} className="text-muted" />
               <Input
                 type="select"
                 bsSize="sm"
                 value={filterLesson}
                 onChange={(e) => setFilterLesson(e.target.value)}
-                className="w-auto py-0 px-2 small"
+                className="w-auto py-0 px-2 small rounded-pill"
               >
                 <option value="all">Tất cả bài</option>
                 {Array.from(new Set(results.map(r => r.lesson_number))).sort((a,b)=>a-b).map(num => (
@@ -114,8 +113,8 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         )}
 
         {!loading && searchTerm && results.length === 0 && (
-          <div className="text-center py-4 text-muted">
-            <p className="mb-1">Không tìm thấy từ vựng nào khớp với "<strong>{searchTerm}</strong>"</p>
+          <div className="text-center py-5 text-muted">
+            <p className="mb-1 fw-bold text-dark">Không tìm thấy từ vựng nào khớp với "{searchTerm}"</p>
             <small>Gợi ý: Thử gõ không dấu hoặc dùng từ khóa ngắn hơn.</small>
           </div>
         )}
@@ -123,23 +122,27 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         <ListGroup flush style={{ maxHeight: '420px', overflowY: 'auto' }}>
           {displayedResults.map((item) => {
             const isFav = isFavorite(item.id, item.is_favorite);
+            const cleanMeaning = item.clean_vietnamese || item.vietnamese;
+            const cleanK = item.clean_kana || item.kana;
+
             return (
               <ListGroupItem
                 key={item.id}
-                className="d-flex justify-content-between align-items-center py-2 px-3 border-bottom rounded-2 mb-1 hover-bg"
+                className="d-flex justify-content-between align-items-center py-2.5 px-3 border-bottom rounded-3 mb-1 bg-white hover-shadow transition-all"
+                style={{ borderColor: 'var(--slate-200)' }}
               >
                 <div style={{ flex: 1 }}>
-                  <div className="d-flex align-items-baseline gap-2">
-                    {item.kanji && (
+                  <div className="d-flex align-items-baseline gap-2 flex-wrap">
+                    {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
                       <span className="fs-5 fw-bold text-dark font-monospace">{item.kanji}</span>
                     )}
-                    <span className="fs-6 fw-bold text-primary">{item.kana}</span>
-                    <span className="text-muted small fst-italic">({item.romaji})</span>
+                    <span className="fs-6 fw-bold text-primary font-monospace">{cleanK}</span>
+                    <span className="text-muted small fst-italic">[{item.romaji}]</span>
                     <Badge
                       color="secondary"
                       pill
-                      className="ms-1"
-                      style={{ cursor: 'pointer', fontSize: '11px' }}
+                      className="ms-1 cursor-pointer"
+                      style={{ fontSize: '11px' }}
                       onClick={() => {
                         toggle();
                         if (onSelectLesson) onSelectLesson(item.lesson_number);
@@ -149,23 +152,28 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                       Bài {item.lesson_number}
                     </Badge>
                   </div>
-                  <div className="text-secondary small mt-1">{item.vietnamese}</div>
+                  <div className="text-secondary small mt-0.5">{cleanMeaning}</div>
+                  {item.usage_note && (
+                    <div className="text-muted small" style={{ fontSize: '11px' }}>
+                      💡 {item.usage_note}
+                    </div>
+                  )}
                 </div>
 
-                <div className="d-flex align-items-center gap-1">
+                <div className="d-flex align-items-center gap-1 flex-shrink-0 ms-2">
                   <Button
                     color="light"
                     size="sm"
-                    className="p-1 rounded-circle"
-                    onClick={() => speakJapanese(item.kana)}
+                    className="p-1.5 rounded-circle border text-primary audio-btn"
+                    onClick={() => speakJapanese(cleanK)}
                     title="Nghe phát âm"
                   >
-                    <Volume2 size={18} className="text-primary" />
+                    <Volume2 size={15} />
                   </Button>
                   <Button
                     color="light"
                     size="sm"
-                    className="p-1 rounded-circle"
+                    className="p-1.5 rounded-circle border text-warning"
                     onClick={() => {
                       sounds.playFlip();
                       toggleFavorite(item);
@@ -173,7 +181,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                     title="Lưu vào yêu thích"
                   >
                     <Star
-                      size={18}
+                      size={15}
                       className={isFav ? 'text-warning fill-warning' : 'text-muted'}
                       fill={isFav ? '#f59e0b' : 'none'}
                     />

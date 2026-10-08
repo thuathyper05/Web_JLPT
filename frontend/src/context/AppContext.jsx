@@ -81,6 +81,20 @@ export const AppProvider = ({ children }) => {
     return res.data;
   };
 
+  const googleLogin = async (data) => {
+    const res = await authService.googleLogin(data);
+    localStorage.setItem('jlpt_token', res.data.token);
+    setUser(res.data.user);
+    return res.data;
+  };
+
+  const facebookLogin = async (data) => {
+    const res = await authService.facebookLogin(data);
+    localStorage.setItem('jlpt_token', res.data.token);
+    setUser(res.data.user);
+    return res.data;
+  };
+
   const logout = () => {
     localStorage.removeItem('jlpt_token');
     setUser(null);
@@ -132,7 +146,7 @@ export const AppProvider = ({ children }) => {
       setGuestProgress((prev) => {
         const current = prev[vocabId] || { correct_count: 0, wrong_count: 0, status: 'learning' };
         const newCorrect = isCorrect === true ? current.correct_count + 1 : current.correct_count;
-        const newWrong = isCorrect === false ? current.wrong_count + 1 : current.wrong_count;
+        const newWrong = isCorrect === false ? current.wrong_count + 1 : (status === 'mastered' ? 0 : current.wrong_count);
         return {
           ...prev,
           [vocabId]: {
@@ -142,6 +156,40 @@ export const AppProvider = ({ children }) => {
             last_studied: new Date().toISOString()
           }
         };
+      });
+    }
+  };
+
+  // Explicitly clear a wrong word from review list
+  const clearWrongStatus = async (vocabId) => {
+    await updateProgress(vocabId, 'mastered', true);
+  };
+
+  // Reset all wrong items
+  const resetAllWrong = async () => {
+    if (user) {
+      // For logged in user, fetch current review words and mark each mastered
+      try {
+        const res = await vocabService.getVocabularies({ status: 'needs_review' });
+        for (const item of res.data) {
+          await progressService.updateProgress({ vocabulary_id: item.id, status: 'mastered' });
+        }
+      } catch (e) {
+        console.error('Error resetting wrong words on server:', e);
+      }
+    } else {
+      setGuestProgress((prev) => {
+        const copy = { ...prev };
+        Object.keys(copy).forEach((k) => {
+          if (copy[k]?.status === 'needs_review' || copy[k]?.wrong_count > 0) {
+            copy[k] = {
+              ...copy[k],
+              status: 'mastered',
+              wrong_count: 0
+            };
+          }
+        });
+        return copy;
       });
     }
   };
@@ -177,6 +225,8 @@ export const AppProvider = ({ children }) => {
         loadingUser,
         login,
         register,
+        googleLogin,
+        facebookLogin,
         logout,
         toggleFavorite,
         isFavorite,
@@ -184,6 +234,8 @@ export const AppProvider = ({ children }) => {
         guestProgress,
         guestNotes,
         updateProgress,
+        clearWrongStatus,
+        resetAllWrong,
         saveNote,
         getNote
       }}

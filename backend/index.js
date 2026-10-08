@@ -28,12 +28,37 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/notes', noteRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'JLPT N5 Vocabulary API', time: new Date() });
+// Health check endpoints (for Render & Uptime Monitors)
+app.get(['/', '/health', '/api/health'], (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'HYPER JAPAN JLPT API',
+    uptime: Math.round(process.uptime()),
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`JLPT N5 Backend Server is running on http://localhost:${PORT}`);
+  console.log(`JLPT N5 Backend Server is running on port ${PORT}`);
+
+  // ── Render Free Tier Keep-Alive Service ──
+  // Pings itself every 14 minutes to prevent Render from going to sleep after 15m of inactivity
+  const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || process.env.KEEP_AWAKE_URL;
+  if (keepAliveUrl) {
+    const INTERVAL_MS = 14 * 60 * 1000; // 14 minutes
+    console.log(`[Keep-Alive] Activated for ${keepAliveUrl} (Every 14m)`);
+
+    setInterval(async () => {
+      try {
+        const pingUrl = `${keepAliveUrl.replace(/\/$/, '')}/api/health`;
+        const resp = await fetch(pingUrl);
+        if (resp.ok) {
+          console.log(`[Keep-Alive Ping] Successful at ${new Date().toLocaleTimeString('vi-VN')}`);
+        }
+      } catch (err) {
+        console.warn(`[Keep-Alive Ping Warning] ${err.message}`);
+      }
+    }, INTERVAL_MS);
+  }
 });

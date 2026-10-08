@@ -1,487 +1,301 @@
 import React, { useState } from 'react';
 import {
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Alert,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Badge,
-  Container
+  Navbar, NavbarBrand, Nav, NavItem, NavLink, Button,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Container,
+  Modal, ModalBody
 } from 'reactstrap';
 import {
-  Home,
-  BookOpen,
-  Layers,
-  CheckSquare,
-  Keyboard,
-  Star,
-  FileText,
-  BarChart2,
-  RefreshCw,
-  Search,
-  User,
-  LogOut,
-  LogIn,
-  PenTool,
-  ChevronDown
+  Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
+  BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
+  Menu, X, MoreHorizontal, ChevronRight, Sparkles, ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { authService } from '../services/api';
 import Logo from './Logo';
+import LevelSelector from './LevelSelector';
+import AuthModal from './AuthModal';
 
 const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, onChangeLevel }) => {
-  const { user, login, register, logout } = useApp();
+  const { user, logout } = useApp();
+  const [authMode, setAuthMode] = useState('login');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const [modalMode, setModalMode] = useState('login');
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    usernameOrEmail: '',
-    code: '',
-    newPassword: ''
-  });
-
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-    setErrorMsg('');
-    setSuccessMsg('');
+  const openAuth = (mode = 'login') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
   };
 
-  const handleAuthSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMsg('');
-    setSuccessMsg('');
-    setLoading(true);
-
-    try {
-      if (modalMode === 'register') {
-        if (formData.password !== formData.confirmPassword) {
-          setErrorMsg('Xác nhận mật khẩu không khớp!');
-          setLoading(false);
-          return;
-        }
-        await register({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password
-        });
-        setModalOpen(false);
-      } else if (modalMode === 'login') {
-        await login({
-          usernameOrEmail: formData.usernameOrEmail,
-          password: formData.password
-        });
-        setModalOpen(false);
-      } else if (modalMode === 'forgot') {
-        const res = await authService.forgotPassword({ email: formData.email });
-        setSuccessMsg(`Mã xác thực 6 số của bạn là: ${res.data.recovery_code}`);
-        setFormData(prev => ({ ...prev, code: res.data.recovery_code }));
-        setModalMode('reset');
-      } else if (modalMode === 'reset') {
-        const res = await authService.resetPassword({
-          email: formData.email,
-          code: formData.code,
-          newPassword: formData.newPassword
-        });
-        setSuccessMsg(res.data.message);
-        setModalMode('login');
-      }
-    } catch (err) {
-      setErrorMsg(err.response?.data?.message || 'Có lỗi xảy ra, vui lòng thử lại.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const navItems = [
+  const mainNavItems = [
     { id: 'home', label: 'Trang chủ', icon: Home },
     { id: 'lessons', label: 'Bài học', icon: BookOpen },
     { id: 'kanji', label: 'Kanji', icon: PenTool },
     { id: 'flashcard', label: 'Flashcard', icon: Layers },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
     { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
+  ];
+
+  const moreNavItems = [
     { id: 'review', label: 'Ôn tập sai', icon: RefreshCw },
     { id: 'favorites', label: 'Yêu thích', icon: Star },
     { id: 'notes', label: 'Ghi chú', icon: FileText },
     { id: 'dashboard', label: 'Tiến độ', icon: BarChart2 },
   ];
 
-  const levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
+  // Mobile Bottom Bar: 5 primary actions
+  const bottomItems = [
+    { id: 'home', label: 'Trang chủ', icon: Home },
+    { id: 'lessons', label: 'Bài học', icon: BookOpen },
+    { id: 'flashcard', label: 'Flashcard', icon: Layers },
+    { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
+    { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
+  ];
+
+  const handleMobileNav = (id) => {
+    setActiveTab(id);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
-      <Navbar dark expand="md" className="navbar-custom sticky-top py-2 px-2 px-md-3">
-        <Container fluid className="d-flex justify-content-between align-items-center">
-          {/* Brand Logo & Level Selector */}
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-2 px-md-3">
+        <Container fluid className="d-flex justify-content-between align-items-center px-0">
+
+          {/* ── Left: Logo + Level ── */}
           <div className="d-flex align-items-center gap-2">
-            <NavbarBrand
-              href="#"
-              onClick={(e) => { e.preventDefault(); setActiveTab('home'); }}
-              className="p-0 m-0 text-decoration-none"
-              style={{ cursor: 'pointer' }}
-            >
+            <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
+              className="p-0 m-0 text-decoration-none" style={{ cursor: 'pointer' }}>
               <Logo size={36} />
             </NavbarBrand>
-
-            {/* JLPT Level Selector Dropdown */}
-            <UncontrolledDropdown>
-              <DropdownToggle
-                caret
-                color="light"
-                size="sm"
-                className="rounded-pill fw-bold bg-white bg-opacity-20 text-white border-white border-opacity-30 d-flex align-items-center gap-1 px-3 py-1 shadow-sm"
-                style={{ fontSize: '13px' }}
-              >
-                <span>{currentLevel || 'N5'}</span>
-              </DropdownToggle>
-              <DropdownMenu className="shadow-lg border-0 rounded-3">
-                <DropdownItem header className="fw-bold">Chọn cấp độ JLPT</DropdownItem>
-                {levels.map(lvl => (
-                  <DropdownItem
-                    key={lvl}
-                    active={currentLevel === lvl}
-                    onClick={() => onChangeLevel && onChangeLevel(lvl)}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    <span>Cấp độ {lvl}</span>
-                    {lvl === 'N5' ? (
-                      <Badge color="success" pill className="ms-2">Hiện tại</Badge>
-                    ) : (
-                      <Badge color="secondary" pill className="ms-2">Mở rộng</Badge>
-                    )}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <LevelSelector currentLevel={currentLevel} onChangeLevel={onChangeLevel} />
           </div>
 
-          {/* Desktop Nav Items */}
-          <Nav className="d-none d-lg-flex align-items-center" navbar style={{ gap: '2px' }}>
-            {navItems.map((item) => {
-              const IconComp = item.icon;
+          {/* ── Center: Desktop Nav ── */}
+          <Nav className="d-none d-lg-flex align-items-center" navbar style={{ gap: 1 }}>
+            {mainNavItems.map(item => {
+              const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (
                 <NavItem key={item.id}>
-                  <NavLink
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); setActiveTab(item.id); }}
-                    className={`d-flex align-items-center px-2 py-1 rounded-3 transition-all ${
-                      isActive ? 'bg-primary text-white fw-bold shadow-sm' : 'text-light opacity-80'
-                    }`}
-                    style={{ cursor: 'pointer', gap: '5px', fontSize: '0.86rem' }}
-                  >
-                    <IconComp size={15} />
+                  <NavLink href="#" onClick={e => { e.preventDefault(); setActiveTab(item.id); }}
+                    className="d-flex align-items-center px-2 py-1 rounded-3"
+                    style={{
+                      gap: 5, fontSize: '0.84rem', fontWeight: isActive ? 700 : 500,
+                      cursor: 'pointer', letterSpacing: '-0.01em',
+                      color: isActive ? '#fff' : 'rgba(255,255,255,.72)',
+                      background: isActive ? 'rgba(255,255,255,.14)' : 'transparent',
+                      transition: 'all .18s ease',
+                      borderRadius: 8
+                    }}>
+                    <Icon size={14} />
                     <span>{item.label}</span>
                   </NavLink>
                 </NavItem>
               );
             })}
+
+            {/* More dropdown on Desktop */}
+            <NavItem>
+              <UncontrolledDropdown nav>
+                <DropdownToggle nav
+                  style={{
+                    color: moreNavItems.some(i => i.id === activeTab) ? '#fff' : 'rgba(255,255,255,.72)',
+                    display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.84rem', fontWeight: 500,
+                    cursor: 'pointer', background: moreNavItems.some(i => i.id === activeTab) ? 'rgba(255,255,255,.14)' : 'transparent',
+                    borderRadius: 8, padding: '4px 10px'
+                  }}>
+                  <MoreHorizontal size={15} /> Thêm
+                </DropdownToggle>
+                <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2 py-1" style={{ minWidth: 180 }}>
+                  {moreNavItems.map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <DropdownItem key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className="d-flex align-items-center gap-2 py-2"
+                        style={{ fontWeight: activeTab === item.id ? 700 : 500, color: activeTab === item.id ? '#2563eb' : '#1e293b', fontSize: 14 }}>
+                        <Icon size={15} style={{ color: activeTab === item.id ? '#2563eb' : '#64748b' }} />
+                        {item.label}
+                      </DropdownItem>
+                    );
+                  })}
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </NavItem>
           </Nav>
 
-          {/* Actions: Search & Account */}
-          <div className="d-flex align-items-center" style={{ gap: '8px' }}>
-            <Button
-              color="light"
-              outline
-              size="sm"
-              className="d-flex align-items-center rounded-pill px-3 py-1 text-white border-white border-opacity-40 hover-shadow"
-              onClick={onOpenSearch}
-              style={{ gap: '6px' }}
-            >
-              <Search size={15} />
-              <span className="d-none d-sm-inline small">Tìm kiếm từ vựng...</span>
-            </Button>
+          {/* ── Right: Search + Account + Mobile Menu Toggle ── */}
+          <div className="d-flex align-items-center" style={{ gap: 8 }}>
+            {/* Search Pill */}
+            <button type="button" onClick={onOpenSearch}
+              style={{ background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(4px)' }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,.17)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; }}>
+              <Search size={14} />
+              <span className="d-none d-sm-inline">Tìm từ vựng...</span>
+            </button>
 
+            {/* Account dropdown / Login button */}
             {user ? (
               <UncontrolledDropdown inNavbar>
-                <DropdownToggle nav caret className="text-white d-flex align-items-center p-1">
-                  <div
-                    className="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm"
-                    style={{ width: '32px', height: '32px', fontWeight: '800', fontSize: '13px' }}
-                  >
-                    {user.username.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="d-none d-md-inline ms-2 small fw-semibold">{user.username}</span>
+                <DropdownToggle nav caret={false}
+                  className="d-flex align-items-center p-0 text-white" style={{ gap: 8 }}>
+                  {user.avatar_url ? (
+                    <img src={user.avatar_url} alt="" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, color: '#fff' }}>
+                      {user.username.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="d-none d-md-inline small fw-semibold" style={{ maxWidth: 80, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {user.username}
+                  </span>
                 </DropdownToggle>
-                <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2">
-                  <DropdownItem header className="fw-bold text-navy-dark">
-                    Tài khoản: {user.username}
+                <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2 py-1" style={{ minWidth: 200 }}>
+                  <div style={{ padding: '10px 16px', borderBottom: '1px solid #f1f5f9' }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: '#0f172a' }}>{user.username}</div>
+                    <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{user.email}</div>
+                  </div>
+                  <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2 py-2">
+                    <BarChart2 size={15} style={{ color: '#2563eb' }} /> Tiến độ học tập
                   </DropdownItem>
-                  <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2">
-                    <BarChart2 size={16} className="text-primary" /> Tiến độ học tập
+                  <DropdownItem onClick={() => setActiveTab('favorites')} className="d-flex align-items-center gap-2 py-2">
+                    <Star size={15} style={{ color: '#f59e0b' }} /> Từ yêu thích
                   </DropdownItem>
-                  <DropdownItem onClick={() => setActiveTab('favorites')} className="d-flex align-items-center gap-2">
-                    <Star size={16} className="text-warning" /> Từ yêu thích
-                  </DropdownItem>
-                  <DropdownItem onClick={() => setActiveTab('notes')} className="d-flex align-items-center gap-2">
-                    <FileText size={16} className="text-info" /> Sổ ghi chú
+                  <DropdownItem onClick={() => setActiveTab('notes')} className="d-flex align-items-center gap-2 py-2">
+                    <FileText size={15} style={{ color: '#0ea5e9' }} /> Sổ ghi chú
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={logout} className="text-danger d-flex align-items-center gap-2">
-                    <LogOut size={16} /> Đăng xuất
+                  <DropdownItem onClick={logout} className="d-flex align-items-center gap-2 py-2 text-danger">
+                    <LogOut size={15} /> Đăng xuất
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
-              <Button
-                color="warning"
-                size="sm"
-                className="d-flex align-items-center rounded-pill px-3 py-1 fw-bold shadow-sm text-dark"
-                onClick={() => { setModalMode('login'); setModalOpen(true); }}
-                style={{ gap: '6px' }}
-              >
-                <LogIn size={15} />
-                <span>Đăng nhập</span>
-              </Button>
+              <button type="button" onClick={() => openAuth('login')}
+                style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 9999, padding: '6px 16px', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 8px rgba(245,158,11,.4)', transition: 'all .18s ease' }}>
+                <LogIn size={14} /> <span className="d-none d-sm-inline">Đăng nhập</span>
+              </button>
             )}
+
+            {/* Mobile Menu Drawer Toggle Button */}
+            <button
+              type="button"
+              className="d-lg-none"
+              onClick={() => setMobileMenuOpen(true)}
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                borderRadius: 8,
+                padding: '6px 8px',
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              title="Menu mở rộng"
+            >
+              <Menu size={18} />
+            </button>
           </div>
         </Container>
       </Navbar>
 
-      {/* Bottom Navigation for Mobile / Tablet */}
-      <div
-        className="d-lg-none fixed-bottom bg-white border-top shadow-lg d-flex justify-content-around py-2 px-1 glass-effect"
-        style={{ zIndex: 1020 }}
-      >
-        {navItems.slice(0, 5).map((item) => {
-          const IconComp = item.icon;
+      {/* ── Mobile Bottom Nav (Sticky) ── */}
+      <div className="d-lg-none fixed-bottom mobile-bottom-nav d-flex justify-content-around py-1 px-1" style={{ zIndex: 1020 }}>
+        {bottomItems.map(item => {
+          const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`btn btn-link p-1 d-flex flex-column align-items-center text-decoration-none ${
-                isActive ? 'text-primary fw-bold' : 'text-secondary'
-              }`}
-              style={{ fontSize: '11px', width: '20%' }}
-            >
-              <IconComp size={20} className="mb-1" />
-              <span>{item.label}</span>
+            <button key={item.id} type="button" onClick={() => setActiveTab(item.id)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px 4px', flex: 1, minWidth: 0 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: isActive ? '#eff6ff' : 'transparent', marginBottom: 2, transition: 'all .2s ease' }}>
+                <Icon size={20} color={isActive ? '#2563eb' : '#94a3b8'} />
+              </div>
+              <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? '#2563eb' : '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                {item.label}
+              </span>
             </button>
           );
         })}
       </div>
 
-      {/* Auth Modal (Login / Register / Forgot / Reset Password) */}
-      <Modal isOpen={modalOpen} toggle={toggleModal} centered className="auth-modal">
-        <ModalHeader toggle={toggleModal} className="border-0 pb-0">
-          <div className="d-flex align-items-center gap-2">
-            <Logo size={28} showText={false} />
-            <span className="fw-bold text-navy-dark fs-5">
-              {modalMode === 'login' && 'Đăng nhập HYPER JLPT'}
-              {modalMode === 'register' && 'Tạo tài khoản mới'}
-              {modalMode === 'forgot' && 'Quên mật khẩu'}
-              {modalMode === 'reset' && 'Đặt lại mật khẩu'}
-            </span>
-          </div>
-        </ModalHeader>
-        <ModalBody className="p-4 pt-3">
-          <div className="alert alert-light border small text-muted mb-3 py-2">
-            💡 <strong>Không bắt buộc đăng nhập</strong> để học 25 bài. Đăng nhập để đồng bộ kết quả và ghi chú lên PostgreSQL.
+      {/* ── Mobile Full Menu Sheet Modal ── */}
+      <Modal
+        isOpen={mobileMenuOpen}
+        toggle={() => setMobileMenuOpen(false)}
+        centered
+        className="jlpt-modal d-lg-none"
+        style={{ maxWidth: '400px' }}
+      >
+        <ModalBody className="p-0 rounded-4 overflow-hidden bg-white">
+          <div className="p-3 text-white d-flex justify-content-between align-items-center" style={{ background: 'linear-gradient(135deg, #091224 0%, #1e3a8a 100%)' }}>
+            <div className="d-flex align-items-center gap-2">
+              <Logo size={28} showText={false} />
+              <div>
+                <h6 className="fw-bold mb-0">Menu Tính Năng Toàn Diện</h6>
+                <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>HYPER JAPAN JLPT N5</small>
+              </div>
+            </div>
+            <button type="button" className="btn-close btn-close-white" onClick={() => setMobileMenuOpen(false)} />
           </div>
 
-          {errorMsg && <Alert color="danger" className="py-2 small">{errorMsg}</Alert>}
-          {successMsg && <Alert color="success" className="py-2 small">{successMsg}</Alert>}
+          <div className="p-3 d-flex flex-column gap-2" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+            <small className="text-muted fw-bold text-uppercase" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>
+              Phương pháp học tập
+            </small>
 
-          <Form onSubmit={handleAuthSubmit}>
-            {modalMode === 'login' && (
-              <>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Tên đăng nhập hoặc Email</Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="Nhập username hoặc email"
-                    value={formData.usernameOrEmail}
-                    onChange={(e) => setFormData({ ...formData, usernameOrEmail: e.target.value })}
-                    className="py-2"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <div className="d-flex justify-content-between">
-                    <Label className="small fw-semibold text-secondary">Mật khẩu</Label>
-                    <a
-                      href="#"
-                      className="small text-primary text-decoration-none"
-                      onClick={(e) => { e.preventDefault(); setModalMode('forgot'); setErrorMsg(''); setSuccessMsg(''); }}
-                    >
-                      Quên mật khẩu?
-                    </a>
+            {mainNavItems.map(item => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => handleMobileNav(item.id)}
+                  className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between cursor-pointer transition-all ${
+                    isActive ? 'bg-primary bg-opacity-10 border-primary text-primary fw-bold' : 'bg-light text-dark'
+                  }`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    <Icon size={18} className={isActive ? 'text-primary' : 'text-secondary'} />
+                    <span className="small">{item.label}</span>
                   </div>
-                  <Input
-                    type="password"
-                    required
-                    placeholder="Nhập mật khẩu"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="py-2"
-                  />
-                </FormGroup>
-                <Button color="primary" block className="mt-4 py-2 fw-bold" disabled={loading}>
-                  {loading ? 'Đang xử lý...' : 'Đăng nhập ngay'}
-                </Button>
-                <div className="text-center mt-3 small text-muted">
-                  Chưa có tài khoản?{' '}
-                  <a
-                    href="#"
-                    className="text-primary fw-bold text-decoration-none"
-                    onClick={(e) => { e.preventDefault(); setModalMode('register'); setErrorMsg(''); setSuccessMsg(''); }}
-                  >
-                    Đăng ký tài khoản
-                  </a>
+                  <ChevronRight size={14} className="text-muted" />
                 </div>
-              </>
-            )}
+              );
+            })}
 
-            {modalMode === 'register' && (
-              <>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Tên người dùng (Username)</Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="VD: minh_n5"
-                    value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Email</Label>
-                  <Input
-                    type="email"
-                    required
-                    placeholder="VD: email@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Mật khẩu (Tối thiểu 6 ký tự)</Label>
-                  <Input
-                    type="password"
-                    required
-                    placeholder="Nhập mật khẩu"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Xác nhận mật khẩu</Label>
-                  <Input
-                    type="password"
-                    required
-                    placeholder="Nhập lại mật khẩu"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  />
-                </FormGroup>
-                <Button color="primary" block className="mt-3 py-2 fw-bold" disabled={loading}>
-                  {loading ? 'Đang tạo tài khoản...' : 'Đăng ký tài khoản'}
-                </Button>
-                <div className="text-center mt-3 small text-muted">
-                  Đã có tài khoản?{' '}
-                  <a
-                    href="#"
-                    className="text-primary fw-bold text-decoration-none"
-                    onClick={(e) => { e.preventDefault(); setModalMode('login'); setErrorMsg(''); setSuccessMsg(''); }}
-                  >
-                    Đăng nhập tại đây
-                  </a>
-                </div>
-              </>
-            )}
+            <small className="text-muted fw-bold text-uppercase mt-2" style={{ fontSize: '11px', letterSpacing: '0.04em' }}>
+              Sổ tay & Củng cố
+            </small>
 
-            {modalMode === 'forgot' && (
-              <>
-                <p className="small text-muted mb-3">
-                  Nhập địa chỉ email đăng ký để nhận mã OTP xác thực khôi phục mật khẩu.
-                </p>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Email của bạn</Label>
-                  <Input
-                    type="email"
-                    required
-                    placeholder="email@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </FormGroup>
-                <Button color="warning" block className="mt-3 py-2 fw-bold text-dark" disabled={loading}>
-                  {loading ? 'Đang gửi mã...' : 'Lấy mã xác thực OTP'}
-                </Button>
-                <div className="text-center mt-3 small text-muted">
-                  <a
-                    href="#"
-                    className="text-secondary text-decoration-none"
-                    onClick={(e) => { e.preventDefault(); setModalMode('login'); setErrorMsg(''); setSuccessMsg(''); }}
-                  >
-                    ← Quay lại đăng nhập
-                  </a>
+            {moreNavItems.map(item => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => handleMobileNav(item.id)}
+                  className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between cursor-pointer transition-all ${
+                    isActive ? 'bg-primary bg-opacity-10 border-primary text-primary fw-bold' : 'bg-light text-dark'
+                  }`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    <Icon size={18} className={isActive ? 'text-primary' : 'text-secondary'} />
+                    <span className="small">{item.label}</span>
+                  </div>
+                  <ChevronRight size={14} className="text-muted" />
                 </div>
-              </>
-            )}
-
-            {modalMode === 'reset' && (
-              <>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Mã xác thực OTP (6 chữ số)</Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="123456"
-                    value={formData.code}
-                    onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                    className="text-center fw-bold letter-spacing-2 fs-5"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="small fw-semibold text-secondary">Mật khẩu mới (Tối thiểu 6 ký tự)</Label>
-                  <Input
-                    type="password"
-                    required
-                    placeholder="Nhập mật khẩu mới"
-                    value={formData.newPassword}
-                    onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
-                  />
-                </FormGroup>
-                <Button color="success" block className="mt-3 py-2 fw-bold" disabled={loading}>
-                  {loading ? 'Đang cập nhật...' : 'Xác nhận đổi mật khẩu'}
-                </Button>
-                <div className="text-center mt-3 small text-muted">
-                  <a
-                    href="#"
-                    className="text-secondary text-decoration-none"
-                    onClick={(e) => { e.preventDefault(); setModalMode('login'); setErrorMsg(''); setSuccessMsg(''); }}
-                  >
-                    ← Quay lại đăng nhập
-                  </a>
-                </div>
-              </>
-            )}
-          </Form>
+              );
+            })}
+          </div>
         </ModalBody>
       </Modal>
+
+      {/* ── Auth Modal ── */}
+      <AuthModal isOpen={authModalOpen} toggle={() => setAuthModalOpen(!authModalOpen)} initialMode={authMode} />
     </>
   );
 };

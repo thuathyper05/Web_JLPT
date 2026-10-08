@@ -1,108 +1,130 @@
-# HỆ THỐNG WEBSITE HỖ TRỢ HỌC & ÔN TẬP TỪ VỰNG TIẾNG NHẬT N5
+# 🌸 HYPER JLPT - NỀN TẢNG HỌC & LUYỆN THI TIẾNG NHẬT JLPT N5 HIỆN ĐẠI
 
-> **Trọn bộ 25 bài học Minna no Nihongo với 1,589 từ vựng đầy đủ 100%**  
-> Kiến trúc: **ReactJS (Reactstrap/Bootstrap, Lucide Icons) + Node.js (Express RESTful API) + PostgreSQL**
-
----
-
-## 🌟 TỔNG QUAN HỆ THỐNG
-
-Website hỗ trợ học và ôn tập từ vựng tiếng Nhật JLPT N5 theo giáo trình chuẩn **Minna no Nihongo (25 Bài)** với giao diện hiện đại, chuẩn phong cách Navy Blue / Tối giản, không lạm dụng AI, sử dụng hệ thống icon web chuyên nghiệp (Lucide Icons).
-
-### 🚀 Điểm nổi bật:
-1. **Không bắt buộc đăng nhập:** Người dùng vào web là có thể học ngay lập tức toàn bộ 25 bài, lật Flashcard, làm bài trắc nghiệm, luyện gõ Kana và nghe phát âm. Tiến độ được lưu tạm bằng LocalStorage.
-2. **Đăng nhập tùy chọn:** Khi muốn đồng bộ tiến độ, từ đã thuộc, từ yêu thích và ghi chú lâu dài lên cơ sở dữ liệu PostgreSQL.
-3. **Độc lập theo từng bài:** Không trộn lẫn từ vựng giữa các bài khi đang học bài cụ thể.
-4. **Phát âm tiếng Nhật chuẩn bản xứ:** Tích hợp Web Speech Synthesis (`ja-JP`).
-5. **Đầy đủ 4 phương pháp rèn luyện:**
-   - 📖 Học từ vựng từng từ một & xem bảng tổng hợp bài học.
-   - 🃏 Flashcard 3D lật thẻ ghi nhớ và đánh dấu Đã nhớ / Chưa nhớ.
-   - 📝 Bài trắc nghiệm với 4 dạng câu hỏi (chọn nghĩa, chọn từ, chọn âm đọc Kanji, nhập Kana) kèm đánh giá xếp loại.
-   - ⌨️ Luyện gõ đáp án Kana theo thời gian thực (Real-time feedback).
-   - 🔄 Ôn tập riêng các từ từng làm sai / chưa nhớ.
-   - ⭐ Quản lý từ vựng yêu thích.
-   - 📝 Sổ tay ghi chú cá nhân cho từng từ vựng.
-   - 📊 Bảng Dashboard tiến độ chi tiết từng bài và toàn bộ N5.
+> **Trọn bộ 25 bài học Minna no Nihongo (1,589 từ vựng) + 80 chữ Hán Kanji N5**  
+> Kiến trúc hiện đại: **React 18 (Vite, Bootstrap 5, Lucide Icons) + Node.js (Express RESTful API) + PostgreSQL / Supabase**
 
 ---
 
-## 🛠️ CẤU TRÚC DỰ ÁN
+## 🌟 TỔNG QUAN DỰ ÁN
+
+**HYPER JLPT** là ứng dụng web học tiếng Nhật toàn diện, được thiết kế theo phong cách tối giản, hiện đại và cao cấp (Navy & Indigo Modern UI), tối ưu hóa trải nghiệm người dùng theo tiêu chuẩn giáo trình quốc tế.
+
+### 🚀 Tính năng nổi bật:
+1. **Trọn bộ dữ liệu chuẩn:**
+   - 25 bài học Minna no Nihongo với đầy đủ 1,589 từ vựng (Kanji, Hiragana, Romaji, Hán Việt, Nghĩa, Loại từ, Ví dụ).
+   - 80 chữ Hán Kanji N5 kèm âm On, Kun, số nét, cấp độ và ví dụ thực tế.
+2. **Xác thực linh hoạt (Authentication):**
+   - Đăng nhập tài khoản truyền thống (Email + Mật khẩu, Quên mật khẩu & Đặt lại mật khẩu).
+   - Đăng nhập nhanh bằng **Google OAuth** và **Facebook Login** chính thức.
+   - Hỗ trợ học ẩn danh (Khách / Guest) lưu tiến độ tạm qua LocalStorage mà không bắt buộc đăng nhập.
+3. **Đa dạng phương pháp rèn luyện:**
+   - 📖 **Học từ vựng:** Xem chi tiết từng từ, bảng từ tổng hợp, phát âm bản xứ (Web Speech API).
+   - 🃏 **Flashcard 3D:** Hiệu ứng lật mượt mà, hỗ trợ phím tắt (`Space`, `1`/`2`, `S`), tự động phát âm, chế độ lọc ôn từ sai.
+   - 📝 **Trắc nghiệm chuyên nghiệp:** 4 dạng câu hỏi đa dạng (nghĩa, từ vựng, âm đọc Kanji, gõ Kana), tính điểm và xếp loại chuẩn JLPT.
+   - ⌨️ **Luyện gõ Kana thời gian thực:** Chấm điểm tức thì, âm thanh sinh động (Web Audio API), hỗ trợ gõ Romaji chuyển đổi Kana.
+   - 🀄 **Kanji N5:** Tra cứu bảng chữ Hán, số nét vẽ, âm Hán Việt và từ vựng liên quan.
+   - 🔄 **Ôn tập thông minh:** Tự động lọc danh sách các từ từng làm sai để luyện lại.
+   - ⭐ **Yêu thích & Sổ tay ghi chú:** Lưu từ vựng quan trọng và ghi chú cá nhân.
+   - 📊 **Dashboard tiến độ:** Thống kê trực quan tỉ lệ hoàn thành theo từng bài và toàn cấp độ.
+4. **Sẵn sàng triển khai Cloud:**
+   - Hỗ trợ kết nối cơ sở dữ liệu Supabase PostgreSQL với SSL.
+   - Tích hợp dịch vụ tự động Ping Keep-Alive chống ngủ đông 15 phút trên Render Free Tier.
+
+---
+
+## 🛠️ CẤU TRÚC THƯ MỤC
 
 ```text
 Web_JLPT/
 ├── backend/
 │   ├── config/
-│   │   └── db.js                 # Kết nối cơ sở dữ liệu PostgreSQL
-│   ├── controllers/
-│   │   ├── authController.js     # Đăng ký, đăng nhập, JWT
-│   │   ├── lessonController.js   # 25 bài học N5
-│   │   ├── vocabController.js    # 1,589 từ vựng, lọc, tìm kiếm
-│   │   ├── quizController.js     # Tạo trắc nghiệm, chấm điểm
-│   │   ├── progressController.js # Quản lý tiến độ
-│   │   ├── favoriteController.js # Quản lý từ yêu thích
-│   │   └── noteController.js     # Quản lý ghi chú cá nhân
-│   ├── middleware/
-│   │   └── auth.js               # Xác thực JWT (hỗ trợ cả guest và user)
+│   │   └── db.js                 # Kết nối PostgreSQL / Supabase qua pg Pool
+│   ├── controllers/              # Bộ xử lý nghiệp vụ Auth, Vocab, Lesson, Quiz, Kanji, Progress
+│   ├── middleware/               # Xác thực JWT & Guest fallback
 │   ├── routes/                   # Các RESTful API routes
-│   ├── seed.js                   # Script nạp 25 bài và 1589 từ vào Postgres
-│   ├── .env                      # Cấu hình cổng, DB và secret key
+│   ├── scripts/
+│   │   └── export_sql.js         # Script trích xuất full DB ra file SQL
+│   ├── .env.example              # Mẫu biến môi trường backend
+│   ├── index.js                  # Điểm khởi chạy server Express & Ping service
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── NavbarComponent.jsx # Thanh điều hướng & Auth modal
-│   │   │   └── SearchModal.jsx     # Tra cứu nhanh Kanji/Kana/Romaji/Nghĩa
-│   │   ├── pages/
-│   │   │   ├── HomePage.jsx        # Trang chủ & tổng quan 25 bài
-│   │   │   ├── LessonStudyPage.jsx # Chế độ học theo bài (Word-by-word & Table)
-│   │   │   ├── FlashcardPage.jsx   # Thẻ nhớ 3D, lật thẻ, âm thanh
-│   │   │   ├── QuizPage.jsx        # Trắc nghiệm 4 dạng câu hỏi
-│   │   │   ├── PracticeInputPage.jsx # Luyện gõ Kana thời gian thực
-│   │   │   ├── ReviewWrongPage.jsx # Ôn tập từ sai & chưa nhớ
-│   │   │   ├── FavoritesPage.jsx   # Danh sách từ yêu thích
-│   │   │   ├── NotesPage.jsx       # Sổ tay ghi chú cá nhân
-│   │   │   └── DashboardPage.jsx   # Bảng theo dõi tiến độ N5
-│   │   ├── context/
-│   │   │   └── AppContext.jsx      # Quản lý trạng thái Auth & Guest LocalStorage
-│   │   ├── services/
-│   │   │   └── api.js              # Gọi API Axios & Speech Synthesis
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── components/           # Navbar, AuthModal, LevelSelector, SearchModal, Logo...
+│   │   ├── context/              # AppContext quản lý state người dùng & tiến độ
+│   │   ├── pages/                # HomePage, LessonStudy, Flashcard, Quiz, Kanji, Dashboard...
+│   │   ├── services/api.js       # Gọi API backend & Text-To-Speech
+│   │   ├── App.jsx               # Định tuyến Router & Modal
+│   │   └── index.css             # Thiết kế giao diện, hiệu ứng 3D Flashcard, Theme
+│   ├── .env.example              # Mẫu biến môi trường frontend
 │   └── package.json
 └── database/
-    ├── schema.sql                  # Cấu trúc bảng PostgreSQL
-    └── n5_full_lessons.json        # Dữ liệu từ vựng 25 bài Minna no Nihongo
+    ├── schema.sql                # Cấu trúc bảng PostgreSQL
+    ├── supabase_init.sql         # File nạp toàn bộ cấu trúc + 25 bài + 1,589 từ + 80 Kanji
+    └── n5_full_lessons.json       # Dữ liệu JSON gốc
 ```
 
 ---
 
-## ⚡ HƯỚNG DẪN KHỞI CHẠY HỆ THỐNG
+## ⚡ HƯỚNG DẪN KHỞI CHẠY CỤC BỘ (LOCAL)
 
 ### 1. Cơ sở dữ liệu PostgreSQL
-- Tên Database: `jlpt_n5`
-- Cổng mặc định: `5432`
-- Chạy schema:
-  ```bash
-  psql -U postgres -d jlpt_n5 -f database/schema.sql
+- Tạo database `jlpt_n5` trong PostgreSQL:
+  ```sql
+  CREATE DATABASE jlpt_n5;
   ```
-- Nạp dữ liệu tự động:
+- Nạp toàn bộ dữ liệu chỉ bằng 1 lệnh:
   ```bash
-  cd backend
-  node seed.js
+  psql -U postgres -d jlpt_n5 -f database/supabase_init.sql
   ```
 
-### 2. Khởi chạy Backend (Node.js/Express)
+### 2. Khởi chạy Backend (Node.js)
 ```bash
 cd backend
 npm install
-node index.js
+npm start
 ```
-Backend lắng nghe tại: `http://localhost:5000`
+Server chạy tại: `http://localhost:5000`
 
-### 3. Khởi chạy Frontend (ReactJS / Vite)
+### 3. Khởi chạy Frontend (React / Vite)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Frontend mở tại: `http://localhost:3000`
+Ứng dụng mở tại: `http://localhost:3000`
+
+---
+
+## ☁️ HƯỚNG DẪN TRIỂN KHAI CLOUD (SUPABASE + RENDER)
+
+### 1. Database (Supabase)
+1. Tạo Project mới trên [Supabase](https://supabase.com).
+2. Vào **SQL Editor** -> Dán toàn bộ nội dung file `database/supabase_init.sql` -> Nhấn **Run**.
+3. Vào **Project Settings** -> **Database** -> Copy chuỗi **Connection String (URI)** (dạng pooler port 6543 hoặc direct port 5432).
+
+### 2. Backend (Render Web Service)
+1. Tạo Web Service mới trên [Render](https://render.com) liên kết với Git repository này.
+2. Cấu hình:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `node index.js`
+3. Cài đặt **Environment Variables**:
+   - `DATABASE_URL`: Dán chuỗi kết nối Supabase URI (thay mật khẩu thực tế)
+   - `JWT_SECRET`: Chuỗi bảo mật ngẫu nhiên (VD: `my_secure_jwt_key_2026`)
+   - `PORT`: `5000`
+   - `RENDER_EXTERNAL_URL`: `https://ten-backend-cua-ban.onrender.com` (để kích hoạt tính năng tự ping chống ngủ 15 phút)
+
+### 3. Frontend (Vercel / Netlify / Render Static Site)
+1. Cấu hình:
+   - **Root Directory:** `frontend`
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+2. Cài đặt **Environment Variables**:
+   - `VITE_API_BASE_URL`: `https://ten-backend-cua-ban.onrender.com/api`
+   - `VITE_GOOGLE_CLIENT_ID`: Google OAuth Client ID của bạn
+   - `VITE_FACEBOOK_APP_ID`: Facebook App ID của bạn
+
+---
+
+## 👤 TÁC GIẢ
+- **GitHub:** [@thuathyper05](https://github.com/thuathyper05)

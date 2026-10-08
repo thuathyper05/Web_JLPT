@@ -186,4 +186,190 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe, forgotPassword, resetPassword };
+// Google Login / OAuth verification
+const googleLogin = async (req, res) => {
+  try {
+    const { credential, accessToken, userInfo } = req.body;
+    let email, name, sub, picture;
+
+    // 1. If Google ID token (credential from GIS) is sent
+    if (credential) {
+      try {
+        const resp = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+        if (resp.ok) {
+          const payload = await resp.json();
+          email = payload.email;
+          name = payload.name;
+          sub = payload.sub;
+          picture = payload.picture;
+        }
+      } catch (err) {
+        console.error('Error verifying Google token with Google endpoint:', err);
+      }
+    }
+
+    // 2. If access token is provided
+    if (!email && accessToken) {
+      try {
+        const resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        if (resp.ok) {
+          const payload = await resp.json();
+          email = payload.email;
+          name = payload.name;
+          sub = payload.sub;
+          picture = payload.picture;
+        }
+      } catch (err) {
+        console.error('Error fetching Google userinfo:', err);
+      }
+    }
+
+    // 3. Fallback / direct profile from client
+    if (!email && userInfo && userInfo.email) {
+      email = userInfo.email;
+      name = userInfo.name || userInfo.email.split('@')[0];
+      sub = userInfo.sub || userInfo.id;
+      picture = userInfo.picture;
+    }
+
+    if (!email) {
+      return res.status(400).json({ message: 'Không thể xác thực thông tin tài khoản Google' });
+    }
+
+    const existing = await db.query(
+      'SELECT * FROM users WHERE LOWER(email) = $1 OR (auth_provider = $2 AND provider_id = $3)',
+      [email.trim().toLowerCase(), 'google', sub || '']
+    );
+
+    let user;
+    if (existing.rows.length > 0) {
+      user = existing.rows[0];
+      await db.query(
+        'UPDATE users SET auth_provider = COALESCE(auth_provider, $1), provider_id = COALESCE(provider_id, $2), avatar_url = COALESCE(avatar_url, $3) WHERE id = $4',
+        ['google', sub, picture, user.id]
+      );
+    } else {
+      const baseUsername = (name || email.split('@')[0]).replace(/[^a-zA-Z0-9_]/g, '') || 'user';
+      let finalUsername = baseUsername;
+      const countCheck = await db.query('SELECT COUNT(*) FROM users WHERE username = $1', [finalUsername]);
+      if (parseInt(countCheck.rows[0].count) > 0) {
+        finalUsername = `${baseUsername}_${Math.floor(1000 + Math.random() * 9000)}`;
+      }
+
+      const insertRes = await db.query(
+        'INSERT INTO users (username, email, auth_provider, provider_id, avatar_url) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, avatar_url, created_at',
+        [finalUsername, email.trim().toLowerCase(), 'google', sub, picture]
+      );
+      user = insertRes.rows[0];
+    }
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username, email: user.email },
+      process.env.JWT_SECRET || 'super_secret_jlpt_n5_key_2026',
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      message: 'Đăng nhập Google thành công!',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar_url: user.avatar_url || picture,
+        created_at: user.created_at
+      },
+      token
+    });
+  } catch (error) {
+    console.error('googleLogin error:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi đăng nhập bằng Google' });
+  }
+};
+
+// Facebook Login / OAuth verification
+const facebookLogin = async (req, res) => {
+  try {
+    const { accessToken, userID, userInfo } = req.body;
+    let email, name, id, picture;
+
+    if (accessToken) {
+      try {
+        const resp = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`);
+        if (resp.ok) {
+          const payload = await resp.json();
+          id = payload.id;
+          name = payload.name;
+          email = payload.email;
+          picture = payload.picture?.data?.url;
+        }
+      } catch (err) {
+        console.error('Error verifying Facebook token:', err);
+      }
+    }
+
+    if (!id && !email && userInfo) {
+      id = userInfo.id || userID;
+      name = userInfo.name;
+      email = userInfo.email;
+      picture = userInfo.picture;
+    }
+
+    if (!id && !email) {
+      return res.status(400).json({ message: 'Không thể xác thực thông tin tài khoản Facebook' });
+    }
+
+    const finalEmail = (email || `${id}@facebook.user`).toLowerCase();
+
+    const existing = await db.query(
+      'SELECT * FROM users WHERE LOWER(email) = $1 OR (auth_provider = $2 AND provider_id = $3)',
+      [finalEmail, 'facebook', id || '']
+    );
+
+    let user;
+    if (existing.rows.length > 0) {
+      user = existing.rows[0];
+      await db.query(
+        'UPDATE users SET auth_provider = COALESCE(auth_provider, $1), provider_id = COALESCE(provider_id, $2), avatar_url = COALESCE(avatar_url, $3) WHERE id = $4',
+        ['facebook', id, picture, user.id]
+      );
+    } else {
+      const baseUsername = (name || 'fb_user').replace(/[^a-zA-Z0-9_]/g, '') || 'fb_user';
+      let finalUsername = baseUsername;
+      const countCheck = await db.query('SELECT COUNT(*) FROM users WHERE username = $1', [finalUsername]);
+      if (parseInt(countCheck.rows[0].count) > 0) {
+        finalUsername = `${baseUsername}_${Math.floor(1000 + Math.random() * 9000)}`;
+      }
+
+      const insertRes = await db.query(
+        'INSERT INTO users (username, email, auth_provider, provider_id, avatar_url) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, avatar_url, created_at',
+        [finalUsername, finalEmail, 'facebook', id, picture]
+      );
+      user = insertRes.rows[0];
+    }
+
+    const token = jwt.sign(
+      { id: user.id, username: user.username, email: user.email },
+      process.env.JWT_SECRET || 'super_secret_jlpt_n5_key_2026',
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      message: 'Đăng nhập Facebook thành công!',
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar_url: user.avatar_url || picture,
+        created_at: user.created_at
+      },
+      token
+    });
+  } catch (error) {
+    console.error('facebookLogin error:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi đăng nhập bằng Facebook' });
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword, googleLogin, facebookLogin };

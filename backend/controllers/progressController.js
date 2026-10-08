@@ -86,7 +86,7 @@ const updateVocabularyProgress = async (req, res) => {
       SET 
         status = $3,
         correct_count = user_progress.correct_count + $4,
-        wrong_count = user_progress.wrong_count + $5,
+        wrong_count = CASE WHEN $3 = 'mastered' THEN 0 ELSE user_progress.wrong_count + $5 END,
         last_studied_at = CURRENT_TIMESTAMP
       RETURNING *
     `, [

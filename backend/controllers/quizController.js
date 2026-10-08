@@ -48,16 +48,18 @@ const getQuiz = async (req, res) => {
     const selected = shuffled.slice(0, Math.min(parseInt(count), pool.length));
 
     const questions = selected.map((item, index) => {
-      let availableTypes = ['jp_to_vi', 'vi_to_jp', 'kana_input'];
+      let availableTypes = ['jp_to_vi', 'vi_to_jp'];
       if (item.kanji && item.kanji !== '–' && item.kanji !== '-') {
         availableTypes.push('kanji_to_reading');
       }
 
       let qType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-      if (mode === 'kana_input') qType = 'kana_input';
-      else if (mode === 'multiple_choice') {
-        const mcTypes = availableTypes.filter(t => t !== 'kana_input');
-        qType = mcTypes[Math.floor(Math.random() * mcTypes.length)];
+      if (mode === 'jp_to_vi') qType = 'jp_to_vi';
+      else if (mode === 'vi_to_jp') qType = 'vi_to_jp';
+      else if ((mode === 'kanji_to_reading' || mode === 'multiple_choice') && item.kanji && item.kanji !== '–' && item.kanji !== '-') {
+        qType = 'kanji_to_reading';
+      } else if (mode === 'kanji_to_reading' || mode === 'multiple_choice') {
+        qType = 'jp_to_vi';
       }
 
       let questionText = '';
@@ -70,7 +72,7 @@ const getQuiz = async (req, res) => {
 
       if (qType === 'jp_to_vi') {
         prompt = 'Chọn nghĩa tiếng Việt chính xác';
-        questionText = item.kanji ? `${item.kanji} (${cleanK})` : cleanK;
+        questionText = item.kanji && item.kanji !== '–' && item.kanji !== '-' ? `${item.kanji} (${cleanK})` : cleanK;
         correctAnswer = cleanMeaning;
 
         const distractors = shuffleArray(
@@ -80,13 +82,14 @@ const getQuiz = async (req, res) => {
       } else if (qType === 'vi_to_jp') {
         prompt = 'Chọn từ tiếng Nhật tương ứng';
         questionText = cleanMeaning;
-        correctAnswer = item.kanji ? `${item.kanji} (${cleanK})` : cleanK;
+        correctAnswer = item.kanji && item.kanji !== '–' && item.kanji !== '-' ? `${item.kanji} (${cleanK})` : cleanK;
 
         const distractors = shuffleArray(
           allVocabs.filter(v => v.id !== item.id)
-        ).slice(0, 3).map(v => v.kanji ? `${v.kanji} (${v.display_kana})` : v.display_kana);
+        ).slice(0, 3).map(v => (v.kanji && v.kanji !== '–' && v.kanji !== '-') ? `${v.kanji} (${v.display_kana})` : v.display_kana);
         options = shuffleArray([correctAnswer, ...distractors]);
-      } else if (qType === 'kanji_to_reading') {
+      } else {
+        // kanji_to_reading
         prompt = 'Chọn cách đọc Hiragana đúng cho chữ Hán';
         questionText = item.kanji;
         correctAnswer = cleanK;
@@ -95,11 +98,6 @@ const getQuiz = async (req, res) => {
           allVocabs.filter(v => v.id !== item.id && v.display_kana !== cleanK)
         ).slice(0, 3).map(v => v.display_kana);
         options = shuffleArray([correctAnswer, ...distractors]);
-      } else {
-        // kana_input
-        prompt = 'Nhập cách đọc Hiragana/Katakana chính xác';
-        questionText = item.kanji ? `${item.kanji} (${cleanMeaning})` : cleanMeaning;
-        correctAnswer = cleanK;
       }
 
       return {
