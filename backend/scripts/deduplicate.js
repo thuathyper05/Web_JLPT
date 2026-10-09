@@ -12,17 +12,7 @@ async function deduplicateDatabase() {
 
   try {
     // 1. Ensure `role` column exists in users
-    await db.query(`
-      DO $$
-      BEGIN
-        IF NOT EXISTS (
-          SELECT 1 FROM information_schema.columns 
-          WHERE table_name = 'users' AND column_name = 'role'
-        ) THEN
-          ALTER TABLE users ADD COLUMN role VARCHAR(50) DEFAULT 'user';
-        END IF;
-      END $$;
-    `);
+    await db.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(50) DEFAULT 'user';`);
 
     // 2. Ensure admin account exists with role = 'admin' and exact specified password
     const adminHash = await bcrypt.hash(ADMIN_PASSWORD_RAW, 10);
