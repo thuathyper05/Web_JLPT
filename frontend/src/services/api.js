@@ -34,42 +34,77 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Robust Japanese Speech Synthesis Engine with fallback and natural pitch
+// High-Fidelity Japanese Audio Engine (Tokyo Standard Pronunciation)
+let currentAudio = null;
+
 export const speakJapanese = (text) => {
   if (!text) return;
-  if (!('speechSynthesis' in window)) {
-    console.warn('Speech synthesis not supported.');
-    return;
+
+  // 1. Sanitize text for pristine Tokyo pronunciation
+  let cleanText = String(text).trim();
+  if (cleanText.includes('/')) cleanText = cleanText.split('/')[0].trim();
+  if (cleanText.includes('、')) cleanText = cleanText.split('、')[0].trim();
+  // Remove parenthesized or bracketed contextual notes
+  cleanText = cleanText
+    .replace(/\([^)]*\)/g, '')
+    .replace(/（[^）]*）/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/【[^】]*】/g, '')
+    .replace(/[~〜～\-—_*]/g, '')
+    .trim();
+
+  if (!cleanText) return;
+
+  // Stop any currently playing audio to prevent overlapping
+  if (currentAudio) {
+    try {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    } catch {}
+    currentAudio = null;
   }
 
-  // Cancel any ongoing speech to prevent queue build-up
-  window.speechSynthesis.cancel();
+  // Device-level SpeechSynthesis Fallback
+  const fallbackSpeechSynthesis = () => {
+    if (!('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'ja-JP';
+      utterance.rate = 0.88; // Natural learning speed
+      utterance.pitch = 1.0;
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'ja-JP';
-  utterance.rate = 0.88; // Natural learning speed
-  utterance.pitch = 1.0;
+      const voices = window.speechSynthesis.getVoices();
+      // Prioritize standard Japanese voices (Google 日本語, Apple Kyoko/Otoya, MS Nanami)
+      const jaVoice = voices.find(v => (v.lang === 'ja-JP' || v.lang === 'ja_JP') && !v.name.includes('Low Quality'))
+        || voices.find(v => v.lang.startsWith('ja'));
+      if (jaVoice) utterance.voice = jaVoice;
 
-  const setVoice = () => {
-    const voices = window.speechSynthesis.getVoices();
-    // Prioritize high-quality Japanese voices (Google 日本語, Microsoft Nanami/Haruka/Ichiro, Apple Kyoko/Otoya)
-    const jaVoice = voices.find(v => (v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja')) && !v.name.includes('Low Quality'))
-      || voices.find(v => v.lang.startsWith('ja'));
-
-    if (jaVoice) {
-      utterance.voice = jaVoice;
+      window.speechSynthesis.speak(utterance);
+    } catch (err) {
+      console.warn('SpeechSynthesis error:', err);
     }
   };
 
-  setVoice();
+  // 2. Play Tokyo Neural Japanese Audio (Studio Standard) with automatic fallback
+  try {
+    const encoded = encodeURIComponent(cleanText);
+    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encoded}`;
+    const audio = new Audio(audioUrl);
+    currentAudio = audio;
 
-  if (window.speechSynthesis.getVoices().length === 0) {
-    window.speechSynthesis.onvoiceschanged = () => {
-      setVoice();
-      window.speechSynthesis.speak(utterance);
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        fallbackSpeechSynthesis();
+      });
+    }
+
+    audio.onerror = () => {
+      fallbackSpeechSynthesis();
     };
-  } else {
-    window.speechSynthesis.speak(utterance);
+  } catch {
+    fallbackSpeechSynthesis();
   }
 };
 

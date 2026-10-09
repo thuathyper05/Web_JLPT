@@ -70,7 +70,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
+      { id: user.id, username: user.username, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'super_secret_jlpt_n5_key_2026',
       { expiresIn: '30d' }
     );
@@ -81,6 +81,8 @@ const login = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role || 'user',
+        avatar_url: user.avatar_url,
         created_at: user.created_at
       },
       token
@@ -94,7 +96,7 @@ const login = async (req, res) => {
 const getMe = async (req, res) => {
   try {
     const result = await db.query(
-      'SELECT id, username, email, created_at FROM users WHERE id = $1',
+      'SELECT id, username, email, role, avatar_url, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
     if (result.rows.length === 0) {
@@ -266,7 +268,7 @@ const googleLogin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
+      { id: user.id, username: user.username, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'super_secret_jlpt_n5_key_2026',
       { expiresIn: '30d' }
     );
@@ -277,6 +279,7 @@ const googleLogin = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role || 'user',
         avatar_url: user.avatar_url || picture,
         created_at: user.created_at
       },
@@ -350,7 +353,7 @@ const facebookLogin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email },
+      { id: user.id, username: user.username, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'super_secret_jlpt_n5_key_2026',
       { expiresIn: '30d' }
     );
@@ -361,6 +364,7 @@ const facebookLogin = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role || 'user',
         avatar_url: user.avatar_url || picture,
         created_at: user.created_at
       },

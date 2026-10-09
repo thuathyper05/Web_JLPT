@@ -325,12 +325,20 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
 
     try {
       if (mode === 'login') {
-        await login({
+        const loginRes = await login({
           usernameOrEmail: formData.usernameOrEmail,
           password: formData.password
         });
         sounds.playCorrect();
         toggle();
+
+        // If authenticated as admin, automatically enter Admin Portal
+        if (loginRes?.user?.role === 'admin') {
+          setTimeout(() => {
+            window.history.pushState({}, '', '/admin');
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          }, 150);
+        }
       } else if (mode === 'register') {
         if (formData.password.length < 6) {
           setErrorMsg('Mật khẩu phải có độ dài ít nhất 6 ký tự!');

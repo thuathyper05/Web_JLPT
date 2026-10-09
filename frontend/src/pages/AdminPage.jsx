@@ -48,12 +48,9 @@ import { adminService, speakJapanese } from '../services/api';
 import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
-const DEFAULT_ADMIN_EMAIL = 'thuathyper05@gmail.com';
-const DEFAULT_ADMIN_PASS = 'Thuatnguyen1204@@@';
-
 const AdminPage = ({ onBackToApp }) => {
-  // Authentication State
-  const [adminToken, setAdminToken] = useState(() => localStorage.getItem('hyper_admin_token') || '');
+  // Authentication State: Check hyper_admin_token or active jlpt_token
+  const [adminToken, setAdminToken] = useState(() => localStorage.getItem('hyper_admin_token') || localStorage.getItem('jlpt_token') || '');
   const [adminUser, setAdminUser] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('hyper_admin_user') || 'null');
@@ -63,8 +60,8 @@ const AdminPage = ({ onBackToApp }) => {
   });
 
   // Login Form State
-  const [loginEmail, setLoginEmail] = useState(DEFAULT_ADMIN_EMAIL);
-  const [loginPassword, setLoginPassword] = useState(DEFAULT_ADMIN_PASS);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
 
@@ -567,7 +564,7 @@ const AdminPage = ({ onBackToApp }) => {
                     required
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="thuathyper05@gmail.com"
+                    placeholder="admin@example.com"
                     className="bg-slate-900 border-slate-700 text-white py-2.5 ps-5 rounded-3"
                     style={{
                       background: '#1e293b',
@@ -580,7 +577,7 @@ const AdminPage = ({ onBackToApp }) => {
                 </div>
               </FormGroup>
 
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-4">
                 <Label className="small fw-bold text-slate-300 mb-1">
                   Mật khẩu Quản trị viên
                 </Label>
@@ -602,22 +599,6 @@ const AdminPage = ({ onBackToApp }) => {
                   <Lock size={16} className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
                 </div>
               </FormGroup>
-
-              {/* Quick Fill Button */}
-              <div className="mb-3 text-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLoginEmail(DEFAULT_ADMIN_EMAIL);
-                    setLoginPassword(DEFAULT_ADMIN_PASS);
-                    sounds.playFlip();
-                  }}
-                  className="btn btn-sm btn-link text-info text-decoration-none p-0 small fw-semibold"
-                  style={{ fontSize: '11.5px' }}
-                >
-                  ⚡ Điền nhanh tài khoản Admin mặc định
-                </button>
-              </div>
 
               <Button
                 type="submit"

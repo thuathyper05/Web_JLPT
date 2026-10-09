@@ -57,29 +57,29 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   return (
     <>
-      <Navbar dark expand="lg" className="navbar-custom sticky-top py-1.5 py-md-2 px-2 px-md-3">
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-2.5 px-md-3">
         <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
           {/* ── Left: Logo + Level ── */}
-          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
+          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
             <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
-              className="p-0 m-0 text-decoration-none" style={{ cursor: 'pointer' }}>
-              <Logo size={34} />
+              className="p-0 m-0 text-decoration-none d-flex align-items-center" style={{ cursor: 'pointer' }}>
+              <Logo size={32} />
             </NavbarBrand>
             <LevelSelector currentLevel={currentLevel} onChangeLevel={onChangeLevel} />
           </div>
 
           {/* ── Center: Desktop Nav ── */}
-          <Nav className="d-none d-lg-flex align-items-center" navbar style={{ gap: 1 }}>
+          <Nav className="d-none d-lg-flex align-items-center" navbar style={{ gap: 2 }}>
             {mainNavItems.map(item => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (
                 <NavItem key={item.id}>
                   <NavLink href="#" onClick={e => { e.preventDefault(); setActiveTab(item.id); }}
-                    className="d-flex align-items-center px-2 py-1 rounded-3"
+                    className="d-flex align-items-center px-2.5 py-1 rounded-3"
                     style={{
-                      gap: 5, fontSize: '0.84rem', fontWeight: isActive ? 700 : 500,
+                      gap: 6, fontSize: '0.84rem', fontWeight: isActive ? 700 : 500,
                       cursor: 'pointer', letterSpacing: '-0.01em',
                       color: isActive ? '#fff' : 'rgba(255,255,255,.72)',
                       background: isActive ? 'rgba(255,255,255,.14)' : 'transparent',
@@ -118,38 +118,29 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                       </DropdownItem>
                     );
                   })}
-                  <DropdownItem divider />
-                  <DropdownItem
-                    onClick={() => setActiveTab('admin')}
-                    className="d-flex align-items-center gap-2 py-2 text-danger fw-bold"
-                    style={{ fontSize: 13 }}
-                  >
-                    <ShieldCheck size={15} className="text-danger" />
-                    Quản trị Admin
-                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </NavItem>
           </Nav>
 
-          {/* ── Right: Search + Account + Mobile Menu Toggle ── */}
-          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
+          {/* ── Right: Search + Account + Mobile Menu Toggle (Refined Spacing) ── */}
+          <div className="d-flex align-items-center gap-2 flex-shrink-0">
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
-              style={{ background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: 9999, padding: '6px 12px', color: '#fff', fontSize: 12.5, fontWeight: 500, cursor: 'pointer', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(4px)' }}
-              onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,.17)'; }}
-              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,.1)'; }}>
+              style={{ background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 12.5, fontWeight: 500, cursor: 'pointer', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(8px)' }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,.15)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,.08)'; }}>
               <Search size={14} />
               <span>Tìm từ vựng...</span>
             </button>
 
-            {/* Mobile-only Circular Search Button */}
+            {/* Mobile-only Refined Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
               className="d-flex d-sm-none align-items-center justify-content-center"
-              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)', borderRadius: '50%', color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(4px)', padding: 0 }}
+              style={{ width: 36, height: 36, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 12, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
               title="Tìm kiếm từ vựng">
-              <Search size={15} />
+              <Search size={16} />
             </button>
 
             {/* Account dropdown / Login button */}
@@ -158,9 +149,9 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 <DropdownToggle nav caret={false}
                   className="d-flex align-items-center p-0 text-white" style={{ gap: 8 }}>
                   {user.avatar_url ? (
-                    <img src={user.avatar_url} alt="" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
+                    <img src={user.avatar_url} alt="" style={{ width: 36, height: 36, borderRadius: 12, border: '1.5px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, color: '#fff' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 12, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, color: '#fff', border: '1.5px solid rgba(255,255,255,.25)' }}>
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -182,10 +173,15 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   <DropdownItem onClick={() => setActiveTab('notes')} className="d-flex align-items-center gap-2 py-2">
                     <FileText size={15} style={{ color: '#0ea5e9' }} /> Sổ ghi chú
                   </DropdownItem>
+                  {user?.role === 'admin' && (
+                    <>
+                      <DropdownItem divider />
+                      <DropdownItem onClick={() => setActiveTab('admin')} className="d-flex align-items-center gap-2 py-2 text-danger fw-semibold">
+                        <ShieldCheck size={15} className="text-danger" /> Quản trị Admin
+                      </DropdownItem>
+                    </>
+                  )}
                   <DropdownItem divider />
-                  <DropdownItem onClick={() => setActiveTab('admin')} className="d-flex align-items-center gap-2 py-2 text-danger fw-semibold">
-                    <ShieldCheck size={15} className="text-danger" /> Quản trị Admin
-                  </DropdownItem>
                   <DropdownItem onClick={logout} className="d-flex align-items-center gap-2 py-2 text-secondary">
                     <LogOut size={15} /> Đăng xuất
                   </DropdownItem>
@@ -200,12 +196,12 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   <LogIn size={13} /> <span>Đăng nhập</span>
                 </button>
 
-                {/* Mobile-only Login Button */}
+                {/* Mobile-only Squircle Login Button */}
                 <button type="button" onClick={() => openAuth('login')}
                   className="d-inline-flex d-sm-none align-items-center justify-content-center"
-                  style={{ width: 34, height: 34, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
+                  style={{ width: 36, height: 36, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 12, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
                   title="Đăng nhập">
-                  <LogIn size={15} />
+                  <LogIn size={16} />
                 </button>
               </>
             )}
@@ -216,14 +212,14 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               className="d-lg-none d-flex align-items-center justify-content-center"
               onClick={() => setMobileMenuOpen(true)}
               style={{
-                width: 34,
-                height: 34,
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.18)',
-                borderRadius: 10,
+                width: 36,
+                height: 36,
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.16)',
+                borderRadius: 12,
                 color: '#fff',
                 cursor: 'pointer',
-                backdropFilter: 'blur(4px)',
+                backdropFilter: 'blur(8px)',
                 padding: 0
               }}
               title="Menu mở rộng"
@@ -287,29 +283,44 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
           <div className="p-3 d-flex flex-column gap-3" style={{ maxHeight: '72vh', overflowY: 'auto' }}>
             {/* User Profile / Login Card */}
             {user ? (
-              <div className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between" style={{ background: 'var(--slate-50)', borderColor: 'var(--slate-200)' }}>
-                <div className="d-flex align-items-center gap-2.5 min-w-0">
-                  {user.avatar_url ? (
-                    <img src={user.avatar_url} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, color: '#fff', flexShrink: 0 }}>
-                      {user.username.charAt(0).toUpperCase()}
+              <div className="p-2.5 rounded-3 border d-flex flex-column gap-2" style={{ background: 'var(--slate-50)', borderColor: 'var(--slate-200)' }}>
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center gap-2.5 min-w-0">
+                    {user.avatar_url ? (
+                      <img src={user.avatar_url} alt="" style={{ width: 38, height: 38, borderRadius: 12, objectFit: 'cover' }} />
+                    ) : (
+                      <div style={{ width: 38, height: 38, borderRadius: 12, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, color: '#fff', flexShrink: 0 }}>
+                        {user.username.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="fw-bold text-dark text-truncate" style={{ fontSize: '13.5px' }}>{user.username}</div>
+                      <div className="text-muted text-truncate" style={{ fontSize: '11px' }}>{user.email}</div>
                     </div>
-                  )}
-                  <div className="min-w-0">
-                    <div className="fw-bold text-dark text-truncate" style={{ fontSize: '13.5px' }}>{user.username}</div>
-                    <div className="text-muted text-truncate" style={{ fontSize: '11px' }}>{user.email}</div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => { logout(); setMobileMenuOpen(false); }}
+                    className="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-1 d-flex align-items-center gap-1 flex-shrink-0"
+                    style={{ fontSize: '11px' }}
+                  >
+                    <LogOut size={12} />
+                    <span>Thoát</span>
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => { logout(); setMobileMenuOpen(false); }}
-                  className="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-1 d-flex align-items-center gap-1 flex-shrink-0"
-                  style={{ fontSize: '11px' }}
-                >
-                  <LogOut size={12} />
-                  <span>Thoát</span>
-                </button>
+                {user.role === 'admin' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setActiveTab('admin');
+                    }}
+                    className="btn btn-sm btn-danger rounded-pill py-1.5 px-3 fw-bold d-flex align-items-center justify-content-center gap-1.5 shadow-xs"
+                    style={{ fontSize: '12px' }}
+                  >
+                    <ShieldCheck size={14} /> Cổng Quản trị Admin
+                  </button>
+                )}
               </div>
             ) : (
               <div className="p-3 rounded-3 border d-flex align-items-center justify-content-between" style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)', borderColor: 'var(--primary-border)' }}>
@@ -327,39 +338,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 </button>
               </div>
             )}
-
-            {/* Direct Admin Access Card for Quick Testing */}
-            <div
-              className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between"
-              style={{
-                background: 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)',
-                borderColor: '#fecaca'
-              }}
-            >
-              <div className="d-flex align-items-center gap-2">
-                <div
-                  className="d-flex align-items-center justify-content-center rounded-2 text-white shadow-xs"
-                  style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}
-                >
-                  <ShieldCheck size={16} />
-                </div>
-                <div>
-                  <div className="fw-bold text-danger" style={{ fontSize: '13px' }}>Cổng Quản Trị Admin</div>
-                  <div className="text-muted" style={{ fontSize: '10.5px' }}>thuathyper05@gmail.com</div>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setActiveTab('admin');
-                }}
-                className="btn btn-sm btn-danger rounded-pill px-3 py-1 fw-bold shadow-xs flex-shrink-0"
-                style={{ fontSize: '11.5px' }}
-              >
-                Vào Admin →
-              </button>
-            </div>
 
             {/* Group 1: Study Modes */}
             <div>
@@ -457,21 +435,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   );
                 })}
               </div>
-            </div>
-
-            {/* Admin shortcut */}
-            <div className="pt-2 border-top">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setActiveTab('admin');
-                }}
-                className="btn btn-outline-danger w-100 py-2.5 rounded-3 small fw-bold d-flex align-items-center justify-content-center gap-1.5 shadow-xs"
-                style={{ fontSize: '12.5px' }}
-              >
-                <ShieldCheck size={16} /> Cổng Quản Trị Hệ Thống (Admin)
-              </button>
             </div>
           </div>
         </ModalBody>

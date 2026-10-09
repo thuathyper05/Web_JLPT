@@ -379,19 +379,6 @@ function App() {
               </span>
               <span>•</span>
               <span style={{ color: '#94a3b8' }}>Phiên bản 2.5 Pro</span>
-              <span>•</span>
-              <button
-                type="button"
-                onClick={() => {
-                  window.history.pushState({}, '', '/admin');
-                  setIsAdminRoute(true);
-                }}
-                className="btn btn-link text-slate-400 p-0 small text-decoration-none d-inline-flex align-items-center gap-1"
-                style={{ fontSize: '12px', color: '#94a3b8' }}
-                title="Cổng điều hành và quản lý dành cho Quản trị viên"
-              >
-                <ShieldAlert size={13} className="text-danger" /> Quản trị Admin
-              </button>
             </div>
           </div>
         </div>

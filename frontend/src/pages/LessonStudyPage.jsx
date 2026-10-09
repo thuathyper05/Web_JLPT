@@ -200,7 +200,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
     <Container className="py-2.5 py-md-4" style={{ maxWidth: '1000px', overflowX: 'hidden' }}>
       {/* ── UNIFIED LUXURY RESPONSIVE LESSON HEADER ── */}
       <div
-        className="page-header-box mb-3 mb-md-4 p-3 p-md-4 rounded-4 shadow-sm position-relative overflow-hidden"
+        className="page-header-box mb-3 mb-md-4 p-3 rounded-4 shadow-sm position-relative overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
           border: '1px solid #e2e8f0',
@@ -209,33 +209,21 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
         }}
       >
         {/* Row 1: Lesson Badges & Switcher Dropdown */}
-        <div className="d-flex justify-content-between align-items-center gap-2 mb-2.5 w-100 flex-wrap">
-          <div className="d-flex align-items-center gap-2 min-w-0">
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
+        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100 flex-wrap">
+          <div className="d-flex align-items-center gap-1.5 flex-wrap">
+            <span
+              className="badge rounded-pill fw-bold px-2.5 py-1 text-white shadow-xs"
               style={{
-                width: '36px',
-                height: '36px',
-                background: 'linear-gradient(135deg, #1e3a8a, #2563eb)'
+                background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
+                fontSize: '11.5px',
+                letterSpacing: '0.02em'
               }}
             >
-              <BookOpen size={18} />
-            </div>
-
-            <div className="d-flex align-items-center gap-1.5 flex-wrap">
-              <span
-                className="badge rounded-pill fw-bold px-2.5 py-1 text-white"
-                style={{
-                  background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
-                  fontSize: '11.5px'
-                }}
-              >
-                第{currentLessonNum}課 • Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
-              </span>
-              <span className="badge bg-light text-secondary border px-2 py-1 rounded-pill" style={{ fontSize: '11px' }}>
-                {vocabularies.length} từ vựng N5
-              </span>
-            </div>
+              第{currentLessonNum}課 • Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
+            </span>
+            <span className="badge bg-white text-secondary border px-2 py-1 rounded-pill fw-semibold" style={{ fontSize: '11px' }}>
+              {vocabularies.length} từ vựng N5
+            </span>
           </div>
 
           {/* Quick Lesson Switcher */}
@@ -269,15 +257,29 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           </div>
         </div>
 
-        {/* Row 2: Prominent Lesson Title with Safe Word Break */}
-        <div className="p-2.5 p-sm-3 rounded-3 mb-2.5 border" style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}>
+        {/* Row 2: Prominent Lesson Title with Safe Multi-line Wrap */}
+        <div
+          className="p-2.5 p-sm-3 rounded-3 mb-2.5 border"
+          style={{
+            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+            borderColor: '#e2e8f0',
+            width: '100%',
+            maxWidth: '100%'
+          }}
+        >
+          <div className="d-flex align-items-center gap-1.5 mb-1 text-primary small fw-bold" style={{ fontSize: '11px' }}>
+            <BookOpen size={13} />
+            <span>Chủ đề bài học</span>
+          </div>
           <h5
             className="fw-bold mb-0 text-navy-dark"
             style={{
-              fontSize: 'clamp(13.5px, 3.5vw, 16px)',
+              fontSize: 'clamp(13px, 3.4vw, 15.5px)',
               lineHeight: '1.5',
+              whiteSpace: 'normal',
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
+              display: 'block',
               color: '#0f172a'
             }}
           >
@@ -285,11 +287,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           </h5>
         </div>
 
-        {/* Row 3: Action Toolbar & Mode Selector (Wrap safely) */}
-        <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-1 border-top border-slate-200 border-opacity-60">
+        {/* Row 3: Action Toolbar (Wrap cleanly on mobile) */}
+        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 pt-2 border-top border-slate-200 border-opacity-60">
           {/* Segmented View Mode */}
-          <div className="d-flex align-items-center gap-1.5 flex-wrap">
-            <div className="segmented-control" style={{ padding: '2px' }}>
+          <div className="d-flex align-items-center gap-1.5">
+            <div className="segmented-control flex-grow-1 flex-sm-grow-0" style={{ padding: '2px' }}>
               <button
                 type="button"
                 onClick={() => setViewMode('step_by_step')}
@@ -312,23 +314,23 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               <button
                 type="button"
                 onClick={() => setAutoPlayAudio(!autoPlayAudio)}
-                className={`btn btn-sm rounded-pill border py-1 px-2.5 ${
+                className={`btn btn-sm rounded-pill border py-1 px-2.5 flex-shrink-0 ${
                   autoPlayAudio ? 'btn-primary text-white' : 'btn-light text-muted'
                 }`}
                 style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
                 title="Tự động phát âm giọng Tokyo khi chuyển từ"
               >
-                {autoPlayAudio ? '🔊 Phát âm: Bật' : '🔇 Phát âm: Tắt'}
+                {autoPlayAudio ? '🔊 Bật' : '🔇 Tắt'}
               </button>
             )}
           </div>
 
           {/* Quick Learning Links (Flashcard, Quiz, Practice) */}
-          <div className="d-flex align-items-center gap-1.5 flex-wrap w-100 w-md-auto">
+          <div className="d-flex align-items-center gap-1.5 w-100 w-sm-auto">
             <Button
               color="light"
               size="sm"
-              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-primary shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-primary shadow-xs d-flex align-items-center justify-content-center text-truncate"
               onClick={() => onNavigate('flashcard')}
               style={{ fontSize: '11.5px', minWidth: 0 }}
               title="Luyện Flashcard 3D"
@@ -339,7 +341,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             <Button
               color="light"
               size="sm"
-              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-danger shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-danger shadow-xs d-flex align-items-center justify-content-center text-truncate"
               onClick={() => onNavigate('quiz')}
               style={{ fontSize: '11.5px', minWidth: 0 }}
               title="Làm trắc nghiệm ABCD"
@@ -350,7 +352,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             <Button
               color="light"
               size="sm"
-              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-warning shadow-xs text-dark d-flex align-items-center justify-content-center text-truncate"
+              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-warning shadow-xs text-dark d-flex align-items-center justify-content-center text-truncate"
               onClick={() => onNavigate('practice')}
               style={{ fontSize: '11.5px', minWidth: 0 }}
               title="Luyện gõ không gợi ý"
