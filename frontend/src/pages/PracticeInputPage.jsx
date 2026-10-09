@@ -140,7 +140,15 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
   useEffect(() => {
     if (total > 0 && answeredCount === total && correctCount === total) {
       sounds.playComplete();
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      try {
+        const end = Date.now() + 1500;
+        const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+        (function frame() {
+          confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
+          confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      } catch {}
     }
   }, [correctCount, answeredCount, total]);
 

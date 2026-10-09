@@ -50,6 +50,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [wordAnim, setWordAnim] = useState('');
+  const [floatingXp, setFloatingXp] = useState(false);
 
   // View mode: 'step_by_step' | 'table_view'
   const [viewMode, setViewMode] = useState('step_by_step');
@@ -156,9 +157,15 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
     if (!currentWord || isRatingLocked) return;
     setIsRatingLocked(true);
 
-    if (status === 'mastered') sounds.playCorrect();
-    else if (status === 'needs_review') sounds.playWrong();
-    else sounds.playFlip();
+    if (status === 'mastered') {
+      sounds.playCorrect();
+      setFloatingXp(true);
+      setTimeout(() => setFloatingXp(false), 850);
+    } else if (status === 'needs_review') {
+      sounds.playWrong();
+    } else {
+      sounds.playFlip();
+    }
 
     // Optimistic local update
     setVocabularies(prev => prev.map(v => v.id === currentWord.id ? { ...v, user_status: status } : v));
@@ -380,6 +387,12 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           </div>
 
           <Card className={`jlpt-card border-0 shadow-sm p-2.5 p-sm-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden ${wordAnim ? `word-card-${wordAnim}` : ''}`} style={{ width: '100%', maxWidth: '100%' }}>
+            {/* Floating +10 XP badge */}
+            {floatingXp && (
+              <div className="floating-xp-badge">
+                +10 XP ✨ Đã thuộc!
+              </div>
+            )}
             {/* Top Tools */}
             <div className="d-flex justify-content-between align-items-center mb-2.5 w-100">
               <Badge color="primary" pill className="px-2.5 py-1 fw-bold" style={{ fontSize: '11.5px' }}>

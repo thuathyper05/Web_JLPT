@@ -56,6 +56,27 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   const [resultSummary, setResultSummary] = useState(null);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [floatingXp, setFloatingXp] = useState(false);
+  const [animatedScore, setAnimatedScore] = useState(0);
+
+  // Animated Count-Up for Quiz Final Score
+  useEffect(() => {
+    if (quizState === 'result' && resultSummary) {
+      const target = resultSummary.score_percentage || 0;
+      let start = 0;
+      const duration = 850;
+      const startTime = performance.now();
+      const step = (time) => {
+        const progress = Math.min((time - startTime) / duration, 1);
+        const current = Math.round(start + (target - start) * progress);
+        setAnimatedScore(current);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+    }
+  }, [quizState, resultSummary]);
 
   const hasTimer = timerSetting !== 'none';
   const timerDuration = parseInt(timerSetting) || 20;
@@ -151,6 +172,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     if (isCorrect) {
       sounds.playCorrect();
       setCurrentStreak(prev => prev + 1);
+      setFloatingXp(true);
+      setTimeout(() => setFloatingXp(false), 850);
     } else {
       sounds.playWrong();
       setCurrentStreak(0);
@@ -218,7 +241,15 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
       if ((correctCount / questions.length) >= 0.75) {
         sounds.playComplete();
-        confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 } });
+        try {
+          const end = Date.now() + 1500;
+          const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+          (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
+            confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
+            if (Date.now() < end) requestAnimationFrame(frame);
+          })();
+        } catch {}
       }
     } catch (err) {
       console.error('Error submitting quiz:', err);
@@ -692,9 +723,14 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 Bài {currentQ.lesson_number}
               </Badge>
               {currentStreak >= 2 && (
-                <Badge color="warning" pill className="text-dark fw-bold px-2 py-0.5 d-flex align-items-center gap-1" style={{ fontSize: '11px' }}>
-                  <Flame size={11} color="#dc2626" />
-                  <span>Chuỗi {currentStreak}</span>
+                <Badge
+                  color="warning"
+                  pill
+                  className="text-dark fw-bold px-2 py-0.5 d-flex align-items-center gap-1 combo-pulse"
+                  style={{ fontSize: '11px' }}
+                >
+                  <Flame size={12} color="#dc2626" className="flame-icon" />
+                  <span>Chuỗi {currentStreak} 🔥</span>
                 </Badge>
               )}
             </div>
@@ -720,8 +756,14 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             style={{ height: '5px' }}
           />
 
-          <Card className="jlpt-card border-0 shadow-sm mb-3 rounded-4 bg-white">
-            <CardBody className="p-3 p-md-5">
+          <Card className="jlpt-card border-0 shadow-sm mb-3 rounded-4 bg-white position-relative">
+            <CardBody className="p-3 p-md-5 position-relative">
+              {/* Floating +10 XP badge */}
+              {floatingXp && (
+                <div className="floating-xp-badge">
+                  +10 XP ✨ Chính xác!
+                </div>
+              )}
               {/* Question Prompt Area */}
               <div className="text-center mb-3 mb-md-4 pb-2.5 pb-md-3 border-bottom">
                 <span className="text-secondary small fw-semibold text-uppercase tracking-wider d-block mb-1.5" style={{ fontSize: '11px' }}>
@@ -904,7 +946,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           </div>
 
           <div className="display-4 fw-black text-primary mb-3">
-            {resultSummary.score_percentage}%
+            {animatedScore}%
           </div>
 
           <Row className="g-2 justify-content-center mb-4" style={{ maxWidth: '480px', margin: '0 auto' }}>

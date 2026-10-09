@@ -958,3 +958,89 @@ p {
   }
 }
 
+/* ==========================================================================
+   INTERACTIVE GAMIFICATION & MICRO-INTERACTIONS
+   ========================================================================== */
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 15px) scale(0.75);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -12px) scale(1.08);
+  }
+  45% {
+    transform: translate(-50%, -20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -55px) scale(0.92);
+  }
+}
+
+.floating-xp-badge {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 14.5px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  box-shadow: 0 10px 25px -4px rgba(16, 185, 129, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+  z-index: 999;
+  animation: floatUpFade 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.floating-xp-badge.badge-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 10px 25px -4px rgba(239, 68, 68, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.floating-xp-badge.badge-combo {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes comboPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.7)); }
+  100% { transform: scale(1); }
+}
+
+.combo-pulse {
+  animation: comboPulse 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tactile button press feedback */
+.interactive-tap:active {
+  transform: scale(0.97) !important;
+}
+
+/* Audio Playing Wave Pulse */
+@keyframes audioPulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+.audio-btn.is-speaking {
+  animation: audioPulseRing 1.2s infinite;
+  border-color: #2563eb !important;
+  color: #2563eb !important;
+}
+
+

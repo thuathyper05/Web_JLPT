@@ -16,8 +16,18 @@ class SoundEffects {
     }
   }
 
+  // Safe native tactile haptic feedback for mobile devices
+  triggerHaptic(pattern = 12) {
+    try {
+      if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(pattern);
+      }
+    } catch {}
+  }
+
   // Pleasant bell sound for correct answers
   playCorrect() {
+    this.triggerHaptic([15, 30, 20]);
     try {
       this.init();
       if (!this.ctx) return;
@@ -45,6 +55,7 @@ class SoundEffects {
 
   // Subtle soft buzz for wrong answers
   playWrong() {
+    this.triggerHaptic([35, 40, 35]);
     try {
       this.init();
       if (!this.ctx) return;
@@ -72,6 +83,7 @@ class SoundEffects {
 
   // Card flip click / swoosh
   playFlip() {
+    this.triggerHaptic(10);
     try {
       this.init();
       if (!this.ctx) return;
@@ -99,6 +111,7 @@ class SoundEffects {
 
   // Victory celebration chime
   playComplete() {
+    this.triggerHaptic([30, 50, 30, 50, 70]);
     try {
       this.init();
       if (!this.ctx) return;

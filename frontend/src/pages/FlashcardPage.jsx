@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Container,
   Row,
@@ -48,6 +48,49 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const [sessionDone, setSessionDone] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionAnim, setTransitionAnim] = useState(''); // 'slide-mastered' | 'slide-review' | ''
+  const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
+  const [floatingXp, setFloatingXp] = useState(false);
+
+  // Mobile Touch Swipe Handling
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const [touchDeltaX, setTouchDeltaX] = useState(0);
+  const hasSwiped = useRef(false);
+
+  const handleTouchStart = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+      hasSwiped.current = false;
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (isTransitioning || sessionDone || !e.touches || e.touches.length === 0) return;
+    const deltaX = e.touches[0].clientX - touchStartX.current;
+    const deltaY = e.touches[0].clientY - touchStartY.current;
+    if (Math.abs(deltaX) > 15 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      hasSwiped.current = true;
+      setTouchDeltaX(Math.max(-90, Math.min(90, deltaX)));
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (typeof window !== 'undefined' && window.innerWidth < 992) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -6;
+    const rotateY = ((x - centerX) / centerX) * 6;
+    setCardTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setCardTilt({ x: 0, y: 0 });
+  };
 
   // Sync with initialLesson prop if changed externally
   useEffect(() => {
@@ -97,7 +140,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
 
   // Flip the 3D card
   const handleFlip = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || hasSwiped.current) return;
     sounds.playFlip();
     setIsFlipped((prev) => !prev);
   }, [isTransitioning]);
@@ -114,6 +157,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     if (remembered) {
       sounds.playCorrect();
       setMasteredIds((prev) => new Set(prev).add(currentCard.id));
+      setFloatingXp(true);
+      setTimeout(() => setFloatingXp(false), 850);
       updateProgress(currentCard.id, 'mastered', true).catch(() => {});
     } else {
       sounds.playWrong();
@@ -135,10 +180,33 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
         setSessionDone(true);
         setTransitionAnim('');
         setIsTransitioning(false);
-        confetti({ particleCount: 140, spread: 90, origin: { y: 0.6 } });
+        try {
+          const end = Date.now() + 1500;
+          const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+          (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
+            confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
+            if (Date.now() < end) requestAnimationFrame(frame);
+          })();
+        } catch {}
       }
     }, 280);
   }, [currentCard, currentIndex, cards.length, isTransitioning, sessionDone, updateProgress]);
+
+  // Mobile Touch End (Swipe gesture trigger)
+  const handleTouchEnd = () => {
+    if (Math.abs(touchDeltaX) > 40) {
+      if (touchDeltaX > 0) {
+        handleAnswer(true);
+      } else {
+        handleAnswer(false);
+      }
+    }
+    setTouchDeltaX(0);
+    setTimeout(() => {
+      hasSwiped.current = false;
+    }, 120);
+  };
 
   // Navigation: Next / Prev
   const handleNext = useCallback(() => {
@@ -533,7 +601,29 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
 
           {/* ── 3D FLIP CARD CONTAINER ── */}
-          <div className={`flashcard-container mb-3 ${transitionAnim}`} onClick={handleFlip}>
+          <div
+            className={`flashcard-container mb-3 position-relative ${transitionAnim}`}
+            onClick={handleFlip}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              transform: touchDeltaX !== 0
+                ? `translateX(${touchDeltaX * 0.45}px) rotateZ(${touchDeltaX * 0.05}deg)`
+                : (cardTilt.x !== 0 || cardTilt.y !== 0)
+                  ? `perspective(1200px) rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)`
+                  : undefined,
+              transition: touchDeltaX !== 0 ? 'none' : 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease'
+            }}
+          >
+            {/* Floating +10 XP badge */}
+            {floatingXp && (
+              <div className="floating-xp-badge">
+                +10 XP ✨ Đã nhớ!
+              </div>
+            )}
             <div className={`flashcard-inner ${isFlipped ? 'is-flipped' : ''}`}>
 
               {/* ── CARD FRONT FACE ── */}
