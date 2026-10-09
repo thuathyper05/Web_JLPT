@@ -34,17 +34,18 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// High-Fidelity Japanese Audio Engine (Tokyo Standard Pronunciation)
-let currentAudio = null;
-
+// High-Fidelity Japanese Speech Synthesis Engine (Native Tokyo Pronunciation)
 export const speakJapanese = (text) => {
   if (!text) return;
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    console.warn('Speech synthesis not supported on this device.');
+    return;
+  }
 
-  // 1. Sanitize text for pristine Tokyo pronunciation
+  // 1. Sanitize text for clean, natural Tokyo pronunciation
   let cleanText = String(text).trim();
   if (cleanText.includes('/')) cleanText = cleanText.split('/')[0].trim();
   if (cleanText.includes('、')) cleanText = cleanText.split('、')[0].trim();
-  // Remove parenthesized or bracketed contextual notes
   cleanText = cleanText
     .replace(/\([^)]*\)/g, '')
     .replace(/（[^）]*）/g, '')
@@ -55,56 +56,45 @@ export const speakJapanese = (text) => {
 
   if (!cleanText) return;
 
-  // Stop any currently playing audio to prevent overlapping
-  if (currentAudio) {
-    try {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    } catch {}
-    currentAudio = null;
-  }
-
-  // Device-level SpeechSynthesis Fallback
-  const fallbackSpeechSynthesis = () => {
-    if (!('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.lang = 'ja-JP';
-      utterance.rate = 0.88; // Natural learning speed
-      utterance.pitch = 1.0;
-
-      const voices = window.speechSynthesis.getVoices();
-      // Prioritize standard Japanese voices (Google 日本語, Apple Kyoko/Otoya, MS Nanami)
-      const jaVoice = voices.find(v => (v.lang === 'ja-JP' || v.lang === 'ja_JP') && !v.name.includes('Low Quality'))
-        || voices.find(v => v.lang.startsWith('ja'));
-      if (jaVoice) utterance.voice = jaVoice;
-
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.warn('SpeechSynthesis error:', err);
-    }
-  };
-
-  // 2. Play Tokyo Neural Japanese Audio (Studio Standard) with automatic fallback
   try {
-    const encoded = encodeURIComponent(cleanText);
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encoded}`;
-    const audio = new Audio(audioUrl);
-    currentAudio = audio;
+    // 2. Stop any pending speech immediately
+    window.speechSynthesis.cancel();
 
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        fallbackSpeechSynthesis();
-      });
-    }
+    // 3. Create utterance synchronously inside the user touch/click gesture
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'ja-JP';
+    utterance.rate = 0.88; // Natural learning speed
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
 
-    audio.onerror = () => {
-      fallbackSpeechSynthesis();
+    // 4. Select the best native Japanese voice (Apple Kyoko/Otoya on iOS, Google 日本語 on Android, MS Nanami on PC)
+    const setVoiceAndSpeak = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) {
+        const jaVoice = voices.find(v =>
+          (v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja')) &&
+          !v.name.includes('Low Quality')
+        ) || voices.find(v => v.lang.startsWith('ja'));
+
+        if (jaVoice) {
+          utterance.voice = jaVoice;
+        }
+      }
+      window.speechSynthesis.speak(utterance);
     };
-  } catch {
-    fallbackSpeechSynthesis();
+
+    const currentVoices = window.speechSynthesis.getVoices();
+    if (currentVoices && currentVoices.length > 0) {
+      setVoiceAndSpeak();
+    } else {
+      window.speechSynthesis.onvoiceschanged = () => {
+        setVoiceAndSpeak();
+      };
+      // Immediate speak fallback
+      window.speechSynthesis.speak(utterance);
+    }
+  } catch (err) {
+    console.warn('Speech synthesis error:', err);
   }
 };
 
