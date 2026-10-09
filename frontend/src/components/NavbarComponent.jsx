@@ -10,6 +10,7 @@ import {
   Menu, X, MoreHorizontal, ChevronRight, Sparkles, ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { sounds } from '../services/sounds';
 import Logo from './Logo';
 import LevelSelector from './LevelSelector';
 import AuthModal from './AuthModal';

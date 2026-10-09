@@ -115,10 +115,8 @@ body {
   overflow-x: hidden !important;
 }
 
-.container, .container-fluid {
+.container-fluid {
   width: 100%;
-  max-width: 100% !important;
-  overflow-x: clip;
 }
 
 /* Japanese typography utility */
@@ -710,6 +708,7 @@ p {
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   z-index: 1;
+  pointer-events: none;
 }
 
 .flashcard-inner.is-flipped .flashcard-back {
@@ -767,13 +766,9 @@ p {
 }
 
 @media (max-width: 576px) {
-  h1, .h1 { font-size: 1.4rem !important; }
-  h2, .h2 { font-size: 1.2rem !important; }
-  h3, .h3 { font-size: 1.05rem !important; }
-  
   .container {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
 
   .navbar-custom {
@@ -798,48 +793,43 @@ p {
     text-align: center;
   }
 
-  /* Flashcard ultra-compact on mobile: Exactly 230px so full screen fits without scrolling! */
+  /* Flashcard comfortable height on mobile: 310px allows Kanji, Romaji, and meaning to breathe */
   .flashcard-container {
-    min-height: 230px !important;
-    margin-bottom: 8px !important;
+    min-height: 310px;
+    margin-bottom: 12px;
   }
   .flashcard-inner {
-    min-height: 230px !important;
+    min-height: 310px;
   }
   .flashcard-face {
-    min-height: 230px !important;
-    padding: 12px 14px !important;
-    border-radius: var(--radius-md) !important;
+    min-height: 310px;
+    padding: 18px 16px;
+    border-radius: var(--radius-lg);
   }
   
   .flashcard-answer-btn {
-    padding: 10px 12px !important;
-    font-size: 13px !important;
-    border-radius: 12px !important;
+    padding: 11px 12px;
+    font-size: 13.5px;
+    border-radius: 12px;
   }
   
   .page-header-box {
-    padding: 10px 12px !important;
-    margin-bottom: 10px !important;
+    padding: 12px 14px;
+    margin-bottom: 12px;
   }
 
-  .btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  
   .quiz-option-card {
-    min-height: 46px !important;
-    padding: 8px 12px !important;
-    font-size: 13px !important;
-    border-radius: 12px !important;
+    min-height: 48px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    border-radius: 12px;
   }
 
   .quiz-option-badge {
-    width: 26px !important;
-    height: 26px !important;
-    font-size: 12px !important;
-    margin-right: 8px !important;
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+    margin-right: 8px;
   }
 }
 
@@ -852,12 +842,16 @@ p {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:active:not(:disabled),
 .btn:active:not(:disabled),
 .segmented-item:active,
 .quiz-option-card:active {
-  transform: scale(0.972);
+  transform: scale(0.975);
   transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Audio Button Glowing Wave Pulse */
