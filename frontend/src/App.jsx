@@ -13,6 +13,7 @@ import DashboardPage from './pages/DashboardPage';
 import KanjiPage from './pages/KanjiPage';
 import AdminPage from './pages/AdminPage';
 import Logo from './components/Logo';
+import WelcomeBannerModal from './components/WelcomeBannerModal';
 import { authService } from './services/api';
 import {
   BookOpen,
@@ -258,6 +259,13 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: 'var(--app-bg)' }}>
+      {/* ── Official Welcome Announcement Banner Modal ── */}
+      <WelcomeBannerModal
+        onExploreCourses={() => {
+          handleTabChange('lessons');
+        }}
+      />
+
       {/* ── Sticky Navigation Bar ── */}
       <NavbarComponent
         activeTab={activeTab}
@@ -427,6 +435,19 @@ function App() {
               © 2026 <strong className="text-white">HYPER JAPAN</strong>. Nền tảng học tiếng Nhật hiện đại. All rights reserved.
             </div>
             <div className="d-flex align-items-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-welcome-modal'))}
+                className="btn btn-link p-0 text-decoration-none small d-inline-flex align-items-center gap-1.5"
+                style={{ color: '#38bdf8', fontSize: '12.5px', transition: 'color 0.15s ease' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#7dd3fc')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#38bdf8')}
+                title="Xem lại thông báo chào mừng & Giới thiệu Founder"
+              >
+                <Sparkles size={13} className="text-warning" />
+                <span>Thông báo đặc biệt</span>
+              </button>
+              <span>•</span>
               <span className="d-inline-flex align-items-center gap-1.5" style={{ color: '#10b981' }}>
                 <span className="rounded-circle d-inline-block" style={{ width: 6, height: 6, background: '#10b981' }} />
                 Hệ thống trực tuyến 24/7

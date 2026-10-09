@@ -1043,4 +1043,142 @@ p {
   color: #2563eb !important;
 }
 
+/* ==========================================================================
+   HYPER JAPAN — WELCOME NOTIFICATION BANNER MODAL
+   ========================================================================== */
+.welcome-modal-overlay {
+  animation: welcomeOverlayFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.welcome-modal-overlay-closing {
+  animation: welcomeOverlayFadeOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.welcome-modal-card {
+  animation: welcomeCardScaleIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.welcome-modal-card-closing {
+  animation: welcomeCardScaleOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes welcomeOverlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes welcomeOverlayFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes welcomeCardScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes welcomeCardScaleOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+}
+
+/* "X" Close Button */
+.welcome-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.welcome-close-btn:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.65);
+}
+
+.welcome-close-btn:active {
+  transform: rotate(90deg) scale(0.94);
+}
+
+/* Primary Action CTA Button */
+.welcome-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(239, 68, 68, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  filter: brightness(1.06);
+}
+
+.welcome-cta-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Banner image frame sheen */
+.welcome-banner-frame {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.welcome-banner-frame:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+}
+
+.welcome-shine-overlay {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  transform: skewX(-25deg);
+  pointer-events: none;
+  animation: welcomeSheen 4.5s ease-in-out infinite;
+}
+
+@keyframes welcomeSheen {
+  0%, 60% {
+    left: -120%;
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    left: 220%;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-modal-card {
+    border-radius: 20px !important;
+    max-width: 95vw !important;
+  }
+  .welcome-close-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .welcome-modal-body {
+    padding: 12px !important;
+  }
+}
+
+
 

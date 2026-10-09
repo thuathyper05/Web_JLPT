@@ -145,6 +145,42 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               <Search size={16} />
             </button>
 
+            {/* Announcement / Welcome Banner Trigger Button */}
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playFlip();
+                window.dispatchEvent(new CustomEvent('open-welcome-modal'));
+              }}
+              className="d-flex align-items-center justify-content-center position-relative"
+              style={{
+                width: 36,
+                height: 36,
+                background: 'rgba(255,255,255,.08)',
+                border: '1px solid rgba(255,255,255,.16)',
+                borderRadius: 12,
+                color: '#fff',
+                cursor: 'pointer',
+                transition: 'all .18s ease',
+                backdropFilter: 'blur(8px)',
+                padding: 0
+              }}
+              title="Thông báo HYPER JAPAN"
+            >
+              <Sparkles size={16} className="text-warning" />
+              <span
+                className="position-absolute rounded-circle"
+                style={{
+                  top: 7,
+                  right: 7,
+                  width: 7,
+                  height: 7,
+                  background: '#ef4444',
+                  boxShadow: '0 0 6px #ef4444'
+                }}
+              />
+            </button>
+
             {/* Account dropdown / Login button */}
             {user ? (
               <UncontrolledDropdown inNavbar>
@@ -470,6 +506,41 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     </div>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* Group 3: Official Announcement */}
+            <div>
+              <div
+                onClick={() => {
+                  sounds.playFlip();
+                  setMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent('open-welcome-modal'));
+                }}
+                className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between"
+                style={{
+                  background: 'linear-gradient(135deg, #fef2f2 0%, #fffbeb 100%)',
+                  borderColor: 'rgba(239, 68, 68, 0.25)',
+                  cursor: 'pointer'
+                }}
+              >
+                <div className="d-flex align-items-center gap-2.5">
+                  <div
+                    className="d-flex align-items-center justify-content-center rounded-2 shadow-xs"
+                    style={{ width: 32, height: 32, background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: '#fff' }}
+                  >
+                    <Sparkles size={16} />
+                  </div>
+                  <div>
+                    <div className="fw-bold text-danger" style={{ fontSize: '13px' }}>
+                      Thông Báo HYPER JAPAN
+                    </div>
+                    <div className="text-muted" style={{ fontSize: '10.5px' }}>
+                      Website tiếng Nhật Đẳng cấp #1
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight size={14} className="text-danger" />
               </div>
             </div>
           </div>
