@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Rocket, ArrowRight } from 'lucide-react';
+import { X, Rocket, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../services/sounds';
 
@@ -138,26 +138,16 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ── Top Floating Header Bar (Overlaying Poster) ── */}
-        <div className="welcome-floating-topbar">
-          {/* Brand pill badge */}
-          <div className="welcome-floating-badge">
-            <span className="welcome-live-pulse-dot" />
-            <Sparkles size={13} className="text-warning flex-shrink-0" />
-            <span>HYPER JAPAN • THÔNG BÁO</span>
-          </div>
-
-          {/* Luxury Floating "X" Close Button */}
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Đóng thông báo (X)"
-            className="welcome-close-floating-btn"
-            title="Đóng thông báo (Esc)"
-          >
-            <X size={19} strokeWidth={2.8} />
-          </button>
-        </div>
+        {/* ── Luxury Floating "X" Close Button ── */}
+        <button
+          type="button"
+          onClick={handleClose}
+          aria-label="Đóng thông báo (X)"
+          className="welcome-close-floating-btn"
+          title="Đóng thông báo (Esc)"
+        >
+          <X size={19} strokeWidth={2.8} />
+        </button>
 
         {/* ── Edge-to-Edge Poster Showcase ── */}
         <div className="welcome-poster-wrap">
