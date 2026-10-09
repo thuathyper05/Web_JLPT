@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  X,
-  Sparkles,
-  Rocket,
-  CheckCircle2,
-  BookOpen,
-  Zap,
-  GraduationCap,
-  ArrowRight
-} from 'lucide-react';
+import { X, Sparkles, Rocket, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../services/sounds';
 
@@ -32,7 +23,7 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
     }
   }, []);
 
-  // Listen for custom trigger to re-open banner from navbar, footer, or mobile menu
+  // Listen for custom trigger to re-open banner if needed
   useEffect(() => {
     const handleReopen = () => {
       setIsClosing(false);
@@ -186,78 +177,22 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
           <div className="welcome-shine-overlay" />
         </div>
 
-        {/* ── Content & Actions Panel ── */}
-        <div className="welcome-panel-body">
-          {/* Main Headline & Description */}
-          <div className="text-center mb-3">
-            <h4 className="welcome-panel-title">
-              Website Học Tiếng Nhật Đẳng Cấp #1
-            </h4>
-            <p className="welcome-panel-subtitle">
-              Hệ thống đào tạo Minna no Nihongo N5 chuẩn Tokyo cùng Founder & Chuyên gia <strong className="text-white">Mr. Quang Minh</strong>
-            </p>
-          </div>
-
-          {/* ── 3 Professional Feature Badges ── */}
-          <div className="welcome-pills-grid mb-3.5">
-            <div className="welcome-pill-card">
-              <div className="welcome-pill-icon bg-primary-subtle text-primary">
-                <BookOpen size={15} />
+        {/* ── Action Panel (Clean & Focused) ── */}
+        <div className="welcome-panel-body pt-3 pb-3">
+          {/* Primary Action Button */}
+          <button
+            type="button"
+            onClick={handlePrimaryAction}
+            className="welcome-btn-primary"
+          >
+            <div className="d-flex align-items-center gap-2">
+              <div className="welcome-btn-icon-box">
+                <Rocket size={17} />
               </div>
-              <div className="welcome-pill-text">
-                <span className="welcome-pill-heading">25 Bài Minna</span>
-                <span className="welcome-pill-sub">1.589 Từ vựng</span>
-              </div>
+              <span style={{ fontSize: '15px', fontWeight: 800 }}>Khám Phá Ngay</span>
             </div>
-
-            <div className="welcome-pill-card">
-              <div className="welcome-pill-icon bg-warning-subtle text-warning">
-                <Zap size={15} />
-              </div>
-              <div className="welcome-pill-text">
-                <span className="welcome-pill-heading">Flashcard 3D</span>
-                <span className="welcome-pill-sub">Phản xạ tốc độ</span>
-              </div>
-            </div>
-
-            <div className="welcome-pill-card">
-              <div className="welcome-pill-icon bg-success-subtle text-success">
-                <GraduationCap size={15} />
-              </div>
-              <div className="welcome-pill-text">
-                <span className="welcome-pill-heading">Tokyo Pitch</span>
-                <span className="welcome-pill-sub">Chuẩn giọng bản xứ</span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── High-End Action Buttons ── */}
-          <div className="welcome-buttons-stack">
-            {/* Primary Action Button */}
-            <button
-              type="button"
-              onClick={handlePrimaryAction}
-              className="welcome-btn-primary"
-            >
-              <div className="d-flex align-items-center gap-2">
-                <div className="welcome-btn-icon-box">
-                  <Rocket size={17} />
-                </div>
-                <span>Bắt Đầu Khám Phá Ngay</span>
-              </div>
-              <ArrowRight size={18} className="welcome-btn-arrow" />
-            </button>
-
-            {/* Secondary Action / Dismiss Button */}
-            <button
-              type="button"
-              onClick={handleClose}
-              className="welcome-btn-secondary"
-            >
-              <CheckCircle2 size={16} className="text-emerald-400" />
-              <span>Đã hiểu, vào học tiếp</span>
-            </button>
-          </div>
+            <ArrowRight size={18} className="welcome-btn-arrow" />
+          </button>
 
           {/* ── Bottom Preferences Bar ── */}
           <div className="welcome-meta-bar mt-2.5">
