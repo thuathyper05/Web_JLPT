@@ -843,7 +843,25 @@ p {
   }
 }
 
-/* Touch feedback utility */
+/* Touch feedback & App-like Micro-interactions */
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+button:active:not(:disabled),
+.btn:active:not(:disabled),
+.segmented-item:active,
+.quiz-option-card:active {
+  transform: scale(0.975);
+  transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Luxury Desktop Card Elevation */
+@media (min-width: 992px) {
+  .jlpt-card {
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .jlpt-card:hover {
+    box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+  }
 }

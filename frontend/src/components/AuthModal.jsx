@@ -325,15 +325,35 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
 
     try {
       if (mode === 'login') {
+        const inputEmail = (formData.usernameOrEmail || '').trim().toLowerCase();
+        const isMobileScreen = window.innerWidth < 992;
+
+        // Security Constraint: Admin login restricted to Desktop only
+        if (inputEmail === 'thuathyper05@gmail.com' && isMobileScreen) {
+          setErrorMsg('⚠️ Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop) để bảo đảm an toàn dữ liệu và tối ưu không gian điều hành!');
+          sounds.playWrong();
+          setLoading(false);
+          return;
+        }
+
         const loginRes = await login({
           usernameOrEmail: formData.usernameOrEmail,
           password: formData.password
         });
+
+        if (loginRes?.user?.role === 'admin' && isMobileScreen) {
+          setErrorMsg('⚠️ Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop)!');
+          sounds.playWrong();
+          setLoading(false);
+          return;
+        }
+
         sounds.playCorrect();
         toggle();
 
-        // If authenticated as admin, automatically enter Admin Portal
-        if (loginRes?.user?.role === 'admin') {
+        // If authenticated as admin on desktop, automatically open Admin Portal
+        const isAdmin = loginRes?.user?.role === 'admin' || inputEmail === 'thuathyper05@gmail.com';
+        if (isAdmin && !isMobileScreen) {
           setTimeout(() => {
             window.history.pushState({}, '', '/admin');
             window.dispatchEvent(new PopStateEvent('popstate'));

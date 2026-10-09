@@ -287,11 +287,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           </h5>
         </div>
 
-        {/* Row 3: Action Toolbar (Wrap cleanly on mobile) */}
-        <div className="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 pt-2 border-top border-slate-200 border-opacity-60">
-          {/* Segmented View Mode */}
-          <div className="d-flex align-items-center gap-1.5">
-            <div className="segmented-control flex-grow-1 flex-sm-grow-0" style={{ padding: '2px' }}>
+        {/* Row 3: Action Toolbar (Streamlined & 100% Responsive) */}
+        <div className="d-flex justify-content-between align-items-center gap-2 pt-2 border-top border-slate-200 border-opacity-60 flex-wrap">
+          {/* Segmented View Mode & Audio Toggle */}
+          <div className="d-flex align-items-center gap-1.5 flex-nowrap">
+            <div className="segmented-control" style={{ padding: '2px' }}>
               <button
                 type="button"
                 onClick={() => setViewMode('step_by_step')}
@@ -325,40 +325,40 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             )}
           </div>
 
-          {/* Quick Learning Links (Flashcard, Quiz, Practice) */}
-          <div className="d-flex align-items-center gap-1.5 w-100 w-sm-auto">
+          {/* Quick Learning Links (Desktop/Tablet only, since Mobile already has them in the sticky bottom navigation bar) */}
+          <div className="d-none d-md-flex align-items-center gap-1.5 ms-auto">
             <Button
               color="light"
               size="sm"
-              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-primary shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              className="rounded-pill py-1 px-2.5 fw-semibold border text-primary shadow-xs d-flex align-items-center justify-content-center"
               onClick={() => onNavigate('flashcard')}
-              style={{ fontSize: '11.5px', minWidth: 0 }}
+              style={{ fontSize: '11.5px' }}
               title="Luyện Flashcard 3D"
             >
               <Layers size={13} className="me-1 flex-shrink-0" />
-              <span className="text-truncate">Flashcard</span>
+              <span>Flashcard</span>
             </Button>
             <Button
               color="light"
               size="sm"
-              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-danger shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              className="rounded-pill py-1 px-2.5 fw-semibold border text-danger shadow-xs d-flex align-items-center justify-content-center"
               onClick={() => onNavigate('quiz')}
-              style={{ fontSize: '11.5px', minWidth: 0 }}
+              style={{ fontSize: '11.5px' }}
               title="Làm trắc nghiệm ABCD"
             >
               <CheckSquare size={13} className="me-1 flex-shrink-0" />
-              <span className="text-truncate">Trắc nghiệm</span>
+              <span>Trắc nghiệm</span>
             </Button>
             <Button
               color="light"
               size="sm"
-              className="flex-fill rounded-pill py-1 px-2 fw-semibold border text-warning shadow-xs text-dark d-flex align-items-center justify-content-center text-truncate"
+              className="rounded-pill py-1 px-2.5 fw-semibold border text-warning shadow-xs text-dark d-flex align-items-center justify-content-center"
               onClick={() => onNavigate('practice')}
-              style={{ fontSize: '11.5px', minWidth: 0 }}
+              style={{ fontSize: '11.5px' }}
               title="Luyện gõ không gợi ý"
             >
               <Keyboard size={13} className="me-1 flex-shrink-0" />
-              <span className="text-truncate">Luyện gõ</span>
+              <span>Luyện gõ</span>
             </Button>
           </div>
         </div>

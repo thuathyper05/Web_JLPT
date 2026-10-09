@@ -173,7 +173,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   <DropdownItem onClick={() => setActiveTab('notes')} className="d-flex align-items-center gap-2 py-2">
                     <FileText size={15} style={{ color: '#0ea5e9' }} /> Sổ ghi chú
                   </DropdownItem>
-                  {user?.role === 'admin' && (
+                  {user?.role === 'admin' && typeof window !== 'undefined' && window.innerWidth >= 992 && (
                     <>
                       <DropdownItem divider />
                       <DropdownItem onClick={() => setActiveTab('admin')} className="d-flex align-items-center gap-2 py-2 text-danger fw-semibold">
@@ -308,19 +308,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <span>Thoát</span>
                   </button>
                 </div>
-                {user.role === 'admin' && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      setActiveTab('admin');
-                    }}
-                    className="btn btn-sm btn-danger rounded-pill py-1.5 px-3 fw-bold d-flex align-items-center justify-content-center gap-1.5 shadow-xs"
-                    style={{ fontSize: '12px' }}
-                  >
-                    <ShieldCheck size={14} /> Cổng Quản trị Admin
-                  </button>
-                )}
               </div>
             ) : (
               <div className="p-3 rounded-3 border d-flex align-items-center justify-content-between" style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%)', borderColor: 'var(--primary-border)' }}>

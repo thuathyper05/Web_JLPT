@@ -42,13 +42,26 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
-  ArrowRight
+  ArrowRight,
+  Monitor
 } from 'lucide-react';
 import { adminService, speakJapanese } from '../services/api';
 import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
 const AdminPage = ({ onBackToApp }) => {
+  // Enforce Desktop-only restriction
+  const [isMobileScreen, setIsMobileScreen] = useState(() => {
+    if (typeof window !== 'undefined') return window.innerWidth < 992;
+    return false;
+  });
+
+  useEffect(() => {
+    const handleResize = () => setIsMobileScreen(window.innerWidth < 992);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Authentication State: Check hyper_admin_token or active jlpt_token
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('hyper_admin_token') || localStorage.getItem('jlpt_token') || '');
   const [adminUser, setAdminUser] = useState(() => {
@@ -498,6 +511,42 @@ const AdminPage = ({ onBackToApp }) => {
       showAlert('danger', err.response?.data?.message || 'Lỗi xóa người dùng');
     }
   };
+
+  // ─────────────────────────────────────────────────────────────
+  // 0. MOBILE SCREEN GUARD (Admin portal strictly for Desktop)
+  // ─────────────────────────────────────────────────────────────
+  if (isMobileScreen) {
+    return (
+      <div
+        className="min-vh-100 d-flex align-items-center justify-content-center p-4 text-center"
+        style={{
+          background: 'radial-gradient(ellipse at top, #0f172a 0%, #020617 100%)',
+          color: '#f8fafc'
+        }}
+      >
+        <div style={{ maxWidth: '420px', width: '100%' }}>
+          <div
+            className="p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 text-warning shadow-lg"
+            style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.28)' }}
+          >
+            <Monitor size={40} />
+          </div>
+          <h4 className="fw-black mb-2 text-white">Yêu Cầu Truy Cập Trên Máy Tính</h4>
+          <p className="text-secondary small mb-4" style={{ lineHeight: '1.6', fontSize: '13px' }}>
+            Cổng Quản trị Hệ thống HYPER JAPAN chứa bảng điều khiển dữ liệu chuyên sâu và quản lý 1,589 từ vựng nên <strong>chỉ được phép truy cập trên Máy tính (Desktop / Laptop)</strong> để bảo đảm an toàn dữ liệu và tối ưu không gian làm việc.
+          </p>
+          <Button
+            color="primary"
+            className="rounded-pill px-4 py-2 fw-bold shadow-md"
+            style={{ fontSize: '13px' }}
+            onClick={onBackToApp}
+          >
+            ← Quay lại ứng dụng học tập
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   // ─────────────────────────────────────────────────────────────
   // 1. LOGIN SCREEN (If not authenticated as admin)
