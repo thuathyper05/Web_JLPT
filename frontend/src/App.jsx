@@ -31,10 +31,18 @@ import {
 } from 'lucide-react';
 
 function App() {
-  const [isAdminRoute, setIsAdminRoute] = useState(() => {
-    return typeof window !== 'undefined' && 
-      (window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin') || window.location.search.includes('tab=admin'));
-  });
+  const checkIsAdmin = () => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.location.pathname === '/admin' ||
+      window.location.pathname.startsWith('/admin') ||
+      window.location.search.includes('tab=admin') ||
+      window.location.search.includes('admin') ||
+      window.location.hash.includes('admin')
+    );
+  };
+
+  const [isAdminRoute, setIsAdminRoute] = useState(checkIsAdmin);
 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedLesson, setSelectedLesson] = useState(1);
@@ -43,14 +51,14 @@ function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      setIsAdminRoute(
-        window.location.pathname === '/admin' ||
-        window.location.pathname.startsWith('/admin') ||
-        window.location.search.includes('tab=admin')
-      );
+      setIsAdminRoute(checkIsAdmin());
     };
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
   }, []);
 
   // Catch OAuth redirect access tokens (e.g., from mobile Facebook or Google redirects)
