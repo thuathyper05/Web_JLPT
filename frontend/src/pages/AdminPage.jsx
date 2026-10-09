@@ -49,6 +49,8 @@ import { adminService, speakJapanese } from '../services/api';
 import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
+const DEFAULT_ADMIN_EMAIL = 'thuathyper05@gmail.com';
+
 const AdminPage = ({ onBackToApp }) => {
   // Enforce Desktop-only restriction
   const [isMobileScreen, setIsMobileScreen] = useState(() => {
@@ -66,7 +68,14 @@ const AdminPage = ({ onBackToApp }) => {
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('hyper_admin_token') || localStorage.getItem('jlpt_token') || '');
   const [adminUser, setAdminUser] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('hyper_admin_user') || 'null');
+      const admin = localStorage.getItem('hyper_admin_user');
+      if (admin) return JSON.parse(admin);
+      const user = localStorage.getItem('jlpt_user');
+      if (user) {
+        const parsed = JSON.parse(user);
+        if (parsed.role === 'admin' || parsed.email === DEFAULT_ADMIN_EMAIL) return parsed;
+      }
+      return null;
     } catch {
       return null;
     }
@@ -154,29 +163,6 @@ const AdminPage = ({ onBackToApp }) => {
     setTimeout(() => setAlertMsg({ type: '', text: '' }), 6000);
   };
 
-  // Check login on mount
-  useEffect(() => {
-    if (adminToken) {
-      loadStats();
-    }
-  }, [adminToken]);
-
-  // Load content when tab changes
-  useEffect(() => {
-    if (!adminToken) return;
-    if (activeTab === 'overview' || activeTab === 'maintenance') {
-      loadStats();
-    } else if (activeTab === 'vocab') {
-      loadVocabularies();
-    } else if (activeTab === 'lessons') {
-      loadLessons();
-    } else if (activeTab === 'kanji') {
-      loadKanji();
-    } else if (activeTab === 'users') {
-      loadUsers();
-    }
-  }, [activeTab, adminToken]);
-
   // ── Authentication Handlers ──
   const handleAdminLogin = async (e) => {
     e?.preventDefault();
@@ -191,6 +177,8 @@ const AdminPage = ({ onBackToApp }) => {
       const { token, admin } = res.data;
       localStorage.setItem('hyper_admin_token', token);
       localStorage.setItem('hyper_admin_user', JSON.stringify(admin));
+      localStorage.setItem('jlpt_token', token);
+      localStorage.setItem('jlpt_user', JSON.stringify(admin));
       setAdminToken(token);
       setAdminUser(admin);
       sounds.playComplete();
@@ -293,6 +281,29 @@ const AdminPage = ({ onBackToApp }) => {
       setUsersLoading(false);
     }
   };
+
+  // Check login on mount
+  useEffect(() => {
+    if (adminToken) {
+      loadStats();
+    }
+  }, [adminToken]);
+
+  // Load content when tab changes
+  useEffect(() => {
+    if (!adminToken) return;
+    if (activeTab === 'overview' || activeTab === 'maintenance') {
+      loadStats();
+    } else if (activeTab === 'vocab') {
+      loadVocabularies();
+    } else if (activeTab === 'lessons') {
+      loadLessons();
+    } else if (activeTab === 'kanji') {
+      loadKanji();
+    } else if (activeTab === 'users') {
+      loadUsers();
+    }
+  }, [activeTab, adminToken]);
 
   // ── Deduplication Action ──
   const handleCleanDuplicates = async () => {
@@ -814,7 +825,7 @@ const AdminPage = ({ onBackToApp }) => {
                     </div>
                     <div>
                       <h6 className="fw-bold mb-1">
-                        Phát hiện dữ liệu trùng lặp trong cơ sở dữ liệu ({stats.stats.vocabDuplicates} từ vựng, {stats.stats.kanjiDuplicates} kanji)
+                        Phát hiện dữ liệu trùng lặp trong cơ sở dữ liệu ({stats?.stats?.vocabDuplicates ?? 0} từ vựng, {stats?.stats?.kanjiDuplicates ?? 0} kanji)
                       </h6>
                       <p className="small mb-0 text-white text-opacity-80">
                         Hệ thống đã nhận diện dữ liệu bị nhân bản. Bấm nút bên cạnh để tự động lọc gộp và áp dụng ràng buộc duy nhất (Unique Index).
@@ -861,7 +872,7 @@ const AdminPage = ({ onBackToApp }) => {
                       <h3 className="fw-black mb-0 text-white">{stats?.stats?.uniqueVocabularies ?? 1589}</h3>
                       {stats?.stats?.vocabDuplicates > 0 && (
                         <span className="badge bg-danger small" style={{ fontSize: '10px' }}>
-                          +{stats.stats.vocabDuplicates} trùng
+                          +{stats?.stats?.vocabDuplicates ?? 0} trùng
                         </span>
                       )}
                     </div>
@@ -881,7 +892,7 @@ const AdminPage = ({ onBackToApp }) => {
                       <h3 className="fw-black mb-0 text-white">{stats?.stats?.uniqueKanji ?? 80}</h3>
                       {stats?.stats?.kanjiDuplicates > 0 && (
                         <span className="badge bg-danger small" style={{ fontSize: '10px' }}>
-                          +{stats.stats.kanjiDuplicates} trùng
+                          +{stats?.stats?.kanjiDuplicates ?? 0} trùng
                         </span>
                       )}
                     </div>

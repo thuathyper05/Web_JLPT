@@ -148,7 +148,7 @@ export const noteService = {
 
 // Isolated Admin Service
 const getAdminHeaders = () => {
-  const token = localStorage.getItem('hyper_admin_token');
+  const token = localStorage.getItem('hyper_admin_token') || localStorage.getItem('jlpt_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 

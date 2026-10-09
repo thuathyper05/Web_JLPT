@@ -354,6 +354,10 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
         // If authenticated as admin on desktop, automatically open Admin Portal
         const isAdmin = loginRes?.user?.role === 'admin' || inputEmail === 'thuathyper05@gmail.com';
         if (isAdmin && !isMobileScreen) {
+          if (loginRes?.token) {
+            localStorage.setItem('hyper_admin_token', loginRes.token);
+            localStorage.setItem('hyper_admin_user', JSON.stringify(loginRes.user || { email: inputEmail, role: 'admin' }));
+          }
           setTimeout(() => {
             window.history.pushState({}, '', '/admin');
             window.dispatchEvent(new PopStateEvent('popstate'));
@@ -381,8 +385,15 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
       } else if (mode === 'forgot') {
         const res = await authService.forgotPassword({ email: formData.email });
         sounds.playCorrect();
-        setSuccessMsg(`Mã xác thực OTP của bạn là: ${res.data.recovery_code}`);
-        setFormData((prev) => ({ ...prev, code: res.data.recovery_code }));
+        if (res.data?.email_sent) {
+          setSuccessMsg(`✅ Mã OTP thật đã được gửi tới Gmail ${formData.email}! Vui lòng mở hộp thư Gmail để xem mã 6 số.`);
+          setFormData((prev) => ({ ...prev, code: '' }));
+        } else {
+          setSuccessMsg(res.data?.message || 'Đã tạo mã xác thực OTP.');
+          if (res.data?.recovery_code) {
+            setFormData((prev) => ({ ...prev, code: res.data.recovery_code }));
+          }
+        }
         setMode('reset');
       } else if (mode === 'reset') {
         if (formData.newPassword.length < 6) {

@@ -30,6 +30,58 @@ import {
   ShieldAlert
 } from 'lucide-react';
 
+class AdminErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error('AdminPage error caught by ErrorBoundary:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-vh-100 d-flex align-items-center justify-content-center p-4 text-center" style={{ background: '#0b1120', color: '#fff' }}>
+          <div style={{ maxWidth: '480px' }}>
+            <div className="p-3 rounded-circle bg-danger bg-opacity-20 text-danger d-inline-flex mb-3">
+              <ShieldAlert size={36} />
+            </div>
+            <h4 className="fw-bold mb-2">Đã xảy ra sự cố khi tải trang Quản trị</h4>
+            <p className="text-secondary small mb-4" style={{ fontSize: '13px' }}>
+              {this.state.error?.message || 'Có lỗi hệ thống trong quá trình hiển thị dữ liệu.'}
+            </p>
+            <div className="d-flex justify-content-center gap-2">
+              <button
+                className="btn btn-outline-light rounded-pill px-3 py-1.5 small"
+                onClick={() => {
+                  localStorage.removeItem('hyper_admin_token');
+                  localStorage.removeItem('hyper_admin_user');
+                  window.location.reload();
+                }}
+              >
+                Xóa Cache Admin & Tải lại
+              </button>
+              <button
+                className="btn btn-primary rounded-pill px-4 py-1.5 small fw-bold"
+                onClick={() => {
+                  this.setState({ hasError: false, error: null });
+                  this.props.onBackToApp();
+                }}
+              >
+                ← Quay lại trang học tập
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function App() {
   const checkIsAdmin = () => {
     if (typeof window === 'undefined') return false;
@@ -191,14 +243,16 @@ function App() {
   };
 
   if (isAdminRoute) {
+    const handleBack = () => {
+      window.history.pushState({}, '', '/');
+      setIsAdminRoute(false);
+      setActiveTab('home');
+    };
+
     return (
-      <AdminPage
-        onBackToApp={() => {
-          window.history.pushState({}, '', '/');
-          setIsAdminRoute(false);
-          setActiveTab('home');
-        }}
-      />
+      <AdminErrorBoundary onBackToApp={handleBack}>
+        <AdminPage onBackToApp={handleBack} />
+      </AdminErrorBoundary>
     );
   }
 

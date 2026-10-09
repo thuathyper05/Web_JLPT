@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const db = require('../config/db');
+const { sendPasswordResetOtpEmail } = require('../services/emailService');
 
 const register = async (req, res) => {
   try {
@@ -109,7 +110,7 @@ const getMe = async (req, res) => {
   }
 };
 
-// Forgot Password Request (Generate recovery code / token)
+// Forgot Password Request (Generate recovery code and send real email)
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -117,7 +118,8 @@ const forgotPassword = async (req, res) => {
       return res.status(400).json({ message: 'Vui lòng cung cấp email tài khoản của bạn' });
     }
 
-    const userRes = await db.query('SELECT id, username, email FROM users WHERE LOWER(email) = $1', [email.trim().toLowerCase()]);
+    const cleanEmail = email.trim().toLowerCase();
+    const userRes = await db.query('SELECT id, username, email FROM users WHERE LOWER(email) = $1', [cleanEmail]);
     if (userRes.rows.length === 0) {
       return res.status(404).json({ message: 'Không tìm thấy tài khoản nào gắn với email này' });
     }
@@ -132,11 +134,38 @@ const forgotPassword = async (req, res) => {
       [resetCode, expiry, user.id]
     );
 
-    res.json({
-      message: 'Mã xác thực đặt lại mật khẩu đã được tạo thành công!',
-      recovery_code: resetCode, // Direct code return for immediate instant usability
+    // Send real OTP email via Gmail SMTP
+    let emailSent = false;
+    let emailNotice = null;
+    try {
+      const mailRes = await sendPasswordResetOtpEmail(user.email, resetCode, user.username);
+      if (mailRes && mailRes.success) {
+        emailSent = true;
+      } else if (mailRes?.reason === 'smtp_not_configured') {
+        emailNotice = 'Hệ thống gửi thư SMTP Gmail đang chờ nhập Google App Password trong file cấu hình.';
+      }
+    } catch (mailErr) {
+      console.error('Lỗi khi gửi email OTP qua Gmail:', mailErr);
+      emailNotice = 'Lỗi gửi mail: ' + mailErr.message;
+    }
+
+    const responsePayload = {
+      message: emailSent
+        ? `Mã xác thực OTP đã được gửi thành công đến hòm thư Gmail: ${user.email}! Vui lòng mở Gmail để xem mã.`
+        : `Đã tạo mã OTP cho email ${user.email}. (Chờ cấu hình Google App Password để gửi tự động).`,
+      email_sent: emailSent,
       expires_in: '15 phút'
-    });
+    };
+
+    // If SMTP is not yet configured or failed, include code so user is never blocked
+    if (!emailSent) {
+      responsePayload.recovery_code = resetCode;
+      if (emailNotice) {
+        responsePayload.smtp_notice = emailNotice;
+      }
+    }
+
+    res.json(responsePayload);
   } catch (error) {
     console.error('forgotPassword error:', error);
     res.status(500).json({ message: 'Lỗi xử lý yêu cầu quên mật khẩu' });
