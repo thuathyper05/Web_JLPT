@@ -7,7 +7,7 @@ import {
 import {
   Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
   BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
-  Menu, X, MoreHorizontal, ChevronRight, Sparkles, ShieldCheck
+  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';

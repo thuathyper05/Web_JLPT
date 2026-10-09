@@ -26,7 +26,6 @@ import {
   FileText,
   BarChart2,
   ShieldCheck,
-  Sparkles,
   ExternalLink,
   ShieldAlert
 } from 'lucide-react';
