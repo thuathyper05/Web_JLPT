@@ -101,12 +101,24 @@ function App() {
     setCurrentLevel(lvl);
   };
 
+  const handleTabChange = (tab) => {
+    if (tab === 'admin') {
+      window.history.pushState({}, '', '/?tab=admin');
+      setIsAdminRoute(true);
+    } else {
+      if (isAdminRoute) {
+        setIsAdminRoute(false);
+      }
+      setActiveTab(tab);
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
         return (
           <HomePage
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
             currentLevel={currentLevel}
           />
@@ -116,7 +128,7 @@ function App() {
           <LessonStudyPage
             selectedLesson={selectedLesson}
             onSelectLesson={handleSelectLesson}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
           />
         );
       case 'kanji':
@@ -125,7 +137,7 @@ function App() {
         return (
           <FlashcardPage
             initialLesson={selectedLesson}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
           />
         );
@@ -133,30 +145,30 @@ function App() {
         return (
           <QuizPage
             initialLesson={selectedLesson}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
           />
         );
       case 'practice':
         return (
           <PracticeInputPage
             initialLesson={selectedLesson}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
           />
         );
       case 'review':
-        return <ReviewWrongPage onNavigate={(tab) => setActiveTab(tab)} />;
+        return <ReviewWrongPage onNavigate={handleTabChange} />;
       case 'favorites':
         return (
           <FavoritesPage
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
           />
         );
       case 'notes':
         return (
           <NotesPage
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
           />
         );
@@ -164,13 +176,13 @@ function App() {
         return (
           <DashboardPage
             onSelectLesson={handleSelectLesson}
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
           />
         );
       default:
         return (
           <HomePage
-            onNavigate={(tab) => setActiveTab(tab)}
+            onNavigate={handleTabChange}
             onSelectLesson={handleSelectLesson}
             currentLevel={currentLevel}
           />
@@ -195,7 +207,7 @@ function App() {
       {/* ── Sticky Navigation Bar ── */}
       <NavbarComponent
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         onOpenSearch={() => setSearchModalOpen(true)}
         currentLevel={currentLevel}
         onChangeLevel={handleChangeLevel}
@@ -207,7 +219,7 @@ function App() {
         toggle={() => setSearchModalOpen(!searchModalOpen)}
         onSelectLesson={(lessonNum) => {
           setSelectedLesson(lessonNum);
-          setActiveTab('lessons');
+          handleTabChange('lessons');
         }}
       />
 

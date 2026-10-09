@@ -118,6 +118,15 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                       </DropdownItem>
                     );
                   })}
+                  <DropdownItem divider />
+                  <DropdownItem
+                    onClick={() => setActiveTab('admin')}
+                    className="d-flex align-items-center gap-2 py-2 text-danger fw-bold"
+                    style={{ fontSize: 13 }}
+                  >
+                    <ShieldCheck size={15} className="text-danger" />
+                    Quản trị Admin
+                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </NavItem>
@@ -174,7 +183,10 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <FileText size={15} style={{ color: '#0ea5e9' }} /> Sổ ghi chú
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={logout} className="d-flex align-items-center gap-2 py-2 text-danger">
+                  <DropdownItem onClick={() => setActiveTab('admin')} className="d-flex align-items-center gap-2 py-2 text-danger fw-semibold">
+                    <ShieldCheck size={15} className="text-danger" /> Quản trị Admin
+                  </DropdownItem>
+                  <DropdownItem onClick={logout} className="d-flex align-items-center gap-2 py-2 text-secondary">
                     <LogOut size={15} /> Đăng xuất
                   </DropdownItem>
                 </DropdownMenu>
@@ -316,6 +328,39 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               </div>
             )}
 
+            {/* Direct Admin Access Card for Quick Testing */}
+            <div
+              className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between"
+              style={{
+                background: 'linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%)',
+                borderColor: '#fecaca'
+              }}
+            >
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  className="d-flex align-items-center justify-content-center rounded-2 text-white shadow-xs"
+                  style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}
+                >
+                  <ShieldCheck size={16} />
+                </div>
+                <div>
+                  <div className="fw-bold text-danger" style={{ fontSize: '13px' }}>Cổng Quản Trị Admin</div>
+                  <div className="text-muted" style={{ fontSize: '10.5px' }}>thuathyper05@gmail.com</div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setActiveTab('admin');
+                }}
+                className="btn btn-sm btn-danger rounded-pill px-3 py-1 fw-bold shadow-xs flex-shrink-0"
+                style={{ fontSize: '11.5px' }}
+              >
+                Vào Admin →
+              </button>
+            </div>
+
             {/* Group 1: Study Modes */}
             <div>
               <div className="text-muted fw-bold text-uppercase mb-2 px-1" style={{ fontSize: '10.5px', letterSpacing: '0.06em' }}>
@@ -416,19 +461,17 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
             {/* Admin shortcut */}
             <div className="pt-2 border-top">
-              <a
-                href="/admin"
-                onClick={(e) => {
-                  e.preventDefault();
+              <button
+                type="button"
+                onClick={() => {
                   setMobileMenuOpen(false);
-                  window.history.pushState({}, '', '/admin');
-                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  setActiveTab('admin');
                 }}
-                className="btn btn-outline-danger w-100 py-2 rounded-3 small fw-bold d-flex align-items-center justify-content-center gap-1.5"
-                style={{ fontSize: '12px' }}
+                className="btn btn-outline-danger w-100 py-2.5 rounded-3 small fw-bold d-flex align-items-center justify-content-center gap-1.5 shadow-xs"
+                style={{ fontSize: '12.5px' }}
               >
-                <ShieldCheck size={14} /> Cổng Quản trị Admin
-              </a>
+                <ShieldCheck size={16} /> Cổng Quản Trị Hệ Thống (Admin)
+              </button>
             </div>
           </div>
         </ModalBody>

@@ -197,72 +197,52 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   }
 
   return (
-    <Container className="py-2.5 py-md-4" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
-      {/* ── Desktop & Tablet Header Box (>= 768px) ── */}
-      <div className="d-none d-md-block page-header-box mb-3 mb-md-4 shadow-sm" style={{ width: '100%', maxWidth: '100%' }}>
-        <div className="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-          <div className="d-flex align-items-start gap-3 flex-grow-1 min-w-0" style={{ maxWidth: 'calc(100% - 320px)' }}>
+    <Container className="py-2.5 py-md-4" style={{ maxWidth: '1000px', overflowX: 'hidden' }}>
+      {/* ── UNIFIED LUXURY RESPONSIVE LESSON HEADER ── */}
+      <div
+        className="page-header-box mb-3 mb-md-4 p-3 p-md-4 rounded-4 shadow-sm position-relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+          border: '1px solid #e2e8f0',
+          width: '100%',
+          maxWidth: '100%'
+        }}
+      >
+        {/* Row 1: Lesson Badges & Switcher Dropdown */}
+        <div className="d-flex justify-content-between align-items-center gap-2 mb-2.5 w-100 flex-wrap">
+          <div className="d-flex align-items-center gap-2 min-w-0">
             <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0 mt-1"
+              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
               style={{
-                width: '44px',
-                height: '44px',
+                width: '36px',
+                height: '36px',
                 background: 'linear-gradient(135deg, #1e3a8a, #2563eb)'
               }}
             >
-              <BookOpen size={22} />
+              <BookOpen size={18} />
             </div>
-            <div className="min-w-0 flex-grow-1">
-              <div className="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                <Badge color="primary" pill className="px-2.5 py-1 fw-bold" style={{ fontSize: '12px' }}>
-                  Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
-                </Badge>
-                <span className="text-muted small fw-medium">
-                  {vocabularies.length} từ vựng Minna no Nihongo N5
-                </span>
-              </div>
-              <h5 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: '1.05rem', lineHeight: '1.4', wordBreak: 'break-word' }}>
-                {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
-              </h5>
+
+            <div className="d-flex align-items-center gap-1.5 flex-wrap">
+              <span
+                className="badge rounded-pill fw-bold px-2.5 py-1 text-white"
+                style={{
+                  background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
+                  fontSize: '11.5px'
+                }}
+              >
+                第{currentLessonNum}課 • Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
+              </span>
+              <span className="badge bg-light text-secondary border px-2 py-1 rounded-pill" style={{ fontSize: '11px' }}>
+                {vocabularies.length} từ vựng N5
+              </span>
             </div>
           </div>
 
-          {/* Quick Learning Shortcuts */}
-          <div className="d-flex align-items-center gap-2 flex-shrink-0">
-            <Button
-              color="light"
-              size="sm"
-              className="rounded-pill px-3 py-1.5 fw-semibold border text-primary shadow-xs"
-              onClick={() => onNavigate('flashcard')}
-              title="Luyện Flashcard 3D"
-            >
-              <Layers size={14} className="me-1" /> Flashcard
-            </Button>
-            <Button
-              color="light"
-              size="sm"
-              className="rounded-pill px-3 py-1.5 fw-semibold border text-danger shadow-xs"
-              onClick={() => onNavigate('quiz')}
-              title="Làm trắc nghiệm ABCD"
-            >
-              <CheckSquare size={14} className="me-1" /> Trắc nghiệm
-            </Button>
-            <Button
-              color="light"
-              size="sm"
-              className="rounded-pill px-3 py-1.5 fw-semibold border text-warning shadow-xs text-dark"
-              onClick={() => onNavigate('practice')}
-              title="Luyện gõ không gợi ý"
-            >
-              <Keyboard size={14} className="me-1" /> Luyện gõ
-            </Button>
-          </div>
-        </div>
-
-        {/* Lesson Switcher & View Mode Selector */}
-        <div className="mt-3 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <div className="d-flex align-items-center gap-2">
-            <span className="small text-muted fw-bold">Chuyển bài học:</span>
+          {/* Quick Lesson Switcher */}
+          <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-auto">
+            <span className="small text-muted fw-semibold d-none d-sm-inline" style={{ fontSize: '11.5px' }}>
+              Đổi bài:
+            </span>
             <Input
               type="select"
               value={currentLessonNum}
@@ -271,7 +251,14 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 setCurrentLessonNum(nextL);
                 if (onSelectLesson) onSelectLesson(nextL);
               }}
-              className="w-auto fw-bold form-control-sm rounded-pill"
+              className="form-control-sm rounded-pill fw-bold border py-1 px-2.5"
+              style={{
+                width: 'auto',
+                minWidth: '95px',
+                fontSize: '12px',
+                background: '#ffffff',
+                borderColor: '#cbd5e1'
+              }}
             >
               {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
                 <option key={n} value={n}>
@@ -280,158 +267,98 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               ))}
             </Input>
           </div>
+        </div>
 
-          <div className="d-flex align-items-center gap-2">
-            {viewMode === 'step_by_step' && (
-              <Button
-                color="light"
-                size="sm"
-                onClick={() => setAutoPlayAudio(!autoPlayAudio)}
-                className={`rounded-pill px-2.5 py-1 border small ${
-                  autoPlayAudio ? 'text-primary fw-bold' : 'text-muted'
-                }`}
-                title="Tự động phát âm khi chuyển từ"
-              >
-                🔊 Tự phát âm: {autoPlayAudio ? 'Bật' : 'Tắt'}
-              </Button>
-            )}
+        {/* Row 2: Prominent Lesson Title with Safe Word Break */}
+        <div className="p-2.5 p-sm-3 rounded-3 mb-2.5 border" style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}>
+          <h5
+            className="fw-bold mb-0 text-navy-dark"
+            style={{
+              fontSize: 'clamp(13.5px, 3.5vw, 16px)',
+              lineHeight: '1.5',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              color: '#0f172a'
+            }}
+          >
+            Bài {currentLessonNum}: {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
+          </h5>
+        </div>
 
-            <div className="segmented-control">
+        {/* Row 3: Action Toolbar & Mode Selector (Wrap safely) */}
+        <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-1 border-top border-slate-200 border-opacity-60">
+          {/* Segmented View Mode */}
+          <div className="d-flex align-items-center gap-1.5 flex-wrap">
+            <div className="segmented-control" style={{ padding: '2px' }}>
               <button
                 type="button"
                 onClick={() => setViewMode('step_by_step')}
-                className={`segmented-item ${viewMode === 'step_by_step' ? 'active' : ''}`}
+                className={`segmented-item py-1 px-2.5 ${viewMode === 'step_by_step' ? 'active' : ''}`}
+                style={{ fontSize: '12px' }}
               >
                 <span>📖 Từng từ</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode('table_view')}
-                className={`segmented-item ${viewMode === 'table_view' ? 'active' : ''}`}
+                className={`segmented-item py-1 px-2.5 ${viewMode === 'table_view' ? 'active' : ''}`}
+                style={{ fontSize: '12px' }}
               >
-                <span>📋 Toàn bộ bảng</span>
+                <span>📋 Danh sách</span>
               </button>
             </div>
+
+            {viewMode === 'step_by_step' && (
+              <button
+                type="button"
+                onClick={() => setAutoPlayAudio(!autoPlayAudio)}
+                className={`btn btn-sm rounded-pill border py-1 px-2.5 ${
+                  autoPlayAudio ? 'btn-primary text-white' : 'btn-light text-muted'
+                }`}
+                style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
+                title="Tự động phát âm giọng Tokyo khi chuyển từ"
+              >
+                {autoPlayAudio ? '🔊 Phát âm: Bật' : '🔇 Phát âm: Tắt'}
+              </button>
+            )}
           </div>
-        </div>
-      </div>
 
-      {/* ── Mobile Compact Header (< 768px) ── */}
-      <div className="d-md-none page-header-box p-3 mb-2.5 shadow-sm" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
-        {/* Row 1: Badges + Lesson Selector Dropdown */}
-        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100">
-          <div className="d-flex align-items-center gap-1.5 min-w-0">
-            <span className="badge bg-primary text-white px-2 py-1 rounded-pill fw-bold" style={{ fontSize: '11px' }}>
-              Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
-            </span>
-            <span className="text-muted small" style={{ fontSize: '11px' }}>
-              ({vocabularies.length} từ)
-            </span>
-          </div>
-
-          <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
-            <span className="small text-muted fw-semibold" style={{ fontSize: '11px' }}>Chọn bài:</span>
-            <Input
-              type="select"
-              value={currentLessonNum}
-              onChange={(e) => {
-                const nextL = parseInt(e.target.value);
-                setCurrentLessonNum(nextL);
-                if (onSelectLesson) onSelectLesson(nextL);
-              }}
-              className="form-control-sm rounded-pill fw-bold border py-1 px-2"
-              style={{ width: 'auto', minWidth: '85px', fontSize: '11.5px', background: '#f8fafc' }}
-            >
-              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>
-                  Bài {n < 10 ? `0${n}` : n}
-                </option>
-              ))}
-            </Input>
-          </div>
-        </div>
-
-        {/* Row 2: Full Lesson Title (Safe Line Wrap, Zero Overflow) */}
-        <div className="p-2 rounded-3 mb-2" style={{ background: '#f1f5f9' }}>
-          <h6
-            className="fw-bold mb-0 text-navy-dark"
-            style={{
-              fontSize: '13px',
-              lineHeight: '1.45',
-              wordBreak: 'break-word',
-              overflowWrap: 'break-word',
-              color: '#0f172a'
-            }}
-          >
-            {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
-          </h6>
-        </div>
-
-        {/* Row 2: View Mode Control + Audio toggle */}
-        <div className="d-flex align-items-center justify-content-between gap-1.5 mb-2 w-100 min-w-0">
-          <div className="segmented-control flex-grow-1" style={{ padding: '2px', minWidth: 0 }}>
-            <button
-              type="button"
-              onClick={() => setViewMode('step_by_step')}
-              className={`segmented-item flex-fill py-1 px-1.5 ${viewMode === 'step_by_step' ? 'active' : ''}`}
+          {/* Quick Learning Links (Flashcard, Quiz, Practice) */}
+          <div className="d-flex align-items-center gap-1.5 flex-wrap w-100 w-md-auto">
+            <Button
+              color="light"
+              size="sm"
+              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-primary shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              onClick={() => onNavigate('flashcard')}
               style={{ fontSize: '11.5px', minWidth: 0 }}
+              title="Luyện Flashcard 3D"
             >
-              <span>📖 Từng từ</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('table_view')}
-              className={`segmented-item flex-fill py-1 px-1.5 ${viewMode === 'table_view' ? 'active' : ''}`}
+              <Layers size={13} className="me-1 flex-shrink-0" />
+              <span className="text-truncate">Flashcard</span>
+            </Button>
+            <Button
+              color="light"
+              size="sm"
+              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-danger shadow-xs d-flex align-items-center justify-content-center text-truncate"
+              onClick={() => onNavigate('quiz')}
               style={{ fontSize: '11.5px', minWidth: 0 }}
+              title="Làm trắc nghiệm ABCD"
             >
-              <span>📋 Danh sách</span>
-            </button>
+              <CheckSquare size={13} className="me-1 flex-shrink-0" />
+              <span className="text-truncate">Trắc nghiệm</span>
+            </Button>
+            <Button
+              color="light"
+              size="sm"
+              className="flex-fill flex-md-grow-0 rounded-pill px-2 px-sm-2.5 py-1 fw-semibold border text-warning shadow-xs text-dark d-flex align-items-center justify-content-center text-truncate"
+              onClick={() => onNavigate('practice')}
+              style={{ fontSize: '11.5px', minWidth: 0 }}
+              title="Luyện gõ không gợi ý"
+            >
+              <Keyboard size={13} className="me-1 flex-shrink-0" />
+              <span className="text-truncate">Luyện gõ</span>
+            </Button>
           </div>
-
-          {viewMode === 'step_by_step' && (
-            <button
-              type="button"
-              onClick={() => setAutoPlayAudio(!autoPlayAudio)}
-              className={`btn btn-sm rounded-pill border py-1 px-2 flex-shrink-0 ${
-                autoPlayAudio ? 'btn-primary text-white' : 'btn-light text-muted'
-              }`}
-              style={{ fontSize: '11px', whiteSpace: 'nowrap' }}
-              title="Tự động phát âm Tokyo"
-            >
-              {autoPlayAudio ? '🔊 Bật' : '🔇 Tắt'}
-            </button>
-          )}
-        </div>
-
-        {/* Row 3: 3 sleek action pills (safely constrained) */}
-        <div className="d-flex align-items-center gap-1.5 w-100" style={{ minWidth: 0 }}>
-          <button
-            type="button"
-            className="btn btn-sm rounded-pill border bg-white text-primary flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
-            style={{ fontSize: '11px', minWidth: 0 }}
-            onClick={() => onNavigate('flashcard')}
-          >
-            <Layers size={12} className="me-1 flex-shrink-0" />
-            <span className="text-truncate">Flashcard</span>
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm rounded-pill border bg-white text-danger flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
-            style={{ fontSize: '11px', minWidth: 0 }}
-            onClick={() => onNavigate('quiz')}
-          >
-            <CheckSquare size={12} className="me-1 flex-shrink-0" />
-            <span className="text-truncate">Trắc nghiệm</span>
-          </button>
-          <button
-            type="button"
-            className="btn btn-sm rounded-pill border bg-white text-dark flex-fill py-1 px-1 shadow-xs d-flex align-items-center justify-content-center text-truncate"
-            style={{ fontSize: '11px', minWidth: 0 }}
-            onClick={() => onNavigate('practice')}
-          >
-            <Keyboard size={12} className="me-1 flex-shrink-0" />
-            <span className="text-truncate">Luyện gõ</span>
-          </button>
         </div>
       </div>
 
