@@ -413,6 +413,23 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 })}
               </div>
             </div>
+
+            {/* Admin shortcut */}
+            <div className="pt-2 border-top">
+              <a
+                href="/admin"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  window.history.pushState({}, '', '/admin');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }}
+                className="btn btn-outline-danger w-100 py-2 rounded-3 small fw-bold d-flex align-items-center justify-content-center gap-1.5"
+                style={{ fontSize: '12px' }}
+              >
+                <ShieldCheck size={14} /> Cổng Quản trị Admin
+              </a>
+            </div>
           </div>
         </ModalBody>
       </Modal>

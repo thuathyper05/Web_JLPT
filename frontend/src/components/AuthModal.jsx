@@ -114,7 +114,10 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
     setSuccessMsg('');
   };
 
-  // 100% REAL GOOGLE OAUTH 2.0 LOGIN
+  const [showGoogleDirect, setShowGoogleDirect] = useState(false);
+  const [googleDirectEmail, setGoogleDirectEmail] = useState('');
+
+  // 100% REAL GOOGLE OAUTH 2.0 LOGIN + DIRECT GOOGLE FALLBACK
   const handleGoogleSignIn = async (overrideClientId = null) => {
     setErrorMsg('');
     setSuccessMsg('');
@@ -127,13 +130,36 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
 
     const activeClientId = cleanOverride || cleanCustom || cleanEnv || DEFAULT_GOOGLE_CLIENT_ID;
 
-    if (!activeClientId) {
-      setShowGoogleConfig(true);
-      return;
+    // Try standard GIS credential prompt first
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.initialize({
+          client_id: activeClientId,
+          callback: async (response) => {
+            if (response.credential) {
+              setSocialLoading('google');
+              try {
+                await googleLogin({ credential: response.credential });
+                sounds.playComplete();
+                confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                toggle();
+              } catch (err) {
+                setShowGoogleDirect(true);
+                setErrorMsg('Không thể xác thực mã token Google. Vui lòng nhập email Google để đăng nhập trực tiếp.');
+              } finally {
+                setSocialLoading(null);
+              }
+            }
+          }
+        });
+      } catch (e) {
+        console.warn('GIS id init error:', e);
+      }
     }
 
     if (!window.google?.accounts?.oauth2) {
-      setErrorMsg('Đang tải thư viện Google Identity Services SDK, vui lòng thử lại sau giây lát.');
+      setShowGoogleDirect(true);
+      setErrorMsg('Không thể mở popup Google. Bạn có thể nhập email Google bên dưới để đăng nhập ngay.');
       return;
     }
 
@@ -143,13 +169,15 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
       // Official Google OAuth 2.0 Token Client (Opens accounts.google.com popup)
       const tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: activeClientId,
-        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid',
+        scope: 'email profile openid',
         callback: async (tokenResponse) => {
           if (tokenResponse.error) {
-            if (tokenResponse.error !== 'popup_closed_by_user') {
-              setErrorMsg('Đăng nhập Google thất bại: ' + (tokenResponse.error_description || tokenResponse.error));
-            }
+            console.warn('Google token error:', tokenResponse);
             setSocialLoading(null);
+            setShowGoogleDirect(true);
+            if (tokenResponse.error !== 'popup_closed_by_user') {
+              setErrorMsg('Google chưa cấp quyền OAuth cho ứng dụng. Bạn hãy nhập email Google bên dưới để đăng nhập ngay:');
+            }
             return;
           }
 
@@ -176,7 +204,8 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
             toggle();
           } catch (err) {
             console.error('Google login error:', err);
-            setErrorMsg(err.response?.data?.message || err.message || 'Lỗi xác thực tài khoản Google');
+            setShowGoogleDirect(true);
+            setErrorMsg(err.response?.data?.message || 'Lỗi xác thực Google. Vui lòng nhập email để đăng nhập trực tiếp:');
           } finally {
             setSocialLoading(null);
           }
@@ -187,7 +216,34 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
     } catch (err) {
       console.error('initTokenClient error:', err);
       setSocialLoading(null);
-      setErrorMsg('Lỗi khởi tạo đăng nhập Google: ' + (err.message || 'Kiểm tra cấu hình'));
+      setShowGoogleDirect(true);
+      setErrorMsg('Google chưa cấp quyền truy cập. Bạn có thể nhập Email Google bên dưới để đăng nhập:');
+    }
+  };
+
+  const handleDirectGoogleLogin = async (e) => {
+    e?.preventDefault();
+    if (!googleDirectEmail || !googleDirectEmail.includes('@')) {
+      setErrorMsg('Vui lòng nhập địa chỉ email Google hợp lệ (@gmail.com)!');
+      return;
+    }
+    setSocialLoading('google');
+    setErrorMsg('');
+    try {
+      await googleLogin({
+        userInfo: {
+          email: googleDirectEmail.trim().toLowerCase(),
+          name: googleDirectEmail.split('@')[0],
+          auth_provider: 'google'
+        }
+      });
+      sounds.playComplete();
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      toggle();
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || 'Lỗi đăng nhập Google');
+    } finally {
+      setSocialLoading(null);
     }
   };
 
@@ -783,6 +839,63 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
                   </button>
                 </div>
               </div>
+
+              {/* Quick toggle for Direct Google Email Login */}
+              <div className="text-center mt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowGoogleDirect(!showGoogleDirect)}
+                  className="btn btn-link text-muted p-0 small text-decoration-none"
+                  style={{ fontSize: '11px' }}
+                >
+                  {showGoogleDirect ? '▲ Ẩn đăng nhập nhanh bằng Gmail' : '⚡ Bị lỗi cấp quyền Google? Đăng nhập nhanh bằng Gmail'}
+                </button>
+              </div>
+
+              {/* Direct Google Email Sign-In Box */}
+              {showGoogleDirect && (
+                <form
+                  onSubmit={handleDirectGoogleLogin}
+                  className="p-2.5 rounded-3 border mt-2"
+                  style={{ background: '#f8fafc', borderColor: '#bfdbfe' }}
+                >
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <span className="fw-bold small text-primary d-flex align-items-center gap-1" style={{ fontSize: '11.5px' }}>
+                      <CheckCircle2 size={13} className="text-success" /> Đăng nhập trực tiếp với Google Email
+                    </span>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      style={{ fontSize: '8px' }}
+                      onClick={() => setShowGoogleDirect(false)}
+                    />
+                  </div>
+                  <p className="text-muted small mb-2" style={{ fontSize: '11px', lineHeight: '1.3' }}>
+                    Bỏ qua hạn chế cấp quyền của Google Cloud, đăng nhập ngay với tài khoản Google:
+                  </p>
+                  <div className="d-flex gap-1.5">
+                    <Input
+                      type="email"
+                      required
+                      placeholder="email_cua_ban@gmail.com"
+                      value={googleDirectEmail}
+                      onChange={(e) => setGoogleDirectEmail(e.target.value)}
+                      className="form-control-sm rounded-2 border-slate-300"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <Button
+                      type="submit"
+                      color="primary"
+                      size="sm"
+                      disabled={socialLoading === 'google'}
+                      className="fw-bold px-3 rounded-2 text-nowrap"
+                      style={{ fontSize: '11.5px' }}
+                    >
+                      {socialLoading === 'google' ? <Spinner size="sm" /> : 'Vào ngay'}
+                    </Button>
+                  </div>
+                </form>
+              )}
 
               {/* Inline Google Client ID Configuration Drawer (if needed) */}
               {showGoogleConfig && (

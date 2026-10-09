@@ -121,4 +121,31 @@ export const noteService = {
   deleteNote: (id) => api.delete(`/notes/${id}`),
 };
 
+// Isolated Admin Service
+const getAdminHeaders = () => {
+  const token = localStorage.getItem('hyper_admin_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+export const adminService = {
+  login: (credentials) => api.post('/admin/login', credentials),
+  getMe: () => api.get('/admin/me', { headers: getAdminHeaders() }),
+  getStats: () => api.get('/admin/stats', { headers: getAdminHeaders() }),
+  getVocabularies: (params) => api.get('/admin/vocabularies', { params, headers: getAdminHeaders() }),
+  createVocabulary: (data) => api.post('/admin/vocabularies', data, { headers: getAdminHeaders() }),
+  updateVocabulary: (id, data) => api.put(`/admin/vocabularies/${id}`, data, { headers: getAdminHeaders() }),
+  deleteVocabulary: (id) => api.delete(`/admin/vocabularies/${id}`, { headers: getAdminHeaders() }),
+  getLessons: () => api.get('/admin/lessons', { headers: getAdminHeaders() }),
+  updateLesson: (id, data) => api.put(`/admin/lessons/${id}`, data, { headers: getAdminHeaders() }),
+  getKanji: (params) => api.get('/admin/kanji', { params, headers: getAdminHeaders() }),
+  createKanji: (data) => api.post('/admin/kanji', data, { headers: getAdminHeaders() }),
+  updateKanji: (id, data) => api.put(`/admin/kanji/${id}`, data, { headers: getAdminHeaders() }),
+  deleteKanji: (id) => api.delete(`/admin/kanji/${id}`, { headers: getAdminHeaders() }),
+  getUsers: (params) => api.get('/admin/users', { params, headers: getAdminHeaders() }),
+  updateUserRole: (id, data) => api.put(`/admin/users/${id}/role`, data, { headers: getAdminHeaders() }),
+  deleteUser: (id) => api.delete(`/admin/users/${id}`, { headers: getAdminHeaders() }),
+  cleanDuplicates: () => api.post('/admin/clean-duplicates', {}, { headers: getAdminHeaders() }),
+};
+
 export default api;
+

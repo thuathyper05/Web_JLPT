@@ -10,6 +10,8 @@ const progressRoutes = require('./routes/progressRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 const kanjiRoutes = require('./routes/kanjiRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const { deduplicateDatabase } = require('./scripts/deduplicate');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +29,7 @@ app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/notes', noteRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoints (for Render & Uptime Monitors)
 app.get(['/', '/health', '/api/health'], (req, res) => {
@@ -66,8 +69,15 @@ app.get('/api/db-check', async (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`JLPT N5 Backend Server is running on port ${PORT}`);
+
+  // Auto-run deduplication and admin account sync on startup
+  try {
+    await deduplicateDatabase();
+  } catch (err) {
+    console.error('[Startup DB Migration Warning]', err.message);
+  }
 
   // ── Render Free Tier Keep-Alive Service ──
   // Pings itself every 14 minutes to prevent Render from going to sleep after 15m of inactivity

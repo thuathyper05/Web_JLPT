@@ -11,6 +11,7 @@ import FavoritesPage from './pages/FavoritesPage';
 import NotesPage from './pages/NotesPage';
 import DashboardPage from './pages/DashboardPage';
 import KanjiPage from './pages/KanjiPage';
+import AdminPage from './pages/AdminPage';
 import Logo from './components/Logo';
 import { authService } from './services/api';
 import {
@@ -25,14 +26,32 @@ import {
   BarChart2,
   ShieldCheck,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  ShieldAlert
 } from 'lucide-react';
 
 function App() {
+  const [isAdminRoute, setIsAdminRoute] = useState(() => {
+    return typeof window !== 'undefined' && 
+      (window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin') || window.location.search.includes('tab=admin'));
+  });
+
   const [activeTab, setActiveTab] = useState('home');
   const [selectedLesson, setSelectedLesson] = useState(1);
   const [currentLevel, setCurrentLevel] = useState('N5');
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsAdminRoute(
+        window.location.pathname === '/admin' ||
+        window.location.pathname.startsWith('/admin') ||
+        window.location.search.includes('tab=admin')
+      );
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Catch OAuth redirect access tokens (e.g., from mobile Facebook or Google redirects)
   useEffect(() => {
@@ -150,6 +169,18 @@ function App() {
         );
     }
   };
+
+  if (isAdminRoute) {
+    return (
+      <AdminPage
+        onBackToApp={() => {
+          window.history.pushState({}, '', '/');
+          setIsAdminRoute(false);
+          setActiveTab('home');
+        }}
+      />
+    );
+  }
 
   return (
     <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: 'var(--app-bg)' }}>
@@ -328,6 +359,19 @@ function App() {
               </span>
               <span>•</span>
               <span style={{ color: '#94a3b8' }}>Phiên bản 2.5 Pro</span>
+              <span>•</span>
+              <button
+                type="button"
+                onClick={() => {
+                  window.history.pushState({}, '', '/admin');
+                  setIsAdminRoute(true);
+                }}
+                className="btn btn-link text-slate-400 p-0 small text-decoration-none d-inline-flex align-items-center gap-1"
+                style={{ fontSize: '12px', color: '#94a3b8' }}
+                title="Cổng điều hành và quản lý dành cho Quản trị viên"
+              >
+                <ShieldAlert size={13} className="text-danger" /> Quản trị Admin
+              </button>
             </div>
           </div>
         </div>

@@ -197,33 +197,38 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   }
 
   return (
-    <Container className="py-3 py-md-4">
-      {/* ── Desktop Header Box (>= 768px) ── */}
-      <div className="d-none d-md-block page-header-box mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
+    <Container className="py-2.5 py-md-4" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
+      {/* ── Desktop & Tablet Header Box (>= 768px) ── */}
+      <div className="d-none d-md-block page-header-box mb-3 mb-md-4 shadow-sm" style={{ width: '100%', maxWidth: '100%' }}>
+        <div className="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+          <div className="d-flex align-items-start gap-3 flex-grow-1 min-w-0" style={{ maxWidth: 'calc(100% - 320px)' }}>
             <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0"
+              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0 mt-1"
               style={{
-                width: '46px',
-                height: '46px',
+                width: '44px',
+                height: '44px',
                 background: 'linear-gradient(135deg, #1e3a8a, #2563eb)'
               }}
             >
-              <BookOpen size={24} />
+              <BookOpen size={22} />
             </div>
-            <div>
-              <h5 className="fw-bold mb-0 text-navy-dark">
-                Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}: {lessonInfo?.title}
+            <div className="min-w-0 flex-grow-1">
+              <div className="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                <Badge color="primary" pill className="px-2.5 py-1 fw-bold" style={{ fontSize: '12px' }}>
+                  Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
+                </Badge>
+                <span className="text-muted small fw-medium">
+                  {vocabularies.length} từ vựng Minna no Nihongo N5
+                </span>
+              </div>
+              <h5 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: '1.05rem', lineHeight: '1.4', wordBreak: 'break-word' }}>
+                {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
               </h5>
-              <small className="text-muted">
-                {vocabularies.length} từ vựng chuẩn Minna no Nihongo N5
-              </small>
             </div>
           </div>
 
           {/* Quick Learning Shortcuts */}
-          <div className="d-flex align-items-center gap-2 flex-wrap">
+          <div className="d-flex align-items-center gap-2 flex-shrink-0">
             <Button
               color="light"
               size="sm"
@@ -257,7 +262,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
         {/* Lesson Switcher & View Mode Selector */}
         <div className="mt-3 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
           <div className="d-flex align-items-center gap-2">
-            <span className="small text-muted fw-bold">Chuyển bài:</span>
+            <span className="small text-muted fw-bold">Chuyển bài học:</span>
             <Input
               type="select"
               value={currentLessonNum}
@@ -312,41 +317,54 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
       </div>
 
       {/* ── Mobile Compact Header (< 768px) ── */}
-      <div className="d-md-none page-header-box p-2.5 mb-2.5" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
-        {/* Row 1: Title + Lesson Dropdown */}
-        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100 min-w-0">
-          <div className="d-flex align-items-center gap-2 flex-grow-1 min-w-0">
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
-              style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #1e3a8a, #2563eb)' }}
-            >
-              <BookOpen size={16} />
-            </div>
-            <div className="flex-grow-1 text-truncate" style={{ minWidth: 0 }}>
-              <h6 className="fw-bold mb-0 text-navy-dark text-truncate" style={{ fontSize: '13px' }}>
-                Bài {currentLessonNum}: {lessonInfo?.title || 'Từ vựng'}
-              </h6>
-              <small className="text-muted text-truncate d-block" style={{ fontSize: '10.5px' }}>{vocabularies.length} từ vựng N5</small>
-            </div>
+      <div className="d-md-none page-header-box p-3 mb-2.5 shadow-sm" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+        {/* Row 1: Badges + Lesson Selector Dropdown */}
+        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100">
+          <div className="d-flex align-items-center gap-1.5 min-w-0">
+            <span className="badge bg-primary text-white px-2 py-1 rounded-pill fw-bold" style={{ fontSize: '11px' }}>
+              Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
+            </span>
+            <span className="text-muted small" style={{ fontSize: '11px' }}>
+              ({vocabularies.length} từ)
+            </span>
           </div>
 
-          <Input
-            type="select"
-            value={currentLessonNum}
-            onChange={(e) => {
-              const nextL = parseInt(e.target.value);
-              setCurrentLessonNum(nextL);
-              if (onSelectLesson) onSelectLesson(nextL);
+          <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
+            <span className="small text-muted fw-semibold" style={{ fontSize: '11px' }}>Chọn bài:</span>
+            <Input
+              type="select"
+              value={currentLessonNum}
+              onChange={(e) => {
+                const nextL = parseInt(e.target.value);
+                setCurrentLessonNum(nextL);
+                if (onSelectLesson) onSelectLesson(nextL);
+              }}
+              className="form-control-sm rounded-pill fw-bold border py-1 px-2"
+              style={{ width: 'auto', minWidth: '85px', fontSize: '11.5px', background: '#f8fafc' }}
+            >
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  Bài {n < 10 ? `0${n}` : n}
+                </option>
+              ))}
+            </Input>
+          </div>
+        </div>
+
+        {/* Row 2: Full Lesson Title (Safe Line Wrap, Zero Overflow) */}
+        <div className="p-2 rounded-3 mb-2" style={{ background: '#f1f5f9' }}>
+          <h6
+            className="fw-bold mb-0 text-navy-dark"
+            style={{
+              fontSize: '13px',
+              lineHeight: '1.45',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+              color: '#0f172a'
             }}
-            className="form-control-sm rounded-pill fw-bold border flex-shrink-0 py-1 px-2"
-            style={{ width: 'auto', maxWidth: '95px', fontSize: '11.5px' }}
           >
-            {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                Bài {n < 10 ? `0${n}` : n}
-              </option>
-            ))}
-          </Input>
+            {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
+          </h6>
         </div>
 
         {/* Row 2: View Mode Control + Audio toggle */}
