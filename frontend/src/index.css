@@ -843,7 +843,11 @@ p {
   }
 }
 
-/* Touch feedback & App-like Micro-interactions */
+/* ==========================================================================
+   LUXURY NATIVE APP ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Universal Touch & Click Feedback */
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -852,8 +856,102 @@ button:active:not(:disabled),
 .btn:active:not(:disabled),
 .segmented-item:active,
 .quiz-option-card:active {
-  transform: scale(0.975);
+  transform: scale(0.972);
   transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Audio Button Glowing Wave Pulse */
+@keyframes audioPulseRing {
+  0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55); }
+  50% { transform: scale(1.14); box-shadow: 0 0 0 9px rgba(37, 99, 235, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+.audio-btn:active {
+  animation: audioPulseRing 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Fluid Word Transition in Lesson Study */
+@keyframes slideNextWord {
+  0% { opacity: 0.35; transform: translateX(18px) scale(0.985); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes slidePrevWord {
+  0% { opacity: 0.35; transform: translateX(-18px) scale(0.985); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.word-card-slide-next {
+  animation: slideNextWord 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.word-card-slide-prev {
+  animation: slidePrevWord 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Quiz Option Card Tactile Feedback */
+@keyframes correctPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50% { transform: scale(1.028); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.quiz-option-card.correct {
+  animation: correctPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  border-color: var(--success) !important;
+  background-color: var(--success-subtle) !important;
+  color: #065f46 !important;
+}
+
+.quiz-option-card.wrong {
+  animation: wrongShake 0.4s ease-in-out forwards;
+  border-color: var(--danger) !important;
+  background-color: var(--danger-subtle) !important;
+  color: #991b1b !important;
+}
+
+/* Progress Bar Shimmer Light Streak */
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.progress {
+  position: relative;
+  overflow: hidden !important;
+}
+
+.progress-bar, .progress > div {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after, .progress > div::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  animation: progressShimmer 2.2s infinite;
+  pointer-events: none;
+}
+
+/* Flame & Streak Flicker */
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.12) rotate(-3deg); filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6)); }
+  75% { transform: scale(1.08) rotate(3deg); filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.6)); }
+}
+
+.flame-icon, .badge-streak {
+  display: inline-block;
+  animation: flameFlicker 1.8s infinite ease-in-out;
 }
 
 /* Luxury Desktop Card Elevation */
@@ -865,3 +963,4 @@ button:active:not(:disabled),
     box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
   }
 }
+

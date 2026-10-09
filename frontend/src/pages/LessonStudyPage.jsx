@@ -49,6 +49,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   const [vocabularies, setVocabularies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [wordAnim, setWordAnim] = useState('');
 
   // View mode: 'step_by_step' | 'table_view'
   const [viewMode, setViewMode] = useState('step_by_step');
@@ -117,16 +118,20 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   }, [currentIndex, vocabularies, viewMode, noteModalOpen, currentWord]);
 
   const handleNextWord = () => {
-    sounds.playFlip();
     if (currentIndex < vocabularies.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      sounds.playFlip();
+      setWordAnim('slide-next');
+      setCurrentIndex(prev => prev + 1);
+      setTimeout(() => setWordAnim(''), 300);
     }
   };
 
   const handlePrevWord = () => {
-    sounds.playFlip();
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      sounds.playFlip();
+      setWordAnim('slide-prev');
+      setCurrentIndex(prev => prev - 1);
+      setTimeout(() => setWordAnim(''), 300);
     }
   };
 
@@ -161,13 +166,15 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
     // Background server sync without blocking UI
     updateProgress(currentWord.id, status, status === 'mastered').catch(() => {});
 
-    // In step-by-step mode, smoothly auto-advance to next word
+    // In step-by-step mode, smoothly auto-advance to next word with fluid animation
+    setWordAnim('slide-next');
     setTimeout(() => {
       if (viewMode === 'step_by_step' && currentIndex < vocabularies.length - 1) {
         sounds.playFlip();
         setCurrentIndex(prev => prev + 1);
       }
       setIsRatingLocked(false);
+      setTimeout(() => setWordAnim(''), 120);
     }, 280);
   };
 
@@ -372,7 +379,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             <span className="d-none d-sm-inline">Dùng phím mũi tên <strong>Trái / Phải</strong> hoặc <strong>Phím Cách</strong></span>
           </div>
 
-          <Card className="jlpt-card border-0 shadow-sm p-2.5 p-sm-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+          <Card className={`jlpt-card border-0 shadow-sm p-2.5 p-sm-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden ${wordAnim ? `word-card-${wordAnim}` : ''}`} style={{ width: '100%', maxWidth: '100%' }}>
             {/* Top Tools */}
             <div className="d-flex justify-content-between align-items-center mb-2.5 w-100">
               <Badge color="primary" pill className="px-2.5 py-1 fw-bold" style={{ fontSize: '11.5px' }}>

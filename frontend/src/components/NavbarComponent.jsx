@@ -51,6 +51,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
   ];
 
   const handleMobileNav = (id) => {
+    sounds.playFlip();
     setActiveTab(id);
     setMobileMenuOpen(false);
   };
@@ -230,18 +231,65 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
         </Container>
       </Navbar>
 
-      {/* ── Mobile Bottom Nav (Sticky) ── */}
-      <div className="d-lg-none fixed-bottom mobile-bottom-nav d-flex justify-content-around py-1 px-1" style={{ zIndex: 1020, paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 3px)' }}>
+      {/* ── Mobile Bottom Nav (Sticky Luxury iOS/Duolingo Feel) ── */}
+      <div className="d-lg-none fixed-bottom mobile-bottom-nav d-flex justify-content-around py-1.5 px-2" style={{ zIndex: 1020, paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4px)' }}>
         {bottomItems.map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
-            <button key={item.id} type="button" onClick={() => setActiveTab(item.id)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px 4px', flex: 1, minWidth: 0 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: isActive ? '#eff6ff' : 'transparent', marginBottom: 2, transition: 'all .2s ease' }}>
-                <Icon size={20} color={isActive ? '#2563eb' : '#94a3b8'} />
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => {
+                if (!isActive) sounds.playFlip();
+                setActiveTab(item.id);
+              }}
+              className={`mobile-nav-btn ${isActive ? 'is-active' : ''}`}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '4px 2px',
+                flex: 1,
+                minWidth: 0,
+                outline: 'none'
+              }}
+            >
+              <div
+                className="mobile-nav-icon-box"
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 14,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: isActive ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' : 'transparent',
+                  marginBottom: 3,
+                  transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  boxShadow: isActive ? '0 4px 14px rgba(37, 99, 235, 0.38)' : 'none',
+                  transform: isActive ? 'translateY(-2px) scale(1.06)' : 'scale(1)'
+                }}
+              >
+                <Icon size={20} color={isActive ? '#ffffff' : '#64748b'} strokeWidth={isActive ? 2.4 : 1.8} />
               </div>
-              <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 500, color: isActive ? '#2563eb' : '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+              <span
+                style={{
+                  fontSize: '10.5px',
+                  fontWeight: isActive ? 800 : 500,
+                  color: isActive ? '#2563eb' : '#64748b',
+                  letterSpacing: '-0.01em',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '100%',
+                  transition: 'color 0.2s ease'
+                }}
+              >
                 {item.label}
               </span>
             </button>
