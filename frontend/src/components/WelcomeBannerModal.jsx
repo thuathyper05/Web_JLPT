@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Award, ArrowRight, ExternalLink } from 'lucide-react';
+import { X, Sparkles, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../services/sounds';
 
-const STORAGE_KEY = 'hyper_welcome_banner_dismissed_v1';
+const STORAGE_KEY = 'hyper_welcome_banner_dismissed_permanent';
 
 export default function WelcomeBannerModal({ onExploreCourses }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,26 +11,38 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
-    // Check if user has already dismissed this banner in current session or marked don't show
-    const isDismissed = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
+    // Only suppress if user has explicitly checked "Không hiện lại" in localStorage
+    const isPermanentlyDismissed = localStorage.getItem(STORAGE_KEY);
 
-    if (!isDismissed) {
-      // Gentle entrance delay (450ms) for smooth page mount and visual impact
+    if (!isPermanentlyDismissed) {
+      // Smooth entrance delay (350ms) for comfortable visual transition
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 450);
+      }, 350);
       return () => clearTimeout(timer);
     }
   }, []);
 
-  // Listen for custom trigger to re-open banner from navbar or footer
+  // Listen for custom trigger to re-open banner from navbar, footer, or mobile menu
   useEffect(() => {
     const handleReopen = () => {
       setIsClosing(false);
       setIsOpen(true);
     };
     window.addEventListener('open-welcome-modal', handleReopen);
-    return () => window.removeEventListener('open-welcome-modal', handleReopen);
+    // Expose developer helpers on window
+    window.openWelcomeBanner = handleReopen;
+    window.resetWelcomeBanner = () => {
+      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.clear();
+      handleReopen();
+    };
+
+    return () => {
+      window.removeEventListener('open-welcome-modal', handleReopen);
+      delete window.openWelcomeBanner;
+      delete window.resetWelcomeBanner;
+    };
   }, []);
 
   // Body scroll lock while modal is open
@@ -65,7 +77,6 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
     if (dontShowAgain) {
       localStorage.setItem(STORAGE_KEY, 'true');
     }
-    sessionStorage.setItem(STORAGE_KEY, 'true');
 
     setTimeout(() => {
       setIsOpen(false);
@@ -77,8 +88,8 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
     try {
       sounds.playComplete();
       confetti({
-        particleCount: 90,
-        spread: 70,
+        particleCount: 80,
+        spread: 65,
         origin: { y: 0.6 },
         colors: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#ffffff']
       });
@@ -88,7 +99,6 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
     if (dontShowAgain) {
       localStorage.setItem(STORAGE_KEY, 'true');
     }
-    sessionStorage.setItem(STORAGE_KEY, 'true');
 
     setTimeout(() => {
       setIsOpen(false);
@@ -111,14 +121,14 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
       }`}
       style={{
         zIndex: 99999,
-        background: 'rgba(8, 14, 26, 0.82)',
+        background: 'rgba(8, 14, 26, 0.85)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
-        padding: '16px',
+        padding: '12px',
         overflowY: 'auto'
       }}
       onClick={(e) => {
-        // Dismiss when clicking the dark backdrop
+        // Dismiss when tapping outside the card
         if (e.target === e.currentTarget) {
           handleClose();
         }
@@ -131,20 +141,20 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
         }`}
         style={{
           width: '100%',
-          maxWidth: '470px',
+          maxWidth: '460px',
           background: 'linear-gradient(180deg, #131d31 0%, #0b1120 100%)',
-          borderRadius: '24px',
+          borderRadius: '22px',
           border: '1.5px solid rgba(255, 255, 255, 0.16)',
           boxShadow: '0 25px 65px -12px rgba(0, 0, 0, 0.85), 0 0 45px rgba(239, 68, 68, 0.28)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: 'min(92vh, 800px)',
+          maxHeight: '94vh',
           margin: 'auto'
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Subtle top edge gradient bar */}
+        {/* Top edge gradient accent bar */}
         <div
           style={{
             height: '3.5px',
@@ -155,18 +165,18 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
 
         {/* ── Top Header with Brand Badge & "X" Close Button ── */}
         <div
-          className="d-flex align-items-center justify-content-between px-3 pt-3 pb-2.5"
+          className="d-flex align-items-center justify-content-between px-3 pt-2.5 pb-2"
           style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}
         >
-          {/* Brand pill badge */}
+          {/* Brand Badge */}
           <div className="d-flex align-items-center gap-2">
             <div
               className="d-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill"
               style={{
-                background: 'rgba(239, 68, 68, 0.14)',
+                background: 'rgba(239, 68, 68, 0.15)',
                 border: '1px solid rgba(239, 68, 68, 0.35)',
                 color: '#fca5a5',
-                fontSize: '12px',
+                fontSize: '11.5px',
                 fontWeight: 700,
                 letterSpacing: '0.03em'
               }}
@@ -190,26 +200,29 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
             className="welcome-close-btn d-flex align-items-center justify-content-center p-0"
             title="Đóng (Esc)"
           >
-            <X size={18} strokeWidth={2.6} />
+            <X size={18} strokeWidth={2.8} />
           </button>
         </div>
 
-        {/* ── Scrollable Body with High-Definition Image ── */}
+        {/* ── High-Definition Banner Showcase Frame ── */}
         <div
-          className="p-3 welcome-modal-body"
+          className="p-2.5 welcome-modal-body"
           style={{
             overflowY: 'auto',
             overscrollBehavior: 'contain'
           }}
         >
-          {/* Image Showcase Frame */}
           <div
-            className="position-relative overflow-hidden welcome-banner-frame"
+            className="position-relative overflow-hidden welcome-banner-frame mx-auto"
             style={{
               borderRadius: '16px',
               border: '1px solid rgba(255, 255, 255, 0.18)',
               background: '#090d16',
-              boxShadow: '0 12px 30px rgba(0, 0, 0, 0.45)'
+              boxShadow: '0 12px 30px rgba(0, 0, 0, 0.45)',
+              maxHeight: 'min(58vh, 440px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             {/* Crisp 1024x1024 Banner Image */}
@@ -219,7 +232,8 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
               className="w-100 h-auto d-block welcome-banner-img"
               style={{
                 aspectRatio: '1 / 1',
-                objectFit: 'cover',
+                maxHeight: 'min(58vh, 440px)',
+                objectFit: 'contain',
                 imageRendering: '-webkit-optimize-contrast',
                 transform: 'translateZ(0)',
                 backfaceVisibility: 'hidden',
@@ -233,37 +247,13 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
             {/* Subtle Luxury Sheen Overlay */}
             <div className="welcome-shine-overlay" />
           </div>
-
-          {/* Text Summary */}
-          <div className="mt-3 text-center">
-            <h5
-              className="fw-bold mb-1 text-white"
-              style={{
-                fontSize: '17px',
-                letterSpacing: '-0.01em',
-                lineHeight: '1.35'
-              }}
-            >
-              Nền Tảng Tiếng Nhật Đẳng Cấp #1
-            </h5>
-            <p
-              className="small mb-0"
-              style={{
-                color: '#94a3b8',
-                fontSize: '12.5px',
-                lineHeight: '1.55'
-              }}
-            >
-              Chào mừng bạn đến với hệ sinh thái học tập chuẩn Tokyo: 25 bài Minna no Nihongo, Kanji N5 thông minh, Flashcard 3D & trắc nghiệm tốc độ cao!
-            </p>
-          </div>
         </div>
 
         {/* ── Footer Actions ── */}
         <div
-          className="p-3 pt-2"
+          className="p-2.5 pt-2"
           style={{
-            background: 'rgba(10, 15, 29, 0.7)',
+            background: 'rgba(10, 15, 29, 0.75)',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)'
           }}
         >
@@ -276,17 +266,17 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
               background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%)',
               border: 'none',
               boxShadow: '0 8px 20px -3px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25)',
-              fontSize: '14.5px',
+              fontSize: '14px',
               letterSpacing: '0.01em',
               transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
           >
-            <span>Bắt đầu khám phá ngay</span>
-            <ArrowRight size={17} />
+            <span>Bắt đầu học ngay 🚀</span>
+            <ArrowRight size={16} />
           </button>
 
-          {/* Secondary Options Bar */}
-          <div className="d-flex align-items-center justify-content-between mt-2.5 px-1">
+          {/* Secondary Controls Bar */}
+          <div className="d-flex align-items-center justify-content-between mt-2 px-1">
             <label
               className="d-flex align-items-center gap-1.5 small mb-0 text-secondary"
               style={{ fontSize: '11.5px', cursor: 'pointer', userSelect: 'none' }}
@@ -319,7 +309,7 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
               onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
               onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
             >
-              Đóng thông báo (✕)
+              Đóng (✕)
             </button>
           </div>
         </div>
