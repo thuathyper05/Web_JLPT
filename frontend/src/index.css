@@ -2692,3 +2692,92 @@ p {
   cursor: pointer;
 }
 
+/* Multi-lesson Selection Check Indicator */
+.wm-lesson-btn {
+  position: relative;
+}
+
+.wm-lesson-check-dot {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 9px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* Botanical Stage Icon Container */
+.garden-stage-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.garden-plant-botanical-avatar {
+  transition: transform 0.2s ease;
+}
+
+.garden-plant-card:hover .garden-plant-botanical-avatar {
+  transform: scale(1.1);
+}
+
+.garden-done-big-pot {
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+  animation: pot-float 2.5s infinite ease-in-out;
+}
+
+@keyframes pot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (max-width: 576px) {
+  .garden-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .garden-header-actions {
+    width: 100%;
+  }
+
+  .garden-water-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .garden-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .garden-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .garden-plant-card {
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .garden-plant-word {
+    font-size: 15px;
+  }
+
+  .garden-plant-reading {
+    font-size: 10px;
+  }
+
+  .garden-plant-meaning {
+    font-size: 12px;
+  }
+}
+
+

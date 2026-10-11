@@ -44,9 +44,27 @@ const getVocabularies = async (req, res) => {
     const whereClauses = [];
     const params = [];
 
-    if (lesson && lesson !== 'all') {
-      params.push(parseInt(lesson));
-      whereClauses.push(`v.lesson_number = $${params.length}`);
+    const rawLesson = req.query.lessons || req.query.lesson;
+    if (rawLesson && rawLesson !== 'all') {
+      if (typeof rawLesson === 'string' && rawLesson.includes(',')) {
+        const lessonArr = rawLesson.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+        if (lessonArr.length > 0) {
+          params.push(lessonArr);
+          whereClauses.push(`v.lesson_number = ANY($${params.length})`);
+        }
+      } else if (Array.isArray(rawLesson)) {
+        const lessonArr = rawLesson.map(n => parseInt(n)).filter(n => !isNaN(n));
+        if (lessonArr.length > 0) {
+          params.push(lessonArr);
+          whereClauses.push(`v.lesson_number = ANY($${params.length})`);
+        }
+      } else {
+        const singleL = parseInt(rawLesson);
+        if (!isNaN(singleL)) {
+          params.push(singleL);
+          whereClauses.push(`v.lesson_number = $${params.length}`);
+        }
+      }
     }
 
     if (search) {

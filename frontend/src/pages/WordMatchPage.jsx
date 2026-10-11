@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { Container, Spinner } from 'reactstrap';
 import { 
   Zap, Trophy, RotateCcw, Play, Clock, Star, Volume2, VolumeX, 
-  Flame, ChevronLeft, CheckCircle, Sparkles, Award, Shield, Target
+  Flame, ChevronLeft, CheckCircle2, Sparkles, Award, Shield, Target,
+  Layers, SlidersHorizontal, CheckSquare, Check, BookOpen, AlertCircle
 } from 'lucide-react';
 import { vocabService, speakJapanese, lessonService } from '../services/api';
 import { sounds } from '../services/sounds';
@@ -12,9 +13,19 @@ import confetti from 'canvas-confetti';
 const GAME_DURATION = 60;
 const PAIRS_COUNT = 5;
 
+const PRESET_RANGES = [
+  { label: 'Bài 1–5', lessons: [1, 2, 3, 4, 5] },
+  { label: 'Bài 6–10', lessons: [6, 7, 8, 9, 10] },
+  { label: 'Bài 11–15', lessons: [11, 12, 13, 14, 15] },
+  { label: 'Bài 16–20', lessons: [16, 17, 18, 19, 20] },
+  { label: 'Bài 21–25', lessons: [21, 22, 23, 24, 25] },
+  { label: 'Tất cả 25 bài', lessons: Array.from({ length: 25 }, (_, i) => i + 1) }
+];
+
 const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
   const { user } = useApp();
-  const [lessonNum, setLessonNum] = useState(initialLesson);
+  const [selectedLessons, setSelectedLessons] = useState(() => new Set([initialLesson || 1]));
+  const [selectionMode, setSelectionMode] = useState('single'); // 'single' | 'multi'
   const [lessons, setLessons] = useState([]);
   const [gameState, setGameState] = useState('setup'); // setup | playing | result
   const [loading, setLoading] = useState(false);
@@ -47,20 +58,46 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
   const isFeverMode = combo >= 4;
 
-  // Load lessons
+  // Load lessons list
   useEffect(() => {
     lessonService.getLessons().then(r => setLessons(r.data || [])).catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (initialLesson) setLessonNum(initialLesson);
+    if (initialLesson) {
+      setSelectedLessons(new Set([initialLesson]));
+    }
   }, [initialLesson]);
 
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
+  // Toggle or select lesson
+  const handleToggleLesson = (num) => {
+    if (selectionMode === 'single') {
+      setSelectedLessons(new Set([num]));
+      onSelectLesson?.(num);
+    } else {
+      setSelectedLessons(prev => {
+        const next = new Set(prev);
+        if (next.has(num)) {
+          if (next.size > 1) next.delete(num); // Keep at least 1 lesson
+        } else {
+          next.add(num);
+        }
+        return next;
+      });
+    }
+  };
+
+  const applyPreset = (presetLessons) => {
+    setSelectionMode('multi');
+    setSelectedLessons(new Set(presetLessons));
+  };
+
   const loadNextRound = useCallback(async () => {
     try {
-      const res = await vocabService.getVocabularies({ lesson: lessonNum });
+      const lessonsParam = Array.from(selectedLessons).join(',');
+      const res = await vocabService.getVocabularies({ lessons: lessonsParam });
       const allVocabs = Array.isArray(res.data) ? res.data : (res.data?.data || []);
       if (!allVocabs.length) return;
 
@@ -92,7 +129,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
       console.error('loadNextRound error:', err);
       processingRef.current = false;
     }
-  }, [lessonNum]);
+  }, [selectedLessons]);
 
   const startGame = async () => {
     setLoading(true);
@@ -148,13 +185,12 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
       const newMaxCombo = Math.max(maxCombo, newCombo);
       const isSuperSpeed = matchSpeedSec <= 1.4 && totalMatched > 0;
       
-      // Points calculation: Base 10 + combo bonus + fever 2x + speed bonus
       const basePoints = 10;
       const comboBonus = newCombo > 1 ? (newCombo - 1) * 5 : 0;
       const speedBonus = isSuperSpeed ? 5 : 0;
       let roundGained = basePoints + comboBonus + speedBonus;
       if (newCombo >= 4) {
-        roundGained = Math.round(roundGained * 1.5); // 1.5x Fever multiplier
+        roundGained = Math.round(roundGained * 1.5);
       }
 
       setCombo(newCombo);
@@ -162,7 +198,6 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
       setScore(s => s + roundGained);
       setTotalMatched(t => t + 1);
 
-      // Floating notification
       let notifyText = `+${roundGained} ĐIỂM`;
       if (newCombo >= 4) {
         notifyText = `🔥 FEVER x${newCombo}! +${roundGained}`;
@@ -179,7 +214,6 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         setSelectedLeft(null);
         setSelectedRight(null);
 
-        // Check if round complete
         if (newMatchedPairs.size === PAIRS_COUNT) {
           confetti({
             particleCount: 50,
@@ -240,11 +274,18 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
     setSelectedRight(prev => prev?.id === card.id ? null : card);
   };
 
+  const selectedCountText = useMemo(() => {
+    const arr = Array.from(selectedLessons).sort((a, b) => a - b);
+    if (arr.length === 1) return `Bài ${arr[0]}`;
+    if (arr.length === 25) return 'Tất cả 25 bài (1,589 từ)';
+    return `${arr.length} bài đã chọn (Bài ${arr.slice(0, 3).join(', ')}${arr.length > 3 ? '...' : ''})`;
+  }, [selectedLessons]);
+
   // ─── SETUP SCREEN ───
   if (gameState === 'setup') {
     return (
       <div className="wm-page">
-        <Container className="py-3 py-lg-4" style={{ maxWidth: 640 }}>
+        <Container className="py-3 py-lg-4" style={{ maxWidth: 680 }}>
           <button
             type="button"
             onClick={() => onNavigate?.('home')}
@@ -258,14 +299,14 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             <div className="wm-icon-badge mb-3">
               <Zap size={38} />
             </div>
-            <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-1.5 flex-wrap">
               <h1 className="wm-title mb-0">Nối Từ Siêu Tốc</h1>
-              <span className="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30 rounded-pill px-2.5 py-1" style={{ fontSize: '11px', fontWeight: 800 }}>
-                ⚡ Tốc độ 60s
+              <span className="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-30 rounded-pill px-2.5 py-1 d-inline-flex align-items-center gap-1" style={{ fontSize: '11px', fontWeight: 800 }}>
+                <Clock size={12} /> 60 Giây Phản Xạ
               </span>
             </div>
             <p className="wm-subtitle">
-              Kích thích phản xạ nhận diện mặt chữ trong <strong>0.5 giây</strong>. Loại bỏ thói quen dịch nhẩm, biến từ vựng thành phản xạ tự nhiên!
+              Ghép nối thần tốc từ vựng tiếng Nhật và nghĩa tiếng Việt trong <strong>0.5 giây</strong>. Rèn luyện phản xạ mặt chữ tự nhiên không cần dịch nhẩm!
             </p>
           </div>
 
@@ -274,39 +315,114 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             <div className="wm-highscore-card mb-3.5">
               <div className="d-flex align-items-center gap-2">
                 <Trophy size={20} className="text-warning flex-shrink-0" />
-                <span>Kỷ lục đỉnh cao:</span>
+                <span>Kỷ lục tốc độ cao nhất:</span>
               </div>
               <strong className="fs-5">{highScore.toLocaleString()} điểm</strong>
             </div>
           )}
 
-          {/* Lesson Selector */}
+          {/* ── Lesson Selector (Single or Multi-Select) ── */}
           <div className="wm-setup-card mb-3.5">
-            <div className="d-flex align-items-center justify-content-between mb-2">
-              <label className="wm-label mb-0">Chọn bài học Minna (1–25):</label>
-              <span className="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-0.5" style={{ fontSize: '11px' }}>
-                Đang chọn: Bài {lessonNum}
-              </span>
-            </div>
-            <div className="wm-lesson-grid">
-              {Array.from({ length: 25 }, (_, i) => i + 1).map(num => (
+            <div className="d-flex align-items-center justify-content-between mb-2.5 flex-wrap gap-2">
+              <div className="d-flex align-items-center gap-2">
+                <SlidersHorizontal size={15} className="text-primary" />
+                <label className="wm-label mb-0">Phạm Vi Bài Học:</label>
+                <span className="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2.5 py-1 small fw-bold">
+                  {selectedCountText}
+                </span>
+              </div>
+
+              {/* Mode Toggle Switch */}
+              <div className="d-flex align-items-center bg-light p-1 rounded-pill border">
                 <button
-                  key={num}
                   type="button"
-                  onClick={() => { setLessonNum(num); onSelectLesson?.(num); }}
-                  className={`wm-lesson-btn ${lessonNum === num ? 'active' : ''}`}
+                  className={`btn btn-sm rounded-pill px-2.5 py-0.5 small ${selectionMode === 'single' ? 'btn-primary text-white shadow-xs fw-bold' : 'btn-light text-muted'}`}
+                  style={{ fontSize: '11.5px' }}
+                  onClick={() => {
+                    setSelectionMode('single');
+                    const first = Array.from(selectedLessons)[0] || 1;
+                    setSelectedLessons(new Set([first]));
+                  }}
                 >
-                  {num}
+                  1 Bài
                 </button>
-              ))}
+                <button
+                  type="button"
+                  className={`btn btn-sm rounded-pill px-2.5 py-0.5 small ${selectionMode === 'multi' ? 'btn-primary text-white shadow-xs fw-bold' : 'btn-light text-muted'}`}
+                  style={{ fontSize: '11.5px' }}
+                  onClick={() => setSelectionMode('multi')}
+                >
+                  <Layers size={12} className="me-1" />
+                  Nhiều Bài
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Presets for Multi-Select */}
+            {selectionMode === 'multi' && (
+              <div className="mb-2.5">
+                <small className="text-muted d-block mb-1.5 fw-semibold" style={{ fontSize: '11px' }}>
+                  ⚡ Chọn nhanh gói bài ôn tập:
+                </small>
+                <div className="d-flex gap-1.5 flex-wrap">
+                  {PRESET_RANGES.map(preset => {
+                    const isAllSelected = preset.lessons.every(l => selectedLessons.has(l));
+                    return (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => applyPreset(preset.lessons)}
+                        className={`btn btn-sm rounded-pill px-2.5 py-1 small d-inline-flex align-items-center gap-1 ${
+                          isAllSelected
+                            ? 'btn-outline-primary border-2 fw-bold bg-primary bg-opacity-10'
+                            : 'btn-outline-secondary'
+                        }`}
+                        style={{ fontSize: '11px' }}
+                      >
+                        {isAllSelected && <Check size={11} />}
+                        <span>{preset.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* 25 Lesson Grid Buttons */}
+            <div className="wm-lesson-grid">
+              {Array.from({ length: 25 }, (_, i) => i + 1).map(num => {
+                const isSelected = selectedLessons.has(num);
+                return (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => handleToggleLesson(num)}
+                    className={`wm-lesson-btn ${isSelected ? 'active' : ''}`}
+                    title={`Bài ${num}`}
+                  >
+                    <span>{num}</span>
+                    {isSelected && selectionMode === 'multi' && (
+                      <span className="wm-lesson-check-dot">✓</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="text-center mt-2">
+              <small className="text-muted" style={{ fontSize: '11px' }}>
+                {selectionMode === 'single'
+                  ? '💡 Đang ở chế độ chọn 1 bài. Bấm vào bài bất kỳ để đổi bài học.'
+                  : '💡 Đang ở chế độ chọn nhiều bài. Bấm vào từng ô số để chọn hoặc bỏ chọn.'}
+              </small>
             </div>
           </div>
 
-          {/* How to Play Card */}
+          {/* Game Rules Card */}
           <div className="wm-rules-card mb-4">
             <div className="fw-bold text-dark small mb-1 d-flex align-items-center gap-1.5">
               <Sparkles size={14} className="text-warning" />
-              <span>Cơ chế trò chơi:</span>
+              <span>Quy tắc thi đấu tốc độ:</span>
             </div>
             <div className="wm-rule">
               <span className="wm-rule-icon">👆</span>
@@ -322,9 +438,10 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             </div>
           </div>
 
+          {/* Start CTA Button */}
           <button type="button" onClick={startGame} className="wm-start-btn">
             <Play size={22} />
-            Bắt đầu thi đấu ngay ⚡
+            Bắt đầu thi đấu ({selectedCountText}) ⚡
           </button>
         </Container>
       </div>
@@ -360,7 +477,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               className="garden-back-btn p-0"
               style={{ fontSize: '12.5px' }}
             >
-              <ChevronLeft size={16} /> Thoát trò chơi
+              <ChevronLeft size={16} /> Thoát game
             </button>
 
             <div className="d-flex align-items-center gap-2">
@@ -372,7 +489,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                 title="Bật/Tắt âm thanh"
               >
                 {soundEnabled ? <Volume2 size={13} className="text-primary" /> : <VolumeX size={13} className="text-danger" />}
-                <span>{soundEnabled ? 'Âm thanh: Bật' : 'Tắt tiếng'}</span>
+                <span>{soundEnabled ? 'Bật âm' : 'Tắt âm'}</span>
               </button>
               <span className="badge bg-white text-secondary border rounded-pill px-2.5 py-1" style={{ fontSize: '11px' }}>
                 Vòng {rounds}
@@ -402,7 +519,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
             <div className={`wm-hud-stat ${isFeverMode ? 'wm-fever-badge' : ''}`}>
               <Flame size={16} className={isFeverMode ? 'text-danger' : 'text-warning'} />
-              <span>{combo > 0 ? `Combo x${combo}` : `Bài ${lessonNum}`}</span>
+              <span>{combo > 0 ? `Combo x${combo}` : selectedCountText}</span>
             </div>
           </div>
 
@@ -443,7 +560,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                     {card.reading && card.reading !== card.text && (
                       <div className="wm-card-reading">{card.reading}</div>
                     )}
-                    {isMatched && <CheckCircle size={15} className="wm-check-icon" />}
+                    {isMatched && <CheckCircle2 size={15} className="wm-check-icon" />}
                   </button>
                 );
               })}
@@ -467,7 +584,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                     onClick={() => handleRightClick(card)}
                   >
                     <div className="wm-card-vi">{card.text}</div>
-                    {isMatched && <CheckCircle size={15} className="wm-check-icon" />}
+                    {isMatched && <CheckCircle2 size={15} className="wm-check-icon" />}
                   </button>
                 );
               })}
@@ -494,7 +611,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
   return (
     <div className="wm-page">
-      <Container className="py-4 py-lg-5" style={{ maxWidth: 560 }}>
+      <Container className="py-4 py-lg-5" style={{ maxWidth: 580 }}>
         <div className="wm-result-card">
           {isNewRecord ? (
             <>
@@ -507,11 +624,11 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               <h2 className="wm-result-score">{score.toLocaleString()}</h2>
             </>
           )}
-          <p className="wm-result-label">điểm phản xạ</p>
+          <p className="wm-result-label">điểm phản xạ ({selectedCountText})</p>
 
           <div className="wm-result-stats">
             <div className="wm-stat-item">
-              <CheckCircle size={18} color="#10b981" />
+              <CheckCircle2 size={18} color="#10b981" />
               <div>
                 <div className="wm-stat-val">{totalMatched}</div>
                 <div className="wm-stat-key">Cặp ghép đúng</div>

@@ -107,9 +107,20 @@ const getFallbackVocabularies = (params = {}) => {
   const { cachedVocabs } = loadFallbackData();
   let list = [...cachedVocabs];
 
-  if (params.lesson_id || params.lesson) {
-    const lessonNum = parseInt(params.lesson_id || params.lesson);
-    list = list.filter(v => v.lesson_number === lessonNum || v.lesson_id === lessonNum);
+  const rawLesson = params.lessons || params.lesson_id || params.lesson;
+  if (rawLesson && rawLesson !== 'all') {
+    if (typeof rawLesson === 'string' && rawLesson.includes(',')) {
+      const nums = rawLesson.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+      list = list.filter(v => nums.includes(v.lesson_number));
+    } else if (Array.isArray(rawLesson)) {
+      const nums = rawLesson.map(n => parseInt(n)).filter(n => !isNaN(n));
+      list = list.filter(v => nums.includes(v.lesson_number));
+    } else {
+      const lessonNum = parseInt(rawLesson);
+      if (!isNaN(lessonNum)) {
+        list = list.filter(v => v.lesson_number === lessonNum || v.lesson_id === lessonNum);
+      }
+    }
   }
 
   if (params.search) {
