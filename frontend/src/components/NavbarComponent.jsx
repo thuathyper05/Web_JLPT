@@ -102,6 +102,33 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               );
             })}
 
+            {/* ⚡ NEW Flagship Games on Desktop Navbar */}
+            <NavItem>
+              <NavLink
+                href="#"
+                onClick={e => { e.preventDefault(); sounds.playFlip?.(); setActiveTab('wordmatch'); }}
+                className={`nav-featured-pill nav-featured-pill--rush ${activeTab === 'wordmatch' ? 'is-active' : ''}`}
+                title="Mini-game 60s ghép cặp phản xạ nhanh 0.5s"
+              >
+                <Zap size={13} className="text-warning flex-shrink-0" />
+                <span>Nối từ</span>
+                <span className="badge-new-blink badge-new-blink--rush">NEW 🔥</span>
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                href="#"
+                onClick={e => { e.preventDefault(); sounds.playFlip?.(); setActiveTab('garden'); }}
+                className={`nav-featured-pill nav-featured-pill--garden ${activeTab === 'garden' ? 'is-active' : ''}`}
+                title="Vườn cây trí nhớ chuẩn SRS khoa học thuộc vĩnh viễn"
+              >
+                <Sprout size={13} className="text-success flex-shrink-0" />
+                <span>Vườn cây</span>
+                <span className="badge-new-blink badge-new-blink--garden">NEW 🌸</span>
+              </NavLink>
+            </NavItem>
+
             {/* More dropdown on Desktop */}
             <NavItem>
               <UncontrolledDropdown nav>
@@ -114,16 +141,22 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   }}>
                   <MoreHorizontal size={15} /> Thêm
                 </DropdownToggle>
-                <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2 py-1" style={{ minWidth: 180 }}>
+                <DropdownMenu end className="shadow-lg border-0 rounded-3 mt-2 py-1" style={{ minWidth: 200 }}>
                   {moreNavItems.map(item => {
                     const Icon = item.icon;
+                    const isRush = item.id === 'wordmatch';
+                    const isGarden = item.id === 'garden';
                     return (
                       <DropdownItem key={item.id}
                         onClick={() => setActiveTab(item.id)}
-                        className="d-flex align-items-center gap-2 py-2"
-                        style={{ fontWeight: activeTab === item.id ? 700 : 500, color: activeTab === item.id ? '#2563eb' : '#1e293b', fontSize: 14 }}>
-                        <Icon size={15} style={{ color: activeTab === item.id ? '#2563eb' : '#64748b' }} />
-                        {item.label}
+                        className="d-flex align-items-center justify-content-between py-2"
+                        style={{ fontWeight: activeTab === item.id ? 700 : 500, color: activeTab === item.id ? '#2563eb' : '#1e293b', fontSize: 13.5 }}>
+                        <div className="d-flex align-items-center gap-2">
+                          <Icon size={15} style={{ color: activeTab === item.id ? '#2563eb' : item.color || '#64748b' }} />
+                          <span>{item.label}</span>
+                        </div>
+                        {isRush && <span className="badge-new-blink badge-new-blink--rush ms-2">NEW 🔥</span>}
+                        {isGarden && <span className="badge-new-blink badge-new-blink--garden ms-2">NEW 🌸</span>}
                       </DropdownItem>
                     );
                   })}
@@ -173,11 +206,17 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <div style={{ fontWeight: 700, fontSize: 14, color: '#0f172a' }}>{user.username}</div>
                     <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{user.email}</div>
                   </div>
-                  <DropdownItem onClick={() => setActiveTab('garden')} className="d-flex align-items-center gap-2 py-2">
-                    <Sprout size={15} style={{ color: '#10b981' }} /> Vườn cây trí nhớ 🌱
+                  <DropdownItem onClick={() => setActiveTab('wordmatch')} className="d-flex align-items-center justify-content-between py-2">
+                    <div className="d-flex align-items-center gap-2">
+                      <Zap size={15} style={{ color: '#f59e0b' }} /> <span>Nối từ siêu tốc ⚡</span>
+                    </div>
+                    <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '9px', padding: '1px 5px' }}>NEW 🔥</span>
                   </DropdownItem>
-                  <DropdownItem onClick={() => setActiveTab('wordmatch')} className="d-flex align-items-center gap-2 py-2">
-                    <Zap size={15} style={{ color: '#f59e0b' }} /> Nối từ siêu tốc ⚡
+                  <DropdownItem onClick={() => setActiveTab('garden')} className="d-flex align-items-center justify-content-between py-2">
+                    <div className="d-flex align-items-center gap-2">
+                      <Sprout size={15} style={{ color: '#10b981' }} /> <span>Vườn cây trí nhớ 🌱</span>
+                    </div>
+                    <span className="badge-new-blink badge-new-blink--garden" style={{ fontSize: '9px', padding: '1px 5px' }}>NEW 🌸</span>
                   </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2 py-2">
                     <BarChart2 size={15} style={{ color: '#2563eb' }} /> Tiến độ học tập
@@ -387,6 +426,50 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 </button>
               </div>
             )}
+
+            {/* VIP Group: 2 Flagship New Games */}
+            <div className="p-2.5 rounded-3 border" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #f0fdf4 100%)', borderColor: '#fde68a' }}>
+              <div className="d-flex align-items-center justify-content-between mb-2 px-1">
+                <span className="fw-black text-uppercase text-dark" style={{ fontSize: '10.5px', letterSpacing: '0.05em' }}>
+                  ⚡ 2 Trò Chơi Mới Đột Phá
+                </span>
+                <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '8.5px', padding: '1px 5px' }}>HOT 🔥</span>
+              </div>
+              <div className="d-flex flex-column gap-1.5">
+                {gameNavItems.map(item => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  const isRush = item.id === 'wordmatch';
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => handleMobileNav(item.id)}
+                      className="p-2 rounded-3 bg-white border d-flex align-items-center justify-content-between cursor-pointer shadow-xs"
+                      style={{ borderColor: isRush ? '#fed7aa' : '#bbf7d0' }}
+                    >
+                      <div className="d-flex align-items-center gap-2 min-w-0">
+                        <div
+                          className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
+                          style={{ width: 30, height: 30, background: item.bg, color: item.color }}
+                        >
+                          <Icon size={16} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="d-flex align-items-center gap-1.5">
+                            <span className="fw-bold text-dark" style={{ fontSize: '12.5px' }}>{item.label}</span>
+                            <span className={`badge-new-blink ${isRush ? 'badge-new-blink--rush' : 'badge-new-blink--garden'}`} style={{ fontSize: '8.5px', padding: '1px 5px' }}>
+                              NEW {isRush ? '🔥' : '🌸'}
+                            </span>
+                          </div>
+                          <div className="text-muted text-truncate" style={{ fontSize: '10px' }}>{item.desc}</div>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="text-muted flex-shrink-0" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* Group 1: Study Modes */}
             <div>

@@ -2871,227 +2871,291 @@ p {
   }
 }
 
-/* ─── HOME PROMO SECTION: 2 NEW FLAGSHIP GAMES ─── */
+/* ─── ULTRA-PREMIUM BLINKING NEON BADGES (DESKTOP & MOBILE) ─── */
+@keyframes badge-neon-blink-rush {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.7), 0 0 14px rgba(245, 158, 11, 0.5);
+    background: linear-gradient(135deg, #ef4444 0%, #ea580c 100%);
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.82;
+    box-shadow: 0 0 2px rgba(239, 68, 68, 0.3), 0 0 6px rgba(245, 158, 11, 0.2);
+    background: linear-gradient(135deg, #dc2626 0%, #d97706 100%);
+  }
+}
+
+@keyframes badge-neon-blink-garden {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.7), 0 0 14px rgba(236, 72, 153, 0.5);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.82;
+    box-shadow: 0 0 2px rgba(16, 185, 129, 0.3), 0 0 6px rgba(236, 72, 153, 0.2);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  }
+}
+
+@keyframes beacon-pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.beacon-blink-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: beacon-pulse 1.3s infinite ease-in-out;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.badge-new-blink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5px;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff !important;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.badge-new-blink--rush {
+  animation: badge-neon-blink-rush 1.3s infinite ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.badge-new-blink--garden {
+  animation: badge-neon-blink-garden 1.3s infinite ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ─── DESKTOP NAVBAR FEATURED PILLS ─── */
+.nav-featured-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.81rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.nav-featured-pill--rush {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  color: #fef08a !important;
+}
+
+.nav-featured-pill--rush:hover, .nav-featured-pill--rush.is-active {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+}
+
+.nav-featured-pill--garden {
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.38);
+  color: #bbf7d0 !important;
+}
+
+.nav-featured-pill--garden:hover, .nav-featured-pill--garden.is-active {
+  background: rgba(16, 185, 129, 0.28);
+  border-color: #10b981;
+  transform: translateY(-1px);
+}
+
+/* ─── HOMEPAGE PROMO SECTION: ULTRA COMPACT & ELEGANT ─── */
 .home-promo-section {
   position: relative;
   z-index: 2;
 }
 
-.badge-new-glow {
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
-  color: #ffffff;
-  font-size: 10.5px;
+.home-promo-mini-label {
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  color: #0f172a;
   text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 999px;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.45);
-  animation: badge-pulse 1.6s infinite alternate ease-in-out;
 }
 
-.home-promo-section-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
-  letter-spacing: -0.2px;
+.home-promo-mini-sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
 }
 
-.home-promo-card {
+.home-promo-card-compact {
   position: relative;
-  border-radius: 20px;
-  padding: 16px 18px;
-  transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 16px;
+  padding: 10px 13px;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  border: 1.5px solid transparent;
+  min-height: 80px;
 }
 
-.home-promo-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+.home-promo-card-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
 }
 
-.home-promo-card--rush {
-  background: linear-gradient(145deg, #ffffff 0%, #fffbeb 60%, #fef3c7 100%);
-  border: 1.5px solid #fde68a;
+.home-promo-card-compact--rush {
+  background: linear-gradient(135deg, #ffffff 0%, #fffbeb 60%, #fef3c7 100%);
+  border-color: #fde68a;
 }
 
-.home-promo-card--rush:hover {
+.home-promo-card-compact--rush:hover {
   border-color: #f59e0b;
 }
 
-.home-promo-card--garden {
-  background: linear-gradient(145deg, #ffffff 0%, #f0fdf4 60%, #dcfce7 100%);
-  border: 1.5px solid #bbf7d0;
+.home-promo-card-compact--garden {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 60%, #dcfce7 100%);
+  border-color: #bbf7d0;
 }
 
-.home-promo-card--garden:hover {
+.home-promo-card-compact--garden:hover {
   border-color: #10b981;
 }
 
-.home-promo-card-glow-mesh {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(36px);
-  opacity: 0.6;
-}
-
-.home-promo-card-glow-mesh--amber {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, transparent 70%);
-}
-
-.home-promo-card-glow-mesh--emerald {
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
-}
-
-.home-promo-card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.home-promo-icon-box {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+.home-promo-compact-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.home-promo-icon-box--rush {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: #ffffff;
-}
-
-.home-promo-icon-box--garden {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-}
-
-.home-promo-title {
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.home-promo-subtitle {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-  display: block;
-}
-
-.home-promo-desc {
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: #475569;
-}
-
-.badge-pulse-new {
-  font-size: 9.5px;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  padding: 2px 7px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  text-transform: uppercase;
-  animation: badge-pulse 1.4s infinite alternate ease-in-out;
-}
-
-.badge-pulse-new--rush {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
-}
-
-.badge-pulse-new--garden {
-  background: #fdf2f8;
-  color: #db2777;
-  border: 1px solid #fbcfe8;
-  box-shadow: 0 0 8px rgba(219, 39, 119, 0.25);
-}
-
-.home-promo-pills {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.home-promo-pill {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #334155;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 2.5px 8px;
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-}
-
-.home-promo-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 13px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.home-promo-btn:hover {
-  transform: scale(1.04);
-}
-
-.home-promo-btn--rush {
+.home-promo-compact-icon--rush {
   background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
   color: #ffffff;
 }
 
-.home-promo-btn--garden {
-  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+.home-promo-compact-icon--garden {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+}
+
+.home-promo-compact-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-promo-compact-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.home-promo-compact-sub {
+  font-size: 10.5px;
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-promo-compact-cta {
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.home-promo-compact-cta--rush {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.home-promo-compact-cta--garden {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.home-promo-card-compact:hover .home-promo-compact-cta--rush {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.home-promo-card-compact:hover .home-promo-compact-cta--garden {
+  background: #10b981;
   color: #ffffff;
 }
 
 @media (max-width: 576px) {
-  .home-promo-card {
-    padding: 13px 14px;
-    border-radius: 16px;
+  .home-promo-card-compact {
+    padding: 7px 8px;
+    border-radius: 13px;
+    min-height: 68px;
   }
-  .home-promo-title {
-    font-size: 14px;
+  .home-promo-compact-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
   }
-  .home-promo-desc {
+  .home-promo-compact-icon svg {
+    width: 13px;
+    height: 13px;
+  }
+  .home-promo-compact-title {
     font-size: 12px;
-    margin-bottom: 6px !important;
   }
-  .home-promo-btn {
-    padding: 4px 10px;
-    font-size: 11px;
+  .home-promo-compact-sub {
+    font-size: 9px;
   }
-  .home-promo-section-title {
-    font-size: 12px;
+  .badge-new-blink {
+    font-size: 8px;
+    padding: 1px 4.5px;
+  }
+  .home-promo-compact-cta {
+    font-size: 9.5px;
+    padding: 2px 6px;
+  }
+  .home-promo-mini-label {
+    font-size: 9.5px;
   }
 }
 

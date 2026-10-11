@@ -335,122 +335,81 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         </div>
       </div>
 
-      {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER ── */}
-      <div className="home-promo-section mb-3 mb-md-4">
-        <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
-          <div className="d-flex align-items-center gap-2">
-            <span className="badge-new-glow">
-              <Sparkles size={11} className="me-1" /> MỚI RA MẮT
-            </span>
-            <span className="home-promo-section-title">
-              2 Trò Chơi Đột Phá: Phản Xạ Nhanh & Thuộc Vĩnh Viễn
-            </span>
+      {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER (COMPACT & SLEEK FOR ALL DEVICES) ── */}
+      <div className="home-promo-section mb-2.5 mb-md-3">
+        <div className="d-flex align-items-center justify-content-between mb-1.5 px-0.5">
+          <div className="d-flex align-items-center gap-1.5">
+            <span className="beacon-blink-dot" />
+            <span className="home-promo-mini-label">2 TÍNH NĂNG MỚI ĐỘT PHÁ</span>
           </div>
+          <span className="home-promo-mini-sub d-none d-sm-inline">Game phản xạ 60s & Nuôi cây SRS vĩnh viễn</span>
         </div>
 
-        <Row className="g-2.5 g-md-3">
+        <Row className="g-2 g-md-2.5">
           {/* Card 1: Nối Từ Siêu Tốc */}
-          <Col xs={12} md={6}>
+          <Col xs={6} md={6}>
             <div 
-              className="home-promo-card home-promo-card--rush cursor-pointer h-100"
+              className="home-promo-card-compact home-promo-card-compact--rush"
               onClick={() => {
                 sounds.playFlip?.();
                 onNavigate('wordmatch');
               }}
             >
-              <div className="home-promo-card-glow-mesh home-promo-card-glow-mesh--amber" />
-              <div className="home-promo-card-content">
-                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
-                  <div className="d-flex align-items-center gap-2">
-                    <div className="home-promo-icon-box home-promo-icon-box--rush">
-                      <Zap size={20} />
-                    </div>
-                    <div>
-                      <div className="d-flex align-items-center gap-1.5 flex-wrap">
-                        <h6 className="home-promo-title mb-0">Nối Từ Siêu Tốc</h6>
-                        <span className="badge-pulse-new badge-pulse-new--rush">
-                          NEW 🔥
-                        </span>
-                      </div>
-                      <small className="home-promo-subtitle">Word Match Rush • Phản xạ 60 giây</small>
-                    </div>
+              <div className="home-promo-compact-badge-row mb-1">
+                <div className="d-flex align-items-center gap-1.5 min-w-0">
+                  <div className="home-promo-compact-icon home-promo-compact-icon--rush">
+                    <Zap size={15} />
                   </div>
-                  <button 
-                    type="button" 
-                    className="home-promo-btn home-promo-btn--rush"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      sounds.playFlip?.();
-                      onNavigate('wordmatch');
-                    }}
-                  >
-                    <span>Chơi ngay</span>
-                    <ArrowRight size={13} />
-                  </button>
+                  <div className="min-w-0">
+                    <div className="home-promo-compact-title">Nối Từ Siêu Tốc</div>
+                    <div className="home-promo-compact-sub d-none d-md-block">Ghép 10 thẻ trong 60s • Bùng nổ Dopamine</div>
+                  </div>
                 </div>
+                <span className="badge-new-blink badge-new-blink--rush">
+                  NEW 🔥
+                </span>
+              </div>
 
-                <p className="home-promo-desc mb-2.5">
-                  10 ô thẻ Nhật–Việt bị xáo trộn. Chạm thật nhanh để ghép cặp đúng, kích nổ combo điểm Dopamine và loại bỏ hoàn toàn việc dịch nhẩm trong đầu!
-                </p>
-
-                <div className="home-promo-pills">
-                  <span className="home-promo-pill">⏱️ Đếm ngược 60s</span>
-                  <span className="home-promo-pill">⚡ Phản xạ 0.5s</span>
-                  <span className="home-promo-pill">🏆 Kỷ lục tốc độ</span>
-                </div>
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-0.5">
+                <span className="home-promo-compact-sub">⏱️ Phản Xạ 60s</span>
+                <span className="home-promo-compact-cta home-promo-compact-cta--rush">
+                  <span>Chơi ngay</span>
+                  <ArrowRight size={10} />
+                </span>
               </div>
             </div>
           </Col>
 
           {/* Card 2: Vườn Cây Trí Nhớ */}
-          <Col xs={12} md={6}>
+          <Col xs={6} md={6}>
             <div 
-              className="home-promo-card home-promo-card--garden cursor-pointer h-100"
+              className="home-promo-card-compact home-promo-card-compact--garden"
               onClick={() => {
                 sounds.playFlip?.();
                 onNavigate('garden');
               }}
             >
-              <div className="home-promo-card-glow-mesh home-promo-card-glow-mesh--emerald" />
-              <div className="home-promo-card-content">
-                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
-                  <div className="d-flex align-items-center gap-2">
-                    <div className="home-promo-icon-box home-promo-icon-box--garden">
-                      <Sprout size={20} />
-                    </div>
-                    <div>
-                      <div className="d-flex align-items-center gap-1.5 flex-wrap">
-                        <h6 className="home-promo-title mb-0">Vườn Cây Trí Nhớ</h6>
-                        <span className="badge-pulse-new badge-pulse-new--garden">
-                          NEW 🌸
-                        </span>
-                      </div>
-                      <small className="home-promo-subtitle">SRS Gamification • Thuộc Vĩnh Viễn</small>
-                    </div>
+              <div className="home-promo-compact-badge-row mb-1">
+                <div className="d-flex align-items-center gap-1.5 min-w-0">
+                  <div className="home-promo-compact-icon home-promo-compact-icon--garden">
+                    <Sprout size={15} />
                   </div>
-                  <button 
-                    type="button" 
-                    className="home-promo-btn home-promo-btn--garden"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      sounds.playFlip?.();
-                      onNavigate('garden');
-                    }}
-                  >
-                    <span>Vào vườn</span>
-                    <ArrowRight size={13} />
-                  </button>
+                  <div className="min-w-0">
+                    <div className="home-promo-compact-title">Vườn Cây Trí Nhớ</div>
+                    <div className="home-promo-compact-sub d-none d-md-block">Nuôi cây 4 cấp SRS • Thuộc vĩnh viễn</div>
+                  </div>
                 </div>
+                <span className="badge-new-blink badge-new-blink--garden">
+                  NEW 🌸
+                </span>
+              </div>
 
-                <p className="home-promo-desc mb-2.5">
-                  Mỗi từ vựng là một mầm cây sinh trưởng qua 4 giai đoạn SRS (1–3–7–30 ngày). Tưới nước chăm sóc mỗi ngày để cây đơm quả vàng vĩnh viễn!
-                </p>
-
-                <div className="home-promo-pills">
-                  <span className="home-promo-pill">🌱 4 Cấp độ cây</span>
-                  <span className="home-promo-pill">💧 Nhiệm vụ nuôi cây</span>
-                  <span className="home-promo-pill">⭐ Quả vàng vĩnh viễn</span>
-                </div>
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-0.5">
+                <span className="home-promo-compact-sub">🌱 Nuôi Cây SRS</span>
+                <span className="home-promo-compact-cta home-promo-compact-cta--garden">
+                  <span>Vào vườn</span>
+                  <ArrowRight size={10} />
+                </span>
               </div>
             </div>
           </Col>
@@ -573,9 +532,15 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                         >
                           <IconComp size={18} />
                         </div>
-                        <Badge color="light" pill className="border text-secondary px-2 py-0.5 d-none d-sm-inline" style={{ fontSize: '10.5px' }}>
-                          {feat.badge}
-                        </Badge>
+                        {feat.id === 'wordmatch' ? (
+                          <span className="badge-new-blink badge-new-blink--rush">NEW 🔥</span>
+                        ) : feat.id === 'garden' ? (
+                          <span className="badge-new-blink badge-new-blink--garden">NEW 🌸</span>
+                        ) : (
+                          <Badge color="light" pill className="border text-secondary px-2 py-0.5 d-none d-sm-inline" style={{ fontSize: '10.5px' }}>
+                            {feat.badge}
+                          </Badge>
+                        )}
                       </div>
 
                       <h6 className="fw-bold text-navy-dark mb-1" style={{ fontSize: '14px' }}>
