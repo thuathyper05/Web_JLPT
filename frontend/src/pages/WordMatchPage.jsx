@@ -245,7 +245,15 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
   if (gameState === 'setup') {
     return (
       <div className="wm-page">
-        <Container className="py-4 py-lg-5" style={{ maxWidth: 600 }}>
+        <Container className="py-3 py-lg-4" style={{ maxWidth: 600 }}>
+          <button
+            type="button"
+            onClick={() => onNavigate?.('home')}
+            className="garden-back-btn mb-3"
+          >
+            <ChevronLeft size={18} /> Trang chủ
+          </button>
+
           {/* Header */}
           <div className="text-center mb-4">
             <div className="wm-icon-badge mb-3">
@@ -315,6 +323,24 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         )}
 
         <Container className="py-3 py-lg-4" style={{ maxWidth: 760 }}>
+          {/* Top Bar with Exit Button */}
+          <div className="d-flex align-items-center justify-content-between mb-2 px-1">
+            <button
+              type="button"
+              onClick={() => {
+                clearInterval(timerRef.current);
+                setGameState('setup');
+              }}
+              className="garden-back-btn p-0"
+              style={{ fontSize: '12.5px' }}
+            >
+              <ChevronLeft size={16} /> Thoát game
+            </button>
+            <span className="badge bg-white text-secondary border rounded-pill px-2.5 py-1" style={{ fontSize: '11px' }}>
+              Vòng {rounds}
+            </span>
+          </div>
+
           {/* HUD */}
           <div className="wm-hud">
             <div className="wm-hud-stat">
@@ -448,6 +474,13 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             <button onClick={() => setGameState('setup')} className="wm-secondary-btn">
               <ChevronLeft size={18} />
               Chọn bài khác
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate?.('home')}
+              className="btn btn-link text-decoration-none text-secondary small py-1"
+            >
+              ← Về Trang chủ
             </button>
           </div>
 

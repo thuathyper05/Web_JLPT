@@ -463,6 +463,15 @@ const GardenPage = ({ onNavigate }) => {
           </div>
         )}
 
+        {/* Back to Home */}
+        <button
+          type="button"
+          onClick={() => onNavigate?.('home')}
+          className="garden-back-btn mb-2.5"
+        >
+          <ChevronLeft size={18} /> Trang chủ
+        </button>
+
         {/* Header */}
         <div className="garden-header">
           <div>
