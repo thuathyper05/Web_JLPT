@@ -5,7 +5,7 @@ import {
   XCircle, Volume2, BookOpen, Sparkles, Info, X, 
   ChevronRight, Trophy, Flower2, TreePine, LogIn, AlertCircle,
   Droplets, Sun, Award, Check, Layers, SlidersHorizontal, Heart,
-  Flame, Zap, Clock, ShieldCheck, HeartPulse, Activity, Gift
+  Flame, Zap, Clock, ShieldCheck, HeartPulse, Activity, Gift, Sprout
 } from 'lucide-react';
 import { srsService, vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
