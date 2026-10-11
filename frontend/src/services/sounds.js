@@ -137,6 +137,122 @@ class SoundEffects {
       console.warn('Audio error:', e);
     }
   }
+
+  // Crisp short pop sound for matching cards
+  playPop() {
+    this.triggerHaptic(8);
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(650, now);
+      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.06);
+
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } catch (e) {
+      console.warn('Audio error:', e);
+    }
+  }
+
+  // Water splashing / droplet sound for garden watering
+  playWater() {
+    this.triggerHaptic([10, 20, 15]);
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const drops = [880, 1174, 1318];
+      drops.forEach((freq, i) => {
+        const now = this.ctx.currentTime + i * 0.07;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.08);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.12);
+      });
+    } catch (e) {
+      console.warn('Audio error:', e);
+    }
+  }
+
+  // Rising combo pitch sound for streak
+  playCombo(combo = 1) {
+    this.triggerHaptic(15);
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+      const baseFreq = 440;
+      const pitch = Math.min(baseFreq + (combo * 70), 1400);
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(pitch * 1.25, now + 0.14);
+
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.14);
+    } catch (e) {
+      console.warn('Audio error:', e);
+    }
+  }
+
+  // Sparkling level-up chime for plants blossoming or reaching level 4
+  playLevelUp() {
+    this.triggerHaptic([20, 30, 40, 60]);
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5, E5, G5, C6, E6
+      notes.forEach((freq, idx) => {
+        const now = this.ctx.currentTime + idx * 0.08;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.25);
+      });
+    } catch (e) {
+      console.warn('Audio error:', e);
+    }
+  }
 }
 
 export const sounds = new SoundEffects();
