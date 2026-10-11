@@ -102,8 +102,8 @@ const getVocabularies = async (req, res) => {
     if (result.rows && result.rows.length > 0) {
       return res.json(result.rows);
     }
-    // Fallback if empty and not user-specific filter
-    if (!userId && !status && !favorite) {
+    // Fallback if empty and not user-specific status/favorite filter
+    if (!status && !favorite) {
       return res.json(fallback.getFallbackVocabularies(req.query));
     }
     res.json(result.rows || []);

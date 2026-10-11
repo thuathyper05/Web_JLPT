@@ -307,7 +307,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         const currentGuest = raw ? JSON.parse(raw) : [];
         const existingIds = new Set(currentGuest.map(g => g.vocab_id || g.id));
         const now = new Date();
-        const nextDate = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString();
+        const nextDate = now.toISOString();
 
         matchedHistory.forEach(v => {
           if (!existingIds.has(v.id)) {

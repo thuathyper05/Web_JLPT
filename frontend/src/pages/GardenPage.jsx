@@ -311,8 +311,21 @@ const GardenPage = ({ onNavigate }) => {
     try {
       if (user) {
         const res = await srsService.getGarden();
-        setGardenItems(res.data?.items || []);
-        setStats(res.data?.stats || {});
+        const serverItems = res.data?.items || [];
+        if (serverItems.length === 0) {
+          const raw = getGuestItems();
+          if (raw.length > 0) {
+            const { items: processed, stats: s } = calculateStats(raw);
+            setGardenItems(processed);
+            setStats(s);
+          } else {
+            setGardenItems([]);
+            setStats(res.data?.stats || {});
+          }
+        } else {
+          setGardenItems(serverItems);
+          setStats(res.data?.stats || {});
+        }
       } else {
         const raw = getGuestItems();
         const { items: processed, stats: s } = calculateStats(raw);
@@ -515,7 +528,7 @@ const GardenPage = ({ onNavigate }) => {
         if (user) {
           try {
             const res = await srsService.addLessonToGarden(lesNum);
-            if (res.data?.success) {
+            if (res.data?.success && (res.data?.added > 0 || res.data?.total > 0)) {
               totalAdded += res.data?.added || 0;
               totalWords += res.data?.total || 0;
               backendSuccess = true;
