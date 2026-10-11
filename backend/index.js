@@ -12,6 +12,7 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 const kanjiRoutes = require('./routes/kanjiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const srsRoutes = require('./routes/srsRoutes');
 const { deduplicateDatabase } = require('./scripts/deduplicate');
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/srs', srsRoutes);
 
 // Health check endpoints (for Render & Uptime Monitors)
 app.get(['/', '/health', '/api/health'], (req, res) => {

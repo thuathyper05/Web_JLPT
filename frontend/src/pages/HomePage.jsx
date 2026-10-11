@@ -28,7 +28,8 @@ import {
   ShieldCheck,
   Compass,
   PlayCircle,
-  GraduationCap
+  GraduationCap,
+  Sprout
 } from 'lucide-react';
 import { lessonService, progressService } from '../services/api';
 import { useApp } from '../context/AppContext';
@@ -153,6 +154,24 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       color: '#dc2626',
       bg: 'linear-gradient(135deg, #dc2626, #b91c1c)',
       badge: 'Thi thử ABCD'
+    },
+    {
+      id: 'wordmatch',
+      title: 'Nối Từ Siêu Tốc ⚡',
+      desc: 'Ghép cặp 10 thẻ Nhật–Việt trong 60 giây, tích combo điểm và phá vỡ kỷ lục phản xạ',
+      icon: Zap,
+      color: '#f59e0b',
+      bg: 'linear-gradient(135deg, #f59e0b, #d97706)',
+      badge: 'Game phản xạ'
+    },
+    {
+      id: 'garden',
+      title: 'Vườn Cây Trí Nhớ 🌱',
+      desc: 'Mỗi từ vựng là một mầm cây phát triển qua 4 giai đoạn SRS để khắc ghi vĩnh viễn',
+      icon: Sprout,
+      color: '#10b981',
+      bg: 'linear-gradient(135deg, #10b981, #059669)',
+      badge: 'SRS vĩnh viễn'
     },
     {
       id: 'review',

@@ -7,7 +7,7 @@ import {
 import {
   Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
   BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
-  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck
+  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -35,7 +35,14 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
     { id: 'practice', label: 'Luyện gõ', icon: Keyboard, color: '#10b981', bg: '#ecfdf5', desc: 'Tự gõ bàn phím phản xạ tiếng Nhật' },
   ];
 
+  const gameNavItems = [
+    { id: 'wordmatch', label: 'Nối từ siêu tốc ⚡', icon: Zap, color: '#f59e0b', bg: '#fffbeb', desc: 'Mini-game 60s ghép cặp phản xạ nhanh' },
+    { id: 'garden', label: 'Vườn cây trí nhớ 🌱', icon: Sprout, color: '#10b981', bg: '#ecfdf5', desc: 'SRS ôn tập cây nở hoa thuộc vĩnh viễn' },
+  ];
+
   const moreNavItems = [
+    { id: 'wordmatch', label: 'Nối từ siêu tốc ⚡', icon: Zap, color: '#f59e0b', bg: '#fffbeb', desc: 'Mini-game 60s ghép cặp phản xạ nhanh' },
+    { id: 'garden', label: 'Vườn cây trí nhớ 🌱', icon: Sprout, color: '#10b981', bg: '#ecfdf5', desc: 'SRS ôn tập cây nở hoa thuộc vĩnh viễn' },
     { id: 'review', label: 'Ôn tập sai', icon: RefreshCw, color: '#dc2626', bg: '#fef2f2', desc: 'Khắc phục các câu đã làm sai' },
     { id: 'favorites', label: 'Yêu thích', icon: Star, color: '#d97706', bg: '#fffbeb', desc: 'Kho từ vựng đã đánh dấu sao' },
     { id: 'notes', label: 'Ghi chú', icon: FileText, color: '#0ea5e9', bg: '#f0f9ff', desc: 'Sổ tay lưu mẹo nhớ của bạn' },
@@ -166,6 +173,12 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <div style={{ fontWeight: 700, fontSize: 14, color: '#0f172a' }}>{user.username}</div>
                     <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{user.email}</div>
                   </div>
+                  <DropdownItem onClick={() => setActiveTab('garden')} className="d-flex align-items-center gap-2 py-2">
+                    <Sprout size={15} style={{ color: '#10b981' }} /> Vườn cây trí nhớ 🌱
+                  </DropdownItem>
+                  <DropdownItem onClick={() => setActiveTab('wordmatch')} className="d-flex align-items-center gap-2 py-2">
+                    <Zap size={15} style={{ color: '#f59e0b' }} /> Nối từ siêu tốc ⚡
+                  </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2 py-2">
                     <BarChart2 size={15} style={{ color: '#2563eb' }} /> Tiến độ học tập
                   </DropdownItem>

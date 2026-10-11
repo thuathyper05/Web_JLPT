@@ -172,5 +172,15 @@ export const adminService = {
   cleanDuplicates: () => api.post('/admin/clean-duplicates', {}, { headers: getAdminHeaders() }),
 };
 
+export const srsService = {
+  getGarden: (params) => api.get('/srs/garden', { params }),
+  getDue: (params) => api.get('/srs/due', { params }),
+  getStats: () => api.get('/srs/stats'),
+  recordReview: (data) => api.post('/srs/review', data),
+  addToGarden: (vocab_id) => api.post('/srs/add', { vocab_id }),
+  addLessonToGarden: (lesson_number) => api.post('/srs/add-lesson', { lesson_number }),
+};
+
 export default api;
+
 
