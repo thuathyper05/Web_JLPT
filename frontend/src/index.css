@@ -1437,79 +1437,92 @@ p {
 }
 
 /* ==========================================================================
+/* ==========================================================================
    FEATURE 1: WORD MATCH RUSH (NỐI TỪ SIÊU TỐC)
-   Fast-paced, Duolingo-style Dopamine Word Pair Matching
+   High-End Cyber Arcade & Dopamine Match Rush
    ========================================================================== */
 
 .wm-page {
   min-height: calc(100vh - 120px);
   padding-bottom: 96px;
-  background: var(--app-bg);
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.04) 0%, transparent 60%), var(--app-bg);
   position: relative;
   overflow-x: hidden;
 }
 
-.wm-icon-badge {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.45);
-  animation: wm-badge-pulse 2.2s infinite ease-in-out;
+/* ── Hero Arena Banner ── */
+.wm-hero-arena {
+  background: radial-gradient(120% 120% at 50% -20%, #1e1b4b 0%, #0f172a 100%);
+  border: 1.5px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 20px 45px -15px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  position: relative;
+  color: #ffffff;
 }
 
-@keyframes wm-badge-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+.wm-hero-arena::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 20%;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
 }
 
-.wm-title {
-  font-size: clamp(24px, 4vw, 32px);
-  font-weight: 800;
-  color: #0f172a;
+.wm-hero-lightning {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1.5px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+  animation: wm-lightning-pulse 2s infinite ease-in-out;
+}
+
+@keyframes wm-lightning-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(245, 158, 11, 0.35); }
+  50% { transform: scale(1.08); box-shadow: 0 0 35px rgba(245, 158, 11, 0.65); }
+}
+
+.wm-hero-title {
+  font-size: clamp(26px, 4.5vw, 36px);
+  font-weight: 900;
   letter-spacing: -0.02em;
-  margin-bottom: 8px;
+  background: linear-gradient(135deg, #ffffff 20%, #93c5fd 60%, #fde047 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.wm-subtitle {
-  font-size: 14px;
-  color: #64748b;
-  max-width: 480px;
-  margin: 0 auto;
+.wm-hero-subtitle {
+  font-size: 13.5px;
   line-height: 1.6;
 }
 
-.wm-highscore-card {
+.wm-badge-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px 18px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border: 1px solid #fcd34d;
-  border-radius: 16px;
-  color: #92400e;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  color: #f8fafc;
+  font-size: 12px;
+  font-weight: 700;
 }
 
+/* ── Setup Card & Controls ── */
 .wm-setup-card {
   background: #ffffff;
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
 }
 
 .wm-label {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 800;
   color: #334155;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1522,49 +1535,68 @@ p {
   gap: 8px;
   max-height: 240px;
   overflow-y: auto;
-  padding: 4px;
+  padding: 6px 2px;
 }
 
 @media (min-width: 576px) {
   .wm-lesson-grid {
     grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
   }
 }
 
 .wm-lesson-btn {
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1.5px solid #e2e8f0;
+  border-bottom: 3.5px solid #cbd5e1;
   background: #f8fafc;
   color: #334155;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.18s ease;
+  position: relative;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
 .wm-lesson-btn:hover {
-  border-color: #2563eb;
+  border-color: #3b82f6;
   background: #eff6ff;
   color: #2563eb;
   transform: translateY(-2px);
 }
 
+.wm-lesson-btn:active {
+  transform: translateY(2px);
+  border-bottom-width: 1.5px;
+}
+
 .wm-lesson-btn.active {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   border-color: #1d4ed8;
+  border-bottom-color: #1e3a8a;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.wm-lesson-check-dot {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 9px;
+  font-weight: 900;
+  color: #ffffff;
 }
 
 .wm-rules-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 14px 18px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1572,21 +1604,23 @@ p {
 
 .wm-rule {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 13px;
   color: #475569;
+  line-height: 1.5;
 }
 
 .wm-rule-icon {
   font-size: 16px;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .wm-start-btn {
   width: 100%;
-  height: 52px;
-  border-radius: 16px;
+  height: 54px;
+  border-radius: 18px;
   border: none;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
@@ -1597,13 +1631,13 @@ p {
   justify-content: center;
   gap: 10px;
   cursor: pointer;
-  box-shadow: 0 10px 24px -4px rgba(37, 99, 235, 0.45);
+  box-shadow: 0 12px 28px -4px rgba(37, 99, 235, 0.45);
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .wm-start-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -4px rgba(37, 99, 235, 0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px -4px rgba(37, 99, 235, 0.55);
 }
 
 .wm-start-btn:active {
@@ -1612,8 +1646,8 @@ p {
 
 .wm-secondary-btn {
   width: 100%;
-  height: 48px;
-  border-radius: 14px;
+  height: 50px;
+  border-radius: 16px;
   border: 1.5px solid #cbd5e1;
   background: #ffffff;
   color: #334155;
@@ -1632,7 +1666,7 @@ p {
   border-color: #94a3b8;
 }
 
-/* Gameplay HUD */
+/* ── In-Game Battle HUD ── */
 .wm-hud {
   display: flex;
   align-items: center;
@@ -1645,14 +1679,14 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 8px 16px;
   background: #ffffff;
-  border: 1px solid var(--card-border);
+  border: 1.5px solid #e2e8f0;
   border-radius: 9999px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
-  box-shadow: var(--shadow-xs);
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .wm-timer-wrap {
@@ -1664,17 +1698,18 @@ p {
 .wm-timer-ring {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 16px;
+  gap: 6px;
+  padding: 7px 18px;
   background: #ffffff;
-  border: 2px solid var(--card-border);
+  border: 2.5px solid;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
 }
 
 .wm-timer-bar-wrap {
   width: 100%;
-  height: 6px;
+  height: 7px;
   background: #e2e8f0;
   border-radius: 9999px;
   overflow: hidden;
@@ -1687,29 +1722,30 @@ p {
   transition: width 1s linear, background-color 0.3s ease;
 }
 
-/* Match Columns Grid */
+/* ── 3D Tactile Match Grid Cards ── */
 .wm-match-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
 @media (max-width: 576px) {
   .wm-match-grid {
-    gap: 8px;
+    gap: 9px;
+    margin-bottom: 14px;
   }
 }
 
 .wm-card-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 @media (max-width: 576px) {
   .wm-card-col {
-    gap: 8px;
+    gap: 9px;
   }
 }
 
@@ -1717,7 +1753,7 @@ p {
   font-size: 11.5px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: #64748b;
   text-align: center;
   padding: 2px 0;
@@ -1725,9 +1761,12 @@ p {
 
 .wm-card {
   width: 100%;
-  min-height: 64px;
-  padding: 10px 12px;
-  border-radius: 16px;
+  min-height: 68px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  border: 2px solid #e2e8f0;
+  border-bottom: 4px solid #cbd5e1;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1735,35 +1774,51 @@ p {
   text-align: center;
   position: relative;
   user-select: none;
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 @media (max-width: 576px) {
   .wm-card {
-    min-height: 56px;
-    padding: 8px 8px;
-    border-radius: 13px;
+    min-height: 58px;
+    padding: 8px 10px;
+    border-radius: 14px;
+    border-bottom-width: 3.5px;
   }
 }
 
 .wm-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+  border-color: #94a3b8;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+.wm-card:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.wm-card-left {
+  background: #ffffff;
+}
+
+.wm-card-right {
+  background: #ffffff;
 }
 
 .wm-card-jp {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1.25;
-  color: inherit;
+  color: #0f172a;
 }
 
 @media (max-width: 576px) {
   .wm-card-jp {
-    font-size: 14.5px;
+    font-size: 15px;
   }
 }
 
@@ -1771,18 +1826,25 @@ p {
   font-size: 11px;
   color: #64748b;
   margin-top: 2px;
+  font-weight: 500;
+}
+
+@media (max-width: 576px) {
+  .wm-card-reading {
+    font-size: 10px;
+  }
 }
 
 .wm-card-vi {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   line-height: 1.3;
-  color: inherit;
+  color: #1e293b;
 }
 
 @media (max-width: 576px) {
   .wm-card-vi {
-    font-size: 12.5px;
+    font-size: 13px;
   }
 }
 
@@ -1793,49 +1855,118 @@ p {
   color: #ffffff;
 }
 
+/* Card States: Selected, Matched, Wrong */
+.wm-card.is-selected {
+  border-color: #2563eb !important;
+  border-bottom-color: #1d4ed8 !important;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+  color: #1d4ed8 !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.35), 0 4px 0 #1d4ed8 !important;
+}
+
+.wm-card.is-matched {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border-color: #059669 !important;
+  border-bottom-color: #047857 !important;
+  color: #ffffff !important;
+  transform: scale(0.96) !important;
+  opacity: 0.75 !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+
+.wm-card.is-matched .wm-card-jp,
+.wm-card.is-matched .wm-card-vi,
+.wm-card.is-matched .wm-card-reading {
+  color: #ffffff !important;
+}
+
 @keyframes wm-shake {
   0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-6px); }
-  40%, 80% { transform: translateX(6px); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
 }
 
 .wm-shake {
   animation: wm-shake 0.45s ease-in-out !important;
+  border-color: #ef4444 !important;
+  border-bottom-color: #b91c1c !important;
+  background: #fef2f2 !important;
+  color: #b91c1c !important;
 }
 
-.wm-matched {
-  animation: wm-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes wm-pop {
-  0% { transform: scale(0.9); opacity: 0.5; }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(0.95); opacity: 0.7; }
-}
-
-/* Floating Combo Notification */
+/* ── Floating Combo & Fever Effects ── */
 .wm-floating-combo {
   position: fixed;
-  top: 35%;
+  top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
   color: #ffffff;
   padding: 10px 24px;
   border-radius: 9999px;
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 900;
-  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
+  box-shadow: 0 12px 36px rgba(245, 158, 11, 0.65);
   z-index: 1050;
   pointer-events: none;
-  animation: wm-float-combo 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: wm-float-combo 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  white-space: nowrap;
 }
 
 @keyframes wm-float-combo {
-  0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
-  30% { opacity: 1; transform: translate(-50%, -20px) scale(1.15); }
-  80% { opacity: 1; transform: translate(-50%, -40px) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -60px) scale(0.9); }
+  0% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
+  25% { opacity: 1; transform: translate(-50%, -20px) scale(1.15); }
+  75% { opacity: 1; transform: translate(-50%, -35px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -55px) scale(0.9); }
+}
+
+.wm-fever-active {
+  box-shadow: inset 0 0 50px rgba(245, 158, 11, 0.25);
+  animation: wm-fever-ambient 2s infinite alternate;
+}
+
+@keyframes wm-fever-ambient {
+  0% { box-shadow: inset 0 0 30px rgba(245, 158, 11, 0.2); }
+  100% { box-shadow: inset 0 0 70px rgba(234, 88, 12, 0.45); }
+}
+
+.wm-fever-banner {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #dc2626 100%);
+  color: #ffffff;
+  padding: 7px 18px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+  animation: wm-fever-bounce 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes wm-fever-bounce {
+  0% { transform: scale(0.97); }
+  100% { transform: scale(1.03); }
+}
+
+.wm-fever-badge {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
+  border-color: #f59e0b !important;
+  color: #b45309 !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.4) !important;
+}
+
+.wm-pulse-timer {
+  animation: wm-timer-pulse 0.7s infinite alternate ease-in-out !important;
+}
+
+@keyframes wm-timer-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  100% { transform: scale(1.08); box-shadow: 0 0 18px 4px rgba(239, 68, 68, 0.55); }
 }
 
 .wm-round-progress {
@@ -1843,7 +1974,7 @@ p {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .wm-dot {
@@ -1860,24 +1991,24 @@ p {
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
 }
 
-/* Result Card */
+/* ── Result & History Card ── */
 .wm-result-card {
   background: #ffffff;
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
-  padding: 32px 24px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 36px 24px;
   text-align: center;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.1);
 }
 
 .wm-result-badge {
   display: inline-block;
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: 9999px;
-  background: #e2e8f0;
+  background: #f1f5f9;
   color: #475569;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 12px;
@@ -1890,12 +2021,12 @@ p {
 }
 
 .wm-result-score {
-  font-size: clamp(48px, 8vw, 64px);
+  font-size: clamp(48px, 8vw, 68px);
   font-weight: 900;
   color: #0f172a;
   letter-spacing: -0.03em;
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .wm-result-score.highlight {
@@ -1919,24 +2050,24 @@ p {
 
 .wm-stat-item {
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
   padding: 12px 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-align: left;
 }
 
 .wm-stat-val {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 900;
   color: #0f172a;
   line-height: 1.1;
 }
 
 .wm-stat-key {
-  font-size: 11px;
+  font-size: 11.5px;
   color: #64748b;
 }
 
@@ -1944,36 +2075,49 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 16px;
 }
 
-.wm-record-note {
-  font-size: 12.5px;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin: 0;
+.wm-history-list {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
 
 /* ==========================================================================
-   FEATURE 2: MEMORY GARDEN (VƯỜN CÂY TRÍ NHỚ - SRS)
-   Spaced Repetition Gamification for Permanent Vocabulary Retention
+   FEATURE 2: MEMORY GARDEN (VƯỜN CÂY TRÍ NHỚ - SRS GAMIFICATION)
+   Botanical Zen Simulation & Daily Farming Quests
    ========================================================================== */
 
 .garden-page {
   min-height: calc(100vh - 120px);
   padding-bottom: 96px;
-  background: var(--app-bg);
+  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 60%), var(--app-bg);
   position: relative;
   overflow-x: hidden;
 }
 
 .garden-guest-banner {
   background: #fffbeb;
-  border: 1px solid #fef3c7;
+  border: 1.5px solid #fef3c7;
+}
+
+/* ── Gardener Profile & Zen HUD ── */
+.garden-profile-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border: 1.5px solid #bbf7d0;
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.12);
+}
+
+.garden-avatar-pot {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
 }
 
 .garden-header {
@@ -1986,8 +2130,8 @@ p {
 }
 
 .garden-title {
-  font-size: clamp(22px, 3.5vw, 28px);
-  font-weight: 800;
+  font-size: clamp(24px, 4vw, 30px);
+  font-weight: 900;
   color: #0f172a;
   letter-spacing: -0.02em;
 }
@@ -1996,7 +2140,7 @@ p {
   font-size: 13.5px;
   color: #64748b;
   max-width: 520px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .garden-header-actions {
@@ -2007,44 +2151,45 @@ p {
 }
 
 .garden-water-btn {
-  height: 42px;
-  padding: 0 18px;
+  height: 44px;
+  padding: 0 20px;
   border-radius: 9999px;
   border: none;
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   color: #ffffff;
-  font-size: 13.5px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 8px 22px rgba(2, 132, 199, 0.4);
   animation: garden-water-glow 2s infinite ease-in-out;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
 }
 
 @keyframes garden-water-glow {
-  0%, 100% { box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35); }
-  50% { box-shadow: 0 6px 22px rgba(2, 132, 199, 0.6); }
+  0%, 100% { box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35); }
+  50% { box-shadow: 0 8px 28px rgba(2, 132, 199, 0.65); transform: translateY(-1px); }
 }
 
 .garden-water-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(2, 132, 199, 0.55);
 }
 
 .garden-water-badge {
   background: #ffffff;
   color: #0369a1;
   border-radius: 9999px;
-  padding: 1px 7px;
-  font-size: 11px;
+  padding: 1px 8px;
+  font-size: 11.5px;
   font-weight: 900;
 }
 
 .garden-add-btn {
-  height: 42px;
-  padding: 0 16px;
+  height: 44px;
+  padding: 0 18px;
   border-radius: 9999px;
   border: 1.5px solid #cbd5e1;
   background: #ffffff;
@@ -2063,7 +2208,20 @@ p {
   border-color: #94a3b8;
 }
 
-/* Stats Stage Bar */
+.garden-all-hydrated-pill {
+  padding: 9px 18px;
+  border-radius: 9999px;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  color: #166534;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── 4 Botanical Stages Stats Bar ── */
 .garden-stats-bar {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2080,14 +2238,37 @@ p {
 
 .garden-stat-pill {
   padding: 10px 14px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1.5px solid;
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: all 0.18s ease;
+  user-select: none;
 }
 
-/* Filter Tabs */
+.garden-stat-pill:hover {
+  transform: translateY(-2px);
+}
+
+.garden-stat-pill.is-active {
+  box-shadow: 0 0 0 2px #0f172a !important;
+  transform: translateY(-2px);
+}
+
+.garden-stage-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Filter Tabs ── */
 .garden-filter-tabs {
   display: flex;
   align-items: center;
@@ -2142,50 +2323,54 @@ p {
   color: #ffffff;
 }
 
-/* Plant Grid */
+/* ── Botanical Plant Card Grid ── */
 .garden-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 @media (min-width: 576px) {
   .garden-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px;
   }
 }
 
 @media (min-width: 992px) {
   .garden-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    gap: 16px;
   }
 }
 
 .garden-plant-card {
-  border-radius: 18px;
+  border-radius: 20px;
   border: 1.5px solid;
   padding: 14px;
   display: flex;
   flex-direction: column;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  position: relative;
 }
 
 .garden-plant-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
 
-.garden-plant-emoji {
-  font-size: 26px;
-  line-height: 1;
+.garden-plant-card:hover .garden-plant-botanical-avatar {
+  transform: scale(1.12);
+}
+
+.garden-plant-botanical-avatar {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .garden-plant-word {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 800;
   color: #0f172a;
   margin-top: 4px;
@@ -2199,31 +2384,18 @@ p {
 }
 
 .garden-plant-meaning {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 600;
   color: #334155;
   margin-top: auto;
   padding-top: 6px;
   line-height: 1.35;
 }
 
-.garden-plant-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px dashed rgba(0, 0, 0, 0.08);
-  padding-top: 6px;
-}
-
-.garden-plant-badge {
-  font-size: 11px;
-  font-weight: 700;
-}
-
 .garden-speak-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
   border: none;
   background: rgba(0, 0, 0, 0.05);
   color: #475569;
@@ -2239,16 +2411,34 @@ p {
   color: #0f172a;
 }
 
+.ready-to-water {
+  animation: plant-ready-glow 2.2s infinite ease-in-out;
+}
+
+@keyframes plant-ready-glow {
+  0%, 100% { box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
+  50% { box-shadow: 0 8px 24px rgba(2, 132, 199, 0.4); transform: translateY(-2px); }
+}
+
+.pulse-badge {
+  animation: badge-pulse 1.4s infinite alternate ease-in-out;
+}
+
+@keyframes badge-pulse {
+  0% { transform: scale(0.96); opacity: 0.85; }
+  100% { transform: scale(1.06); opacity: 1; }
+}
+
 .garden-all-good {
   background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 16px;
-  padding: 14px 18px;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 18px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: #166534;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -2262,7 +2452,50 @@ p {
   margin-bottom: 12px;
 }
 
-/* Review Mode */
+/* ── Watering Rain Animation ── */
+.garden-rain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1060;
+  overflow: hidden;
+}
+
+.garden-rain-droplets {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.rain-drop {
+  position: absolute;
+  top: -40px;
+  font-size: 24px;
+  animation: rain-fall 1.2s linear forwards;
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+}
+
+/* ── Daily Farm Quests Card ── */
+.garden-quest-card {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+.garden-quest-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+/* ── Interactive 3D Review Flashcard ── */
 .garden-back-btn {
   border: none;
   background: transparent;
@@ -2273,8 +2506,8 @@ p {
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 8px;
+  padding: 5px 10px;
+  border-radius: 9999px;
   transition: all 0.15s ease;
 }
 
@@ -2284,16 +2517,16 @@ p {
 }
 
 .garden-review-count {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #64748b;
 }
 
 .garden-review-card {
-  min-height: 280px;
+  min-height: 290px;
   background: #ffffff;
-  border: 1.5px solid var(--card-border);
-  border-radius: 24px;
+  border: 2px solid #e2e8f0;
+  border-radius: 28px;
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
@@ -2301,32 +2534,38 @@ p {
   justify-content: center;
   text-align: center;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
+.garden-review-card:hover {
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+}
+
 .garden-review-stage-badge {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 9999px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 16px;
 }
 
 .garden-review-jp {
   font-family: 'Noto Sans JP', sans-serif;
-  font-size: clamp(32px, 6vw, 44px);
+  font-size: clamp(34px, 6vw, 46px);
   font-weight: 900;
   color: #0f172a;
   line-height: 1.2;
 }
 
 .garden-review-reading {
-  font-size: 16px;
+  font-size: 16.5px;
   color: #64748b;
   margin-top: 6px;
+  font-weight: 600;
 }
 
 .garden-review-hint {
@@ -2338,15 +2577,15 @@ p {
 .garden-review-back {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px dashed #e2e8f0;
+  border-top: 1.5px dashed #e2e8f0;
   width: 100%;
 }
 
 .garden-review-meaning {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 900;
   color: #1e3a8a;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .garden-speak-btn {
@@ -2354,13 +2593,18 @@ p {
   background: #ffffff;
   color: #334155;
   border-radius: 9999px;
-  padding: 6px 14px;
-  font-size: 12.5px;
-  font-weight: 600;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+}
+
+.garden-speak-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
 }
 
 .garden-answer-btns {
@@ -2412,7 +2656,7 @@ p {
   box-shadow: 0 10px 24px rgba(16, 185, 129, 0.45);
 }
 
-/* Done Screen */
+/* ── Done Screen ── */
 .garden-done-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2422,9 +2666,9 @@ p {
 
 .garden-done-stat {
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2432,20 +2676,20 @@ p {
 }
 
 .garden-done-val {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 900;
   color: #0f172a;
 }
 
 .garden-done-key {
-  font-size: 11.5px;
+  font-size: 12px;
   color: #64748b;
 }
 
 .garden-primary-btn {
   width: 100%;
-  height: 50px;
-  border-radius: 16px;
+  height: 52px;
+  border-radius: 18px;
   border: none;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
@@ -2462,6 +2706,7 @@ p {
 
 .garden-primary-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.45);
 }
 
 .garden-secondary-btn {
@@ -2480,263 +2725,66 @@ p {
   cursor: pointer;
 }
 
-/* Add Mode */
+.garden-secondary-btn:hover {
+  background: #f1f5f9;
+}
+
+.garden-done-big-pot {
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.25);
+  animation: pot-float 2.5s infinite ease-in-out;
+}
+
+@keyframes pot-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ── Seed Planting Card ── */
 .garden-add-card {
   background: #ffffff;
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
 }
 
 .garden-add-result {
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 13px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 13.5px;
   font-weight: 600;
 }
 
 .garden-add-result.success {
   background: #ecfdf5;
-  border: 1px solid #a7f3d0;
+  border: 1.5px solid #a7f3d0;
   color: #065f46;
 }
 
 .garden-add-result.error {
   background: #fef2f2;
-  border: 1px solid #fecaca;
+  border: 1.5px solid #fecaca;
   color: #b91c1c;
 }
 
 .garden-add-info {
   background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 14px;
-  padding: 12px 14px;
+  border: 1.5px solid #bae6fd;
+  border-radius: 16px;
+  padding: 14px 16px;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   color: #0369a1;
-  font-size: 12.5px;
-  line-height: 1.5;
-}
-
-/* ==========================================================================
-   TOP-TIER EFFECTS: FEVER MODE & WATERING GAMIFICATION
-   ========================================================================== */
-
-/* Fever Mode 🔥 */
-.wm-fever-active {
-  box-shadow: inset 0 0 40px rgba(245, 158, 11, 0.25);
-  animation: wm-fever-ambient 2s infinite alternate;
-}
-
-@keyframes wm-fever-ambient {
-  0% { box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.2); }
-  100% { box-shadow: inset 0 0 60px rgba(234, 88, 12, 0.4); }
-}
-
-.wm-fever-banner {
-  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #dc2626 100%);
-  color: #ffffff;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 18px rgba(234, 88, 12, 0.5);
-  animation: wm-fever-bounce 0.8s infinite alternate ease-in-out;
-}
-
-@keyframes wm-fever-bounce {
-  0% { transform: scale(0.98); }
-  100% { transform: scale(1.02); }
-}
-
-.wm-fever-badge {
-  background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
-  border-color: #f59e0b !important;
-  color: #b45309 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4) !important;
-}
-
-.wm-pulse-timer {
-  animation: wm-timer-pulse 0.7s infinite alternate ease-in-out !important;
-}
-
-@keyframes wm-timer-pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  100% { transform: scale(1.08); box-shadow: 0 0 16px 4px rgba(239, 68, 68, 0.5); }
-}
-
-.wm-card.is-selected {
-  border-color: #2563eb !important;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
-  color: #1d4ed8 !important;
-  transform: translateY(-2px) scale(1.03) !important;
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35) !important;
-}
-
-.wm-card.is-matched {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  border-color: #10b981 !important;
-  color: #ffffff !important;
-  transform: scale(0.96) !important;
-  opacity: 0.75 !important;
-  pointer-events: none !important;
-}
-
-/* Watering Rain Animation Overlay */
-.garden-rain-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1060;
-  overflow: hidden;
-}
-
-.garden-rain-droplets {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.rain-drop {
-  position: absolute;
-  top: -40px;
-  font-size: 24px;
-  animation: rain-fall 1.2s linear forwards;
-}
-
-@keyframes rain-fall {
-  0% { transform: translateY(0) scale(0.8); opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
-}
-
-/* Gardener Profile Card */
-.garden-profile-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  border: 1.5px solid #bbf7d0;
-  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.1);
-}
-
-.garden-avatar-pot {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.garden-all-hydrated-pill {
-  padding: 8px 16px;
-  border-radius: 9999px;
-  background: #f0fdf4;
-  border: 1.5px solid #86efac;
-  color: #166534;
   font-size: 13px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.garden-stat-pill.is-active {
-  box-shadow: 0 0 0 2px #0f172a !important;
-  transform: translateY(-2px);
-}
-
-.pulse-badge {
-  animation: badge-pulse 1.4s infinite alternate ease-in-out;
-}
-
-@keyframes badge-pulse {
-  0% { transform: scale(0.96); opacity: 0.85; }
-  100% { transform: scale(1.06); opacity: 1; }
-}
-
-.ready-to-water {
-  animation: plant-ready-glow 2.2s infinite ease-in-out;
-}
-
-@keyframes plant-ready-glow {
-  0%, 100% { box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15); }
-  50% { box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); transform: translateY(-2px); }
-}
-
-.garden-quest-card {
-  box-shadow: var(--shadow-xs);
-  transition: all 0.2s ease;
-}
-
-.garden-quest-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  line-height: 1.55;
 }
 
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* Multi-lesson Selection Check Indicator */
-.wm-lesson-btn {
-  position: relative;
-}
-
-.wm-lesson-check-dot {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  font-size: 9px;
-  font-weight: 900;
-  color: #ffffff;
-}
-
-/* Botanical Stage Icon Container */
-.garden-stage-icon-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.garden-plant-botanical-avatar {
-  transition: transform 0.2s ease;
-}
-
-.garden-plant-card:hover .garden-plant-botanical-avatar {
-  transform: scale(1.1);
-}
-
-.garden-done-big-pot {
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
-  animation: pot-float 2.5s infinite ease-in-out;
-}
-
-@keyframes pot-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
+/* ── Responsive Adaptations ── */
 @media (max-width: 576px) {
   .garden-header {
     flex-direction: column;
@@ -2764,7 +2812,7 @@ p {
 
   .garden-plant-card {
     padding: 10px;
-    border-radius: 14px;
+    border-radius: 16px;
   }
 
   .garden-plant-word {
@@ -2776,8 +2824,9 @@ p {
   }
 
   .garden-plant-meaning {
-    font-size: 12px;
+    font-size: 12.5px;
   }
 }
+
 
 

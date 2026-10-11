@@ -39,8 +39,14 @@ const getGarden = async (req, res) => {
         sp.id, sp.vocab_id, sp.level, sp.next_review_date, sp.last_reviewed_at,
         sp.correct_count, sp.wrong_count, sp.created_at,
         COALESCE(NULLIF(v.kanji, ''), v.kana) as word,
+        v.kanji,
         v.kana as reading,
+        COALESCE(v.clean_kana, v.kana) as clean_kana,
+        v.romaji,
         COALESCE(v.clean_vietnamese, v.vietnamese) as meaning,
+        v.usage_note,
+        v.example_jp,
+        v.example_vi,
         v.lesson_number
       FROM srs_progress sp
       JOIN vocabularies v ON v.id = sp.vocab_id
@@ -96,8 +102,14 @@ const getDue = async (req, res) => {
       SELECT 
         sp.id, sp.vocab_id, sp.level, sp.next_review_date,
         COALESCE(NULLIF(v.kanji, ''), v.kana) as word,
+        v.kanji,
         v.kana as reading,
+        COALESCE(v.clean_kana, v.kana) as clean_kana,
+        v.romaji,
         COALESCE(v.clean_vietnamese, v.vietnamese) as meaning,
+        v.usage_note,
+        v.example_jp,
+        v.example_vi,
         v.lesson_number
       FROM srs_progress sp
       JOIN vocabularies v ON v.id = sp.vocab_id

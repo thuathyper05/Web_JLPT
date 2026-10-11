@@ -5,45 +5,45 @@ import {
   XCircle, Volume2, BookOpen, Sparkles, Info, X, 
   ChevronRight, Trophy, Flower2, TreePine, LogIn, AlertCircle,
   Droplets, Sun, Award, Check, Layers, SlidersHorizontal, Heart,
-  Flame, Zap, Clock, ShieldCheck, HeartPulse, Activity, Gift, Sprout
+  Flame, Zap, Clock, ShieldCheck, HeartPulse, Activity, Gift, Sprout,
+  HelpCircle, ExternalLink
 } from 'lucide-react';
 import { srsService, vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
 
-// ── Realistic SRS Botanical Stages ──
+// ── 4 Botanical Growth Stages Configuration ──
 const STAGES = {
   1: {
     level: 1,
     name: 'Hạt Nảy Mầm',
-    icon: Leaf,
     badgeText: 'Mầm Non 🌱',
     color: '#10b981',
     bgColor: '#ecfdf5',
     borderColor: '#a7f3d0',
     pct: 25,
-    hydrationText: 'Đang mọc rễ',
+    hydrationText: 'Đất tơi xốp, đang bén rễ',
     nextText: 'Ôn sau 1 ngày',
-    desc: 'Hạt giống vừa nảy mầm non trong đất mùn phì nhiêu'
+    desc: 'Hạt giống Minna nảy mầm non trong đất mùn phì nhiêu',
+    potVisual: '🌱'
   },
   2: {
     level: 2,
     name: 'Nhánh Lá Xanh',
-    icon: TreePine,
     badgeText: 'Lá Xanh 🌿',
     color: '#059669',
     bgColor: '#d1fae5',
     borderColor: '#6ee7b7',
     pct: 50,
-    hydrationText: 'Tươi tốt khỏe mạnh',
+    hydrationText: 'Cành lá xanh tươi, rễ sâu',
     nextText: 'Ôn sau 3 ngày',
-    desc: 'Cây đã phát triển nhánh lá xanh mướt, rễ bám sâu vào lòng đất'
+    desc: 'Cây đã phát triển nhánh lá xanh mướt, rễ bám sâu vào lòng đất',
+    potVisual: '🌿'
   },
   3: {
     level: 3,
     name: 'Hoa Nở Rực Rỡ',
-    icon: Flower2,
     badgeText: 'Nở Hoa 🌸',
     color: '#ec4899',
     bgColor: '#fdf2f8',
@@ -51,34 +51,121 @@ const STAGES = {
     pct: 75,
     hydrationText: 'Thấm nhuần tri thức',
     nextText: 'Ôn sau 7 ngày',
-    desc: 'Những nụ hoa anh đào bung nở rạng rỡ, tỏa ngát hương thơm'
+    desc: 'Những nụ hoa anh đào bung nở rạng rỡ, tỏa ngát hương thơm',
+    potVisual: '🌸'
   },
   4: {
     level: 4,
     name: 'Cây Quả Vàng',
-    icon: Star,
     badgeText: 'Quả Vàng ⭐',
     color: '#f59e0b',
     bgColor: '#fffbeb',
     borderColor: '#fde68a',
     pct: 100,
     hydrationText: 'Thuộc Vĩnh Viễn',
-    nextText: 'Đã hoàn thành',
-    desc: 'Cây đại thụ trĩu quả vàng hoàng kim — Từ vựng đã khắc sâu vào trí nhớ dài hạn!'
+    nextText: 'Đã hoàn thành xuất sắc',
+    desc: 'Cây đại thụ trĩu quả vàng hoàng kim — Đã khắc sâu vào trí nhớ dài hạn vĩnh viễn!',
+    potVisual: '⭐'
   }
 };
 
 const OVERDUE_STAGE = {
   name: 'Cần Tưới Nước Gấp',
-  icon: AlertCircle,
   badgeText: 'Héo Úa 🥀',
   color: '#ef4444',
   bgColor: '#fef2f2',
   borderColor: '#fecaca',
   pct: 15,
-  hydrationText: 'Khát nước nghiêm trọng',
+  hydrationText: 'Đất nứt nẻ, khát nước',
   nextText: 'Cần cấp cứu ngay',
-  desc: 'Cây đang bị thiếu nước do quá hạn ôn tập. Hãy tưới nước ngay để hồi sinh!'
+  desc: 'Cây đang bị thiếu nước do quá hạn ôn tập. Hãy tưới nước ngay để hồi sinh cây!',
+  potVisual: '🥀'
+};
+
+// ── 4 Botanical Vector Plant Illustration Component ──
+const BotanicalPlantVisual = ({ level = 1, isOverdue = false, size = 36, className = '' }) => {
+  if (isOverdue) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        <path d="M18 42L22 58H42L46 42H18Z" fill="#a8a29e" stroke="#78716c" strokeWidth="2" strokeLinejoin="round"/>
+        <rect x="16" y="38" width="32" height="5" rx="2" fill="#78716c"/>
+        <path d="M19 42Q32 40 45 42" stroke="#57534e" strokeWidth="2"/>
+        <path d="M25 44L28 47L30 44" stroke="#44403c" strokeWidth="1.5"/>
+        <path d="M32 40Q31 28 22 24" stroke="#ca8a04" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M22 24Q14 26 16 34Q22 32 22 24Z" fill="#a16207" stroke="#854d0e" strokeWidth="1.5"/>
+        <path d="M26 30Q20 33 22 38Q26 36 26 30Z" fill="#ca8a04" opacity="0.8"/>
+        <path d="M38 28C38 28 35 32 35 34C35 35.66 36.34 37 38 37C39.66 37 41 35.66 41 34C41 32 38 28 38 28Z" fill="#38bdf8"/>
+      </svg>
+    );
+  }
+  if (level === 1) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        <path d="M18 42L22 58H42L46 42H18Z" fill="#ea580c" stroke="#c2410c" strokeWidth="2" strokeLinejoin="round"/>
+        <rect x="16" y="38" width="32" height="5" rx="2" fill="#c2410c"/>
+        <ellipse cx="32" cy="41" rx="14" ry="2.5" fill="#451a03"/>
+        <path d="M32 40Q32 26 32 20" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M32 26Q20 22 18 14Q28 14 32 24" fill="#4ade80" stroke="#16a34a" strokeWidth="1.5"/>
+        <path d="M32 24Q44 20 46 12Q36 12 32 22" fill="#22c55e" stroke="#15803d" strokeWidth="1.5"/>
+        <circle cx="41" cy="14" r="2.2" fill="#38bdf8" stroke="#0284c7" strokeWidth="0.8"/>
+      </svg>
+    );
+  }
+  if (level === 2) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        <path d="M16 40L21 58H43L48 40H16Z" fill="#0284c7" stroke="#0369a1" strokeWidth="2" strokeLinejoin="round"/>
+        <rect x="14" y="36" width="36" height="5" rx="2" fill="#0369a1"/>
+        <ellipse cx="32" cy="39" rx="16" ry="3" fill="#292524"/>
+        <path d="M32 38Q32 22 32 14" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M32 30Q24 25 18 20" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M32 26Q40 21 46 16" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M18 20Q12 12 19 8Q25 14 18 20Z" fill="#22c55e" stroke="#15803d" strokeWidth="1.5"/>
+        <path d="M46 16Q52 8 45 4Q39 10 46 16Z" fill="#4ade80" stroke="#16a34a" strokeWidth="1.5"/>
+        <path d="M32 14Q27 4 32 2Q37 4 32 14Z" fill="#15803d" stroke="#14532d" strokeWidth="1.5"/>
+        <path d="M26 31Q20 31 19 26Q24 26 26 31Z" fill="#86efac"/>
+        <path d="M38 27Q44 27 45 22Q39 22 38 27Z" fill="#4ade80"/>
+      </svg>
+    );
+  }
+  if (level === 3) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+        <path d="M14 44L18 58H46L50 44H14Z" fill="#db2777" stroke="#be185d" strokeWidth="2" strokeLinejoin="round"/>
+        <rect x="12" y="40" width="40" height="5" rx="2" fill="#be185d"/>
+        <ellipse cx="32" cy="43" rx="18" ry="3" fill="#1c1917"/>
+        <path d="M32 42C30 32 37 25 31 16" stroke="#78350f" strokeWidth="3.5" strokeLinecap="round"/>
+        <path d="M34 26C41 22 47 22 48 18" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M31 32C24 28 18 28 16 23" stroke="#78350f" strokeWidth="2.5" strokeLinecap="round"/>
+        <circle cx="31" cy="14" r="5" fill="#f472b6" stroke="#db2777" strokeWidth="1"/>
+        <circle cx="31" cy="14" r="1.8" fill="#fef08a"/>
+        <circle cx="16" cy="22" r="4.5" fill="#fbcfe8" stroke="#ec4899" strokeWidth="1"/>
+        <circle cx="16" cy="22" r="1.5" fill="#fef08a"/>
+        <circle cx="48" cy="17" r="4.5" fill="#f472b6" stroke="#db2777" strokeWidth="1"/>
+        <circle cx="48" cy="17" r="1.5" fill="#fef08a"/>
+        <path d="M22 14Q24 10 26 12Q24 16 22 14Z" fill="#fbcfe8"/>
+        <path d="M40 30Q42 26 44 28Q42 32 40 30Z" fill="#f472b6"/>
+      </svg>
+    );
+  }
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M16 42L20 58H44L48 42H16Z" fill="#d97706" stroke="#b45309" strokeWidth="2" strokeLinejoin="round"/>
+      <rect x="14" y="38" width="36" height="5" rx="2" fill="#f59e0b" stroke="#b45309" strokeWidth="1.5"/>
+      <ellipse cx="32" cy="41" rx="16" ry="3" fill="#1c1917"/>
+      <path d="M32 41C31 30 35 25 32 18" stroke="#78350f" strokeWidth="5" strokeLinecap="round"/>
+      <circle cx="32" cy="16" r="14" fill="#15803d" stroke="#166534" strokeWidth="2"/>
+      <circle cx="23" cy="18" r="9" fill="#16a34a"/>
+      <circle cx="41" cy="18" r="9" fill="#16a34a"/>
+      <circle cx="32" cy="9" r="8" fill="#22c55e"/>
+      <circle cx="26" cy="16" r="3.2" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
+      <circle cx="37" cy="15" r="3.2" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
+      <circle cx="32" cy="22" r="3.2" fill="#f59e0b" stroke="#b45309" strokeWidth="1"/>
+      <circle cx="32" cy="8" r="2.8" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
+      <path d="M47 8L48 5L49 8L52 9L49 10L48 13L47 10L44 9Z" fill="#fde047"/>
+      <path d="M14 12L15 10L16 12L18 13L16 14L15 16L14 14L12 13Z" fill="#fde047"/>
+    </svg>
+  );
 };
 
 const getStageInfo = (item) => {
@@ -119,9 +206,16 @@ const GardenPage = ({ onNavigate }) => {
   // Daily Quests State with Claimable Drops
   const [dailyQuests, setDailyQuests] = useState(() => {
     const today = new Date().toISOString().slice(0, 10);
+    const matchPlayedToday = typeof localStorage !== 'undefined' && localStorage.getItem('hyper_match_played_today') === today;
     const saved = localStorage.getItem(`hyper_quests_${today}`);
     if (saved) {
-      try { return JSON.parse(saved); } catch {}
+      try {
+        const parsed = JSON.parse(saved);
+        return {
+          ...parsed,
+          matchPlayed: parsed.matchPlayed || matchPlayedToday
+        };
+      } catch {}
     }
     return {
       wateredCount: 0,
@@ -131,9 +225,9 @@ const GardenPage = ({ onNavigate }) => {
       perfectClaimed: false,
       plantedToday: false,
       plantedClaimed: false,
-      matchPlayed: false,
+      matchPlayed: matchPlayedToday,
       matchClaimed: false,
-      dewDrops: 150
+      dewDrops: 160
     };
   });
 
@@ -143,6 +237,34 @@ const GardenPage = ({ onNavigate }) => {
     try {
       localStorage.setItem(`hyper_quests_${today}`, JSON.stringify(newQuests));
     } catch {}
+  };
+
+  // Revive All Wilted Plants with Dew Drops
+  const handleReviveAllWilted = () => {
+    const wiltedCount = stats.overdue_count || 0;
+    if (wiltedCount === 0) return;
+    if (dailyQuests.dewDrops < 40) {
+      alert('Bạn cần ít nhất 40 Giọt Sương Thần để hồi sinh toàn bộ vườn cây héo! Hãy hoàn thành nhiệm vụ nuôi cây để nhận thêm sương.');
+      return;
+    }
+
+    sounds.playLevelUp?.();
+    const updatedDew = dailyQuests.dewDrops - 40;
+    saveQuests({ ...dailyQuests, dewDrops: updatedDew });
+
+    const nextDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+    if (!user) {
+      const current = getGuestItems();
+      const updated = current.map(p => {
+        if (p.next_review_date && new Date(p.next_review_date) < new Date()) {
+          return { ...p, level: Math.max(p.level, 1), next_review_date: nextDate };
+        }
+        return p;
+      });
+      saveGuestItems(updated);
+    }
+    loadGarden();
+    confetti({ particleCount: 80, spread: 85, origin: { y: 0.5 } });
   };
 
   // Helper for guest data
@@ -339,7 +461,6 @@ const GardenPage = ({ onNavigate }) => {
     const updatedDew = dailyQuests.dewDrops - 40;
     saveQuests({ ...dailyQuests, dewDrops: updatedDew });
 
-    // Mark plant as hydrated
     const nextDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
     if (!user) {
       const current = getGuestItems();
@@ -399,8 +520,13 @@ const GardenPage = ({ onNavigate }) => {
                 next_review_date: nextDate,
                 last_reviewed_at: now.toISOString(),
                 word: v.kanji || v.clean_kana || v.kana || '',
+                kanji: v.kanji || '',
                 reading: v.kanji ? (v.clean_kana || v.kana || '') : '',
+                romaji: v.romaji || '',
                 meaning: v.clean_vietnamese || v.vietnamese || '',
+                usage_note: v.usage_note || '',
+                example_jp: v.example_jp || '',
+                example_vi: v.example_vi || '',
                 lesson_number: v.lesson_number || lesNum
               });
               totalAdded++;
@@ -426,7 +552,7 @@ const GardenPage = ({ onNavigate }) => {
   // Claim Quest Reward
   const claimQuestReward = (type, dropAmount) => {
     sounds.playLevelUp?.();
-    confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+    confetti({ particleCount: 55, spread: 65, origin: { y: 0.6 } });
     const newDew = dailyQuests.dewDrops + dropAmount;
     if (type === 'water') {
       saveQuests({ ...dailyQuests, wateredClaimed: true, dewDrops: newDew });
@@ -446,11 +572,10 @@ const GardenPage = ({ onNavigate }) => {
     return item.level === parseInt(filterLevel);
   });
 
-  // ─── REVIEW / WATERING SCREEN ───
+  // ─── 1. WATERING / REVIEW SCREEN ───
   if (view === 'review') {
     const currentItem = dueItems[reviewIndex];
     const stage = getStageInfo(currentItem);
-    const StageIcon = stage.icon;
     const progress = dueItems.length > 0 ? Math.round(((reviewIndex) / dueItems.length) * 100) : 0;
 
     return (
@@ -484,23 +609,37 @@ const GardenPage = ({ onNavigate }) => {
               }}
             >
               <div className="garden-review-front">
+                <div className="mb-2.5">
+                  <BotanicalPlantVisual level={currentItem.level} isOverdue={currentItem.is_overdue} size={68} />
+                </div>
                 <div 
                   className="garden-review-stage-badge d-inline-flex align-items-center gap-1.5"
                   style={{ background: stage.bgColor, color: stage.color, border: `1.5px solid ${stage.borderColor}` }}
                 >
-                  <StageIcon size={14} />
+                  <BotanicalPlantVisual level={currentItem.level} isOverdue={currentItem.is_overdue} size={18} />
                   <span>{stage.name} (Cấp {currentItem.level}/4)</span>
                 </div>
                 <div className="garden-review-jp">{currentItem.word}</div>
                 {currentItem.reading && currentItem.reading !== currentItem.word && (
                   <div className="garden-review-reading">{currentItem.reading}</div>
                 )}
-                <div className="garden-review-hint">👆 Chạm vào chậu cây để xem nghĩa</div>
+                {currentItem.romaji && (
+                  <div className="text-muted small mt-1">[{currentItem.romaji}]</div>
+                )}
+                <div className="garden-review-hint">👆 Chạm vào thẻ để xem nghĩa & ví dụ</div>
               </div>
 
               {reviewFlipped && (
                 <div className="garden-review-back">
                   <div className="garden-review-meaning">{currentItem.meaning}</div>
+                  
+                  {currentItem.example_jp && (
+                    <div className="p-2.5 rounded-3 bg-light border text-start mb-3">
+                      <div className="small fw-bold text-dark mb-1">{currentItem.example_jp}</div>
+                      <div className="small text-muted">{currentItem.example_vi}</div>
+                    </div>
+                  )}
+
                   <button
                     type="button"
                     className="garden-speak-btn"
@@ -542,7 +681,7 @@ const GardenPage = ({ onNavigate }) => {
     );
   }
 
-  // ─── DONE SCREEN ───
+  // ─── 2. WATERING COMPLETE SCREEN ───
   if (view === 'done') {
     const correct = reviewResults.filter(r => r.correct).length;
     const total = reviewResults.length;
@@ -597,11 +736,11 @@ const GardenPage = ({ onNavigate }) => {
     );
   }
 
-  // ─── ADD SCREEN (MULTI-LESSON SUPPORT) ───
+  // ─── 3. MULTI-LESSON SEED PLANTING SCREEN ───
   if (view === 'add') {
     return (
       <div className="garden-page">
-        <Container className="py-3 py-md-4" style={{ maxWidth: 640 }}>
+        <Container className="py-3 py-md-4" style={{ maxWidth: 660 }}>
           <button type="button" className="garden-back-btn mb-3" onClick={() => setView('garden')}>
             <ChevronLeft size={18} /> Vườn cây
           </button>
@@ -614,7 +753,7 @@ const GardenPage = ({ onNavigate }) => {
             </span>
           </div>
           <p className="text-muted mb-3.5" style={{ fontSize: 14 }}>
-            Chọn một bài học hoặc nhiều bài cùng lúc để gieo hạt mầm từ vựng vào vườn.
+            Chọn 1 bài hoặc nhiều bài cùng lúc để gieo hạt mầm từ vựng vào vườn. Hệ thống sẽ tự động nhắc nhở bạn theo chu kỳ 1–3–7–30 ngày.
           </p>
 
           <div className="garden-add-card mb-4">
@@ -638,7 +777,7 @@ const GardenPage = ({ onNavigate }) => {
                   type="button"
                   onClick={() => setSelectedPlantLessons(new Set(p.list))}
                   className="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-0.5 small"
-                  style={{ fontSize: '11px' }}
+                  style={{ fontSize: 11 }}
                 >
                   {p.label}
                 </button>
@@ -676,7 +815,7 @@ const GardenPage = ({ onNavigate }) => {
             {addResult && (
               <div className={`garden-add-result mt-3 ${addResult.success ? 'success' : 'error'}`}>
                 {addResult.success
-                  ? `✅ Thành công! Đã gieo ${addResult.added} mầm cây mới vào vườn (Tổng số từ trong bài: ${addResult.total})`
+                  ? `✅ Thành công! Đã gieo ${addResult.added} mầm cây mới vào vườn (Tổng số từ trong các bài: ${addResult.total})`
                   : '❌ Có lỗi xảy ra, vui lòng thử lại'}
               </div>
             )}
@@ -693,22 +832,22 @@ const GardenPage = ({ onNavigate }) => {
     );
   }
 
-  // ─── DAILY QUESTS SCREEN ───
+  // ─── 4. DAILY FARMING QUESTS SCREEN ───
   if (view === 'quests') {
     return (
       <div className="garden-page">
-        <Container className="py-3 py-md-4" style={{ maxWidth: 640 }}>
+        <Container className="py-3 py-md-4" style={{ maxWidth: 660 }}>
           <button type="button" className="garden-back-btn mb-3" onClick={() => setView('garden')}>
             <ChevronLeft size={18} /> Vườn cây
           </button>
 
-          <div className="d-flex align-items-center justify-content-between mb-3.5">
+          <div className="d-flex align-items-center justify-content-between mb-3.5 flex-wrap gap-2">
             <div>
               <div className="d-flex align-items-center gap-2">
                 <Award size={24} className="text-warning" />
-                <h3 className="fw-black mb-0 text-dark">Nhiệm Vụ Nuôi Cây</h3>
+                <h3 className="fw-black mb-0 text-dark">Nhiệm Vụ Nuôi Cây Hằng Ngày</h3>
               </div>
-              <p className="text-muted small mb-0">Hoàn thành mỗi ngày để tích lũy Giọt Sương Thần 💧</p>
+              <p className="text-muted small mb-0">Hoàn thành mỗi ngày để tích lũy Giọt Sương Thần hồi sinh cây 💧</p>
             </div>
             <div className="d-flex align-items-center gap-1.5 px-3 py-1.5 rounded-pill shadow-xs" style={{ background: '#eff6ff', border: '1.5px solid #bfdbfe' }}>
               <Droplets size={16} className="text-primary" />
@@ -725,7 +864,7 @@ const GardenPage = ({ onNavigate }) => {
                     <Droplets size={20} />
                   </div>
                   <div>
-                    <div className="fw-bold text-dark" style={{ fontSize: '14px' }}>Tưới Nước Buổi Sáng</div>
+                    <div className="fw-bold text-dark" style={{ fontSize: 14 }}>Tưới Nước Buổi Sáng</div>
                     <div className="text-muted small">Tưới ít nhất 3 cây đến hạn trong ngày</div>
                   </div>
                 </div>
@@ -735,7 +874,7 @@ const GardenPage = ({ onNavigate }) => {
               </div>
               <Progress value={(Math.min(dailyQuests.wateredCount, 3) / 3) * 100} style={{ height: 6, borderRadius: 999 }} color="info" className="mb-2" />
               <div className="d-flex justify-content-between align-items-center pt-1">
-                <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>Phần thưởng: +30 Giọt Sương Thần</small>
+                <small className="text-muted fw-semibold" style={{ fontSize: 11 }}>Phần thưởng: +30 Giọt Sương Thần</small>
                 {dailyQuests.wateredClaimed ? (
                   <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1 fw-bold">✓ Đã nhận</span>
                 ) : dailyQuests.wateredCount >= 3 ? (
@@ -758,7 +897,7 @@ const GardenPage = ({ onNavigate }) => {
                     <Sun size={20} />
                   </div>
                   <div>
-                    <div className="fw-bold text-dark" style={{ fontSize: '14px' }}>Tắm Nắng Trí Tuệ</div>
+                    <div className="fw-bold text-dark" style={{ fontSize: 14 }}>Tắm Nắng Trí Tuệ</div>
                     <div className="text-muted small">Đạt độ chính xác 100% trong 1 phiên tưới cây</div>
                   </div>
                 </div>
@@ -768,7 +907,7 @@ const GardenPage = ({ onNavigate }) => {
               </div>
               <Progress value={dailyQuests.perfectSession ? 100 : 0} style={{ height: 6, borderRadius: 999 }} color="warning" className="mb-2" />
               <div className="d-flex justify-content-between align-items-center pt-1">
-                <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>Phần thưởng: +50 Giọt Sương Thần</small>
+                <small className="text-muted fw-semibold" style={{ fontSize: 11 }}>Phần thưởng: +50 Giọt Sương Thần</small>
                 {dailyQuests.perfectClaimed ? (
                   <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1 fw-bold">✓ Đã nhận</span>
                 ) : dailyQuests.perfectSession ? (
@@ -791,7 +930,7 @@ const GardenPage = ({ onNavigate }) => {
                     <Sprout size={20} />
                   </div>
                   <div>
-                    <div className="fw-bold text-dark" style={{ fontSize: '14px' }}>Gieo Mầm Tri Thức</div>
+                    <div className="fw-bold text-dark" style={{ fontSize: 14 }}>Gieo Mầm Tri Thức</div>
                     <div className="text-muted small">Gieo hạt ít nhất 1 bài từ vựng Minna vào vườn</div>
                   </div>
                 </div>
@@ -801,7 +940,7 @@ const GardenPage = ({ onNavigate }) => {
               </div>
               <Progress value={dailyQuests.plantedToday ? 100 : 0} style={{ height: 6, borderRadius: 999 }} color="success" className="mb-2" />
               <div className="d-flex justify-content-between align-items-center pt-1">
-                <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>Phần thưởng: +40 Giọt Sương Thần</small>
+                <small className="text-muted fw-semibold" style={{ fontSize: 11 }}>Phần thưởng: +40 Giọt Sương Thần</small>
                 {dailyQuests.plantedClaimed ? (
                   <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1 fw-bold">✓ Đã nhận</span>
                 ) : dailyQuests.plantedToday ? (
@@ -824,20 +963,64 @@ const GardenPage = ({ onNavigate }) => {
                     <Zap size={20} />
                   </div>
                   <div>
-                    <div className="fw-bold text-dark" style={{ fontSize: '14px' }}>Phản Xạ Nối Từ 60 Giây</div>
+                    <div className="fw-bold text-dark" style={{ fontSize: 14 }}>Phản Xạ Nối Từ 60 Giây</div>
                     <div className="text-muted small">Chơi 1 ván Nối Từ Siêu Tốc để bồi dưỡng phản xạ</div>
                   </div>
                 </div>
                 <span className="badge bg-light text-secondary rounded-pill px-2.5 py-1 small">
-                  0 / 1
+                  {dailyQuests.matchPlayed ? '1 / 1' : '0 / 1'}
                 </span>
               </div>
+              <Progress value={dailyQuests.matchPlayed ? 100 : 0} style={{ height: 6, borderRadius: 999 }} color="warning" className="mb-2" />
               <div className="d-flex justify-content-between align-items-center pt-1">
-                <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>Phần thưởng: +35 Giọt Sương Thần</small>
-                <button type="button" className="btn btn-sm btn-warning text-dark rounded-pill px-3 py-1 fw-bold" onClick={() => onNavigate?.('wordmatch')}>
-                  Chơi ngay ⚡
-                </button>
+                <small className="text-muted fw-semibold" style={{ fontSize: 11 }}>Phần thưởng: +35 Giọt Sương Thần</small>
+                {dailyQuests.matchClaimed ? (
+                  <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1 fw-bold">✓ Đã nhận</span>
+                ) : dailyQuests.matchPlayed ? (
+                  <button type="button" className="btn btn-sm btn-warning text-dark rounded-pill px-3 py-1 fw-bold shadow-xs" onClick={() => claimQuestReward('match', 35)}>
+                    <Gift size={13} className="me-1" /> Nhận thưởng
+                  </button>
+                ) : (
+                  <button type="button" className="btn btn-sm btn-outline-warning text-dark rounded-pill px-3 py-1 fw-bold" onClick={() => onNavigate?.('wordmatch')}>
+                    Chơi ngay ⚡
+                  </button>
+                )}
               </div>
+            </div>
+
+            {/* Dew Springs Perk Card */}
+            <div className="p-3.5 rounded-4 border bg-white shadow-xs">
+              <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+                <div className="d-flex align-items-center gap-2">
+                  <div className="p-2 rounded-3 text-primary" style={{ background: '#eff6ff' }}>
+                    <Droplets size={20} />
+                  </div>
+                  <div>
+                    <div className="fw-bold text-dark" style={{ fontSize: 14 }}>Hồ Sương Thần Cứu Cánh</div>
+                    <div className="text-muted small">Dùng 40 Giọt Sương để hồi sinh cây héo tức thì</div>
+                  </div>
+                </div>
+                <div className="fw-black text-primary fs-6">
+                  {dailyQuests.dewDrops} 💧 Hiện Có
+                </div>
+              </div>
+              <p className="text-secondary small mb-2.5" style={{ fontSize: 12 }}>
+                Khi cây bị quá hạn ôn tập và chuyển sang trạng thái <strong>Héo Úa 🥀</strong>, bạn có thể tưới bằng Giọt Sương Thần để phục hồi cây về trạng thái xanh tốt ngay lập tức mà không bị mất chuỗi ngày chăm sóc!
+              </p>
+              {(stats.overdue_count || 0) > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-warning text-dark rounded-pill px-3 py-2 fw-bold w-100 shadow-xs d-flex align-items-center justify-content-center gap-2"
+                  onClick={handleReviveAllWilted}
+                >
+                  <Sparkles size={16} />
+                  <span>Dùng 40 Giọt Sương để hồi sinh {stats.overdue_count} cây héo ngay!</span>
+                </button>
+              ) : (
+                <div className="p-2 rounded-3 text-center bg-light border small text-muted">
+                  🌿 Hiện tại toàn bộ khu vườn đều xanh tốt, không có cây nào bị héo úa!
+                </div>
+              )}
             </div>
           </div>
         </Container>
@@ -845,7 +1028,7 @@ const GardenPage = ({ onNavigate }) => {
     );
   }
 
-  // ─── MAIN GARDEN OVERVIEW ───
+  // ─── 5. FLAGSHIP ZEN GARDEN OVERVIEW ───
   const dueCount = stats.due_count || 0;
   const totalInGarden = stats.total || 0;
 
@@ -855,8 +1038,8 @@ const GardenPage = ({ onNavigate }) => {
       {isWateringRain && (
         <div className="garden-rain-overlay">
           <div className="garden-rain-droplets">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <span key={i} className="rain-drop" style={{ left: `${(i * 5) + 2}%`, animationDelay: `${(i % 5) * 0.12}s` }}>
+            {Array.from({ length: 22 }).map((_, i) => (
+              <span key={i} className="rain-drop" style={{ left: `${(i * 4.6) + 2}%`, animationDelay: `${(i % 5) * 0.11}s` }}>
                 💧
               </span>
             ))}
@@ -864,7 +1047,7 @@ const GardenPage = ({ onNavigate }) => {
         </div>
       )}
 
-      <Container className="py-2.5 py-md-3" style={{ maxWidth: 980 }}>
+      <Container className="py-2.5 py-md-3" style={{ maxWidth: 990 }}>
         {/* Back to Home Button */}
         <button
           type="button"
@@ -893,7 +1076,7 @@ const GardenPage = ({ onNavigate }) => {
           </div>
         )}
 
-        {/* ── Gardener Profile & Rank Card ── */}
+        {/* ── Zen Garden Panorama & Gardener Profile HUD ── */}
         <div className="garden-profile-card p-3 p-md-3.5 rounded-4 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2.5">
           <div className="d-flex align-items-center gap-3">
             <div className="garden-avatar-pot">
@@ -902,12 +1085,12 @@ const GardenPage = ({ onNavigate }) => {
             <div>
               <div className="d-flex align-items-center gap-2">
                 <h5 className="fw-black mb-0 text-dark">{gardenerRank.title}</h5>
-                <span className="badge rounded-pill text-white px-2 py-0.5" style={{ background: gardenerRank.color, fontSize: '10px' }}>
+                <span className="badge rounded-pill text-white px-2 py-0.5" style={{ background: gardenerRank.color, fontSize: 10 }}>
                   {gardenerRank.badge}
                 </span>
               </div>
               <small className="text-muted">
-                Quy mô: <strong>{totalInGarden} cây</strong> trồng trong vườn • <strong>{stats.level4 || 0} quả vàng</strong> vĩnh viễn ⭐
+                Quy mô: <strong>{totalInGarden} cây</strong> trong vườn • <strong>{stats.level4 || 0} cây quả vàng</strong> thuộc vĩnh viễn ⭐
               </small>
             </div>
           </div>
@@ -919,14 +1102,14 @@ const GardenPage = ({ onNavigate }) => {
               onClick={() => setView('quests')}
             >
               <Award size={15} className="text-warning" />
-              <span>Nhiệm vụ nuôi cây</span>
+              <span>Nhiệm vụ ({dailyQuests.dewDrops}💧)</span>
             </button>
             <button
               type="button"
               className="garden-add-btn py-1.5"
               onClick={() => setView('add')}
             >
-              <Plus size={15} /> Gieo mầm
+              <Plus size={15} /> Gieo mầm mới
             </button>
           </div>
         </div>
@@ -936,7 +1119,7 @@ const GardenPage = ({ onNavigate }) => {
           <div>
             <div className="d-flex align-items-center gap-2">
               <h2 className="garden-title mb-0">Vườn Cây Trí Nhớ</h2>
-              <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2.5 py-1 d-inline-flex align-items-center gap-1" style={{ fontSize: '11px', fontWeight: 800 }}>
+              <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2.5 py-1 d-inline-flex align-items-center gap-1" style={{ fontSize: 11, fontWeight: 800 }}>
                 <ShieldCheck size={12} /> Chuẩn SRS Khoa Học
               </span>
             </div>
@@ -968,7 +1151,6 @@ const GardenPage = ({ onNavigate }) => {
         {/* ── 4 Botanical Stages Cards ── */}
         <div className="garden-stats-bar">
           {Object.values(STAGES).map(st => {
-            const IconComp = st.icon;
             const isActive = filterLevel === String(st.level);
             return (
               <div 
@@ -977,14 +1159,14 @@ const GardenPage = ({ onNavigate }) => {
                 style={{ borderColor: st.borderColor, background: st.bgColor }}
                 onClick={() => setFilterLevel(String(st.level))}
               >
-                <div className="garden-stage-icon-box" style={{ color: st.color }}>
-                  <IconComp size={20} />
+                <div className="garden-stage-icon-box">
+                  <BotanicalPlantVisual level={st.level} size={26} />
                 </div>
                 <div className="d-flex flex-column min-w-0">
-                  <span style={{ color: st.color, fontWeight: 900, fontSize: '15px', lineHeight: 1.1 }}>
+                  <span style={{ color: st.color, fontWeight: 900, fontSize: 15, lineHeight: 1.1 }}>
                     {stats[`level${st.level}`] || 0}
                   </span>
-                  <span className="text-truncate fw-semibold" style={{ color: '#475569', fontSize: '11px' }}>{st.badgeText}</span>
+                  <span className="text-truncate fw-semibold" style={{ color: '#475569', fontSize: 11 }}>{st.badgeText}</span>
                 </div>
               </div>
             );
@@ -996,14 +1178,14 @@ const GardenPage = ({ onNavigate }) => {
               style={{ borderColor: '#fecaca', background: '#fef2f2' }}
               onClick={() => setFilterLevel('overdue')}
             >
-              <div className="garden-stage-icon-box text-danger">
-                <AlertCircle size={20} />
+              <div className="garden-stage-icon-box">
+                <BotanicalPlantVisual level={1} isOverdue={true} size={26} />
               </div>
               <div className="d-flex flex-column min-w-0">
-                <span style={{ color: '#ef4444', fontWeight: 900, fontSize: '15px', lineHeight: 1.1 }}>
+                <span style={{ color: '#ef4444', fontWeight: 900, fontSize: 15, lineHeight: 1.1 }}>
                   {stats.overdue_count}
                 </span>
-                <span style={{ color: '#ef4444', fontSize: '11px', fontWeight: 700 }}>Héo úa 🥀</span>
+                <span style={{ color: '#ef4444', fontSize: 11, fontWeight: 700 }}>Héo úa 🥀</span>
               </div>
             </div>
           )}
@@ -1065,7 +1247,6 @@ const GardenPage = ({ onNavigate }) => {
           <div className="garden-grid">
             {filteredItems.map(item => {
               const stage = getStageInfo(item);
-              const StageIcon = stage.icon;
               const isReadyToWater = item.is_due || item.is_overdue;
 
               return (
@@ -1075,23 +1256,23 @@ const GardenPage = ({ onNavigate }) => {
                   style={{ borderColor: stage.borderColor, background: stage.bgColor }}
                   onClick={() => setSelectedPlant(item)}
                 >
-                  {/* Top Bar: Botanical Stage Icon & Status Badge */}
+                  {/* Top Bar: Visual Pot & Status Alert Badge */}
                   <div className="d-flex align-items-center justify-content-between mb-1.5">
                     <div 
                       className="garden-plant-botanical-avatar rounded-circle d-flex align-items-center justify-content-center shadow-xs"
-                      style={{ width: '32px', height: '32px', background: '#ffffff', color: stage.color, border: `1.5px solid ${stage.borderColor}` }}
+                      style={{ width: 36, height: 36, background: '#ffffff', border: `1.5px solid ${stage.borderColor}` }}
                     >
-                      <StageIcon size={17} />
+                      <BotanicalPlantVisual level={item.level} isOverdue={item.is_overdue} size={30} />
                     </div>
 
                     <div className="d-flex align-items-center gap-1">
                       {item.is_overdue && (
-                        <span className="badge bg-danger text-white rounded-pill pulse-badge d-inline-flex align-items-center gap-1" style={{ fontSize: '9px', padding: '2.5px 6px' }}>
+                        <span className="badge bg-danger text-white rounded-pill pulse-badge d-inline-flex align-items-center gap-1" style={{ fontSize: 9, padding: '2.5px 6px' }}>
                           <AlertCircle size={9} /> Héo!
                         </span>
                       )}
                       {item.is_due && !item.is_overdue && (
-                        <span className="badge bg-info text-white rounded-pill pulse-badge d-inline-flex align-items-center gap-1" style={{ fontSize: '9px', padding: '2.5px 6px' }}>
+                        <span className="badge bg-info text-white rounded-pill pulse-badge d-inline-flex align-items-center gap-1" style={{ fontSize: 9, padding: '2.5px 6px' }}>
                           <Droplets size={9} /> Cần tưới
                         </span>
                       )}
@@ -1121,10 +1302,10 @@ const GardenPage = ({ onNavigate }) => {
                   {/* Biological Moisture & Growth Progress */}
                   <div className="mt-2 pt-1 border-top border-black border-opacity-10">
                     <div className="d-flex justify-content-between align-items-center mb-1">
-                      <span className="small fw-bold" style={{ fontSize: '10px', color: stage.color }}>
+                      <span className="small fw-bold" style={{ fontSize: 10, color: stage.color }}>
                         {stage.badgeText}
                       </span>
-                      <span className="text-muted" style={{ fontSize: '9.5px' }}>
+                      <span className="text-muted" style={{ fontSize: 9.5 }}>
                         {item.level === 4 ? '100% Vĩnh viễn' : `Cấp ${item.level}/4`}
                       </span>
                     </div>
@@ -1149,26 +1330,25 @@ const GardenPage = ({ onNavigate }) => {
         )}
       </Container>
 
-      {/* ── Plant Detail Profile Modal ── */}
+      {/* ── Botanical Specimen Detail Modal ── */}
       <Modal
         isOpen={Boolean(selectedPlant)}
         toggle={() => setSelectedPlant(null)}
         centered
         className="jlpt-modal"
-        style={{ maxWidth: '440px' }}
+        style={{ maxWidth: 460 }}
       >
         {selectedPlant && (() => {
           const stage = getStageInfo(selectedPlant);
-          const StageIcon = stage.icon;
 
           return (
             <ModalBody className="p-4 rounded-4 bg-white border-0 text-center">
               <div className="mb-2 d-flex justify-content-center">
                 <div 
-                  className="rounded-circle p-3 d-inline-flex align-items-center justify-content-center shadow-sm"
-                  style={{ width: '72px', height: '72px', background: stage.bgColor, color: stage.color, border: `2px solid ${stage.borderColor}` }}
+                  className="rounded-circle p-2 d-inline-flex align-items-center justify-content-center shadow-sm"
+                  style={{ width: 80, height: 80, background: stage.bgColor, border: `2px solid ${stage.borderColor}` }}
                 >
-                  <StageIcon size={36} />
+                  <BotanicalPlantVisual level={selectedPlant.level} isOverdue={selectedPlant.is_overdue} size={64} />
                 </div>
               </div>
 
@@ -1176,7 +1356,7 @@ const GardenPage = ({ onNavigate }) => {
                 className="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill small fw-bold mb-2"
                 style={{ background: stage.bgColor, color: stage.color, border: `1px solid ${stage.borderColor}` }}
               >
-                <StageIcon size={13} />
+                <BotanicalPlantVisual level={selectedPlant.level} isOverdue={selectedPlant.is_overdue} size={18} />
                 <span>{stage.name} (Giai đoạn {selectedPlant.level}/4)</span>
               </div>
 
@@ -1185,15 +1365,37 @@ const GardenPage = ({ onNavigate }) => {
               </h2>
 
               {selectedPlant.reading && (
-                <div className="text-muted mb-2 fs-6">
+                <div className="text-muted mb-1 fs-6">
                   {selectedPlant.reading}
+                </div>
+              )}
+
+              {selectedPlant.romaji && (
+                <div className="text-secondary small mb-2">
+                  [{selectedPlant.romaji}]
                 </div>
               )}
 
               <div className="p-3 rounded-3 bg-light border mb-3">
                 <div className="fw-bold text-primary fs-5">{selectedPlant.meaning}</div>
                 <small className="text-muted">Minna no Nihongo Bài {selectedPlant.lesson_number || 1}</small>
+                {selectedPlant.usage_note && (
+                  <div className="small text-secondary mt-1 pt-1 border-top">{selectedPlant.usage_note}</div>
+                )}
               </div>
+
+              {/* Japanese Context Example */}
+              {selectedPlant.example_jp && (
+                <div className="p-2.5 rounded-3 border bg-white text-start mb-3">
+                  <small className="text-muted d-block fw-bold mb-1">Ví dụ ngữ cảnh thực tế:</small>
+                  <div className="fw-bold text-dark small" style={{ fontFamily: 'Noto Sans JP, sans-serif' }}>
+                    {selectedPlant.example_jp}
+                  </div>
+                  {selectedPlant.example_vi && (
+                    <small className="text-secondary d-block mt-0.5">{selectedPlant.example_vi}</small>
+                  )}
+                </div>
+              )}
 
               <div className="d-flex justify-content-center gap-2 mb-3">
                 <button
