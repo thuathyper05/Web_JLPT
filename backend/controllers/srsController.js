@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const fallback = require('../data/fallbackData');
 
 // Initialize SRS table if not exists
 const initSrsTable = async () => {
@@ -70,7 +71,7 @@ const getGarden = async (req, res) => {
 
     const items = result.rows.map(row => ({
       ...row,
-      is_due: row.level < 4 && row.next_review_date && new Date(row.next_review_date) <= now,
+      is_due: row.level < 4 && (!row.next_review_date || new Date(row.next_review_date) <= now),
       is_overdue: row.level < 4 && row.next_review_date && (now - new Date(row.next_review_date)) > 24 * 60 * 60 * 1000
     }));
 
@@ -115,7 +116,7 @@ const getDue = async (req, res) => {
       JOIN vocabularies v ON v.id = sp.vocab_id
       WHERE sp.user_id = $1
         AND sp.level < 4
-        AND sp.next_review_date <= NOW()
+        AND (sp.next_review_date IS NULL OR sp.next_review_date <= NOW())
       ORDER BY sp.next_review_date ASC
       LIMIT $2
     `, [userId, limit]);
@@ -188,7 +189,7 @@ const addToGarden = async (req, res) => {
 
     if (!vocab_id) return res.status(400).json({ error: 'vocab_id is required' });
 
-    const nextReviewDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000);
+    const nextReviewDate = new Date();
 
     await db.query(`
       INSERT INTO srs_progress (user_id, vocab_id, level, next_review_date, last_reviewed_at)
@@ -211,24 +212,41 @@ const addLessonToGarden = async (req, res) => {
 
     if (!lesson_number) return res.status(400).json({ error: 'lesson_number is required' });
 
-    const vocabs = await db.query(
-      'SELECT id FROM vocabularies WHERE lesson_number = $1',
-      [lesson_number]
-    );
+    const lesNum = parseInt(lesson_number, 10);
+    let vocabs = [];
 
-    const nextReviewDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000);
-    let added = 0;
-
-    for (const vocab of vocabs.rows) {
-      const result = await db.query(`
-        INSERT INTO srs_progress (user_id, vocab_id, level, next_review_date, last_reviewed_at)
-        VALUES ($1, $2, 1, $3, NOW())
-        ON CONFLICT (user_id, vocab_id) DO NOTHING
-      `, [userId, vocab.id, nextReviewDate]);
-      if (result.rowCount > 0) added++;
+    try {
+      const dbResult = await db.query(
+        'SELECT id FROM vocabularies WHERE lesson_number = $1',
+        [lesNum]
+      );
+      vocabs = dbResult.rows || [];
+    } catch (dbErr) {
+      console.warn('[SRS] DB query failed, using fallback vocabularies:', dbErr.message);
     }
 
-    res.json({ success: true, added, total: vocabs.rows.length });
+    if (!vocabs || vocabs.length === 0) {
+      const fb = fallback.getFallbackVocabularies({ lesson: lesNum });
+      vocabs = (fb || []).map(v => ({ id: v.id }));
+    }
+
+    const nextReviewDate = new Date();
+    let added = 0;
+
+    for (const vocab of vocabs) {
+      try {
+        const result = await db.query(`
+          INSERT INTO srs_progress (user_id, vocab_id, level, next_review_date, last_reviewed_at)
+          VALUES ($1, $2, 1, $3, NOW())
+          ON CONFLICT (user_id, vocab_id) DO NOTHING
+        `, [userId, vocab.id, nextReviewDate]);
+        if (result && result.rowCount > 0) added++;
+      } catch (insertErr) {
+        // Continue adding other vocabs if single insertion encounters error
+      }
+    }
+
+    res.json({ success: true, added, total: vocabs.length });
   } catch (err) {
     console.error('[SRS] addLessonToGarden error:', err);
     res.status(500).json({ error: 'Internal server error' });

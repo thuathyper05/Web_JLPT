@@ -162,7 +162,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: Zap,
       color: '#f59e0b',
       bg: 'linear-gradient(135deg, #f59e0b, #d97706)',
-      badge: 'Game phản xạ'
+      badge: 'NEW 🔥 Game Tốc Độ'
     },
     {
       id: 'garden',
@@ -171,7 +171,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: Sprout,
       color: '#10b981',
       bg: 'linear-gradient(135deg, #10b981, #059669)',
-      badge: 'SRS vĩnh viễn'
+      badge: 'NEW 🌸 SRS Cây Trồng'
     },
     {
       id: 'review',
@@ -333,6 +333,128 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER ── */}
+      <div className="home-promo-section mb-3 mb-md-4">
+        <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+          <div className="d-flex align-items-center gap-2">
+            <span className="badge-new-glow">
+              <Sparkles size={11} className="me-1" /> MỚI RA MẮT
+            </span>
+            <span className="home-promo-section-title">
+              2 Trò Chơi Đột Phá: Phản Xạ Nhanh & Thuộc Vĩnh Viễn
+            </span>
+          </div>
+        </div>
+
+        <Row className="g-2.5 g-md-3">
+          {/* Card 1: Nối Từ Siêu Tốc */}
+          <Col xs={12} md={6}>
+            <div 
+              className="home-promo-card home-promo-card--rush cursor-pointer h-100"
+              onClick={() => {
+                sounds.playFlip?.();
+                onNavigate('wordmatch');
+              }}
+            >
+              <div className="home-promo-card-glow-mesh home-promo-card-glow-mesh--amber" />
+              <div className="home-promo-card-content">
+                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <div className="d-flex align-items-center gap-2">
+                    <div className="home-promo-icon-box home-promo-icon-box--rush">
+                      <Zap size={20} />
+                    </div>
+                    <div>
+                      <div className="d-flex align-items-center gap-1.5 flex-wrap">
+                        <h6 className="home-promo-title mb-0">Nối Từ Siêu Tốc</h6>
+                        <span className="badge-pulse-new badge-pulse-new--rush">
+                          NEW 🔥
+                        </span>
+                      </div>
+                      <small className="home-promo-subtitle">Word Match Rush • Phản xạ 60 giây</small>
+                    </div>
+                  </div>
+                  <button 
+                    type="button" 
+                    className="home-promo-btn home-promo-btn--rush"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      sounds.playFlip?.();
+                      onNavigate('wordmatch');
+                    }}
+                  >
+                    <span>Chơi ngay</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
+
+                <p className="home-promo-desc mb-2.5">
+                  10 ô thẻ Nhật–Việt bị xáo trộn. Chạm thật nhanh để ghép cặp đúng, kích nổ combo điểm Dopamine và loại bỏ hoàn toàn việc dịch nhẩm trong đầu!
+                </p>
+
+                <div className="home-promo-pills">
+                  <span className="home-promo-pill">⏱️ Đếm ngược 60s</span>
+                  <span className="home-promo-pill">⚡ Phản xạ 0.5s</span>
+                  <span className="home-promo-pill">🏆 Kỷ lục tốc độ</span>
+                </div>
+              </div>
+            </div>
+          </Col>
+
+          {/* Card 2: Vườn Cây Trí Nhớ */}
+          <Col xs={12} md={6}>
+            <div 
+              className="home-promo-card home-promo-card--garden cursor-pointer h-100"
+              onClick={() => {
+                sounds.playFlip?.();
+                onNavigate('garden');
+              }}
+            >
+              <div className="home-promo-card-glow-mesh home-promo-card-glow-mesh--emerald" />
+              <div className="home-promo-card-content">
+                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <div className="d-flex align-items-center gap-2">
+                    <div className="home-promo-icon-box home-promo-icon-box--garden">
+                      <Sprout size={20} />
+                    </div>
+                    <div>
+                      <div className="d-flex align-items-center gap-1.5 flex-wrap">
+                        <h6 className="home-promo-title mb-0">Vườn Cây Trí Nhớ</h6>
+                        <span className="badge-pulse-new badge-pulse-new--garden">
+                          NEW 🌸
+                        </span>
+                      </div>
+                      <small className="home-promo-subtitle">SRS Gamification • Thuộc Vĩnh Viễn</small>
+                    </div>
+                  </div>
+                  <button 
+                    type="button" 
+                    className="home-promo-btn home-promo-btn--garden"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      sounds.playFlip?.();
+                      onNavigate('garden');
+                    }}
+                  >
+                    <span>Vào vườn</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
+
+                <p className="home-promo-desc mb-2.5">
+                  Mỗi từ vựng là một mầm cây sinh trưởng qua 4 giai đoạn SRS (1–3–7–30 ngày). Tưới nước chăm sóc mỗi ngày để cây đơm quả vàng vĩnh viễn!
+                </p>
+
+                <div className="home-promo-pills">
+                  <span className="home-promo-pill">🌱 4 Cấp độ cây</span>
+                  <span className="home-promo-pill">💧 Nhiệm vụ nuôi cây</span>
+                  <span className="home-promo-pill">⭐ Quả vàng vĩnh viễn</span>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
       </div>
 
       {/* ── 2. USER PROGRESS KPI SUMMARY BAR ── */}

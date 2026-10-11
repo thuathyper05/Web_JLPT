@@ -289,7 +289,7 @@ const GardenPage = ({ onNavigate }) => {
     const now = new Date();
     const processed = items.map(row => ({
       ...row,
-      is_due: row.level < 4 && row.next_review_date && new Date(row.next_review_date) <= now,
+      is_due: row.level < 4 && (!row.next_review_date || new Date(row.next_review_date) <= now),
       is_overdue: row.level < 4 && row.next_review_date && (now - new Date(row.next_review_date)) > 24 * 60 * 60 * 1000
     }));
 
@@ -347,7 +347,7 @@ const GardenPage = ({ onNavigate }) => {
   }, [stats]);
 
   // Start Watering Review Session
-  const startReview = async (specificPlant = null) => {
+  const startReview = async (specificPlant = null, isFreePractice = false) => {
     try {
       sounds.playWater?.();
       setIsWateringRain(true);
@@ -357,15 +357,27 @@ const GardenPage = ({ onNavigate }) => {
       if (specificPlant) {
         due = [specificPlant];
       } else if (user) {
-        const res = await srsService.getDue({ limit: 20 });
-        due = res.data?.items || [];
-      } else {
-        const now = new Date();
-        due = gardenItems.filter(i => i.level < 4 && i.next_review_date && new Date(i.next_review_date) <= now).slice(0, 20);
+        try {
+          const res = await srsService.getDue({ limit: 20 });
+          due = res.data?.items || [];
+        } catch (e) {
+          console.warn('[Garden] getDue API warning, checking gardenItems fallback:', e);
+        }
+      }
+
+      const now = new Date();
+      if (due.length === 0) {
+        due = gardenItems.filter(i => i.level < 4 && (!i.next_review_date || new Date(i.next_review_date) <= now)).slice(0, 20);
+      }
+
+      // If still 0 due items, but garden has plants: allow free practice / extra nourishment ("Tưới thêm dưỡng chất")
+      if (due.length === 0 && gardenItems.length > 0) {
+        const nonMastered = gardenItems.filter(i => i.level < 4);
+        due = (nonMastered.length > 0 ? nonMastered : gardenItems).slice(0, 20);
       }
 
       if (due.length === 0) {
-        setView('garden');
+        setView('add');
         return;
       }
 
@@ -499,46 +511,62 @@ const GardenPage = ({ onNavigate }) => {
       let totalWords = 0;
 
       for (const lesNum of lessonArray) {
+        let backendSuccess = false;
         if (user) {
-          const res = await srsService.addLessonToGarden(lesNum);
-          totalAdded += res.data?.added || 0;
-          totalWords += res.data?.total || 0;
-        } else {
-          const vocabRes = await vocabService.getVocabularies({ lesson: lesNum });
-          const vocabs = Array.isArray(vocabRes.data) ? vocabRes.data : (vocabRes.data?.data || []);
-          const currentGuest = getGuestItems();
-          const existingIds = new Set(currentGuest.map(g => g.vocab_id || g.id));
-          const now = new Date();
-          const nextDate = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString();
-
-          vocabs.forEach(v => {
-            if (!existingIds.has(v.id)) {
-              currentGuest.push({
-                id: v.id,
-                vocab_id: v.id,
-                level: 1,
-                next_review_date: nextDate,
-                last_reviewed_at: now.toISOString(),
-                word: v.kanji || v.clean_kana || v.kana || '',
-                kanji: v.kanji || '',
-                reading: v.kanji ? (v.clean_kana || v.kana || '') : '',
-                romaji: v.romaji || '',
-                meaning: v.clean_vietnamese || v.vietnamese || '',
-                usage_note: v.usage_note || '',
-                example_jp: v.example_jp || '',
-                example_vi: v.example_vi || '',
-                lesson_number: v.lesson_number || lesNum
-              });
-              totalAdded++;
+          try {
+            const res = await srsService.addLessonToGarden(lesNum);
+            if (res.data?.success) {
+              totalAdded += res.data?.added || 0;
+              totalWords += res.data?.total || 0;
+              backendSuccess = true;
             }
-          });
-          totalWords += vocabs.length;
-          saveGuestItems(currentGuest);
+          } catch (backendErr) {
+            console.warn(`[Garden] Backend add failed for lesson ${lesNum}, fallback to guest storage:`, backendErr);
+          }
+        }
+
+        // If guest mode OR backend failed, save to guest storage
+        if (!user || !backendSuccess) {
+          try {
+            const vocabRes = await vocabService.getVocabularies({ lesson: lesNum });
+            const vocabs = Array.isArray(vocabRes.data) ? vocabRes.data : (vocabRes.data?.data || []);
+            const currentGuest = getGuestItems();
+            const existingIds = new Set(currentGuest.map(g => g.vocab_id || g.id));
+            const now = new Date();
+            // Ready to water and review immediately on day 1
+            const nextDate = now.toISOString();
+
+            vocabs.forEach(v => {
+              if (!existingIds.has(v.id)) {
+                currentGuest.push({
+                  id: v.id,
+                  vocab_id: v.id,
+                  level: 1,
+                  next_review_date: nextDate,
+                  last_reviewed_at: now.toISOString(),
+                  word: v.kanji || v.clean_kana || v.kana || '',
+                  kanji: v.kanji || '',
+                  reading: v.kanji ? (v.clean_kana || v.kana || '') : '',
+                  romaji: v.romaji || '',
+                  meaning: v.clean_vietnamese || v.vietnamese || '',
+                  usage_note: v.usage_note || '',
+                  example_jp: v.example_jp || '',
+                  example_vi: v.example_vi || '',
+                  lesson_number: v.lesson_number || lesNum
+                });
+                totalAdded++;
+              }
+            });
+            totalWords += vocabs.length;
+            saveGuestItems(currentGuest);
+          } catch (guestErr) {
+            console.error(`[Garden] Guest fallback vocab error for lesson ${lesNum}:`, guestErr);
+          }
         }
       }
 
       setAddResult({ success: true, added: totalAdded, total: totalWords });
-      loadGarden();
+      await loadGarden();
       saveQuests({ ...dailyQuests, plantedToday: true });
       sounds.playLevelUp?.();
     } catch (err) {
@@ -814,9 +842,31 @@ const GardenPage = ({ onNavigate }) => {
 
             {addResult && (
               <div className={`garden-add-result mt-3 ${addResult.success ? 'success' : 'error'}`}>
-                {addResult.success
-                  ? `✅ Thành công! Đã gieo ${addResult.added} mầm cây mới vào vườn (Tổng số từ trong các bài: ${addResult.total})`
-                  : '❌ Có lỗi xảy ra, vui lòng thử lại'}
+                {addResult.success ? (
+                  <div className="d-flex flex-column gap-2 text-start">
+                    <div className="fw-bold">
+                      ✅ Đã gieo thành công {addResult.added} mầm cây mới vào vườn (Tổng số từ vựng: {addResult.total})!
+                    </div>
+                    <div className="d-flex gap-2 flex-wrap mt-1">
+                      <button 
+                        type="button" 
+                        className="btn btn-sm btn-success rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
+                        onClick={() => { setView('garden'); startReview(); }}
+                      >
+                        <Droplets size={14} /> Tưới nước & Học ngay bây giờ
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1.5 fw-semibold"
+                        onClick={() => setView('garden')}
+                      >
+                        🌿 Xem vườn cây
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  '❌ Có lỗi xảy ra, vui lòng thử lại'
+                )}
               </div>
             )}
           </div>
@@ -1128,7 +1178,7 @@ const GardenPage = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="garden-header-actions">
+          <div className="garden-header-actions d-flex align-items-center gap-2 flex-wrap">
             {dueCount > 0 ? (
               <button 
                 type="button" 
@@ -1139,11 +1189,30 @@ const GardenPage = ({ onNavigate }) => {
                 <Droplets size={16} />
                 <span>Tưới nước ngay ({dueCount} cây)</span>
               </button>
+            ) : totalInGarden > 0 ? (
+              <>
+                <div className="garden-all-hydrated-pill">
+                  <Sparkles size={14} className="text-success" />
+                  <span>Vườn đủ nước hôm nay ✨</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-success rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
+                  onClick={() => startReview(null, true)}
+                >
+                  <RefreshCw size={14} />
+                  <span>Ôn tập tự do (Tưới thêm)</span>
+                </button>
+              </>
             ) : (
-              <div className="garden-all-hydrated-pill">
-                <Sparkles size={14} className="text-success" />
-                <span>Vườn no đủ nước hôm nay</span>
-              </div>
+              <button
+                type="button"
+                className="garden-primary-btn py-1.5 px-3"
+                onClick={() => setView('add')}
+              >
+                <Plus size={16} />
+                <span>Gieo mầm bài đầu tiên 🌱</span>
+              </button>
             )}
           </div>
         </div>
