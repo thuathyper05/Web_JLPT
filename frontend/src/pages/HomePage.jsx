@@ -355,22 +355,22 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 onNavigate('wordmatch');
               }}
             >
-              <div className="home-promo-compact-badge-row mb-1">
-                <div className="d-flex align-items-center gap-1.5 min-w-0">
-                  <div className="home-promo-compact-icon home-promo-compact-icon--rush">
-                    <Zap size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="home-promo-compact-title">Nối Từ Siêu Tốc</div>
-                    <div className="home-promo-compact-sub d-none d-md-block">Ghép 10 thẻ trong 60s • Bùng nổ Dopamine</div>
-                  </div>
+              {/* Top Row: Icon + Blinking Neon Badge */}
+              <div className="d-flex align-items-center justify-content-between mb-1">
+                <div className="home-promo-compact-icon home-promo-compact-icon--rush">
+                  <Zap size={14} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--rush">
                   NEW 🔥
                 </span>
               </div>
 
-              <div className="d-flex align-items-center justify-content-between mt-auto pt-0.5">
+              {/* Title & Desktop Subtitle */}
+              <div className="home-promo-compact-title">Nối Từ Siêu Tốc</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1">Ghép 10 thẻ trong 60s • Bùng nổ Dopamine</div>
+
+              {/* Bottom Row: Micro Pill + Action */}
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
                 <span className="home-promo-compact-sub">⏱️ Phản Xạ 60s</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--rush">
                   <span>Chơi ngay</span>
@@ -389,22 +389,22 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 onNavigate('garden');
               }}
             >
-              <div className="home-promo-compact-badge-row mb-1">
-                <div className="d-flex align-items-center gap-1.5 min-w-0">
-                  <div className="home-promo-compact-icon home-promo-compact-icon--garden">
-                    <Sprout size={15} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="home-promo-compact-title">Vườn Cây Trí Nhớ</div>
-                    <div className="home-promo-compact-sub d-none d-md-block">Nuôi cây 4 cấp SRS • Thuộc vĩnh viễn</div>
-                  </div>
+              {/* Top Row: Icon + Blinking Neon Badge */}
+              <div className="d-flex align-items-center justify-content-between mb-1">
+                <div className="home-promo-compact-icon home-promo-compact-icon--garden">
+                  <Sprout size={14} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--garden">
                   NEW 🌸
                 </span>
               </div>
 
-              <div className="d-flex align-items-center justify-content-between mt-auto pt-0.5">
+              {/* Title & Desktop Subtitle */}
+              <div className="home-promo-compact-title">Vườn Cây Trí Nhớ</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1">Nuôi cây 4 cấp SRS • Thuộc vĩnh viễn</div>
+
+              {/* Bottom Row: Micro Pill + Action */}
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
                 <span className="home-promo-compact-sub">🌱 Nuôi Cây SRS</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--garden">
                   <span>Vào vườn</span>
