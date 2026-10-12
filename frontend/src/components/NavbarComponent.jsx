@@ -66,11 +66,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   return (
     <>
-      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-3 px-md-4">
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-1.5 py-md-2 px-2.5 px-sm-3 px-md-4">
         <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
-          {/* ── Left: Logo + Level ── */}
-          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
+          {/* ── Left: Professional Branding + Compact Level Pill ── */}
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2.5 flex-shrink-0 min-w-0">
             <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
               className="p-0 m-0 text-decoration-none d-flex align-items-center" style={{ cursor: 'pointer' }}>
               <Logo size={32} />
@@ -165,35 +165,35 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             </NavItem>
           </Nav>
 
-          {/* ── Right: Search + Account + Mobile Menu Toggle (Refined Spacing) ── */}
-          <div className="d-flex align-items-center gap-2 flex-shrink-0">
+          {/* ── Right: Search + Account + Mobile Menu Toggle (Unified Squircles & Spacing) ── */}
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
-              style={{ background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 12.5, fontWeight: 500, cursor: 'pointer', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(8px)' }}
+              style={{ background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 9999, padding: '5px 13px', color: '#fff', fontSize: 12.5, fontWeight: 500, cursor: 'pointer', gap: 6, transition: 'all .18s ease', backdropFilter: 'blur(8px)' }}
               onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,.15)'; }}
               onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,.08)'; }}>
               <Search size={14} />
               <span>Tìm từ vựng...</span>
             </button>
 
-            {/* Mobile-only Refined Squircle Search Button */}
+            {/* Mobile-only Unified Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
               className="d-flex d-sm-none align-items-center justify-content-center"
-              style={{ width: 36, height: 36, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 12, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
+              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
               title="Tìm kiếm từ vựng">
-              <Search size={16} />
+              <Search size={15} />
             </button>
 
             {/* Account dropdown / Login button */}
             {user ? (
               <UncontrolledDropdown inNavbar>
                 <DropdownToggle nav caret={false}
-                  className="d-flex align-items-center p-0 text-white" style={{ gap: 8 }}>
+                  className="d-flex align-items-center p-0 text-white" style={{ gap: 6 }}>
                   {user.avatar_url ? (
-                    <img src={user.avatar_url} alt="" style={{ width: 36, height: 36, borderRadius: 12, border: '1.5px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
+                    <img src={user.avatar_url} alt="" style={{ width: 34, height: 34, borderRadius: 10, border: '1.5px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ width: 36, height: 36, borderRadius: 12, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, color: '#fff', border: '1.5px solid rgba(255,255,255,.25)' }}>
+                    <div style={{ width: 34, height: 34, borderRadius: 10, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13.5, color: '#fff', border: '1.5px solid rgba(255,255,255,.25)' }}>
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -246,31 +246,31 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 {/* Desktop / Tablet Login Button */}
                 <button type="button" onClick={() => openAuth('login')}
                   className="d-none d-sm-inline-flex align-items-center gap-1.5"
-                  style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 9999, padding: '6px 14px', color: '#fff', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', transition: 'all .18s ease' }}>
+                  style={{ background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 9999, padding: '5px 13px', color: '#fff', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', transition: 'all .18s ease' }}>
                   <LogIn size={13} /> <span>Đăng nhập</span>
                 </button>
 
-                {/* Mobile-only Squircle Login Button */}
+                {/* Mobile-only Unified Squircle Login Button */}
                 <button type="button" onClick={() => openAuth('login')}
                   className="d-inline-flex d-sm-none align-items-center justify-content-center"
-                  style={{ width: 36, height: 36, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: 'none', borderRadius: 12, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
+                  style={{ width: 34, height: 34, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 10, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
                   title="Đăng nhập">
-                  <LogIn size={16} />
+                  <LogIn size={15} />
                 </button>
               </>
             )}
 
-            {/* Mobile Menu Drawer Toggle Button */}
+            {/* Mobile Menu Drawer Toggle Button (Unified 34px squircle) */}
             <button
               type="button"
               className="d-lg-none d-flex align-items-center justify-content-center"
               onClick={() => setMobileMenuOpen(true)}
               style={{
-                width: 36,
-                height: 36,
+                width: 34,
+                height: 34,
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.16)',
-                borderRadius: 12,
+                borderRadius: 10,
                 color: '#fff',
                 cursor: 'pointer',
                 backdropFilter: 'blur(8px)',
@@ -278,7 +278,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               }}
               title="Menu mở rộng"
             >
-              <Menu size={18} />
+              <Menu size={17} />
             </button>
           </div>
         </Container>

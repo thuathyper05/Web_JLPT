@@ -75,43 +75,45 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
 
   return (
     <>
-      {/* Sleek, Luxury Level Trigger Pill */}
+      {/* Sleek, Luxury Level Trigger Pill (Ultra-compact & harmonious on all devices) */}
       <button
         type="button"
         onClick={toggle}
-        className="level-pill-btn d-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill text-decoration-none"
+        className="level-pill-btn d-flex align-items-center gap-1 text-decoration-none flex-shrink-0"
         title="Chọn cấp độ JLPT mục tiêu"
         style={{
-          height: '32px',
-          border: '1px solid rgba(255, 255, 255, 0.18)',
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%)',
+          height: '28px',
+          padding: '0 7px',
+          borderRadius: '8px',
+          border: '1px solid rgba(255, 255, 255, 0.22)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.18)',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.16)',
           cursor: 'pointer',
-          transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+          transition: 'all 0.18s ease'
         }}
       >
         <span
           className="rounded-circle d-inline-block flex-shrink-0"
           style={{
-            width: '6.5px',
-            height: '6.5px',
+            width: '5.5px',
+            height: '5.5px',
             backgroundColor: '#10b981',
-            boxShadow: '0 0 8px #10b981'
+            boxShadow: '0 0 7px #10b981'
           }}
         />
         <span
-          className="fw-extrabold text-white tracking-wide"
+          className="fw-black text-white"
           style={{
-            fontSize: '11.5px',
-            letterSpacing: '0.02em',
-            fontFamily: "'Inter', sans-serif"
+            fontSize: '11px',
+            letterSpacing: '0.03em',
+            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
           }}
         >
           {currentLevel || 'N5'}
         </span>
-        <ChevronDown size={12} className="text-white text-opacity-70 flex-shrink-0" />
+        <ChevronDown size={10} className="text-white text-opacity-75 flex-shrink-0" />
       </button>
 
       {/* Modern Centered Level Selection Modal */}

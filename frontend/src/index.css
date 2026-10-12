@@ -911,6 +911,24 @@ p {
   color: #991b1b !important;
 }
 
+.shake-anim {
+  animation: wrongShake 0.4s ease-in-out forwards !important;
+}
+
+/* Luxury Level Pill Button interaction */
+.level-pill-btn {
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.level-pill-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-0.5px);
+}
+.level-pill-btn:active {
+  transform: scale(0.96) !important;
+}
+
+
 /* Progress Bar Shimmer Light Streak */
 @keyframes progressShimmer {
   0% { transform: translateX(-100%); }

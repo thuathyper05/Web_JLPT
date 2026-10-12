@@ -1,22 +1,24 @@
 import React from 'react';
 
-const Logo = ({ size = 38, showText = true, className = '', light = false }) => {
+const Logo = ({ size = 34, showText = true, className = '', light = false }) => {
   return (
-    <div className={`d-inline-flex align-items-center ${className}`} style={{ gap: '10px' }}>
+    <div className={`d-inline-flex align-items-center ${className}`} style={{ gap: '8px' }}>
       {/* Official HYPER JAPAN Emblem Icon */}
       <div
-        className="position-relative d-flex align-items-center justify-content-center bg-white rounded-3 shadow-sm overflow-hidden"
+        className="position-relative d-flex align-items-center justify-content-center bg-white shadow-xs overflow-hidden flex-shrink-0"
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          padding: '2px',
-          border: '1px solid rgba(255, 255, 255, 0.35)',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)'
+          padding: '2.5px',
+          borderRadius: '10px',
+          border: '1.5px solid rgba(255, 255, 255, 0.45)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.18)',
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
         }}
       >
         <img
           src="/logo.png"
-          alt="HYPER JAPAN Logo"
+          alt="HYPER JAPAN"
           style={{
             width: '100%',
             height: '100%',
@@ -26,12 +28,12 @@ const Logo = ({ size = 38, showText = true, className = '', light = false }) => 
       </div>
 
       {showText && (
-        <div className="d-flex flex-column" style={{ lineHeight: '1.05' }}>
-          <div className="d-flex align-items-baseline" style={{ gap: '4px' }}>
+        <div className="d-flex flex-column justify-content-center" style={{ lineHeight: '1.1' }}>
+          <div className="d-flex align-items-baseline" style={{ gap: '3.5px' }}>
             <span
-              className={`fw-black tracking-tight ${light ? 'text-navy-dark' : 'text-white'}`}
+              className={`tracking-tight ${light ? 'text-navy-dark' : 'text-white'}`}
               style={{
-                fontSize: `${size * 0.48}px`,
+                fontSize: `${Math.max(size * 0.46, 13.5)}px`,
                 fontWeight: '900',
                 letterSpacing: '-0.3px',
                 fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
@@ -41,26 +43,27 @@ const Logo = ({ size = 38, showText = true, className = '', light = false }) => 
             </span>
             <span
               style={{
-                fontSize: `${size * 0.52}px`,
+                fontSize: `${Math.max(size * 0.48, 14)}px`,
                 fontWeight: '900',
-                letterSpacing: '0.2px',
-                color: '#ef4444' /* Coral Red matching the Japanese Torii & Rising Sun */
+                letterSpacing: '-0.1px',
+                color: '#ef4444' /* Torii Japanese Red */
               }}
             >
               JAPAN
             </span>
           </div>
-          <span
-            className={`d-none d-sm-block ${light ? 'text-secondary' : 'text-white text-opacity-80'}`}
+          <div
+            className={`${light ? 'text-secondary' : 'text-white text-opacity-75'}`}
             style={{
-              fontSize: `${Math.max(size * 0.22, 10)}px`,
+              fontSize: '9.5px',
               fontWeight: '700',
-              letterSpacing: '1px',
-              textTransform: 'uppercase'
+              letterSpacing: '0.8px',
+              textTransform: 'uppercase',
+              lineHeight: '1'
             }}
           >
-            N5 Master System
-          </span>
+            JLPT N5 <span style={{ opacity: 0.6 }}>•</span> 日本語
+          </div>
         </div>
       )}
     </div>
@@ -68,3 +71,4 @@ const Logo = ({ size = 38, showText = true, className = '', light = false }) => 
 };
 
 export default Logo;
+
