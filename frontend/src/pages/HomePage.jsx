@@ -336,7 +336,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       </div>
 
       {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER (COMPACT & SLEEK FOR ALL DEVICES) ── */}
-      <div className="home-promo-section mb-2.5 mb-md-3">
+      <div className="home-promo-section my-3 my-md-4">
         <div className="d-flex align-items-center justify-content-between mb-1.5 px-0.5">
           <div className="d-flex align-items-center gap-1.5">
             <span className="beacon-blink-dot" />

@@ -24,7 +24,7 @@ const PRESET_BUNDLES = [
 ];
 
 const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
-  const { user } = useApp();
+  const { user, awardGardenWater } = useApp();
   const [selectedLessons, setSelectedLessons] = useState(() => new Set([initialLesson || 1]));
   const [selectionMode, setSelectionMode] = useState('single'); // 'single' | 'multi'
   const [gameMode, setGameMode] = useState('standard'); // 'standard' (60s) | 'blitz' (30s) | 'relax' (90s)
@@ -101,16 +101,36 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
   const loadNextRound = useCallback(async () => {
     try {
       const lessonsParam = Array.from(selectedLessons).join(',');
-      const res = await vocabService.getVocabularies({ lessons: lessonsParam });
-      const allVocabs = Array.isArray(res.data) ? res.data : (res.data?.data || []);
+      // Send both lesson and lessons to guarantee compatibility with all server versions
+      const res = await vocabService.getVocabularies({ lessons: lessonsParam, lesson: lessonsParam });
+      let rawList = Array.isArray(res.data) ? res.data : (res.data?.data || []);
+
+      // Strict client-side lesson filter: only keep vocabularies that strictly belong to selected lessons
+      const validLessonSet = new Set(Array.from(selectedLessons).map(Number));
+      let allVocabs = rawList.filter(v => {
+        const lNum = Number(v.lesson_number ?? v.lesson_id);
+        return validLessonSet.has(lNum);
+      });
+
+      // If backend returned empty for multi-lesson query, use rawList filtered
+      if (!allVocabs.length && rawList.length) {
+        allVocabs = rawList.filter(v => {
+          const lNum = Number(v.lesson_number ?? v.lesson_id);
+          return validLessonSet.size === 0 || validLessonSet.has(lNum);
+        });
+      }
+
       if (!allVocabs.length) return;
 
       const selected = shuffle(allVocabs).slice(0, PAIRS_COUNT);
       setAllPairs(selected);
 
+      const hasRealKanji = (str) => Boolean(str && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str));
+
       const leftItems = selected.map(v => {
-        const text = v.kanji || v.clean_kana || v.kana || v.word || '';
-        const reading = v.kanji ? (v.clean_kana || v.kana || v.reading || '') : '';
+        const hasKj = hasRealKanji(v.kanji);
+        const text = hasKj ? v.kanji : (v.clean_kana || v.kana || v.word || '');
+        const reading = hasKj ? (v.clean_kana || v.kana || v.reading || '') : '';
         return { 
           id: v.id, 
           text, 
@@ -278,7 +298,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
     }
   }, [selectedLeft, selectedRight, combo, matchedPairs, maxCombo, soundEnabled, totalMatched, loadNextRound]);
 
-  // High score record and daily quest completion
+  // High score record and daily quest completion + Garden water reward
   useEffect(() => {
     if (gameState === 'result') {
       const today = new Date().toISOString().slice(0, 10);
@@ -286,13 +306,19 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         localStorage.setItem('hyper_match_played_today', today);
       } catch {}
 
+      // Award garden water drops based on score!
+      const dropsEarned = Math.max(15, Math.min(60, Math.floor(score / 5) + 10));
+      if (awardGardenWater) {
+        awardGardenWater(dropsEarned, 'Nối từ siêu tốc', matchedHistory);
+      }
+
       if (score > highScore) {
         setHighScore(score);
         localStorage.setItem('word_match_highscore', String(score));
         confetti({ particleCount: 110, spread: 90, origin: { y: 0.45 } });
       }
     }
-  }, [gameState, score, highScore]);
+  }, [gameState, score, highScore, matchedHistory, awardGardenWater]);
 
   const handlePlantMatchedToGarden = async () => {
     if (!matchedHistory.length || gardenPlanted) return;
@@ -330,6 +356,9 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
           }
         });
         localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify(currentGuest));
+      }
+      if (awardGardenWater) {
+        awardGardenWater(30, 'Nuôi cây từ Nối từ siêu tốc', matchedHistory);
       }
       setGardenPlanted(true);
       sounds.playLevelUp?.();

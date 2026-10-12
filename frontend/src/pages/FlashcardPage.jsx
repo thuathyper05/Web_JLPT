@@ -35,8 +35,9 @@ import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
 
 const FlashcardPage = ({ initialLesson = 1 }) => {
-  const { toggleFavorite, isFavorite, updateProgress } = useApp();
+  const { toggleFavorite, isFavorite, updateProgress, awardGardenWater } = useApp();
   const [lessonNum, setLessonNum] = useState(initialLesson);
+  const [allLessonCards, setAllLessonCards] = useState([]);
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -50,6 +51,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const [transitionAnim, setTransitionAnim] = useState(''); // 'slide-mastered' | 'slide-review' | ''
   const [cardTilt, setCardTilt] = useState({ x: 0, y: 0 });
   const [floatingXp, setFloatingXp] = useState(false);
+  const [deckMode, setDeckMode] = useState('all'); // 'all' | 'unlearned'
+  const [savedProgressInfo, setSavedProgressInfo] = useState(null);
 
   // Mobile Touch Swipe Handling
   const touchStartX = useRef(0);
@@ -99,19 +102,66 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     }
   }, [initialLesson]);
 
-  const fetchCards = useCallback(async (lesson) => {
+  const fetchCards = useCallback(async (lesson, resumeMode = 'prompt') => {
     setLoading(true);
     setIsFlipped(false);
-    setCurrentIndex(0);
-    setMasteredIds(new Set());
-    setReviewIds(new Set());
-    setSessionDone(false);
     setIsTransitioning(false);
     setTransitionAnim('');
     try {
       const params = lesson === 'all' ? {} : { lesson: parseInt(lesson) };
       const res = await vocabService.getVocabularies(params);
-      setCards(res.data);
+      const list = res.data || [];
+      setAllLessonCards(list);
+      setCards(list);
+      setDeckMode('all');
+
+      // Check saved progress in localStorage
+      const storageKey = `hyper_fc_lesson_${lesson}`;
+      const raw = localStorage.getItem(storageKey);
+      let saved = null;
+      if (raw) {
+        try { saved = JSON.parse(raw); } catch {}
+      }
+
+      if (saved && (saved.currentIndex > 0 || (saved.reviewIds && saved.reviewIds.length > 0))) {
+        setSavedProgressInfo(saved);
+        if (resumeMode === 'resume') {
+          setCurrentIndex(Math.min(saved.currentIndex || 0, Math.max(0, list.length - 1)));
+          setMasteredIds(new Set(saved.masteredIds || []));
+          setReviewIds(new Set(saved.reviewIds || []));
+          setSessionDone(false);
+        } else if (resumeMode === 'wrong_only' && saved.reviewIds && saved.reviewIds.length > 0) {
+          const wrongSet = new Set(saved.reviewIds);
+          const filtered = list.filter(c => wrongSet.has(c.id));
+          if (filtered.length > 0) {
+            setCards(filtered);
+            setDeckMode('unlearned');
+            setCurrentIndex(0);
+            setMasteredIds(new Set());
+            setReviewIds(new Set(saved.reviewIds));
+            setSessionDone(false);
+          }
+        } else {
+          // Auto resume if incomplete, else start from beginning
+          if (saved.currentIndex < list.length) {
+            setCurrentIndex(saved.currentIndex);
+            setMasteredIds(new Set(saved.masteredIds || []));
+            setReviewIds(new Set(saved.reviewIds || []));
+            setSessionDone(false);
+          } else {
+            setCurrentIndex(0);
+            setMasteredIds(new Set(saved.masteredIds || []));
+            setReviewIds(new Set(saved.reviewIds || []));
+            setSessionDone(true);
+          }
+        }
+      } else {
+        setSavedProgressInfo(null);
+        setCurrentIndex(0);
+        setMasteredIds(new Set());
+        setReviewIds(new Set());
+        setSessionDone(false);
+      }
     } catch (err) {
       console.error('Error fetching flashcards:', err);
     } finally {
@@ -154,17 +204,36 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     setTransitionAnim(remembered ? 'slide-mastered' : 'slide-review');
 
     // 2. Play tactile sound and record state
+    const nextMastered = remembered ? new Set(masteredIds).add(currentCard.id) : masteredIds;
+    const nextReview = !remembered ? new Set(reviewIds).add(currentCard.id) : reviewIds;
+
     if (remembered) {
       sounds.playCorrect();
-      setMasteredIds((prev) => new Set(prev).add(currentCard.id));
+      setMasteredIds(nextMastered);
       setFloatingXp(true);
       setTimeout(() => setFloatingXp(false), 850);
       updateProgress(currentCard.id, 'mastered', true).catch(() => {});
     } else {
       sounds.playWrong();
-      setReviewIds((prev) => new Set(prev).add(currentCard.id));
+      setReviewIds(nextReview);
       updateProgress(currentCard.id, 'needs_review', false).catch(() => {});
     }
+
+    // Award garden water drops & record activity
+    if (awardGardenWater) {
+      awardGardenWater(2, 'Luyện Flashcard', [currentCard]);
+    }
+
+    // Persist progress to localStorage for resuming later
+    const storageKey = `hyper_fc_lesson_${lessonNum}`;
+    const nextIdx = currentIndex + 1;
+    localStorage.setItem(storageKey, JSON.stringify({
+      currentIndex: nextIdx,
+      masteredIds: Array.from(nextMastered),
+      reviewIds: Array.from(nextReview),
+      total: cards.length,
+      updatedAt: Date.now()
+    }));
 
     // 3. Smooth automatic transition to the next card
     setTimeout(() => {
@@ -180,6 +249,9 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
         setSessionDone(true);
         setTransitionAnim('');
         setIsTransitioning(false);
+        if (awardGardenWater) {
+          awardGardenWater(20, `Hoàn thành Flashcard Bài ${lessonNum}`, cards);
+        }
         try {
           const end = Date.now() + 1500;
           const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
@@ -191,7 +263,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
         } catch {}
       }
     }, 280);
-  }, [currentCard, currentIndex, cards.length, isTransitioning, sessionDone, updateProgress]);
+  }, [currentCard, currentIndex, cards, isTransitioning, sessionDone, updateProgress, awardGardenWater, masteredIds, reviewIds, lessonNum]);
 
   // Mobile Touch End (Swipe gesture trigger)
   const handleTouchEnd = () => {
@@ -241,25 +313,48 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     setSessionDone(false);
   };
 
-  // Retry ONLY wrong cards (Bug fixed: previously shuffled everything)
+  // Retry ONLY unlearned / wrong cards
   const handleRetryWrongOnly = () => {
-    if (reviewIds.size === 0) return;
+    const wrongIds = reviewIds.size > 0 ? reviewIds : new Set(savedProgressInfo?.reviewIds || []);
+    if (wrongIds.size === 0) return;
     sounds.playFlip();
-    const wrongCards = cards.filter((c) => reviewIds.has(c.id));
+    const sourceList = allLessonCards.length ? allLessonCards : cards;
+    const wrongCards = sourceList.filter((c) => wrongIds.has(c.id));
     if (wrongCards.length > 0) {
       setCards(wrongCards);
+      setDeckMode('unlearned');
       setCurrentIndex(0);
       setIsFlipped(false);
       setMasteredIds(new Set());
-      setReviewIds(new Set());
+      setReviewIds(new Set(wrongIds));
       setSessionDone(false);
     }
   };
 
-  // Restart full lesson
+  // Resume saved progress
+  const handleResumeSavedProgress = () => {
+    if (!savedProgressInfo) return;
+    sounds.playFlip();
+    const targetIdx = Math.min(savedProgressInfo.currentIndex || 0, Math.max(0, cards.length - 1));
+    setCurrentIndex(targetIdx);
+    setMasteredIds(new Set(savedProgressInfo.masteredIds || []));
+    setReviewIds(new Set(savedProgressInfo.reviewIds || []));
+    setSessionDone(false);
+    setSavedProgressInfo(null);
+  };
+
+  // Restart full lesson from Card 1
   const handleRestart = () => {
     sounds.playFlip();
-    fetchCards(lessonNum);
+    localStorage.removeItem(`hyper_fc_lesson_${lessonNum}`);
+    setSavedProgressInfo(null);
+    setCards(allLessonCards.length ? allLessonCards : cards);
+    setDeckMode('all');
+    setCurrentIndex(0);
+    setMasteredIds(new Set());
+    setReviewIds(new Set());
+    setIsFlipped(false);
+    setSessionDone(false);
   };
 
   // Keyboard navigation: Space (Flip), 1/ArrowLeft (Wrong), 2/ArrowRight (Correct), S/R (Sound)
@@ -569,11 +664,59 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
       ) : (
         /* ── 4. Active Card Study Screen ── */
         <>
+          {/* Saved Progress Resumption Banner */}
+          {savedProgressInfo && savedProgressInfo.currentIndex > 0 && savedProgressInfo.currentIndex < cards.length && (
+            <div className="d-flex align-items-center justify-content-between p-2.5 px-3 mb-2.5 rounded-3 bg-white border shadow-xs flex-wrap gap-2">
+              <div className="d-flex align-items-center gap-2">
+                <Sparkles size={14} className="text-warning flex-shrink-0" />
+                <span className="small text-dark fw-medium" style={{ fontSize: '12px' }}>
+                  Tiến độ đã lưu: <strong>Thẻ {savedProgressInfo.currentIndex + 1}/{savedProgressInfo.total || cards.length}</strong>
+                  {savedProgressInfo.reviewIds?.length > 0 && (
+                    <span className="text-danger ms-1">({savedProgressInfo.reviewIds.length} từ chưa nhớ)</span>
+                  )}
+                </span>
+              </div>
+              <div className="d-flex align-items-center gap-1.5 ms-auto">
+                {savedProgressInfo.reviewIds?.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleRetryWrongOnly}
+                    className="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-0.5 fw-bold"
+                    style={{ fontSize: '11px' }}
+                  >
+                    Ôn {savedProgressInfo.reviewIds.length} từ chưa nhớ
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleResumeSavedProgress}
+                  className="btn btn-sm btn-primary text-white rounded-pill px-2.5 py-0.5 fw-bold"
+                  style={{ fontSize: '11px' }}
+                >
+                  Tiếp tục học
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRestart}
+                  className="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0.5"
+                  style={{ fontSize: '11px' }}
+                >
+                  Làm lại từ đầu
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Progress Header Bar */}
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-center mb-1.5">
               <span className="text-muted fw-semibold small" style={{ fontSize: '12.5px' }}>
                 Thẻ <strong className="text-dark">{currentIndex + 1}</strong> / {cards.length}
+                {deckMode === 'unlearned' && (
+                  <span className="badge bg-danger bg-opacity-10 text-danger ms-1.5 rounded-pill px-2 py-0.5 fw-bold" style={{ fontSize: '10.5px' }}>
+                    Chế độ: Từ chưa nhớ
+                  </span>
+                )}
               </span>
               <div className="d-flex align-items-center gap-3">
                 <span className="small fw-bold" style={{ color: '#10b981', fontSize: '12px' }}>
@@ -645,7 +788,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                       Bài {currentCard.lesson_number} • #{currentIndex + 1}
                     </Badge>
                     <span className="badge rounded-pill bg-light text-muted border small" style={{ fontSize: '11px' }}>
-                      {cardDirection === 'vi_to_jp' ? '🇻🇳 Việt ➔ Nhật' : '🇯🇵 Nhật ➔ Việt'}
+                      {cardDirection === 'vi_to_jp' ? 'Nghĩa Việt ➔ Tiếng Nhật' : 'Tiếng Nhật ➔ Nghĩa Việt'}
                     </span>
                   </div>
 
@@ -713,27 +856,40 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                       >
                         Từ Vựng Tiếng Nhật
                       </span>
-                      {currentCard.kanji && currentCard.kanji !== '–' && currentCard.kanji !== '-' && (
+                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
+                        <>
+                          <div
+                            className="fw-black mb-1 font-monospace"
+                            style={{
+                              fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
+                              lineHeight: '1.1',
+                              color: '#0f172a'
+                            }}
+                          >
+                            {currentCard.kanji}
+                          </div>
+                          <div
+                            className="fw-bold font-monospace"
+                            style={{
+                              fontSize: 'clamp(1.4rem, 5vw, 2.1rem)',
+                              color: '#2563eb'
+                            }}
+                          >
+                            {cleanKana}
+                          </div>
+                        </>
+                      ) : (
                         <div
-                          className="fw-black mb-1 font-monospace"
+                          className="fw-black font-monospace"
                           style={{
                             fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
                             lineHeight: '1.1',
-                            color: '#0f172a'
+                            color: '#2563eb'
                           }}
                         >
-                          {currentCard.kanji}
+                          {cleanKana}
                         </div>
                       )}
-                      <div
-                        className="fw-bold font-monospace"
-                        style={{
-                          fontSize: 'clamp(1.4rem, 5vw, 2.1rem)',
-                          color: '#2563eb'
-                        }}
-                      >
-                        {cleanKana}
-                      </div>
                     </>
                   )}
                 </div>
@@ -814,24 +970,37 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <div className="text-center py-3 my-auto">
                   {cardDirection === 'vi_to_jp' ? (
                     <>
-                      {currentCard.kanji && currentCard.kanji !== '–' && currentCard.kanji !== '-' && (
+                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
+                        <>
+                          <div
+                            className="fw-black mb-1 font-monospace"
+                            style={{
+                              fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
+                              color: '#fbbf24',
+                              lineHeight: '1.15'
+                            }}
+                          >
+                            {currentCard.kanji}
+                          </div>
+                          <div
+                            className="fw-bold text-white font-monospace"
+                            style={{ fontSize: 'clamp(1.4rem, 5vw, 2.2rem)' }}
+                          >
+                            {cleanKana}
+                          </div>
+                        </>
+                      ) : (
                         <div
-                          className="fw-black mb-1 font-monospace"
+                          className="fw-black font-monospace"
                           style={{
                             fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
                             color: '#fbbf24',
                             lineHeight: '1.15'
                           }}
                         >
-                          {currentCard.kanji}
+                          {cleanKana}
                         </div>
                       )}
-                      <div
-                        className="fw-bold text-white font-monospace"
-                        style={{ fontSize: 'clamp(1.4rem, 5vw, 2.2rem)' }}
-                      >
-                        {cleanKana}
-                      </div>
                       <div className="small font-monospace text-white text-opacity-75 mt-1" style={{ fontSize: '13.5px' }}>
                         [{currentCard.romaji}]
                       </div>
@@ -853,9 +1022,13 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                     </>
                   ) : (
                     <>
-                      {currentCard.kanji && currentCard.kanji !== '–' && currentCard.kanji !== '-' && (
+                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
                         <div className="small text-white text-opacity-75 mb-1" style={{ fontSize: '15px' }}>
                           <strong className="text-warning font-monospace fs-5">{currentCard.kanji}</strong> ({cleanKana})
+                        </div>
+                      ) : (
+                        <div className="small text-white text-opacity-75 mb-1" style={{ fontSize: '15px' }}>
+                          <strong className="text-warning font-monospace fs-5">{cleanKana}</strong>
                         </div>
                       )}
 

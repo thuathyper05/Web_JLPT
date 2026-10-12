@@ -65,18 +65,23 @@ const getQuiz = async (req, res) => {
     }
 
     const shuffled = shuffleArray(pool);
-    const selected = shuffled.slice(0, Math.min(parseInt(count), pool.length));
+    const reqCount = req.query.count;
+    const countNum = reqCount === 'all' ? pool.length : (parseInt(reqCount) || 20);
+    const selected = shuffled.slice(0, Math.min(countNum, pool.length));
+
+    const hasRealKanji = (str) => Boolean(str && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str));
 
     const questions = selected.map((item, index) => {
+      const hasKj = hasRealKanji(item.kanji);
       let availableTypes = ['jp_to_vi', 'vi_to_jp'];
-      if (item.kanji && item.kanji !== '–' && item.kanji !== '-') {
+      if (hasKj) {
         availableTypes.push('kanji_to_reading');
       }
 
       let qType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
       if (mode === 'jp_to_vi') qType = 'jp_to_vi';
       else if (mode === 'vi_to_jp') qType = 'vi_to_jp';
-      else if ((mode === 'kanji_to_reading' || mode === 'multiple_choice') && item.kanji && item.kanji !== '–' && item.kanji !== '-') {
+      else if ((mode === 'kanji_to_reading' || mode === 'multiple_choice') && hasKj) {
         qType = 'kanji_to_reading';
       } else if (mode === 'kanji_to_reading' || mode === 'multiple_choice') {
         qType = 'jp_to_vi';
@@ -92,7 +97,7 @@ const getQuiz = async (req, res) => {
 
       if (qType === 'jp_to_vi') {
         prompt = 'Chọn nghĩa tiếng Việt chính xác';
-        questionText = item.kanji && item.kanji !== '–' && item.kanji !== '-' ? `${item.kanji} (${cleanK})` : cleanK;
+        questionText = hasKj ? `${item.kanji} (${cleanK})` : cleanK;
         correctAnswer = cleanMeaning;
 
         const distractors = shuffleArray(
@@ -102,11 +107,11 @@ const getQuiz = async (req, res) => {
       } else if (qType === 'vi_to_jp') {
         prompt = 'Chọn từ tiếng Nhật tương ứng';
         questionText = cleanMeaning;
-        correctAnswer = item.kanji && item.kanji !== '–' && item.kanji !== '-' ? `${item.kanji} (${cleanK})` : cleanK;
+        correctAnswer = hasKj ? `${item.kanji} (${cleanK})` : cleanK;
 
         const distractors = shuffleArray(
           allVocabs.filter(v => v.id !== item.id)
-        ).slice(0, 3).map(v => (v.kanji && v.kanji !== '–' && v.kanji !== '-') ? `${v.kanji} (${v.display_kana})` : v.display_kana);
+        ).slice(0, 3).map(v => hasRealKanji(v.kanji) ? `${v.kanji} (${v.display_kana})` : v.display_kana);
         options = shuffleArray([correctAnswer, ...distractors]);
       } else {
         // kanji_to_reading

@@ -12,6 +12,8 @@ import {
 } from 'reactstrap';
 import {
   Keyboard,
+  Languages,
+  BookOpen,
   Volume2,
   CheckCircle,
   XCircle,
@@ -27,7 +29,10 @@ import * as wanakana from 'wanakana';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
+import { awardGardenWater } from '../services/gardenRewards';
 import confetti from 'canvas-confetti';
+
+const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
 
 const PracticeInputPage = ({ initialLesson = 1 }) => {
   const { updateProgress } = useApp();
@@ -93,6 +98,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
         sounds.playCorrect();
         speakJapanese(cleanExpected);
         updateProgress(id, 'mastered', true).catch(() => {});
+        awardGardenWater(2, 'Luyện gõ đúng');
       }
     }
   };
@@ -112,6 +118,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
       sounds.playCorrect();
       speakJapanese(cleanExpected);
       updateProgress(id, 'mastered', true).catch(() => {});
+      awardGardenWater(2, 'Luyện gõ đúng');
     } else {
       sounds.playWrong();
       updateProgress(id, 'needs_review', false).catch(() => {});
@@ -140,6 +147,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
   useEffect(() => {
     if (total > 0 && answeredCount === total && correctCount === total) {
       sounds.playComplete();
+      awardGardenWater(25, 'Hoàn thành bài luyện gõ');
       try {
         const end = Date.now() + 1500;
         const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
@@ -264,9 +272,10 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                     sounds.playFlip();
                   }
                 }}
-                className={`segmented-item ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
+                className={`segmented-item d-inline-flex align-items-center gap-1.5 ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
               >
-                <span>🇻🇳 Tiếng Việt ➔ 🇯🇵 Gõ Kana</span>
+                <Languages size={15} />
+                <span>Tiếng Việt ➔ Gõ Kana</span>
               </button>
               <button
                 type="button"
@@ -277,9 +286,10 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                     sounds.playFlip();
                   }
                 }}
-                className={`segmented-item ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
+                className={`segmented-item d-inline-flex align-items-center gap-1.5 ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
               >
-                <span>🈴 Kanji ➔ ✍️ Gõ Kana</span>
+                <BookOpen size={15} />
+                <span>Hán Tự Kanji ➔ Gõ Kana</span>
               </button>
             </div>
           </div>
@@ -399,10 +409,11 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                   sounds.playFlip();
                 }
               }}
-              className={`segmented-item flex-fill py-1 px-2 ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
+              className={`segmented-item flex-fill py-1 px-2 d-inline-flex align-items-center justify-content-center gap-1 ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
               style={{ fontSize: '11.5px' }}
             >
-              <span>🇻🇳 Nghĩa ➔ Kana</span>
+              <Languages size={13} />
+              <span>Nghĩa ➔ Kana</span>
             </button>
             <button
               type="button"
@@ -413,10 +424,11 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                   sounds.playFlip();
                 }
               }}
-              className={`segmented-item flex-fill py-1 px-2 ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
+              className={`segmented-item flex-fill py-1 px-2 d-inline-flex align-items-center justify-content-center gap-1 ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
               style={{ fontSize: '11.5px' }}
             >
-              <span>🈴 Kanji ➔ Kana</span>
+              <BookOpen size={13} />
+              <span>Kanji ➔ Kana</span>
             </button>
           </div>
 
@@ -542,13 +554,13 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                                 )}
                               </td>
                               <td className="fw-bold fs-5 text-navy-dark font-monospace">
-                                {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : '—'}
+                                {item.kanji && hasRealKanji(item.kanji) ? item.kanji : '—'}
                               </td>
                             </>
                           ) : (
                             <>
                               <td className="fw-bold fs-5 text-navy-dark font-monospace">
-                                {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : item.kana}
+                                {item.kanji && hasRealKanji(item.kanji) ? item.kanji : cleanK}
                               </td>
                               <td>
                                 <span className="text-dark fw-semibold">{cleanMeaning}</span>
@@ -689,7 +701,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                               <span className="fw-bold text-dark" style={{ fontSize: '13.5px' }}>
                                 {cleanMeaning}
                               </span>
-                              {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                              {item.kanji && hasRealKanji(item.kanji) && (
                                 <span className="badge bg-light text-navy-dark border font-monospace fw-bold" style={{ fontSize: '12px' }}>
                                   {item.kanji}
                                 </span>
@@ -698,7 +710,7 @@ const PracticeInputPage = ({ initialLesson = 1 }) => {
                           ) : (
                             <>
                               <span className="fw-black text-navy-dark font-monospace fs-5">
-                                {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : item.kana}
+                                {item.kanji && hasRealKanji(item.kanji) ? item.kanji : cleanK}
                               </span>
                               <span className="text-muted small">({cleanMeaning})</span>
                             </>

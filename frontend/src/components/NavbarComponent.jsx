@@ -66,7 +66,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   return (
     <>
-      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-2.5 px-md-3">
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-3 px-md-4">
         <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
           {/* ── Left: Logo + Level ── */}

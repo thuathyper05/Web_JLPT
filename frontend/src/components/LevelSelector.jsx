@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, ModalBody, Badge } from 'reactstrap';
-import { ChevronDown, CheckCircle2, Clock, Sparkles, X } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Clock, Sparkles, X, GraduationCap, Award, ShieldCheck } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
 const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
@@ -8,7 +8,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
   const [notice, setNotice] = useState('');
 
   const toggle = () => {
-    sounds.playFlip();
+    sounds.playFlip?.();
     setNotice('');
     setIsOpen(!isOpen);
   };
@@ -21,7 +21,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
       status: 'ready',
       badge: 'Đầy đủ 100%',
       badgeColor: 'success',
-      desc: '25 Bài học đầy đủ • 1,589 Từ vựng • 80+ Kanji • Flashcard 3D • Trắc nghiệm • Luyện gõ Kana'
+      desc: '25 Bài học đầy đủ • 1,589 Từ vựng • 80+ Kanji • Flashcard 3D • Trắc nghiệm • Luyện gõ'
     },
     {
       id: 'N4',
@@ -30,7 +30,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
       status: 'dev',
       badge: 'Đang phát triển',
       badgeColor: 'warning',
-      desc: '25 Bài học tiếp theo (Bài 26 - 50) • 300+ Kanji • Đang biên soạn nội dung'
+      desc: '25 Bài tiếp theo (Bài 26 - 50) • 300+ Kanji • Đang biên soạn nội dung'
     },
     {
       id: 'N3',
@@ -63,47 +63,58 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
 
   const handleSelect = (lvl) => {
     if (lvl.status === 'ready') {
-      sounds.playCorrect();
+      sounds.playCorrect?.();
       setNotice('');
       if (onChangeLevel) onChangeLevel(lvl.id);
       setIsOpen(false);
     } else {
-      sounds.playWrong();
-      setNotice(`Cấp độ ${lvl.id} đang trong giai đoạn phát triển! Hiện tại hệ thống đang hỗ trợ hoàn thiện 100% cấp độ N5.`);
+      sounds.playWrong?.();
+      setNotice(`Cấp độ ${lvl.id} đang trong giai đoạn phát triển! Hiện tại hệ thống đang hỗ trợ hoàn thiện 100% giáo trình N5.`);
     }
   };
 
   return (
     <>
-      {/* Compact & Sleek Level Trigger Button */}
+      {/* Sleek, Luxury Level Trigger Pill */}
       <button
         type="button"
         onClick={toggle}
-        className="level-pill-btn d-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill text-decoration-none shadow-sm"
+        className="level-pill-btn d-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill text-decoration-none"
         title="Chọn cấp độ JLPT mục tiêu"
         style={{
-          fontSize: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          background: 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(10px)'
+          height: '32px',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.18)',
+          cursor: 'pointer',
+          transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
       >
         <span
-          className="rounded-circle d-inline-block"
+          className="rounded-circle d-inline-block flex-shrink-0"
           style={{
-            width: '7px',
-            height: '7px',
+            width: '6.5px',
+            height: '6.5px',
             backgroundColor: '#10b981',
-            boxShadow: '0 0 6px #10b981'
+            boxShadow: '0 0 8px #10b981'
           }}
         />
-        <span className="fw-bold text-white tracking-wide" style={{ fontSize: '12.5px' }}>
+        <span
+          className="fw-extrabold text-white tracking-wide"
+          style={{
+            fontSize: '11.5px',
+            letterSpacing: '0.02em',
+            fontFamily: "'Inter', sans-serif"
+          }}
+        >
           {currentLevel || 'N5'}
         </span>
-        <ChevronDown size={13} className="text-white text-opacity-80" />
+        <ChevronDown size={12} className="text-white text-opacity-70 flex-shrink-0" />
       </button>
 
-      {/* Compact Modern Level Modal */}
+      {/* Modern Centered Level Selection Modal */}
       <Modal
         isOpen={isOpen}
         toggle={toggle}
@@ -111,20 +122,28 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
         className="jlpt-modal"
         style={{ maxWidth: '440px' }}
       >
-        <ModalBody className="p-0 overflow-hidden rounded-4">
-          {/* Header */}
+        <ModalBody className="p-0 overflow-hidden rounded-4 border-0 shadow-2xl">
+          {/* Header Banner */}
           <div
-            className="p-3 text-white d-flex justify-content-between align-items-center"
+            className="p-3.5 text-white d-flex justify-content-between align-items-center position-relative"
             style={{
-              background: 'linear-gradient(135deg, #091224 0%, #1e3a8a 100%)'
+              background: 'linear-gradient(135deg, #091224 0%, #1e3a8a 100%)',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
             }}
           >
-            <div className="d-flex align-items-center gap-2">
-              <span className="fs-5">🇯🇵</span>
+            <div className="d-flex align-items-center gap-2.5">
+              <div
+                className="d-flex align-items-center justify-content-center rounded-circle"
+                style={{ width: 34, height: 34, background: 'rgba(255, 255, 255, 0.12)' }}
+              >
+                <GraduationCap size={18} className="text-white" />
+              </div>
               <div>
-                <h6 className="fw-bold mb-0">Cấp Độ JLPT Mục Tiêu</h6>
-                <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>
-                  HYPER JAPAN Learning Platform
+                <h6 className="fw-bold mb-0 text-white" style={{ fontSize: '14px' }}>
+                  Cấp Độ JLPT Mục Tiêu
+                </h6>
+                <small className="text-white text-opacity-70" style={{ fontSize: '11px' }}>
+                  Chọn cấp độ ôn luyện của bạn
                 </small>
               </div>
             </div>
@@ -133,7 +152,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
               className="btn-close btn-close-white"
               onClick={toggle}
               style={{ fontSize: '10px' }}
-              aria-label="Close"
+              aria-label="Đóng"
             />
           </div>
 

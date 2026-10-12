@@ -19,6 +19,7 @@ import {
 import {
   BookOpen,
   Volume2,
+  VolumeX,
   Star,
   FileText,
   ChevronLeft,
@@ -39,7 +40,10 @@ import {
 } from 'lucide-react';
 import { vocabService, lessonService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
+import { awardGardenWater } from '../services/gardenRewards';
 import { sounds } from '../services/sounds';
+
+const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
 
 const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => {
   const { toggleFavorite, isFavorite, updateProgress, saveNote, getNote } = useApp();
@@ -83,7 +87,23 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           vocabService.getVocabularies({ lesson: currentLessonNum })
         ]);
         setLessonInfo(lRes.data);
-        setVocabularies(vRes.data);
+        const rawVocabs = Array.isArray(vRes.data) ? vRes.data : (vRes.data?.data || []);
+
+        let guestProg = {};
+        try {
+          const raw = localStorage.getItem('guest_progress');
+          if (raw) guestProg = JSON.parse(raw);
+        } catch {}
+
+        const mergedVocabs = rawVocabs.map(v => {
+          const g = guestProg[v.id];
+          return {
+            ...v,
+            user_status: g?.status || v.user_status || 'learning'
+          };
+        });
+
+        setVocabularies(mergedVocabs);
         setCurrentIndex(0);
       } catch (err) {
         console.error('Error fetching lesson vocab:', err);
@@ -172,6 +192,9 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
 
     // Background server sync without blocking UI
     updateProgress(currentWord.id, status, status === 'mastered').catch(() => {});
+    if (typeof awardGardenWater === 'function') {
+      awardGardenWater(1, 'Học từ vựng bài học');
+    }
 
     // In step-by-step mode, smoothly auto-advance to next word with fluid animation
     setWordAnim('slide-next');
@@ -312,7 +335,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 className={`segmented-item py-1 px-2.5 ${viewMode === 'step_by_step' ? 'active' : ''}`}
                 style={{ fontSize: '12px' }}
               >
-                <span>📖 Từng từ</span>
+                <span className="d-inline-flex align-items-center gap-1"><BookOpen size={13} /> Từng từ</span>
               </button>
               <button
                 type="button"
@@ -320,7 +343,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 className={`segmented-item py-1 px-2.5 ${viewMode === 'table_view' ? 'active' : ''}`}
                 style={{ fontSize: '12px' }}
               >
-                <span>📋 Danh sách</span>
+                <span className="d-inline-flex align-items-center gap-1"><List size={13} /> Danh sách</span>
               </button>
             </div>
 
@@ -334,7 +357,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 style={{ fontSize: '11.5px', whiteSpace: 'nowrap' }}
                 title="Tự động phát âm giọng Tokyo khi chuyển từ"
               >
-                {autoPlayAudio ? '🔊 Bật' : '🔇 Tắt'}
+                {autoPlayAudio ? (
+                  <span className="d-inline-flex align-items-center gap-1"><Volume2 size={13} /> Bật</span>
+                ) : (
+                  <span className="d-inline-flex align-items-center gap-1"><VolumeX size={13} /> Tắt</span>
+                )}
               </button>
             )}
           </div>
@@ -511,7 +538,10 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                     overflowWrap: 'anywhere'
                   }}
                 >
-                  📝 <strong>Ghi chú:</strong> {currentWord.user_note || getNote(currentWord.id)}
+                  <span className="d-inline-flex align-items-center gap-1 fw-bold me-1">
+                    <FileText size={13} className="text-primary" /> Ghi chú:
+                  </span>
+                  {currentWord.user_note || getNote(currentWord.id)}
                 </div>
               )}
             </div>
@@ -659,7 +689,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                       <tr key={item.id}>
                         <td className="text-center text-muted small">{idx + 1}</td>
                         <td className="fw-bold fs-5 text-navy-dark font-monospace">
-                          {item.kanji && item.kanji !== '–' && item.kanji !== '-' ? item.kanji : '—'}
+                          {item.kanji && hasRealKanji(item.kanji) ? item.kanji : '—'}
                         </td>
                         <td>
                           {hideKana ? (
@@ -745,7 +775,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                           <span className="badge bg-light text-secondary border fw-bold flex-shrink-0" style={{ fontSize: '10.5px' }}>
                             #{idx + 1}
                           </span>
-                          {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                          {item.kanji && hasRealKanji(item.kanji) && (
                             <span
                               className="fw-black text-navy-dark fs-5 font-monospace"
                               style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}

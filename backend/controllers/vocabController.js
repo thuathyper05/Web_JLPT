@@ -50,19 +50,19 @@ const getVocabularies = async (req, res) => {
         const lessonArr = rawLesson.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
         if (lessonArr.length > 0) {
           params.push(lessonArr);
-          whereClauses.push(`v.lesson_number = ANY($${params.length})`);
+          whereClauses.push(`(v.lesson_number = ANY($${params.length}) OR v.lesson_id = ANY($${params.length}))`);
         }
       } else if (Array.isArray(rawLesson)) {
         const lessonArr = rawLesson.map(n => parseInt(n)).filter(n => !isNaN(n));
         if (lessonArr.length > 0) {
           params.push(lessonArr);
-          whereClauses.push(`v.lesson_number = ANY($${params.length})`);
+          whereClauses.push(`(v.lesson_number = ANY($${params.length}) OR v.lesson_id = ANY($${params.length}))`);
         }
       } else {
         const singleL = parseInt(rawLesson);
         if (!isNaN(singleL)) {
           params.push(singleL);
-          whereClauses.push(`v.lesson_number = $${params.length}`);
+          whereClauses.push(`(v.lesson_number = $${params.length} OR v.lesson_id = $${params.length})`);
         }
       }
     }

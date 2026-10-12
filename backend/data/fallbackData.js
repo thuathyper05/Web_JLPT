@@ -32,11 +32,12 @@ function loadFallbackData() {
         });
 
         words.forEach((w) => {
+          const cleanKj = (w.kanji && w.kanji !== '–' && w.kanji !== '-' && w.kanji !== '—') ? w.kanji.trim() : '';
           allVocabs.push({
             id: vocabIdCounter++,
             lesson_id: i,
             lesson_number: i,
-            kanji: w.kanji || '',
+            kanji: cleanKj,
             kana: w.kana || '',
             clean_kana: w.clean_kana || w.kana || '',
             romaji: w.romaji || '',

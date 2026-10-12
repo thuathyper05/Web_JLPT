@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService, progressService, favoriteService, noteService } from '../services/api';
+import { awardGardenWater, getGardenWater } from '../services/gardenRewards';
 
 const AppContext = createContext();
 
@@ -237,7 +237,9 @@ export const AppProvider = ({ children }) => {
         clearWrongStatus,
         resetAllWrong,
         saveNote,
-        getNote
+        getNote,
+        awardGardenWater,
+        getGardenWater
       }}
     >
       {children}
