@@ -66,11 +66,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   return (
     <>
-      <Navbar dark expand="lg" className="navbar-custom sticky-top py-1.5 py-md-2 px-2.5 px-sm-3 px-md-4">
+      <Navbar dark expand="lg" className="navbar-custom sticky-top py-2 px-3 px-sm-3 px-md-4">
         <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
           {/* ── Left: Professional Branding + Compact Level Pill ── */}
-          <div className="d-flex align-items-center gap-1.5 gap-sm-2.5 flex-shrink-0 min-w-0">
+          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0 min-w-0">
             <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
               className="p-0 m-0 text-decoration-none d-flex align-items-center" style={{ cursor: 'pointer' }}>
               <Logo size={32} />
@@ -165,8 +165,8 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             </NavItem>
           </Nav>
 
-          {/* ── Right: Search + Account + Mobile Menu Toggle (Unified Squircles & Spacing) ── */}
-          <div className="d-flex align-items-center gap-1.5 gap-sm-2 flex-shrink-0">
+          {/* ── Right: Search + Account + Mobile Menu Toggle (Unified Squircles & Proper Spacing) ── */}
+          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
@@ -180,7 +180,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             {/* Mobile-only Unified Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
               className="d-flex d-sm-none align-items-center justify-content-center"
-              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
+              style={{ width: 35, height: 35, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
               title="Tìm kiếm từ vựng">
               <Search size={15} />
             </button>

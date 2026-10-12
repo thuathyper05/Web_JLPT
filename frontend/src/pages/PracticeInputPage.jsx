@@ -9,7 +9,9 @@ import {
   Badge,
   Input,
   Progress,
-  Spinner
+  Spinner,
+  Modal,
+  ModalBody
 } from 'reactstrap';
 import {
   Keyboard,
@@ -24,6 +26,7 @@ import {
   EyeOff,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Zap,
   Target,
   Flame,
@@ -31,7 +34,8 @@ import {
   Check,
   RefreshCw,
   Trophy,
-  ArrowRight
+  ArrowRight,
+  X
 } from 'lucide-react';
 import * as wanakana from 'wanakana';
 import { vocabService, speakJapanese } from '../services/api';
@@ -42,18 +46,60 @@ import confetti from 'canvas-confetti';
 
 const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
 
+// Smart normalization for matching Vietnamese meanings
+const normalizeVi = (str) => {
+  return (str || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[.,!?:;"'()\[\]{}]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+const checkVietnameseMatch = (userInput, targetMeaning) => {
+  if (!userInput || !targetMeaning) return false;
+  const u = normalizeVi(userInput);
+  const t = normalizeVi(targetMeaning);
+  if (u === t) return true;
+
+  // Split multiple meanings by slash, comma, semicolon, dash, or parenthesis
+  const parts = targetMeaning
+    .split(/[\/,;—–()]/)
+    .map(normalizeVi)
+    .filter(Boolean);
+
+  if (parts.includes(u)) return true;
+
+  // Partial phrase matching for definitions like "người kia (vị kia)"
+  return parts.some(p => p === u || p.startsWith(u + ' ') || p.endsWith(' ' + u));
+};
+
+const checkKanaMatch = (userInput, targetKana) => {
+  if (!userInput || !targetKana) return false;
+  const cleanInput = (userInput || '').trim().replace(/[［\[］\]]/g, '');
+  const cleanTarget = (targetKana || '').trim().replace(/[［\[］\]]/g, '');
+  return cleanInput === cleanTarget;
+};
+
 const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
   const { updateProgress } = useApp();
   const [lessonNum, setLessonNum] = useState(initialLesson);
   const [vocabList, setVocabList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Practice Modes
-  const [inputMode, setInputMode] = useState('vi_to_jp'); // 'vi_to_jp' | 'jp_to_jp'
-  const [viewLayout, setViewLayout] = useState('zen'); // 'zen' (single word focus) | 'grid' (all words list)
+  // 2 Core Practice Modes: 'jp_to_vi' (Nhật -> Việt) | 'vi_to_jp' (Việt -> Nhật)
+  const [practiceMode, setPracticeMode] = useState('jp_to_vi'); 
+
+  // View Layout: 'zen' (Tập trung từng từ) | 'grid' (Danh sách tất cả)
+  const [viewLayout, setViewLayout] = useState('zen');
+
+  // IME Wanakana switch (only used when typing Japanese Kana in 'vi_to_jp' mode)
   const [autoKana, setAutoKana] = useState(true);
 
-  // Zen Mode Navigation
+  // Lesson Picker Modal state (eliminates dropdown glitches on mobile)
+  const [lessonModalOpen, setLessonModalOpen] = useState(false);
+
+  // Zen Mode Navigation & Effects
   const [zenIndex, setZenIndex] = useState(0);
   const [zenShake, setZenShake] = useState(false);
   const [floatingXp, setFloatingXp] = useState(false);
@@ -98,17 +144,22 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
     if (viewLayout === 'zen' && zenInputRef.current && !loading) {
       zenInputRef.current.focus();
     }
-  }, [zenIndex, viewLayout, loading]);
+  }, [zenIndex, viewLayout, loading, practiceMode]);
 
-  // Clean target Kana string for matching
-  const getCleanExpected = (item) => {
+  const getCleanKana = (item) => {
     const raw = item.clean_kana || item.kana || '';
     return raw.replace(/[［\[］\]]/g, '').trim();
   };
 
-  const handleInputChange = (id, rawValue, expectedKana) => {
+  const getCleanVietnamese = (item) => {
+    return (item.clean_vietnamese || item.vietnamese || '').trim();
+  };
+
+  const handleInputChange = (id, rawValue, item) => {
     let finalValue = rawValue;
-    if (autoKana) {
+
+    // Apply Wanakana ONLY if practiceMode is 'vi_to_jp' (typing Japanese Kana) and autoKana is active
+    if (practiceMode === 'vi_to_jp' && autoKana) {
       finalValue = wanakana.toKana(rawValue, { IMEMode: true });
     }
 
@@ -124,21 +175,26 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
       return;
     }
 
-    const cleanExpected = expectedKana.replace(/[［\[］\]]/g, '').trim();
+    // Instant match check
+    let isInstantMatch = false;
+    if (practiceMode === 'vi_to_jp') {
+      isInstantMatch = checkKanaMatch(trimmedInput, getCleanKana(item));
+    } else {
+      isInstantMatch = checkVietnameseMatch(trimmedInput, getCleanVietnamese(item));
+    }
 
-    // Instant match check: If typed exactly the expected Kana, mark success immediately!
-    if (trimmedInput === cleanExpected || trimmedInput === expectedKana.trim()) {
+    if (isInstantMatch) {
       if (checkResults[id] !== true) {
         setCheckResults(prev => ({ ...prev, [id]: true }));
         sounds.playCorrect();
-        speakJapanese(cleanExpected);
+        speakJapanese(getCleanKana(item));
         updateProgress(id, 'mastered', true).catch(() => {});
         awardGardenWater(2, 'Luyện gõ đúng');
         setCombo(prev => prev + 1);
         setFloatingXp(true);
         setTimeout(() => setFloatingXp(false), 850);
 
-        // In Zen mode, smoothly auto-advance to next word after short delay
+        // In Zen mode, auto-advance smoothly
         if (viewLayout === 'zen') {
           setTimeout(() => {
             setZenIndex(prev => {
@@ -151,10 +207,11 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
     }
   };
 
-  // Evaluate word on Enter, Tab or Check trigger
-  const handleEvaluate = (id, expectedKana) => {
+  // Evaluate on Enter or Check trigger
+  const handleEvaluate = (id, item) => {
     const val = (userInputs[id] || '').trim();
     if (!val) return;
+
     if (checkResults[id] === true) {
       // Already correct, move to next word in Zen mode
       if (viewLayout === 'zen' && zenIndex < vocabList.length - 1) {
@@ -163,14 +220,18 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
       return;
     }
 
-    const cleanExpected = expectedKana.replace(/[［\[］\]]/g, '').trim();
-    const isCorrect = val === cleanExpected || val === expectedKana.trim();
+    let isCorrect = false;
+    if (practiceMode === 'vi_to_jp') {
+      isCorrect = checkKanaMatch(val, getCleanKana(item));
+    } else {
+      isCorrect = checkVietnameseMatch(val, getCleanVietnamese(item));
+    }
 
     setCheckResults(prev => ({ ...prev, [id]: isCorrect }));
 
     if (isCorrect) {
       sounds.playCorrect();
-      speakJapanese(cleanExpected);
+      speakJapanese(getCleanKana(item));
       updateProgress(id, 'mastered', true).catch(() => {});
       awardGardenWater(2, 'Luyện gõ đúng');
       setCombo(prev => prev + 1);
@@ -239,13 +300,14 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
   return (
     <Container className="py-2.5 py-md-4" style={{ maxWidth: '920px' }}>
-      {/* ── 1. LUXURY MINIMALIST HEADER & CONTROLS ── */}
+      {/* ── 1. LUXURY CONTROL PANEL & LESSON SELECTOR ── */}
       <div
         className="p-3 p-md-3.5 mb-3 rounded-4 bg-white shadow-xs border"
         style={{ borderColor: 'var(--slate-200)' }}
       >
+        {/* Row 1: Header Branding + Lesson Picker Pill + Controls */}
         <div className="d-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-2.5">
-          {/* Branding & Title */}
+          {/* Branding */}
           <div className="d-flex align-items-center gap-2.5">
             <div
               className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
@@ -260,111 +322,109 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
             <div>
               <div className="d-flex align-items-center gap-1.5">
                 <h5 className="fw-black text-navy-dark mb-0 tracking-tight" style={{ fontSize: '16px' }}>
-                  Luyện Gõ Tiếng Nhật
+                  Luyện Gõ Từ Vựng
                 </h5>
                 <Badge color="primary" pill className="px-2 py-0.5 fw-bold" style={{ fontSize: '10px' }}>
-                  Bài {lessonNum < 10 ? `0${lessonNum}` : lessonNum}
+                  {total} từ N5
                 </Badge>
               </div>
               <small className="text-muted" style={{ fontSize: '11.5px' }}>
-                Phản xạ gõ Romaji ➔ Kana trực tiếp
+                Phản xạ song ngữ Nhật ➔ Việt & Việt ➔ Nhật
               </small>
             </div>
           </div>
 
-          {/* Top Action Pills: Lesson Selector + Mode + Reset */}
+          {/* Right Action Pills: Custom Lesson Picker + Reset */}
           <div className="d-flex align-items-center gap-1.5 ms-auto flex-wrap">
-            {/* Lesson Select Pill */}
-            <div className="d-flex align-items-center gap-1 bg-light rounded-pill px-2 py-1 border">
-              <span className="small text-muted fw-bold" style={{ fontSize: '11px' }}>Bài:</span>
-              <Input
-                type="select"
-                value={lessonNum}
-                onChange={(e) => setLessonNum(parseInt(e.target.value))}
-                className="form-control-sm border-0 bg-transparent fw-bold p-0 pe-3"
-                style={{ fontSize: '12px', width: 'auto', cursor: 'pointer', boxShadow: 'none' }}
-              >
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
-                    Bài {n < 10 ? `0${n}` : n}
-                  </option>
-                ))}
-              </Input>
-            </div>
-
-            {/* IME Auto-Kana Toggle */}
+            {/* Custom Lesson Picker Button (100% Bug-Free on all devices) */}
             <button
               type="button"
-              onClick={() => setAutoKana(!autoKana)}
-              className={`btn btn-sm rounded-pill px-2.5 py-1 fw-bold border d-flex align-items-center gap-1 ${
-                autoKana ? 'btn-primary text-white shadow-xs' : 'btn-light text-muted'
-              }`}
-              style={{ fontSize: '11.5px' }}
-              title="Tự động biến Romaji thành Hiragana khi gõ"
+              onClick={() => { sounds.playFlip?.(); setLessonModalOpen(true); }}
+              className="btn btn-sm bg-light rounded-pill px-3 py-1 fw-bold border shadow-xs d-flex align-items-center gap-1.5 text-navy-dark"
+              style={{ borderColor: 'var(--slate-200)', fontSize: '12px' }}
+              title="Bấm để chọn bài học Minna no Nihongo"
             >
-              <span
-                className="rounded-circle d-inline-block"
-                style={{
-                  width: 5,
-                  height: 5,
-                  backgroundColor: autoKana ? '#ffffff' : '#94a3b8'
-                }}
-              />
-              <span>IME {autoKana ? 'Bật' : 'Tắt'}</span>
+              <BookOpen size={13} className="text-primary" />
+              <span>Bài {lessonNum < 10 ? `0${lessonNum}` : lessonNum}</span>
+              <ChevronDown size={12} className="text-muted" />
             </button>
+
+            {/* IME Auto-Kana Toggle (Visible when in vi_to_jp mode) */}
+            {practiceMode === 'vi_to_jp' && (
+              <button
+                type="button"
+                onClick={() => setAutoKana(!autoKana)}
+                className={`btn btn-sm rounded-pill px-2.5 py-1 fw-bold border d-flex align-items-center gap-1 ${
+                  autoKana ? 'btn-primary text-white shadow-xs' : 'btn-light text-muted'
+                }`}
+                style={{ fontSize: '11.5px' }}
+                title="Tự động biến Romaji thành Hiragana/Katakana khi gõ"
+              >
+                <span
+                  className="rounded-circle d-inline-block"
+                  style={{
+                    width: 5,
+                    height: 5,
+                    backgroundColor: autoKana ? '#ffffff' : '#94a3b8'
+                  }}
+                />
+                <span>IME {autoKana ? 'Bật' : 'Tắt'}</span>
+              </button>
+            )}
 
             {/* Reset Button */}
             <button
               type="button"
               onClick={handleReset}
               className="btn btn-sm btn-light rounded-circle border p-1 d-flex align-items-center justify-content-center"
-              style={{ width: 30, height: 30 }}
-              title="Làm lại từ đầu"
+              style={{ width: 32, height: 32 }}
+              title="Làm lại bài này từ đầu"
             >
               <RotateCcw size={13} className="text-secondary" />
             </button>
           </div>
         </div>
 
-        {/* Row 2: Segmented Switchers (Prompt Type + Zen/Grid View) */}
+        {/* Row 2: 2 Core Practice Modes & View Mode Switcher */}
         <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-2 border-top border-slate-100">
-          {/* Prompt Mode: Nghĩa -> Kana vs Kanji -> Kana */}
+          {/* Mode Switcher: 🇯🇵 Nhật -> 🇻🇳 Việt vs 🇻🇳 Việt -> 🇯🇵 Nhật */}
           <div className="segmented-control" style={{ padding: '2px' }}>
             <button
               type="button"
               onClick={() => {
-                if (inputMode !== 'vi_to_jp') {
-                  setInputMode('vi_to_jp');
+                if (practiceMode !== 'jp_to_vi') {
+                  sounds.playFlip?.();
+                  setPracticeMode('jp_to_vi');
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1 px-2.5 ${inputMode === 'vi_to_jp' ? 'active' : ''}`}
+              className={`segmented-item py-1.5 px-3 ${practiceMode === 'jp_to_vi' ? 'active' : ''}`}
               style={{ fontSize: '12px' }}
             >
-              <span className="d-inline-flex align-items-center gap-1">
-                <Languages size={13} />
-                <span>Nghĩa ➔ Kana</span>
+              <span className="d-inline-flex align-items-center gap-1.5 fw-bold">
+                <span>🇯🇵 Nhìn Nhật ➔ 🇻🇳 Gõ Việt</span>
               </span>
             </button>
+
             <button
               type="button"
               onClick={() => {
-                if (inputMode !== 'jp_to_jp') {
-                  setInputMode('jp_to_jp');
+                if (practiceMode !== 'vi_to_jp') {
+                  sounds.playFlip?.();
+                  setPracticeMode('vi_to_jp');
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1 px-2.5 ${inputMode === 'jp_to_jp' ? 'active' : ''}`}
+              className={`segmented-item py-1.5 px-3 ${practiceMode === 'vi_to_jp' ? 'active' : ''}`}
               style={{ fontSize: '12px' }}
             >
-              <span className="d-inline-flex align-items-center gap-1">
-                <BookOpen size={13} />
-                <span>Kanji ➔ Kana</span>
+              <span className="d-inline-flex align-items-center gap-1.5 fw-bold">
+                <span>🇻🇳 Nhìn Việt ➔ 🇯🇵 Gõ Nhật</span>
               </span>
             </button>
           </div>
 
-          {/* View Mode: Zen Focus vs Grid View */}
+          {/* View Mode Toggle: Zen Focus vs Grid List */}
           <div className="d-flex align-items-center gap-1 bg-light rounded-pill p-0.5 border">
             <button
               type="button"
@@ -481,7 +541,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   {/* Audio Tokyo Pronunciation Button */}
                   <button
                     type="button"
-                    onClick={() => speakJapanese(getCleanExpected(currentZenWord))}
+                    onClick={() => speakJapanese(getCleanKana(currentZenWord))}
                     className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn d-flex align-items-center justify-content-center"
                     style={{ width: 34, height: 34 }}
                     title="Nghe phát âm chuẩn Tokyo"
@@ -492,9 +552,43 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
                 {/* Prompt Display */}
                 <div className="my-3 my-sm-4">
-                  {inputMode === 'vi_to_jp' ? (
+                  {practiceMode === 'jp_to_vi' ? (
                     <>
-                      {/* Vietnamese Meaning Prompt */}
+                      {/* PROMPT: JAPANESE WORD (KANJI + KANA) */}
+                      {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) ? (
+                        <>
+                          <h1
+                            className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
+                            style={{
+                              fontSize: 'clamp(2.2rem, 7.5vw, 3.4rem)',
+                              fontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
+                              lineHeight: '1.2'
+                            }}
+                          >
+                            {currentZenWord.kanji}
+                          </h1>
+                          <div className="text-primary fw-bold fs-5 font-monospace">
+                            {getCleanKana(currentZenWord)}
+                          </div>
+                        </>
+                      ) : (
+                        <h1
+                          className="fw-black text-primary font-monospace mb-1 tracking-tight"
+                          style={{
+                            fontSize: 'clamp(2rem, 7vw, 3rem)',
+                            lineHeight: '1.2'
+                          }}
+                        >
+                          {getCleanKana(currentZenWord)}
+                        </h1>
+                      )}
+                      <div className="text-muted small fst-italic mt-1" style={{ fontSize: '12px' }}>
+                        [{currentZenWord.romaji}]
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* PROMPT: VIETNAMESE MEANING */}
                       <h3
                         className="fw-black text-navy-dark mb-1 tracking-tight"
                         style={{
@@ -502,40 +596,20 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                           lineHeight: '1.3'
                         }}
                       >
-                        {currentZenWord.clean_vietnamese || currentZenWord.vietnamese}
+                        {getCleanVietnamese(currentZenWord)}
                       </h3>
 
-                      {/* Kanji Hint (if exists) */}
+                      {/* Subtle Kanji reference (if exists) */}
                       {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) && (
                         <div className="mt-1">
                           <span
                             className="badge bg-light text-navy-dark border font-monospace fw-bold px-2.5 py-1"
-                            style={{ fontSize: '14px', letterSpacing: '0.04em' }}
+                            style={{ fontSize: '13.5px', letterSpacing: '0.04em' }}
                           >
                             Hán tự: {currentZenWord.kanji}
                           </span>
                         </div>
                       )}
-                    </>
-                  ) : (
-                    <>
-                      {/* Kanji Prompt */}
-                      <h1
-                        className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
-                        style={{
-                          fontSize: 'clamp(2rem, 7vw, 3.2rem)',
-                          fontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif"
-                        }}
-                      >
-                        {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji)
-                          ? currentZenWord.kanji
-                          : (currentZenWord.clean_kana || currentZenWord.kana)}
-                      </h1>
-
-                      {/* Vietnamese Meaning Subtitle */}
-                      <div className="text-muted fw-semibold" style={{ fontSize: '14.5px' }}>
-                        {currentZenWord.clean_vietnamese || currentZenWord.vietnamese}
-                      </div>
                     </>
                   )}
                 </div>
@@ -546,18 +620,24 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                     innerRef={zenInputRef}
                     type="text"
                     autoFocus
-                    placeholder="Gõ đáp án Kana (VD: arigatou)..."
+                    placeholder={
+                      practiceMode === 'jp_to_vi'
+                        ? 'Gõ nghĩa Tiếng Việt (VD: tôi)...'
+                        : 'Gõ Romaji (VD: watashi ➔ わたし)...'
+                    }
                     value={userInputs[currentZenWord.id] || ''}
-                    onChange={(e) => handleInputChange(currentZenWord.id, e.target.value, getCleanExpected(currentZenWord))}
+                    onChange={(e) => handleInputChange(currentZenWord.id, e.target.value, currentZenWord)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
-                        handleEvaluate(currentZenWord.id, getCleanExpected(currentZenWord));
+                        handleEvaluate(currentZenWord.id, currentZenWord);
                       } else if (e.key === 'Tab') {
                         e.preventDefault();
                         handleRevealAnswer(currentZenWord.id);
                       }
                     }}
-                    className={`text-center fw-bold font-monospace shadow-xs ${
+                    className={`text-center fw-bold shadow-xs ${
+                      practiceMode === 'vi_to_jp' ? 'font-monospace' : ''
+                    } ${
                       checkResults[currentZenWord.id] === true
                         ? 'is-valid'
                         : checkResults[currentZenWord.id] === false
@@ -580,7 +660,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                           : checkResults[currentZenWord.id] === false
                           ? '#fef2f2'
                           : '#ffffff',
-                      letterSpacing: '0.04em'
+                      letterSpacing: practiceMode === 'vi_to_jp' ? '0.04em' : 'normal'
                     }}
                   />
 
@@ -597,16 +677,20 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   )}
                 </div>
 
-                {/* Revealed Answer Pill (Minimal & Clean) */}
+                {/* Revealed Answer Pill */}
                 {revealedIds[currentZenWord.id] && (
                   <div className="mb-3 p-2 rounded-3 bg-light border d-inline-flex align-items-center gap-2 animate-fade-in">
                     <span className="small text-muted fw-bold">Đáp án:</span>
-                    <span className="fw-bold text-primary font-monospace fs-6">
-                      {getCleanExpected(currentZenWord)}
+                    <span className="fw-bold text-primary fs-6">
+                      {practiceMode === 'jp_to_vi'
+                        ? getCleanVietnamese(currentZenWord)
+                        : getCleanKana(currentZenWord)}
                     </span>
-                    <span className="text-muted small fst-italic">
-                      [{currentZenWord.romaji}]
-                    </span>
+                    {practiceMode === 'vi_to_jp' && (
+                      <span className="text-muted small fst-italic">
+                        [{currentZenWord.romaji}]
+                      </span>
+                    )}
                   </div>
                 )}
 
@@ -617,15 +701,15 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                     onClick={() => handleRevealAnswer(currentZenWord.id)}
                     className="btn btn-sm btn-light rounded-pill px-3 py-1.5 fw-semibold border text-muted d-flex align-items-center gap-1"
                     style={{ fontSize: '12px' }}
-                    title="Xem gợi ý cách đọc (Phím Tab)"
+                    title="Xem gợi ý đáp án (Phím Tab)"
                   >
                     {revealedIds[currentZenWord.id] ? <EyeOff size={13} /> : <Eye size={13} />}
-                    <span>{revealedIds[currentZenWord.id] ? 'Ẩn gợi ý' : 'Xem gợi ý'}</span>
+                    <span>{revealedIds[currentZenWord.id] ? 'Ẩn đáp án' : 'Xem đáp án'}</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => handleEvaluate(currentZenWord.id, getCleanExpected(currentZenWord))}
+                    onClick={() => handleEvaluate(currentZenWord.id, currentZenWord)}
                     className="btn btn-sm btn-primary rounded-pill px-4 py-1.5 fw-bold shadow-xs d-flex align-items-center gap-1"
                     style={{ fontSize: '12px' }}
                   >
@@ -654,7 +738,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
             </button>
 
             <span className="text-muted small fw-semibold" style={{ fontSize: '12px' }}>
-              Dùng phím <strong>Enter</strong> để kiểm tra và chuyển tiếp
+              Dùng phím <strong>Enter</strong> để kiểm tra & chuyển tiếp
             </span>
 
             <button
@@ -730,9 +814,9 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
             ) : (
               filteredVocabList.map((item, idx) => {
                 const res = checkResults[item.id];
-                const cleanExpected = getCleanExpected(item);
+                const cleanKana = getCleanKana(item);
+                const cleanMeaning = getCleanVietnamese(item);
                 const isRevealed = revealedIds[item.id];
-                const cleanMeaning = item.clean_vietnamese || item.vietnamese;
 
                 return (
                   <Col xs={12} md={6} key={item.id}>
@@ -760,7 +844,20 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                             #{idx + 1}
                           </span>
 
-                          {inputMode === 'vi_to_jp' ? (
+                          {practiceMode === 'jp_to_vi' ? (
+                            /* Prompt: Japanese word -> User types Vietnamese */
+                            <div className="min-w-0">
+                              <span className="fw-black text-navy-dark font-monospace fs-5 d-block">
+                                {item.kanji && hasRealKanji(item.kanji) ? item.kanji : cleanKana}
+                              </span>
+                              {item.kanji && hasRealKanji(item.kanji) && (
+                                <span className="small text-primary font-monospace fw-bold d-block" style={{ fontSize: '12px' }}>
+                                  {cleanKana}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            /* Prompt: Vietnamese meaning -> User types Japanese */
                             <div className="min-w-0">
                               <span className="fw-bold text-dark text-truncate d-block" style={{ fontSize: '13.5px' }}>
                                 {cleanMeaning}
@@ -771,22 +868,13 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                                 </span>
                               )}
                             </div>
-                          ) : (
-                            <div className="min-w-0">
-                              <span className="fw-black text-navy-dark font-monospace fs-5 d-block">
-                                {item.kanji && hasRealKanji(item.kanji) ? item.kanji : cleanExpected}
-                              </span>
-                              <span className="small text-muted text-truncate d-block" style={{ fontSize: '11.5px' }}>
-                                {cleanMeaning}
-                              </span>
-                            </div>
                           )}
                         </div>
 
                         {/* Speaker Button */}
                         <button
                           type="button"
-                          onClick={() => speakJapanese(cleanExpected)}
+                          onClick={() => speakJapanese(cleanKana)}
                           className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0 ms-2"
                           style={{ width: 30, height: 30 }}
                           title="Nghe phát âm chuẩn"
@@ -799,30 +887,35 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                       <div className="d-flex align-items-center gap-1.5">
                         <Input
                           type="text"
-                          placeholder="Gõ Kana..."
+                          placeholder={
+                            practiceMode === 'jp_to_vi'
+                              ? 'Gõ nghĩa tiếng Việt...'
+                              : 'Gõ Kana...'
+                          }
                           value={userInputs[item.id] || ''}
-                          onChange={(e) => handleInputChange(item.id, e.target.value, cleanExpected)}
+                          onChange={(e) => handleInputChange(item.id, e.target.value, item)}
                           onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleEvaluate(item.id, cleanExpected);
+                            if (e.key === 'Enter') handleEvaluate(item.id, item);
                           }}
                           onBlur={() => {
-                            if ((userInputs[item.id] || '').trim()) handleEvaluate(item.id, cleanExpected);
+                            if ((userInputs[item.id] || '').trim()) handleEvaluate(item.id, item);
                           }}
-                          className={`fw-bold font-monospace flex-grow-1 ${
+                          className={`fw-bold flex-grow-1 ${
+                            practiceMode === 'vi_to_jp' ? 'font-monospace' : ''
+                          } ${
                             res === true ? 'is-valid' : res === false ? 'is-invalid' : ''
                           }`}
                           style={{
                             height: '38px',
                             borderRadius: '10px',
-                            fontSize: '13.5px',
-                            letterSpacing: '0.02em'
+                            fontSize: '13.5px'
                           }}
                         />
 
                         {/* Evaluate Check button */}
                         <button
                           type="button"
-                          onClick={() => handleEvaluate(item.id, cleanExpected)}
+                          onClick={() => handleEvaluate(item.id, item)}
                           className="btn btn-sm btn-light border p-1 text-primary shadow-xs rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                           style={{ width: 34, height: 34 }}
                           title="Kiểm tra"
@@ -846,8 +939,12 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                       {isRevealed && (
                         <div className="p-1.5 rounded-2 bg-light border small text-dark d-flex align-items-center gap-1.5 animate-fade-in" style={{ fontSize: '11px' }}>
                           <span className="text-muted">Đáp án:</span>
-                          <span className="fw-bold text-primary font-monospace">{cleanExpected}</span>
-                          <span className="text-muted fst-italic">[{item.romaji}]</span>
+                          <span className="fw-bold text-primary">
+                            {practiceMode === 'jp_to_vi' ? cleanMeaning : cleanKana}
+                          </span>
+                          {practiceMode === 'vi_to_jp' && (
+                            <span className="text-muted fst-italic">[{item.romaji}]</span>
+                          )}
                         </div>
                       )}
                     </div>
@@ -858,6 +955,83 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
           </Row>
         </>
       )}
+
+      {/* ── 3. VISUAL 25-LESSON SELECTOR MODAL (100% BUG-FREE & RESPONSIVE) ── */}
+      <Modal
+        isOpen={lessonModalOpen}
+        toggle={() => setLessonModalOpen(!lessonModalOpen)}
+        centered
+        className="jlpt-modal"
+        style={{ maxWidth: '460px' }}
+      >
+        <ModalBody className="p-0 rounded-4 overflow-hidden bg-white shadow-xl border-0">
+          {/* Header */}
+          <div
+            className="p-3 text-white d-flex justify-content-between align-items-center"
+            style={{ background: 'linear-gradient(135deg, #091224 0%, #1e3a8a 100%)' }}
+          >
+            <div className="d-flex align-items-center gap-2">
+              <div
+                className="d-flex align-items-center justify-content-center rounded-circle"
+                style={{ width: 32, height: 32, background: 'rgba(255,255,255,0.14)' }}
+              >
+                <BookOpen size={16} />
+              </div>
+              <div>
+                <h6 className="fw-bold mb-0 text-white" style={{ fontSize: '14.5px' }}>
+                  Chọn Bài Học Luyện Gõ
+                </h6>
+                <small className="text-white text-opacity-70" style={{ fontSize: '11px' }}>
+                  25 Bài Minna no Nihongo N5
+                </small>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              onClick={() => setLessonModalOpen(false)}
+              aria-label="Đóng"
+              style={{ fontSize: '10px' }}
+            />
+          </div>
+
+          {/* 5x5 Grid of 25 Lessons */}
+          <div className="p-3 bg-light">
+            <div className="row g-2">
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => {
+                const isSelected = lessonNum === n;
+                return (
+                  <div className="col-3 col-sm-2" key={n}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playCorrect?.();
+                        setLessonNum(n);
+                        setLessonModalOpen(false);
+                      }}
+                      className={`btn w-100 p-2 rounded-3 fw-bold d-flex flex-column align-items-center justify-content-center transition-all ${
+                        isSelected
+                          ? 'btn-primary text-white shadow-sm'
+                          : 'btn-white bg-white text-dark border'
+                      }`}
+                      style={{
+                        height: '52px',
+                        borderColor: isSelected ? 'var(--primary)' : 'var(--slate-200)',
+                        fontSize: '12px'
+                      }}
+                    >
+                      <span style={{ fontSize: '10px', opacity: isSelected ? 0.85 : 0.6 }}>Bài</span>
+                      <span className="fw-black" style={{ fontSize: '14px' }}>
+                        {n < 10 ? `0${n}` : n}
+                      </span>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </Container>
   );
 };
