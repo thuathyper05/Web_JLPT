@@ -123,6 +123,34 @@ export const awardGardenWater = (amount = 10, reason = '', vocabItems = []) => {
   }
 };
 
+export const deductGardenWater = (amount = 5) => {
+  try {
+    const current = getGardenWater();
+    const newTotal = Math.max(0, current - amount);
+    localStorage.setItem('hyper_water_drops', String(newTotal));
+    const today = new Date().toISOString().slice(0, 10);
+    const questKey = `hyper_quests_${today}`;
+    const rawQuest = localStorage.getItem(questKey);
+    if (rawQuest) {
+      try {
+        const q = JSON.parse(rawQuest);
+        q.dewDrops = newTotal;
+        localStorage.setItem(questKey, JSON.stringify(q));
+      } catch {}
+    }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('garden-water-awarded', {
+          detail: { amount: -amount, newTotal, reason: 'Tưới cây' }
+        })
+      );
+    }
+    return newTotal;
+  } catch {
+    return 0;
+  }
+};
+
 export const getGardenWater = () => {
   try {
     const today = new Date().toISOString().slice(0, 10);
@@ -140,3 +168,6 @@ export const getGardenWater = () => {
     return 160;
   }
 };
+
+
+

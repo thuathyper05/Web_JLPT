@@ -193,7 +193,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
     // Background server sync without blocking UI
     updateProgress(currentWord.id, status, status === 'mastered').catch(() => {});
     if (typeof awardGardenWater === 'function') {
-      awardGardenWater(1, 'Học từ vựng bài học');
+      awardGardenWater(2, 'Học từ vựng bài học', [currentWord]);
     }
 
     // In step-by-step mode, smoothly auto-advance to next word with fluid animation

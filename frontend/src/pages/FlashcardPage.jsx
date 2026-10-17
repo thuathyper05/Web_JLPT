@@ -9,7 +9,9 @@ import {
   Badge,
   Input,
   Progress,
-  Spinner
+  Spinner,
+  Modal,
+  ModalBody
 } from 'reactstrap';
 import {
   Layers,
@@ -20,6 +22,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Shuffle,
   RefreshCw,
   Info,
@@ -53,6 +56,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const [floatingXp, setFloatingXp] = useState(false);
   const [deckMode, setDeckMode] = useState('all'); // 'all' | 'unlearned'
   const [savedProgressInfo, setSavedProgressInfo] = useState(null);
+  const [lessonPickerOpen, setLessonPickerOpen] = useState(false);
 
   // Mobile Touch Swipe Handling
   const touchStartX = useRef(0);
@@ -451,20 +455,17 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
 
           <div className="d-flex align-items-center gap-2">
-            <Input
-              type="select"
-              value={lessonNum}
-              onChange={(e) => setLessonNum(e.target.value)}
-              className="fw-bold form-control-sm rounded-pill"
-              style={{ fontSize: '13px', minWidth: '140px' }}
+            <button
+              type="button"
+              onClick={() => setLessonPickerOpen(true)}
+              className="btn btn-sm btn-light border rounded-pill px-3 py-1.5 fw-bold text-dark d-flex align-items-center gap-1.5 shadow-xs"
+              style={{ fontSize: '13px' }}
+              title="Nhấn để chọn nhanh 1 trong 25 bài học Minna"
             >
-              <option value="all">Toàn bộ 25 bài ({cards.length > 0 && lessonNum === 'all' ? cards.length : '1,589'} từ)</option>
-              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>
-                  Bài {n < 10 ? `0${n}` : n}
-                </option>
-              ))}
-            </Input>
+              <BookOpen size={14} className="text-primary" />
+              <span>{lessonNum === 'all' ? 'Toàn bộ 25 bài' : `Bài ${lessonNum < 10 ? `0${lessonNum}` : lessonNum}`}</span>
+              <ChevronDown size={13} className="text-muted" />
+            </button>
 
             <button
               type="button"
@@ -496,20 +497,16 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
 
         {/* Mobile Header: Ultra-compact 1-Row layout (Under 40px) */}
         <div className="d-flex d-md-none align-items-center justify-content-between gap-1.5">
-          <Input
-            type="select"
-            value={lessonNum}
-            onChange={(e) => setLessonNum(e.target.value)}
-            className="fw-bold form-control-sm rounded-pill border"
-            style={{ fontSize: '12px', flex: 1, minWidth: 0, height: '34px', paddingLeft: '10px' }}
+          <button
+            type="button"
+            onClick={() => setLessonPickerOpen(true)}
+            className="btn btn-sm btn-light border rounded-pill px-2.5 py-1 fw-bold text-dark d-flex align-items-center gap-1 shadow-xs flex-grow-1"
+            style={{ fontSize: '12px', height: '34px', minWidth: 0 }}
           >
-            <option value="all">25 bài ({cards.length})</option>
-            {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                Bài {n < 10 ? `0${n}` : n}
-              </option>
-            ))}
-          </Input>
+            <BookOpen size={13} className="text-primary flex-shrink-0" />
+            <span className="text-truncate">{lessonNum === 'all' ? '25 bài' : `Bài ${lessonNum < 10 ? `0${lessonNum}` : lessonNum}`}</span>
+            <ChevronDown size={12} className="text-muted flex-shrink-0 ms-auto" />
+          </button>
 
           {/* Quick Direction Toggle Pill */}
           <button
@@ -1154,8 +1151,79 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
         </>
       )}
+
+      {/* ── LESSON PICKER MODAL (25 LESSONS GRID) ── */}
+      <Modal
+        isOpen={lessonPickerOpen}
+        toggle={() => setLessonPickerOpen(false)}
+        centered
+        className="jlpt-modal"
+      >
+        <ModalBody className="p-3.5 p-md-4">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h5 className="fw-black mb-0 text-navy-dark">Chọn Bài Học Flashcard</h5>
+              <small className="text-muted">Chọn 1 trong 25 bài Minna no Nihongo hoặc toàn bộ</small>
+            </div>
+            <button
+              type="button"
+              onClick={() => setLessonPickerOpen(false)}
+              className="btn btn-sm btn-light rounded-circle p-1"
+              style={{ width: 30, height: 30 }}
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playFlip?.();
+              setLessonNum('all');
+              setLessonPickerOpen(false);
+            }}
+            className={`btn w-100 mb-2.5 py-2 rounded-3 fw-bold border ${
+              lessonNum === 'all' ? 'btn-primary text-white shadow-xs' : 'btn-light text-navy-dark'
+            }`}
+            style={{ fontSize: '13px' }}
+          >
+            🌟 Toàn Bộ 25 Bài (1,589 Từ Vựng)
+          </button>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              gap: '6px',
+              maxHeight: '280px',
+              overflowY: 'auto'
+            }}
+          >
+            {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => {
+                  sounds.playFlip?.();
+                  setLessonNum(n);
+                  setLessonPickerOpen(false);
+                }}
+                className={`btn btn-sm py-2 px-1 rounded-3 fw-bold text-center border ${
+                  lessonNum === n
+                    ? 'btn-primary text-white shadow-xs'
+                    : 'btn-white bg-white text-navy-dark hover-border'
+                }`}
+                style={{ fontSize: '12px' }}
+              >
+                Bài {n < 10 ? `0${n}` : n}
+              </button>
+            ))}
+          </div>
+        </ModalBody>
+      </Modal>
     </Container>
   );
 };
 
 export default FlashcardPage;
+

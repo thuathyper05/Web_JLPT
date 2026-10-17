@@ -3179,5 +3179,70 @@ p {
   }
 }
 
+/* ==========================================================================
+   UNIFIED MOTION ENGINE & 8-POINT GRID SPACING UTILITIES
+   ========================================================================== */
+
+/* Ergonomic Soft Haptic Shake */
+@keyframes hapticShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3.5px); }
+  50% { transform: translateX(3.5px); }
+  75% { transform: translateX(-2px); }
+}
+
+.haptic-shake {
+  animation: hapticShake 0.28s var(--ease-spring) forwards !important;
+}
+
+/* Correct Pulse Ring */
+@keyframes correctPulseRing {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50% { transform: scale(1.02); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.pulse-correct {
+  animation: correctPulseRing 0.38s var(--ease-spring) forwards !important;
+}
+
+/* Zen Card Layout Foundations */
+.zen-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.zen-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 8-Point Grid Spacing Helpers */
+.gap-xxs { gap: 4px !important; }
+.gap-xs  { gap: 8px !important; }
+.gap-sm  { gap: 12px !important; }
+.gap-md  { gap: 16px !important; }
+.gap-lg  { gap: 24px !important; }
+.gap-xl  { gap: 32px !important; }
+
+/* Squircle Button Press */
+.btn-squircle {
+  border-radius: var(--radius-md) !important;
+  transition: var(--transition-fast) !important;
+}
+.btn-squircle:active {
+  transform: scale(0.97) !important;
+}
+
+/* Clean Modal Backdrop Blur */
+.modal-backdrop.show {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(2, 6, 23, 0.45);
+}
+
+
 
 

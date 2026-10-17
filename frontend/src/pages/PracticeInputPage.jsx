@@ -189,7 +189,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
         sounds.playCorrect();
         speakJapanese(getCleanKana(item));
         updateProgress(id, 'mastered', true).catch(() => {});
-        awardGardenWater(2, 'Luyện gõ đúng');
+        awardGardenWater(2, 'Luyện gõ đúng', [item]);
         setCombo(prev => prev + 1);
         setFloatingXp(true);
         setTimeout(() => setFloatingXp(false), 850);
@@ -233,7 +233,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
       sounds.playCorrect();
       speakJapanese(getCleanKana(item));
       updateProgress(id, 'mastered', true).catch(() => {});
-      awardGardenWater(2, 'Luyện gõ đúng');
+      awardGardenWater(2, 'Luyện gõ đúng', [item]);
       setCombo(prev => prev + 1);
       setFloatingXp(true);
       setTimeout(() => setFloatingXp(false), 850);
@@ -276,7 +276,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
   useEffect(() => {
     if (total > 0 && answeredCount === total && correctCount === total) {
       sounds.playComplete();
-      awardGardenWater(25, 'Hoàn thành bài luyện gõ');
+      awardGardenWater(25, 'Hoàn thành bài luyện gõ', vocabList);
       try {
         confetti({
           particleCount: 100,
@@ -387,8 +387,8 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
         {/* Row 2: 2 Core Practice Modes & View Mode Switcher */}
         <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-2 border-top border-slate-100">
-          {/* Mode Switcher: 🇯🇵 Nhật -> 🇻🇳 Việt vs 🇻🇳 Việt -> 🇯🇵 Nhật */}
-          <div className="segmented-control" style={{ padding: '2px' }}>
+          {/* Mode Switcher: Nhìn Nhật -> Gõ Việt vs Nhìn Việt -> Gõ Nhật */}
+          <div className="segmented-control" style={{ padding: '3px' }}>
             <button
               type="button"
               onClick={() => {
@@ -398,11 +398,11 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1.5 px-3 ${practiceMode === 'jp_to_vi' ? 'active' : ''}`}
-              style={{ fontSize: '12px' }}
+              className={`segmented-item py-1.5 px-3.5 ${practiceMode === 'jp_to_vi' ? 'active' : ''}`}
+              style={{ fontSize: '12.5px' }}
             >
-              <span className="d-inline-flex align-items-center gap-1.5 fw-bold">
-                <span>🇯🇵 Nhìn Nhật ➔ 🇻🇳 Gõ Việt</span>
+              <span className="fw-bold">
+                Nhìn tiếng Nhật ➔ Gõ tiếng Việt
               </span>
             </button>
 
@@ -415,11 +415,11 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1.5 px-3 ${practiceMode === 'vi_to_jp' ? 'active' : ''}`}
-              style={{ fontSize: '12px' }}
+              className={`segmented-item py-1.5 px-3.5 ${practiceMode === 'vi_to_jp' ? 'active' : ''}`}
+              style={{ fontSize: '12.5px' }}
             >
-              <span className="d-inline-flex align-items-center gap-1.5 fw-bold">
-                <span>🇻🇳 Nhìn Việt ➔ 🇯🇵 Gõ Nhật</span>
+              <span className="fw-bold">
+                Nhìn tiếng Việt ➔ Gõ tiếng Nhật
               </span>
             </button>
           </div>
@@ -558,33 +558,38 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                       {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) ? (
                         <>
                           <h1
-                            className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
+                            className="fw-black text-navy-dark font-monospace mb-1.5 tracking-tight"
                             style={{
-                              fontSize: 'clamp(2.2rem, 7.5vw, 3.4rem)',
+                              fontSize: 'clamp(2.4rem, 8vw, 3.6rem)',
                               fontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
                               lineHeight: '1.2'
                             }}
                           >
                             {currentZenWord.kanji}
                           </h1>
-                          <div className="text-primary fw-bold fs-5 font-monospace">
+                          <div
+                            className="fw-bold font-monospace"
+                            style={{
+                              fontSize: 'clamp(1.2rem, 3.5vw, 1.45rem)',
+                              color: 'var(--slate-600)',
+                              letterSpacing: '0.02em'
+                            }}
+                          >
                             {getCleanKana(currentZenWord)}
                           </div>
                         </>
                       ) : (
                         <h1
-                          className="fw-black text-primary font-monospace mb-1 tracking-tight"
+                          className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
                           style={{
-                            fontSize: 'clamp(2rem, 7vw, 3rem)',
+                            fontSize: 'clamp(2.2rem, 7.5vw, 3.2rem)',
+                            fontFamily: "'Noto Sans JP', 'Hiragino Sans', sans-serif",
                             lineHeight: '1.2'
                           }}
                         >
                           {getCleanKana(currentZenWord)}
                         </h1>
                       )}
-                      <div className="text-muted small fst-italic mt-1" style={{ fontSize: '12px' }}>
-                        [{currentZenWord.romaji}]
-                      </div>
                     </>
                   ) : (
                     <>
@@ -599,14 +604,14 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                         {getCleanVietnamese(currentZenWord)}
                       </h3>
 
-                      {/* Subtle Kanji reference (if exists) */}
+                      {/* Subtle Kanji reference (if exists, without noisy 'Hán tự:' label) */}
                       {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) && (
-                        <div className="mt-1">
+                        <div className="mt-1.5">
                           <span
-                            className="badge bg-light text-navy-dark border font-monospace fw-bold px-2.5 py-1"
+                            className="badge bg-slate-100 text-slate-700 border font-monospace fw-bold px-3 py-1 rounded-pill"
                             style={{ fontSize: '13.5px', letterSpacing: '0.04em' }}
                           >
-                            Hán tự: {currentZenWord.kanji}
+                            {currentZenWord.kanji}
                           </span>
                         </div>
                       )}
@@ -677,20 +682,14 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   )}
                 </div>
 
-                {/* Revealed Answer Pill */}
+                {/* Revealed Answer Pill (Minimalist & Clean) */}
                 {revealedIds[currentZenWord.id] && (
-                  <div className="mb-3 p-2 rounded-3 bg-light border d-inline-flex align-items-center gap-2 animate-fade-in">
-                    <span className="small text-muted fw-bold">Đáp án:</span>
-                    <span className="fw-bold text-primary fs-6">
+                  <div className="mb-3 px-3 py-1.5 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-25 d-inline-flex align-items-center gap-2 animate-fade-in">
+                    <span className="fw-black text-primary fs-6 font-monospace">
                       {practiceMode === 'jp_to_vi'
                         ? getCleanVietnamese(currentZenWord)
                         : getCleanKana(currentZenWord)}
                     </span>
-                    {practiceMode === 'vi_to_jp' && (
-                      <span className="text-muted small fst-italic">
-                        [{currentZenWord.romaji}]
-                      </span>
-                    )}
                   </div>
                 )}
 
@@ -863,8 +862,8 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                                 {cleanMeaning}
                               </span>
                               {item.kanji && hasRealKanji(item.kanji) && (
-                                <span className="small text-muted font-monospace" style={{ fontSize: '11px' }}>
-                                  Hán tự: <strong>{item.kanji}</strong>
+                                <span className="badge bg-slate-100 text-slate-700 border font-monospace px-2 py-0.5" style={{ fontSize: '11.5px' }}>
+                                  {item.kanji}
                                 </span>
                               )}
                             </div>

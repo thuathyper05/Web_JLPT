@@ -135,7 +135,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: Layers,
       color: '#059669',
       bg: 'linear-gradient(135deg, #059669, #047857)',
-      badge: 'Trí nhớ sâu'
+      badge: 'Ghi Nhớ Sâu'
     },
     {
       id: 'practice',
@@ -144,7 +144,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: Keyboard,
       color: '#d97706',
       bg: 'linear-gradient(135deg, #d97706, #b45309)',
-      badge: 'Phản xạ gõ'
+      badge: 'Phản Xạ Gõ'
     },
     {
       id: 'quiz',
@@ -153,25 +153,25 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: CheckSquare,
       color: '#dc2626',
       bg: 'linear-gradient(135deg, #dc2626, #b91c1c)',
-      badge: 'Thi thử ABCD'
+      badge: 'Chuẩn Thi N5'
     },
     {
       id: 'wordmatch',
-      title: 'Nối Từ Siêu Tốc ⚡',
-      desc: 'Ghép cặp 10 thẻ Nhật–Việt trong 60 giây, tích combo điểm và phá vỡ kỷ lục phản xạ',
+      title: 'Nối Từ Siêu Tốc',
+      desc: 'Ghép cặp 10 thẻ Nhật–Việt trong 60 giây, tích combo điểm và rèn phản xạ nhanh',
       icon: Zap,
       color: '#f59e0b',
       bg: 'linear-gradient(135deg, #f59e0b, #d97706)',
-      badge: 'NEW 🔥 Game Tốc Độ'
+      badge: 'Phản Xạ Nhanh'
     },
     {
       id: 'garden',
-      title: 'Vườn Cây Trí Nhớ 🌱',
+      title: 'Vườn Cây Trí Nhớ',
       desc: 'Mỗi từ vựng là một mầm cây phát triển qua 4 giai đoạn SRS để khắc ghi vĩnh viễn',
       icon: Sprout,
       color: '#10b981',
       bg: 'linear-gradient(135deg, #10b981, #059669)',
-      badge: 'NEW 🌸 SRS Cây Trồng'
+      badge: 'Bonsai SRS'
     },
     {
       id: 'review',
@@ -180,7 +180,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       icon: Flame,
       color: '#ea580c',
       bg: 'linear-gradient(135deg, #ea580c, #c2410c)',
-      badge: 'Khắc phục từ sai'
+      badge: 'Khắc Phục Từ Khó'
     }
   ];
 
@@ -342,7 +342,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
             <span className="beacon-blink-dot" />
             <span className="home-promo-mini-label">2 TÍNH NĂNG MỚI ĐỘT PHÁ</span>
           </div>
-          <span className="home-promo-mini-sub d-none d-sm-inline">Game phản xạ 60s & Nuôi cây SRS vĩnh viễn</span>
+          <span className="home-promo-mini-sub d-none d-sm-inline">Phản xạ ghép thẻ 60s & Vườn Bonsai SRS</span>
         </div>
 
         <Row className="g-2 g-md-2.5">
@@ -367,13 +367,13 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Title & Desktop Subtitle */}
               <div className="home-promo-compact-title">Nối Từ Siêu Tốc</div>
-              <div className="home-promo-compact-sub d-none d-md-block mb-1">Ghép 10 thẻ trong 60s • Bùng nổ Dopamine</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1">Ghép 10 thẻ trong 60s • Rèn phản xạ nhanh</div>
 
               {/* Bottom Row: Micro Pill + Action */}
               <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
                 <span className="home-promo-compact-sub">⏱️ Phản Xạ 60s</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--rush">
-                  <span>Chơi ngay</span>
+                  <span>Luyện ngay</span>
                   <ArrowRight size={10} />
                 </span>
               </div>
@@ -401,13 +401,13 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Title & Desktop Subtitle */}
               <div className="home-promo-compact-title">Vườn Cây Trí Nhớ</div>
-              <div className="home-promo-compact-sub d-none d-md-block mb-1">Nuôi cây 4 cấp SRS • Thuộc vĩnh viễn</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1">Bonsai 4 cấp SRS • Ghi nhớ dài hạn</div>
 
               {/* Bottom Row: Micro Pill + Action */}
               <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
-                <span className="home-promo-compact-sub">🌱 Nuôi Cây SRS</span>
+                <span className="home-promo-compact-sub">🌱 Bonsai SRS</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--garden">
-                  <span>Vào vườn</span>
+                  <span>Trải nghiệm</span>
                   <ArrowRight size={10} />
                 </span>
               </div>
@@ -441,7 +441,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
               <CardBody className="p-2.5 p-md-3">
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Đã thuộc làu</small>
+                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Đã Thành Thạo</small>
                     <h4 className="fw-black mb-0 text-success mt-0.5">{stats.mastered_count}</h4>
                     <small className="text-muted" style={{ fontSize: '11px' }}>
                       {Math.round((stats.mastered_count / 1589) * 100)}% hoàn thành

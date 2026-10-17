@@ -388,7 +388,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           <div className="mb-3 mb-md-4">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11px' }}>
-                🚀 Gói đề thi nhanh (1-Click)
+                Chế Độ Kiểm Tra Tiêu Chuẩn N5
               </span>
             </div>
 

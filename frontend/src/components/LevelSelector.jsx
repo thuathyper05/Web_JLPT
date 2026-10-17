@@ -69,7 +69,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
       setIsOpen(false);
     } else {
       sounds.playWrong?.();
-      setNotice(`Cấp độ ${lvl.id} đang trong giai đoạn phát triển! Hiện tại hệ thống đang hỗ trợ hoàn thiện 100% giáo trình N5.`);
+      setNotice(`Cấp độ ${lvl.id} nằm trong lộ trình kế tiếp. Hiện tại hệ thống đang phục vụ trọn vẹn 25 bài học N5.`);
     }
   };
 
