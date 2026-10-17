@@ -75,16 +75,16 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
 
   return (
     <>
-      {/* Sleek, Luxury Level Trigger Pill (Ultra-compact & harmonious on all devices) */}
+      {/* Sleek, Luxury Level Trigger Pill (Harmonized 34px squircle on all devices) */}
       <button
         type="button"
         onClick={toggle}
-        className="level-pill-btn d-flex align-items-center gap-1 text-decoration-none flex-shrink-0"
+        className="level-pill-btn d-flex align-items-center gap-1.5 text-decoration-none flex-shrink-0"
         title="Chọn cấp độ JLPT mục tiêu"
         style={{
-          height: '28px',
-          padding: '0 7px',
-          borderRadius: '8px',
+          height: '34px',
+          padding: '0 10px',
+          borderRadius: '10px',
           border: '1px solid rgba(255, 255, 255, 0.22)',
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%)',
           backdropFilter: 'blur(12px)',
@@ -97,23 +97,23 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
         <span
           className="rounded-circle d-inline-block flex-shrink-0"
           style={{
-            width: '5.5px',
-            height: '5.5px',
+            width: '6px',
+            height: '6px',
             backgroundColor: '#10b981',
-            boxShadow: '0 0 7px #10b981'
+            boxShadow: '0 0 8px #10b981'
           }}
         />
         <span
           className="fw-black text-white"
           style={{
-            fontSize: '11px',
-            letterSpacing: '0.03em',
+            fontSize: '12px',
+            letterSpacing: '0.04em',
             fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
           }}
         >
           {currentLevel || 'N5'}
         </span>
-        <ChevronDown size={10} className="text-white text-opacity-75 flex-shrink-0" />
+        <ChevronDown size={11} className="text-white text-opacity-80 flex-shrink-0" />
       </button>
 
       {/* Modern Centered Level Selection Modal */}

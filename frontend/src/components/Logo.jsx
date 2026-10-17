@@ -53,7 +53,7 @@ const Logo = ({ size = 34, showText = true, className = '', light = false }) => 
             </span>
           </div>
           <div
-            className={`${light ? 'text-secondary' : 'text-white text-opacity-75'}`}
+            className={`d-none d-sm-block ${light ? 'text-secondary' : 'text-white text-opacity-75'}`}
             style={{
               fontSize: '9.5px',
               fontWeight: '700',

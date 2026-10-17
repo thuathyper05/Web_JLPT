@@ -934,16 +934,12 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                         </button>
                       </div>
 
-                      {/* Revealed Hint Pill */}
+                      {/* Revealed Hint Pill (Clean & Minimalist) */}
                       {isRevealed && (
-                        <div className="p-1.5 rounded-2 bg-light border small text-dark d-flex align-items-center gap-1.5 animate-fade-in" style={{ fontSize: '11px' }}>
-                          <span className="text-muted">Đáp án:</span>
+                        <div className="p-1.5 rounded-2 bg-light border small text-dark d-flex align-items-center gap-1.5 animate-fade-in" style={{ fontSize: '11.5px' }}>
                           <span className="fw-bold text-primary">
                             {practiceMode === 'jp_to_vi' ? cleanMeaning : cleanKana}
                           </span>
-                          {practiceMode === 'vi_to_jp' && (
-                            <span className="text-muted fst-italic">[{item.romaji}]</span>
-                          )}
                         </div>
                       )}
                     </div>
