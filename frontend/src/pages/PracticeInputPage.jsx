@@ -300,53 +300,34 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
   return (
     <Container className="py-2.5 py-md-4" style={{ maxWidth: '920px' }}>
-      {/* ── 1. LUXURY CONTROL PANEL & LESSON SELECTOR ── */}
-      <div
-        className="p-3 p-md-3.5 mb-3 rounded-4 bg-white shadow-xs border"
-        style={{ borderColor: 'var(--slate-200)' }}
-      >
-        {/* Row 1: Header Branding + Lesson Picker Pill + Controls */}
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-2.5">
-          {/* Branding */}
-          <div className="d-flex align-items-center gap-2.5">
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
-              style={{
-                width: 38,
-                height: 38,
-                background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)'
-              }}
-            >
-              <Keyboard size={20} />
+      {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag">
+              <Keyboard size={13} />
+              <span>LUYỆN GÕ PHẢN XẠ • MINNA NO NIHONGO</span>
             </div>
-            <div>
-              <div className="d-flex align-items-center gap-1.5">
-                <h5 className="fw-black text-navy-dark mb-0 tracking-tight" style={{ fontSize: '16px' }}>
-                  Luyện Gõ Từ Vựng
-                </h5>
-                <Badge color="primary" pill className="px-2 py-0.5 fw-bold" style={{ fontSize: '10px' }}>
-                  {total} từ N5
-                </Badge>
-              </div>
-              <small className="text-muted" style={{ fontSize: '11.5px' }}>
-                Phản xạ song ngữ Nhật ➔ Việt & Việt ➔ Nhật
-              </small>
-            </div>
+            <h1 className="app-header-title">
+              Luyện Gõ Từ Vựng
+            </h1>
+            <p className="app-header-subtitle">
+              Phản xạ song ngữ gõ Romaji chuyển Hiragana hoặc gõ nghĩa Tiếng Việt, tăng tốc độ truy xuất trí nhớ.
+            </p>
           </div>
 
-          {/* Right Action Pills: Custom Lesson Picker + Reset */}
-          <div className="d-flex align-items-center gap-1.5 ms-auto flex-wrap">
-            {/* Custom Lesson Picker Button (100% Bug-Free on all devices) */}
+          {/* Right Action Pills: Custom Lesson Picker + IME + Reset */}
+          <div className="d-flex align-items-center gap-2 flex-wrap ms-auto">
             <button
               type="button"
               onClick={() => { sounds.playFlip?.(); setLessonModalOpen(true); }}
-              className="btn btn-sm bg-light rounded-pill px-3 py-1 fw-bold border shadow-xs d-flex align-items-center gap-1.5 text-navy-dark"
-              style={{ borderColor: 'var(--slate-200)', fontSize: '12px' }}
+              className="app-btn-secondary"
+              style={{ height: '38px', padding: '0 16px', fontSize: '13px' }}
               title="Bấm để chọn bài học Minna no Nihongo"
             >
-              <BookOpen size={13} className="text-primary" />
+              <BookOpen size={14} className="text-primary" />
               <span>Bài {lessonNum < 10 ? `0${lessonNum}` : lessonNum}</span>
-              <ChevronDown size={12} className="text-muted" />
+              <ChevronDown size={13} className="text-muted ms-1" />
             </button>
 
             {/* IME Auto-Kana Toggle (Visible when in vi_to_jp mode) */}
@@ -354,17 +335,17 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => setAutoKana(!autoKana)}
-                className={`btn btn-sm rounded-pill px-2.5 py-1 fw-bold border d-flex align-items-center gap-1 ${
+                className={`btn btn-sm rounded-pill px-3 py-1 fw-bold border d-flex align-items-center gap-1.5 ${
                   autoKana ? 'btn-primary text-white shadow-xs' : 'btn-light text-muted'
                 }`}
-                style={{ fontSize: '11.5px' }}
+                style={{ fontSize: '12px', height: '38px' }}
                 title="Tự động biến Romaji thành Hiragana/Katakana khi gõ"
               >
                 <span
                   className="rounded-circle d-inline-block"
                   style={{
-                    width: 5,
-                    height: 5,
+                    width: 6,
+                    height: 6,
                     backgroundColor: autoKana ? '#ffffff' : '#94a3b8'
                   }}
                 />
@@ -376,11 +357,10 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
             <button
               type="button"
               onClick={handleReset}
-              className="btn btn-sm btn-light rounded-circle border p-1 d-flex align-items-center justify-content-center"
-              style={{ width: 32, height: 32 }}
+              className="app-icon-btn"
               title="Làm lại bài này từ đầu"
             >
-              <RotateCcw size={13} className="text-secondary" />
+              <RotateCcw size={16} />
             </button>
           </div>
         </div>

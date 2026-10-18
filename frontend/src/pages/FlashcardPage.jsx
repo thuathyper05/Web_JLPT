@@ -435,128 +435,65 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
 
   return (
     <Container className="py-3 py-md-4" style={{ maxWidth: '780px' }}>
-      {/* ── 1. Top Header Box & Configuration ── */}
-      <div className="page-header-box mb-2 p-2 p-md-3">
-        {/* Desktop Header */}
-        <div className="d-none d-md-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-3">
-          <div className="d-flex align-items-center gap-3">
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0"
-              style={{
-                width: '46px',
-                height: '46px',
-                background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'
-              }}
-            >
-              <Layers size={24} />
+      {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag">
+              <Layers size={13} />
+              <span>THẺ NHỚ 3D • MINNA NO NIHONGO</span>
             </div>
-            <div>
-              <h5 className="fw-bold mb-0 text-navy-dark">Thẻ Nhớ Flashcard 3D</h5>
-              <small className="text-muted">Lật thẻ 2 chiều · Tự động phát âm chuẩn Tokyo</small>
-            </div>
+            <h1 className="app-header-title">
+              Thẻ Nhớ Flashcard 3D
+            </h1>
+            <p className="app-header-subtitle">
+              Lật thẻ phản xạ 2 chiều Nhật – Việt, tự động phát âm giọng Tokyo và ghi nhớ từ vựng sâu sắc.
+            </p>
           </div>
 
-          <div className="d-flex align-items-center gap-2">
+          {/* Unified Tool Controls */}
+          <div className="d-flex align-items-center gap-2 flex-wrap ms-auto">
+            {/* Lesson Picker Button */}
             <button
               type="button"
               onClick={() => setLessonPickerOpen(true)}
-              className="btn btn-sm btn-light border rounded-pill px-3 py-1.5 fw-bold text-dark d-flex align-items-center gap-1.5 shadow-xs"
-              style={{ fontSize: '13px' }}
-              title="Nhấn để chọn nhanh 1 trong 25 bài học Minna"
+              className="app-btn-secondary"
+              style={{ height: '38px', padding: '0 16px', fontSize: '13px' }}
+              title="Chọn bài học Minna no Nihongo"
             >
               <BookOpen size={14} className="text-primary" />
               <span>{lessonNum === 'all' ? 'Toàn bộ 25 bài' : `Bài ${lessonNum < 10 ? `0${lessonNum}` : lessonNum}`}</span>
-              <ChevronDown size={13} className="text-muted" />
+              <ChevronDown size={13} className="text-muted ms-1" />
             </button>
 
-            <button
-              type="button"
-              onClick={handleShuffle}
-              title="Trộn ngẫu nhiên thứ tự thẻ"
-              className="btn btn-sm btn-light border rounded-circle p-1 audio-btn d-flex align-items-center justify-content-center"
-              style={{ width: '32px', height: '32px' }}
-            >
-              <Shuffle size={15} className="text-secondary" />
-            </button>
-
+            {/* Audio Toggle */}
             <button
               type="button"
               onClick={() => {
                 sounds.playFlip();
                 setAutoPlayAudio(!autoPlayAudio);
               }}
-              title={autoPlayAudio ? 'Tắt tự động phát âm' : 'Bật tự động phát âm'}
-              className={`btn btn-sm rounded-pill px-2.5 py-1 d-flex align-items-center gap-1 border ${
-                autoPlayAudio ? 'btn-primary text-white' : 'btn-light text-muted'
-              }`}
-              style={{ fontSize: '12px' }}
+              className={`app-icon-btn ${autoPlayAudio ? 'active' : ''}`}
+              title={autoPlayAudio ? 'Tắt phát âm tự động' : 'Bật phát âm tự động'}
             >
-              {autoPlayAudio ? <Volume2 size={13} /> : <VolumeX size={13} />}
-              <span className="d-none d-sm-inline">{autoPlayAudio ? 'Âm thanh: Bật' : 'Âm thanh: Tắt'}</span>
+              {autoPlayAudio ? <Volume2 size={16} /> : <VolumeX size={16} />}
+            </button>
+
+            {/* Shuffle Button */}
+            <button
+              type="button"
+              onClick={handleShuffle}
+              className="app-icon-btn"
+              title="Trộn ngẫu nhiên thẻ"
+            >
+              <Shuffle size={16} />
             </button>
           </div>
         </div>
 
-        {/* Mobile Header: Ultra-compact 1-Row layout (Under 40px) */}
-        <div className="d-flex d-md-none align-items-center justify-content-between gap-1.5">
-          <button
-            type="button"
-            onClick={() => setLessonPickerOpen(true)}
-            className="btn btn-sm btn-light border rounded-pill px-2.5 py-1 fw-bold text-dark d-flex align-items-center gap-1 shadow-xs flex-grow-1"
-            style={{ fontSize: '12px', height: '34px', minWidth: 0 }}
-          >
-            <BookOpen size={13} className="text-primary flex-shrink-0" />
-            <span className="text-truncate">{lessonNum === 'all' ? '25 bài' : `Bài ${lessonNum < 10 ? `0${lessonNum}` : lessonNum}`}</span>
-            <ChevronDown size={12} className="text-muted flex-shrink-0 ms-auto" />
-          </button>
-
-          {/* Quick Direction Toggle Pill */}
-          <button
-            type="button"
-            onClick={() => {
-              setCardDirection(cardDirection === 'vi_to_jp' ? 'jp_to_vi' : 'vi_to_jp');
-              setIsFlipped(false);
-              sounds.playFlip();
-            }}
-            className="btn btn-sm btn-light border rounded-pill px-2 d-flex align-items-center gap-1"
-            style={{ fontSize: '11px', height: '34px', whiteSpace: 'nowrap' }}
-            title="Đổi chiều lật thẻ"
-          >
-            <ArrowRightLeft size={11} className="text-primary" />
-            <span>{cardDirection === 'vi_to_jp' ? 'Việt ➔ Nhật' : 'Nhật ➔ Việt'}</span>
-          </button>
-
-          {/* Audio toggle button */}
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playFlip();
-              setAutoPlayAudio(!autoPlayAudio);
-            }}
-            className={`btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center border ${
-              autoPlayAudio ? 'btn-primary' : 'btn-light'
-            }`}
-            style={{ width: '34px', height: '34px', flexShrink: 0 }}
-            title={autoPlayAudio ? 'Tắt phát âm' : 'Bật phát âm'}
-          >
-            {autoPlayAudio ? <Volume2 size={14} /> : <VolumeX size={14} />}
-          </button>
-
-          {/* Shuffle button */}
-          <button
-            type="button"
-            onClick={handleShuffle}
-            className="btn btn-sm btn-light border rounded-circle p-0 d-flex align-items-center justify-content-center"
-            style={{ width: '34px', height: '34px', flexShrink: 0 }}
-            title="Trộn ngẫu nhiên"
-          >
-            <Shuffle size={13} className="text-secondary" />
-          </button>
-        </div>
-
-        {/* Direction Switcher (Desktop Only) */}
-        <div className="d-none d-md-flex justify-content-center">
-          <div className="segmented-control shadow-xs">
+        {/* Direction Switcher Strip */}
+        <div className="d-flex justify-content-center mt-3 pt-2.5 border-top border-slate-100">
+          <div className="segmented-control shadow-xs" style={{ maxWidth: '360px', width: '100%' }}>
             <button
               type="button"
               onClick={() => {
@@ -564,7 +501,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 setIsFlipped(false);
                 sounds.playFlip();
               }}
-              className={`segmented-item ${cardDirection === 'vi_to_jp' ? 'active' : ''}`}
+              className={`segmented-item py-1.5 ${cardDirection === 'vi_to_jp' ? 'active' : ''}`}
+              style={{ fontSize: '12.5px' }}
             >
               <span>Việt ➔ Nhật</span>
             </button>
@@ -575,7 +513,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 setIsFlipped(false);
                 sounds.playFlip();
               }}
-              className={`segmented-item ${cardDirection === 'jp_to_vi' ? 'active' : ''}`}
+              className={`segmented-item py-1.5 ${cardDirection === 'jp_to_vi' ? 'active' : ''}`}
+              style={{ fontSize: '12.5px' }}
             >
               <span>Nhật ➔ Việt</span>
             </button>

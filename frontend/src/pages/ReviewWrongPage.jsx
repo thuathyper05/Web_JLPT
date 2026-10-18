@@ -98,56 +98,78 @@ const ReviewWrongPage = ({ onNavigate }) => {
   return (
     <Container className="py-3 py-md-4">
 
-      {/* ── Header ── */}
-      <div className="page-header-box mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: 'linear-gradient(135deg,#ef4444,#f97316)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(239,68,68,.28)' }}>
-              <Flame size={26} color="#fff" />
+      {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag" style={{ background: '#fef2f2', color: '#dc2626', borderColor: '#fca5a5' }}>
+              <Flame size={13} />
+              <span>CỦNG CỐ KIẾN THỨC • SPACING REPETITION</span>
             </div>
-            <div>
-              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Ôn Tập Từ Cần Ôn Lại</h4>
-              <p className="text-muted small mb-0">Từ bị sai trong Flashcard, Trắc nghiệm hoặc Luyện gõ</p>
-            </div>
+            <h1 className="app-header-title">
+              Ôn Tập Từ Cần Ôn Lại
+            </h1>
+            <p className="app-header-subtitle">
+              Tổng hợp toàn bộ các từ vựng bạn trả lời chưa đúng trong Flashcard, Trắc nghiệm hoặc Luyện gõ để củng cố phản xạ.
+            </p>
           </div>
 
-          <div className="d-flex align-items-center gap-2 flex-wrap">
+          <div className="d-flex align-items-center gap-2 flex-wrap ms-auto">
             {reviewList.length > 0 && (
               <>
-                <Button color="primary" size="sm" className="rounded-pill px-3 fw-bold d-flex align-items-center gap-1 shadow-sm"
-                  onClick={openStudy}>
-                  <Layers size={15} /> Luyện nhanh
-                </Button>
-                <Button color="light" size="sm" className="rounded-pill px-3 fw-semibold d-flex align-items-center gap-1"
-                  style={{ border: '1px solid #fca5a5', color: '#dc2626' }}
-                  onClick={() => setConfirmOpen(true)}>
-                  <Trash2 size={14} /> Xóa tất cả
-                </Button>
+                <button
+                  type="button"
+                  className="app-btn-primary"
+                  style={{ height: '38px', padding: '0 16px', fontSize: '13px' }}
+                  onClick={openStudy}
+                >
+                  <Layers size={14} />
+                  <span>Luyện nhanh</span>
+                </button>
+                <button
+                  type="button"
+                  className="app-btn-secondary"
+                  style={{ height: '38px', padding: '0 14px', fontSize: '13px', color: '#dc2626' }}
+                  onClick={() => setConfirmOpen(true)}
+                >
+                  <Trash2 size={14} />
+                  <span>Xóa tất cả</span>
+                </button>
               </>
             )}
-            <span style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#991b1b' }}>
+            <span className="badge rounded-pill px-3 py-2 fw-bold" style={{ background: '#fef2f2', border: '1px solid #fca5a5', color: '#991b1b', fontSize: '12px' }}>
               {reviewList.length} từ cần củng cố
             </span>
           </div>
         </div>
 
         {reviewList.length > 0 && (
-          <div className="mt-3 pt-3 border-top d-flex flex-wrap align-items-center gap-2">
+          <div className="mt-3 pt-3 border-top border-slate-100 d-flex flex-wrap align-items-center justify-content-between gap-2.5">
             <div className="d-flex align-items-center gap-2">
               <Filter size={14} className="text-muted" />
-              <Input type="select" value={selectedLesson} onChange={e => setSelectedLesson(e.target.value)}
-                className="fw-bold w-auto" style={{ fontSize: 13, borderRadius: 9, padding: '5px 8px' }}>
+              <Input
+                type="select"
+                value={selectedLesson}
+                onChange={e => setSelectedLesson(e.target.value)}
+                className="fw-bold form-select-sm rounded-pill border"
+                style={{ fontSize: '12.5px', minWidth: '160px' }}
+              >
                 <option value="all">Tất cả bài ({reviewList.length})</option>
                 {lessonNums.map(n => (
                   <option key={n} value={n}>Bài {n < 10 ? `0${n}` : n} ({reviewList.filter(v => v.lesson_number === n).length})</option>
                 ))}
               </Input>
             </div>
-            <div className="position-relative ms-auto">
-              <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-              <Input type="text" placeholder="Tìm trong danh sách sai..." value={search}
+            <div className="position-relative flex-grow-1 flex-md-grow-0" style={{ minWidth: '220px' }}>
+              <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <Input
+                type="text"
+                placeholder="Tìm trong danh sách sai..."
+                value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13, minWidth: 200 }} />
+                className="form-control-sm rounded-pill ps-4 border"
+                style={{ fontSize: '12.5px', height: '36px' }}
+              />
             </div>
           </div>
         )}

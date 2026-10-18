@@ -3390,6 +3390,232 @@ p {
   transform: scale(0.97) !important;
 }
 
+/* ==========================================================================
+   UNIFIED SYSTEMIC DESIGN FRAMEWORK (TOKYO PRECISION & COHESION)
+   ========================================================================== */
+
+/* Universal Page Header Container */
+.app-page-header {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 18px;
+  padding: clamp(16px, 3.5vw, 24px);
+  margin-bottom: clamp(16px, 3vw, 24px);
+  box-shadow: 0 2px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.app-page-header.dark-accent {
+  background: linear-gradient(135deg, #091224 0%, #0f172a 60%, #1e3a8a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.app-header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--primary-50);
+  color: var(--primary);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  margin-bottom: 8px;
+}
+
+.app-page-header.dark-accent .app-header-tag {
+  background: rgba(37, 99, 235, 0.25);
+  color: #93c5fd;
+  border-color: rgba(147, 197, 253, 0.3);
+}
+
+.app-header-title {
+  font-size: clamp(1.4rem, 4vw, 1.95rem);
+  font-weight: 900;
+  color: var(--slate-900);
+  margin-bottom: 6px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.app-page-header.dark-accent .app-header-title {
+  color: #ffffff;
+}
+
+.app-header-subtitle {
+  font-size: clamp(12.5px, 2.5vw, 14px);
+  color: var(--slate-600);
+  line-height: 1.55;
+  margin-bottom: 0;
+  max-width: 650px;
+}
+
+.app-page-header.dark-accent .app-header-subtitle {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Universal Button Styles */
+.app-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 22px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff !important;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.app-btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.app-btn-primary:active {
+  transform: scale(0.97);
+}
+
+.app-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.app-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  background: #ffffff;
+  color: var(--slate-700) !important;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: 1px solid var(--slate-200);
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.app-btn-secondary:hover {
+  background: var(--slate-50);
+  border-color: var(--slate-300);
+  color: var(--slate-900) !important;
+  transform: translateY(-1px);
+}
+
+.app-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.app-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  color: var(--slate-600);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+  flex-shrink: 0;
+}
+
+.app-icon-btn:hover {
+  background: var(--slate-50);
+  border-color: var(--slate-300);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.app-icon-btn:active {
+  transform: scale(0.92);
+}
+
+.app-icon-btn.active {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+  color: var(--primary);
+}
+
+/* Universal Card System */
+.app-glass-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 18px;
+  padding: clamp(16px, 3.5vw, 24px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s var(--ease-spring);
+}
+
+.app-glass-card:hover {
+  border-color: var(--slate-300);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Single Tree Bonsai Sanctuary Styles */
+.bonsai-sanctuary {
+  background: radial-gradient(circle at 50% 25%, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--slate-200);
+  border-radius: 24px;
+  padding: clamp(24px, 5vw, 44px) clamp(16px, 4vw, 32px);
+  box-shadow: 0 4px 25px -4px rgba(15, 23, 42, 0.06);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.bonsai-tree-art {
+  animation: bonsaiBreathe 6s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 12px 24px rgba(16, 185, 129, 0.15));
+  transition: transform 0.3s var(--ease-spring);
+}
+
+@keyframes bonsaiBreathe {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.015);
+  }
+}
+
+.bonsai-vitality-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--slate-100);
+  overflow: hidden;
+}
+
+.bonsai-vitality-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  transition: width 0.6s var(--ease-spring);
+}
+
+
 
 
 

@@ -396,22 +396,30 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
       <div className="wm-page">
         <Container className="py-3 py-lg-4" style={{ maxWidth: 720 }}>
           {/* Back button */}
-          <button
-            type="button"
-            onClick={() => onNavigate?.('home')}
-            className="garden-back-btn mb-2.5"
-          >
-            <ChevronLeft size={18} /> Trang chủ
-          </button>
+          <div className="mb-3">
+            <button
+              type="button"
+              onClick={() => onNavigate?.('home')}
+              className="app-btn-secondary"
+              style={{ height: '36px', padding: '0 14px', fontSize: '12.5px' }}
+            >
+              <ChevronLeft size={16} />
+              <span>Trang chủ</span>
+            </button>
+          </div>
 
           {/* Hero Banner */}
           <div className="wm-hero-arena mb-3.5 p-4 rounded-4 text-center position-relative overflow-hidden">
             <div className="wm-hero-lightning mb-2 d-inline-flex p-3 rounded-circle">
-              <Zap size={38} className="text-warning" />
+              <Zap size={34} className="text-warning" />
+            </div>
+            <div className="app-header-tag d-inline-flex mb-2" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)' }}>
+              <Zap size={12} />
+              <span>SPEED MATCH • PHẢN XẠ NHẬT NGỮ</span>
             </div>
             <h1 className="wm-hero-title mb-1.5 fw-black text-white">NỐI TỪ SIÊU TỐC</h1>
             <p className="wm-hero-subtitle text-white text-opacity-80 mx-auto mb-3" style={{ maxWidth: 520, fontSize: 13.5 }}>
-              Kích thích phản xạ nhận diện mặt chữ trong <strong>0.5 giây</strong>. Loại bỏ thói quen dịch nhẩm trong đầu, biến việc ghi nhớ thành trò chơi kích thích Dopamine cực mạnh!
+              Kích thích phản xạ nhận diện mặt chữ trong <strong>0.5 giây</strong>. Loại bỏ thói quen dịch nhẩm trong đầu, biến việc ghi nhớ thành trò chơi kích thích trí nhớ dài hạn!
             </p>
 
             <div className="d-flex align-items-center justify-content-center gap-2 flex-wrap">

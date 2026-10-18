@@ -85,38 +85,51 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
   return (
     <Container className="py-3 py-md-4">
 
-      {/* ── Header ── */}
-      <div className="page-header-box mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-0">
-          <div className="d-flex align-items-center gap-3">
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(245,158,11,.3)' }}>
-              <Star size={26} fill="#fff" color="#fff" />
+      {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag" style={{ background: '#fffbeb', color: '#b45309', borderColor: '#fde68a' }}>
+              <Star size={13} fill="#f59e0b" color="#f59e0b" />
+              <span>SỔ TAY CÁ NHÂN • TỪ VỰNG YÊU THÍCH</span>
             </div>
-            <div>
-              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Từ Vựng Yêu Thích</h4>
-              <p className="text-muted small mb-0">Sổ tay lưu các từ quan trọng bạn muốn ghi nhớ kỹ</p>
-            </div>
+            <h1 className="app-header-title">
+              Từ Vựng Yêu Thích
+            </h1>
+            <p className="app-header-subtitle">
+              Sổ tay lưu các từ vựng trọng tâm bạn muốn ghi nhớ kỹ, hỗ trợ ôn luyện Flashcard 3D mọi lúc mọi nơi.
+            </p>
           </div>
 
-          <div className="d-flex align-items-center gap-2 flex-wrap">
+          <div className="d-flex align-items-center gap-2 flex-wrap ms-auto">
             {favorites.length > 0 && (
-              <Button color="primary" size="sm" className="rounded-pill px-3 fw-bold d-flex align-items-center gap-1 shadow-sm"
-                onClick={openFlashcard}>
-                <Layers size={15} /> Luyện Flashcard
-              </Button>
+              <button
+                type="button"
+                className="app-btn-primary"
+                style={{ height: '38px', padding: '0 16px', fontSize: '13px' }}
+                onClick={openFlashcard}
+              >
+                <Layers size={14} />
+                <span>Luyện Flashcard</span>
+              </button>
             )}
-            <span style={{ background: '#fffbeb', border: '1px solid #fcd34d', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#92400e' }}>
+            <span className="badge rounded-pill px-3 py-2 fw-bold" style={{ background: '#fffbeb', border: '1px solid #fcd34d', color: '#92400e', fontSize: '12px' }}>
               {favorites.length} từ đã lưu
             </span>
           </div>
         </div>
 
         {favorites.length > 0 && (
-          <div className="mt-3 pt-3 border-top d-flex flex-wrap align-items-center gap-2">
+          <div className="mt-3 pt-3 border-top border-slate-100 d-flex flex-wrap align-items-center justify-content-between gap-2.5">
             <div className="d-flex align-items-center gap-2">
               <Filter size={14} className="text-muted" />
-              <Input type="select" value={selectedLesson} onChange={e => setSelectedLesson(e.target.value)}
-                className="fw-bold w-auto" style={{ fontSize: 13, borderRadius: 9, padding: '5px 8px' }}>
+              <Input
+                type="select"
+                value={selectedLesson}
+                onChange={e => setSelectedLesson(e.target.value)}
+                className="fw-bold form-select-sm rounded-pill border"
+                style={{ fontSize: '12.5px', minWidth: '160px' }}
+              >
                 <option value="all">Tất cả bài ({favorites.length})</option>
                 {lessonNums.map(n => (
                   <option key={n} value={n}>
@@ -125,11 +138,16 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                 ))}
               </Input>
             </div>
-            <div className="position-relative ms-auto">
-              <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-              <Input type="text" placeholder="Tìm từ yêu thích..." value={search}
+            <div className="position-relative flex-grow-1 flex-md-grow-0" style={{ minWidth: '220px' }}>
+              <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <Input
+                type="text"
+                placeholder="Tìm từ yêu thích..."
+                value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13, minWidth: 200 }} />
+                className="form-control-sm rounded-pill ps-4 border"
+                style={{ fontSize: '12.5px', height: '36px' }}
+              />
             </div>
           </div>
         )}
@@ -147,7 +165,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
           <p className="text-muted mb-4" style={{ maxWidth: 440, margin: '8px auto 20px' }}>
             {search || selectedLesson !== 'all'
               ? 'Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm.'
-              : 'Nhấn ⭐ trên bất kỳ từ vựng nào để lưu vào đây và ôn tập bất cứ lúc nào!'}
+              : 'Nhấn biểu tượng ngôi sao trên bất kỳ từ vựng nào để lưu vào đây và ôn tập bất cứ lúc nào!'}
           </p>
           <Button color="primary" className="fw-bold px-4 rounded-pill shadow-sm" onClick={() => onNavigate('lessons')}>
             <BookOpen size={16} className="me-1" /> Khám phá 25 Bài học

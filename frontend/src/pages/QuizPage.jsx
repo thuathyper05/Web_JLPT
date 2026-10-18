@@ -335,52 +335,27 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       {/* ── 1. SETUP STATE ── */}
       {quizState === 'setup' && (
         <>
-          {/* Header Banner Desktop */}
-          <div className="d-none d-md-block page-header-box mb-4">
-            <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-              <div className="d-flex align-items-center gap-3">
-                <div
-                  className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-sm flex-shrink-0"
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)'
-                  }}
-                >
-                  <CheckSquare size={24} />
+          {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+          <div className="app-page-header">
+            <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+              <div>
+                <div className="app-header-tag">
+                  <CheckSquare size={13} />
+                  <span>TRẮC NGHIỆM ABCD • JLPT N5</span>
                 </div>
-                <div>
-                  <h4 className="fw-bold mb-0 text-navy-dark">Luyện Thi & Trắc Nghiệm JLPT N5</h4>
-                  <small className="text-muted">
-                    Hệ thống trắc nghiệm 4 lựa chọn ABCD chuẩn cấu trúc kỳ thi năng lực tiếng Nhật
-                  </small>
-                </div>
+                <h1 className="app-header-title">
+                  Trắc Nghiệm JLPT N5
+                </h1>
+                <p className="app-header-subtitle">
+                  Hệ thống 4 lựa chọn ABCD chuẩn format kỳ thi năng lực tiếng Nhật, tích hợp tính giờ phản xạ và giải thích đáp án chi tiết.
+                </p>
               </div>
 
-              <div className="d-flex align-items-center gap-2">
-                <span className="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill">
+              <div className="d-flex align-items-center gap-2 ms-auto">
+                <span className="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill border border-primary border-opacity-20" style={{ fontSize: '11.5px' }}>
                   100% Khách Quan ABCD
                 </span>
               </div>
-            </div>
-          </div>
-
-          {/* Header Banner Mobile */}
-          <div className="d-md-none page-header-box p-2.5 mb-2.5">
-            <div className="d-flex align-items-center gap-2">
-              <div
-                className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs flex-shrink-0"
-                style={{ width: '34px', height: '34px', background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)' }}
-              >
-                <CheckSquare size={18} />
-              </div>
-              <div className="flex-grow-1 min-w-0">
-                <h6 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: '13.5px' }}>Trắc Nghiệm JLPT N5</h6>
-                <small className="text-muted" style={{ fontSize: '11px' }}>4 lựa chọn ABCD chuẩn đề thi</small>
-              </div>
-              <span className="badge bg-primary text-white rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
-                ABCD
-              </span>
             </div>
           </div>
 

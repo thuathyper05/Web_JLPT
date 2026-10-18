@@ -82,27 +82,35 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
   return (
     <Container className="py-3 py-md-4">
 
-      {/* ── Header ── */}
-      <div className="page-header-box mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(14,165,233,.28)' }}>
-              <FileText size={24} color="#fff" />
+      {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag" style={{ background: '#f0f9ff', color: '#0284c7', borderColor: '#bae6fd' }}>
+              <FileText size={13} />
+              <span>SỔ TAY GHI CHÚ • MẸO NHỚ CÁ NHÂN</span>
             </div>
-            <div>
-              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Sổ Tay Ghi Chú</h4>
-              <p className="text-muted small mb-0">Mẹo nhớ, ví dụ thực tế và giải thích ngữ cảnh cá nhân</p>
-            </div>
+            <h1 className="app-header-title">
+              Sổ Tay Ghi Chú
+            </h1>
+            <p className="app-header-subtitle">
+              Mẹo nhớ, ví dụ thực tế và giải thích ngữ cảnh cá nhân được lưu giữ trong quá trình học tập.
+            </p>
           </div>
 
-          <div className="d-flex align-items-center gap-2">
-            <div className="position-relative">
-              <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-              <Input type="text" placeholder="Tìm trong ghi chú..." value={search}
+          <div className="d-flex align-items-center gap-2.5 flex-wrap ms-auto">
+            <div className="position-relative" style={{ minWidth: '200px' }}>
+              <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <Input
+                type="text"
+                placeholder="Tìm trong ghi chú..."
+                value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13, minWidth: 180 }} />
+                className="form-control-sm rounded-pill ps-4 border"
+                style={{ fontSize: '12.5px', height: '36px' }}
+              />
             </div>
-            <span style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#0369a1' }}>
+            <span className="badge rounded-pill px-3 py-2 fw-bold" style={{ background: '#f0f9ff', border: '1px solid #bae6fd', color: '#0369a1', fontSize: '12px' }}>
               {notes.length} ghi chú
             </span>
           </div>

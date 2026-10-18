@@ -42,28 +42,35 @@ const KanjiPage = ({ currentLevel = 'N5' }) => {
   return (
     <Container className="py-3 py-md-4">
 
-      {/* ── Header ── */}
-      <div className="page-header-box mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
-            <div style={{ width: 48, height: 48, borderRadius: 14, background: 'linear-gradient(135deg,#1e3a8a,#2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(37,99,235,.28)' }}>
-              <PenTool size={24} color="#fff" />
+      {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag">
+              <PenTool size={13} />
+              <span>CHỮ HÁN KANJI • JLPT {currentLevel}</span>
             </div>
-            <div>
-              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Chữ Hán Kanji {currentLevel}</h4>
-              <p className="text-muted small mb-0">Âm Hán Việt · On/Kun · Số nét · Từ ghép thực dụng</p>
-            </div>
+            <h1 className="app-header-title">
+              Bảng Chữ Hán Kanji {currentLevel}
+            </h1>
+            <p className="app-header-subtitle">
+              Tra cứu 80+ Hán tự N5 cơ bản với âm Hán Việt, cách đọc On/Kun, số nét và từ ghép thực dụng.
+            </p>
           </div>
 
-          <div className="d-flex align-items-center gap-2 flex-grow-1 flex-md-grow-0 justify-content-between justify-content-md-end w-100 w-md-auto mt-2 mt-md-0">
-            <div className="position-relative flex-grow-1" style={{ maxWidth: 300 }}>
-              <Search size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-              <Input type="text" placeholder="Tìm Kanji, Hán Việt, Nghĩa..." value={search}
+          <div className="d-flex align-items-center gap-2 flex-grow-1 flex-md-grow-0 justify-content-between justify-content-md-end w-100 w-md-auto ms-auto">
+            <div className="position-relative flex-grow-1" style={{ maxWidth: 300, minWidth: 200 }}>
+              <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <Input
+                type="text"
+                placeholder="Tìm Kanji, Hán Việt, Nghĩa..."
+                value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-100"
-                style={{ paddingLeft: 32, borderRadius: 999, fontSize: 13 }} />
+                className="form-control-sm rounded-pill ps-4 border w-100"
+                style={{ fontSize: '12.5px', height: '36px' }}
+              />
             </div>
-            <span style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 999, padding: '4px 12px', fontSize: 13, fontWeight: 700, color: '#1d4ed8', whiteSpace: 'nowrap' }}>
+            <span className="badge rounded-pill px-3 py-2 fw-bold" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', fontSize: '12px', whiteSpace: 'nowrap' }}>
               {kanjiList.length} Kanji
             </span>
           </div>

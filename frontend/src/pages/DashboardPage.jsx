@@ -138,36 +138,32 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
 
   return (
     <Container className="py-3 py-md-4">
-      {/* 1. Header Banner */}
-      <div className="bg-white p-4 rounded-4 shadow-sm border mb-4">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div className="d-flex align-items-center gap-3">
-            <div
-              className="d-flex align-items-center justify-content-center rounded-3 shadow-sm text-white"
-              style={{
-                width: '52px',
-                height: '52px',
-                background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)'
-              }}
-            >
-              <BarChart2 size={28} />
+      {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag">
+              <BarChart2 size={13} />
+              <span>BÁO CÁO TIẾN ĐỘ • THỐNG KÊ HỌC TẬP</span>
             </div>
-            <div>
-              <h4 className="fw-bold mb-1 text-navy-dark">Bảng Theo Dõi Tiến Độ Học Tập N5</h4>
-              <p className="text-muted small mb-0">
-                Thống kê chi tiết mức độ ghi nhớ 1,589 từ vựng qua từng bài học Minna no Nihongo
-              </p>
-            </div>
+            <h1 className="app-header-title">
+              Bảng Theo Dõi Tiến Độ Học Tập
+            </h1>
+            <p className="app-header-subtitle">
+              Thống kê chi tiết mức độ thành thạo và phản xạ ghi nhớ 1,589 từ vựng qua 25 bài học Minna no Nihongo.
+            </p>
           </div>
 
-          <div>
+          <div className="ms-auto">
             {!user ? (
-              <Badge color="light" pill className="border px-3 py-2 text-secondary d-flex align-items-center gap-1">
-                <ShieldCheck size={14} className="text-success" /> Dữ liệu lưu cục bộ (Khách)
+              <Badge color="light" pill className="border px-3 py-2 text-secondary d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
+                <ShieldCheck size={14} className="text-success" />
+                <span>Dữ liệu lưu cục bộ (Khách)</span>
               </Badge>
             ) : (
-              <Badge color="success" pill className="px-3 py-2 d-flex align-items-center gap-1">
-                <Sparkles size={14} /> Đã đồng bộ PostgreSQL ({user.username})
+              <Badge color="success" pill className="px-3 py-2 d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
+                <Sparkles size={14} />
+                <span>Đã đồng bộ tài khoản ({user.username})</span>
               </Badge>
             )}
           </div>

@@ -235,38 +235,26 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
 
   return (
     <Container className="py-2.5 py-md-4" style={{ maxWidth: '1000px', overflowX: 'hidden' }}>
-      {/* ── UNIFIED LUXURY RESPONSIVE LESSON HEADER ── */}
-      <div
-        className="page-header-box mb-3 mb-md-4 p-3 rounded-4 shadow-sm position-relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-          border: '1px solid #e2e8f0',
-          width: '100%',
-          maxWidth: '100%'
-        }}
-      >
-        {/* Row 1: Lesson Badges & Switcher Dropdown */}
-        <div className="d-flex justify-content-between align-items-center gap-2 mb-2 w-100 flex-wrap">
-          <div className="d-flex align-items-center gap-1.5 flex-wrap">
-            <span
-              className="badge rounded-pill fw-bold px-2.5 py-1 text-white shadow-xs"
-              style={{
-                background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
-                fontSize: '11.5px',
-                letterSpacing: '0.02em'
-              }}
-            >
-              第{currentLessonNum}課 • Bài {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}
-            </span>
-            <span className="badge bg-white text-secondary border px-2 py-1 rounded-pill fw-semibold" style={{ fontSize: '11px' }}>
-              {vocabularies.length} từ vựng N5
-            </span>
+      {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-2.5">
+          <div>
+            <div className="app-header-tag">
+              <BookOpen size={13} />
+              <span>MINNA NO NIHONGO • BÀI {currentLessonNum < 10 ? `0${currentLessonNum}` : currentLessonNum}</span>
+            </div>
+            <h1 className="app-header-title">
+              Bài {currentLessonNum}: {lessonInfo?.title || 'Từ vựng & Mẫu câu'}
+            </h1>
+            <p className="app-header-subtitle">
+              Trọn bộ {vocabularies.length} từ vựng Minna no Nihongo tích hợp phát âm chuẩn Tokyo và ngữ cảnh thực tế.
+            </p>
           </div>
 
-          {/* Quick Lesson Switcher */}
+          {/* Quick Lesson Switcher Dropdown */}
           <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-auto">
-            <span className="small text-muted fw-semibold d-none d-sm-inline" style={{ fontSize: '11.5px' }}>
-              Đổi bài:
+            <span className="small text-muted fw-semibold" style={{ fontSize: '12px' }}>
+              Chọn bài:
             </span>
             <Input
               type="select"
@@ -276,11 +264,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 setCurrentLessonNum(nextL);
                 if (onSelectLesson) onSelectLesson(nextL);
               }}
-              className="form-control-sm rounded-pill fw-bold border py-1 px-2.5"
+              className="form-control-sm rounded-pill fw-bold border py-1.5 px-3"
               style={{
                 width: 'auto',
-                minWidth: '95px',
-                fontSize: '12px',
+                minWidth: '105px',
+                fontSize: '12.5px',
                 background: '#ffffff',
                 borderColor: '#cbd5e1'
               }}
@@ -292,36 +280,6 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               ))}
             </Input>
           </div>
-        </div>
-
-        {/* Row 2: Prominent Lesson Title with Safe Multi-line Wrap */}
-        <div
-          className="p-2.5 p-sm-3 rounded-3 mb-2.5 border"
-          style={{
-            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-            borderColor: '#e2e8f0',
-            width: '100%',
-            maxWidth: '100%'
-          }}
-        >
-          <div className="d-flex align-items-center gap-1.5 mb-1 text-primary small fw-bold" style={{ fontSize: '11px' }}>
-            <BookOpen size={13} />
-            <span>Chủ đề bài học</span>
-          </div>
-          <h5
-            className="fw-bold mb-0 text-navy-dark"
-            style={{
-              fontSize: 'clamp(13px, 3.4vw, 15.5px)',
-              lineHeight: '1.5',
-              whiteSpace: 'normal',
-              wordBreak: 'break-word',
-              overflowWrap: 'break-word',
-              display: 'block',
-              color: '#0f172a'
-            }}
-          >
-            Bài {currentLessonNum}: {lessonInfo?.title || 'Từ vựng & Mẫu câu Minna no Nihongo'}
-          </h5>
         </div>
 
         {/* Row 3: Action Toolbar (Streamlined & 100% Responsive) */}

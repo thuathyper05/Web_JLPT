@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Container, Spinner, Progress, Modal, ModalBody, Row, Col, Input } from 'reactstrap';
 import { 
-  Leaf, Star, RefreshCw, Plus, ChevronLeft, CheckCircle2, 
-  XCircle, Volume2, BookOpen, Sparkles, Info, X, 
+  Leaf, Star, ChevronLeft, Volume2, Sparkles, X, 
   ChevronRight, Trophy, Droplets, Sun, Award, Check, Layers,
-  Flame, Zap, Clock, ShieldCheck, HeartPulse, Search, Sprout
+  Flame, Zap, Clock, ShieldCheck, Search, Sprout, RotateCcw,
+  BookOpen, Plus, HeartPulse
 } from 'lucide-react';
 import { srsService, vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
@@ -12,178 +12,265 @@ import { useApp } from '../context/AppContext';
 import { getGardenWater, deductGardenWater, awardGardenWater } from '../services/gardenRewards';
 import confetti from 'canvas-confetti';
 
-// ── 4 BOTANICAL GROWTH STAGES (EBBINGHAUS SRS INTERVALS) ──
-const STAGES = {
+// ── 4 BOTANICAL GROWTH STAGES FOR THE SINGLE BONSAI TREE ──
+const TREE_STAGES = {
   1: {
     level: 1,
-    name: 'Hạt Mầm Nở',
-    badgeText: 'Mầm Non',
+    name: 'Mầm Non Khởi Đầu',
+    subtitle: 'Giai đoạn nảy mầm (0 – 25% vốn từ)',
     color: '#10b981',
     bgColor: '#ecfdf5',
     borderColor: '#a7f3d0',
-    pct: 25,
-    intervalDays: 1,
-    nextText: 'Ôn lại sau 24 giờ',
-    desc: 'Hạt giống vừa nảy mầm non trong đất mùn, đang bén rễ đầu tiên.'
+    desc: 'Cây tri thức vừa đâm chồi xanh biếc trong chậu sứ Tokyo, rễ non đang dần bám sâu vào nền tảng ngữ pháp sơ cấp.',
+    minVocab: 0
   },
   2: {
     level: 2,
-    name: 'Chồi Non Bén Rễ',
-    badgeText: 'Lá Xanh',
+    name: 'Bonsai Niên Thiếu',
+    subtitle: 'Giai đoạn vươn cành (25% – 50% vốn từ)',
     color: '#059669',
     bgColor: '#d1fae5',
     borderColor: '#6ee7b7',
-    pct: 50,
-    intervalDays: 3,
-    nextText: 'Ôn lại sau 3 ngày',
-    desc: 'Cây đã đâm chồi nảy lộc, rễ bám sâu vào lòng đất kiến thức.'
+    desc: 'Thân gỗ uốn lượn phong cách Moyogi kiên cường, 4 nhánh tán lá xanh mướt vươn cao đón ánh nắng rực rỡ.',
+    minVocab: 100
   },
   3: {
     level: 3,
-    name: 'Tán Lá Xanh Mướt',
-    badgeText: 'Cây Lớn',
+    name: 'Bonsai Trưởng Thành',
+    subtitle: 'Giai đoạn sum sê hoa nở (50% – 85% vốn từ)',
     color: '#2563eb',
     bgColor: '#eff6ff',
     borderColor: '#bfdbfe',
-    pct: 75,
-    intervalDays: 7,
-    nextText: 'Ôn lại sau 7 ngày',
-    desc: 'Tán lá vươn cao đón ánh nắng, kiến thức dần trở thành phản xạ tự nhiên.'
+    desc: 'Tán lá tròn đầy râm mát, đâm chồi nảy lộc và điểm xuyết những đóa hoa anh đào phớt hồng rực rỡ.',
+    minVocab: 300
   },
   4: {
     level: 4,
-    name: 'Bonsai Quả Vàng',
-    badgeText: 'Bonsai Vàng',
+    name: 'Đại Thụ Hoàng Kim',
+    subtitle: 'Bonsai đại thọ trĩu quả vàng (85% – 100% vốn từ)',
     color: '#f59e0b',
     bgColor: '#fffbeb',
     borderColor: '#fde68a',
-    pct: 100,
-    intervalDays: 30,
-    nextText: 'Khắc sâu vĩnh viễn',
-    desc: 'Cây đại thụ trĩu quả vàng hoàng kim — Từ vựng đã khắc sâu vào trí nhớ dài hạn!'
+    desc: 'Cây đại thụ nghìn năm uy nghi, rễ nổi vững chắc, tán lá trĩu quả vàng hoàng kim — Toàn bộ từ vựng đã khắc sâu vào trí nhớ dài hạn vĩnh viễn!',
+    minVocab: 600
   }
-};
-
-const OVERDUE_STAGE = {
-  name: 'Đất Khô Cần Tưới',
-  badgeText: 'Cần Tưới Gấp',
-  color: '#ef4444',
-  bgColor: '#fef2f2',
-  borderColor: '#fecaca',
-  pct: 15,
-  desc: 'Đất đang bị khô cằn do đến hạn ôn tập. Hãy tưới nước ngay để hồi sinh cây!'
 };
 
 const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
+const GUEST_STORAGE_KEY = 'hyper_guest_garden_srs';
 
-// ── HIGH-PERFORMANCE BOTANICAL VECTOR PLANT ILLUSTRATION (MEMOIZED) ──
-export const BotanicalPlantVisual = React.memo(({ level = 1, isOverdue = false, size = 44, className = '' }) => {
-  if (isOverdue) {
+// ── THE ICONIC SINGLE BONSAI TREE VECTOR ARTWORK (RESPONSIVE SVG) ──
+const SingleBonsaiArtwork = React.memo(({ stage = 1, isThirsty = false }) => {
+  // Stage 1: Sprout of Beginnings
+  if (stage === 1) {
     return (
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M18 42L22 58H42L46 42H18Z" fill="#a8a29e" stroke="#78716c" strokeWidth="2" strokeLinejoin="round"/>
-        <rect x="16" y="38" width="32" height="5" rx="2" fill="#78716c"/>
-        <path d="M19 42Q32 40 45 42" stroke="#57534e" strokeWidth="2"/>
-        <path d="M32 40Q31 28 22 24" stroke="#ca8a04" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M22 24Q14 26 16 34Q22 32 22 24Z" fill="#a16207" stroke="#854d0e" strokeWidth="1.5"/>
-        <circle cx="38" cy="30" r="3" fill="#ef4444" opacity="0.8"/>
+      <svg viewBox="0 0 280 220" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '280px', height: 'auto' }}>
+        <defs>
+          <linearGradient id="potGrad1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#1e293b"/>
+            <stop offset="100%" stopColor="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="leafGrad1" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#15803d"/>
+            <stop offset="100%" stopColor="#4ade80"/>
+          </linearGradient>
+        </defs>
+
+        {/* Soil Base / Zen Stand */}
+        <ellipse cx="140" cy="195" rx="90" ry="12" fill="#000000" opacity="0.08"/>
+        
+        {/* Ceramic Pot */}
+        <path d="M75 160 L90 190 H190 L205 160 Z" fill="url(#potGrad1)" stroke="#334155" strokeWidth="2.5" strokeLinejoin="round"/>
+        <rect x="70" y="152" width="140" height="10" rx="4" fill="#334155"/>
+        <ellipse cx="140" cy="157" rx="64" ry="7" fill="#451a03"/>
+
+        {/* Dew drops / Sprout shoot */}
+        <path d="M140 156 Q140 120 140 95" stroke={isThirsty ? '#a16207' : '#16a34a'} strokeWidth="5" strokeLinecap="round"/>
+        
+        {/* Leaves */}
+        <path d="M140 115 Q115 105 110 85 Q130 85 140 110" fill={isThirsty ? '#ca8a04' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
+        <path d="M140 105 Q165 95 170 75 Q150 75 140 100" fill={isThirsty ? '#a16207' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
+        <path d="M140 95 Q132 65 140 55 Q148 65 140 95" fill={isThirsty ? '#eab308' : '#22c55e'} stroke="#15803d" strokeWidth="1.5"/>
+
+        {/* Dew drop */}
+        <circle cx="160" cy="78" r="3" fill="#38bdf8" opacity="0.9"/>
       </svg>
     );
   }
-  if (level === 1) {
+
+  // Stage 2: Young Branching Bonsai
+  if (stage === 2) {
     return (
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M18 42L22 58H42L46 42H18Z" fill="#ea580c" stroke="#c2410c" strokeWidth="2" strokeLinejoin="round"/>
-        <rect x="16" y="38" width="32" height="5" rx="2" fill="#c2410c"/>
-        <ellipse cx="32" cy="41" rx="14" ry="2.5" fill="#451a03"/>
-        <path d="M32 40Q32 26 32 20" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M32 26Q20 22 18 14Q28 14 32 24" fill="#4ade80" stroke="#16a34a" strokeWidth="1.5"/>
-        <path d="M32 24Q44 20 46 12Q36 12 32 22" fill="#22c55e" stroke="#15803d" strokeWidth="1.5"/>
-        <circle cx="41" cy="14" r="2.2" fill="#38bdf8" stroke="#0284c7" strokeWidth="0.8"/>
+      <svg viewBox="0 0 280 220" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '280px', height: 'auto' }}>
+        <defs>
+          <linearGradient id="trunkGrad2" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#451a03"/>
+            <stop offset="100%" stopColor="#78350f"/>
+          </linearGradient>
+          <linearGradient id="cloudGrad2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#22c55e"/>
+            <stop offset="100%" stopColor="#15803d"/>
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="140" cy="198" rx="100" ry="12" fill="#000000" opacity="0.08"/>
+
+        {/* Glazed Tokyo Pot */}
+        <path d="M70 165 L88 194 H192 L210 165 Z" fill="#0369a1" stroke="#0284c7" strokeWidth="2.5" strokeLinejoin="round"/>
+        <rect x="65" y="157" width="150" height="10" rx="4" fill="#0284c7"/>
+        <ellipse cx="140" cy="162" rx="70" ry="7" fill="#292524"/>
+
+        {/* Curved Trunk */}
+        <path d="M140 162 C135 130 165 115 140 85 C130 72 135 55 135 45" stroke="url(#trunkGrad2)" strokeWidth="9" strokeLinecap="round" fill="none"/>
+        <path d="M145 125 C120 115 105 105 95 100" stroke="url(#trunkGrad2)" strokeWidth="5.5" strokeLinecap="round" fill="none"/>
+        <path d="M142 95 C165 88 180 80 190 75" stroke="url(#trunkGrad2)" strokeWidth="4.5" strokeLinecap="round" fill="none"/>
+
+        {/* Foliage Clouds */}
+        <ellipse cx="95" cy="98" rx="28" ry="16" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
+        <ellipse cx="190" cy="74" rx="26" ry="15" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
+        <ellipse cx="135" cy="42" rx="34" ry="20" fill={isThirsty ? '#854d0e' : 'url(#cloudGrad2)'}/>
+        <circle cx="130" cy="36" r="16" fill="#4ade80" opacity="0.6"/>
       </svg>
     );
   }
-  if (level === 2) {
+
+  // Stage 3: Flourishing Green Bonsai with Sakura Accents
+  if (stage === 3) {
     return (
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M16 40L21 58H43L48 40H16Z" fill="#0284c7" stroke="#0369a1" strokeWidth="2" strokeLinejoin="round"/>
-        <rect x="14" y="36" width="36" height="5" rx="2" fill="#0369a1"/>
-        <ellipse cx="32" cy="39" rx="16" ry="3" fill="#292524"/>
-        <path d="M32 38Q32 22 32 14" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"/>
-        <path d="M32 30Q24 25 18 20" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
-        <path d="M32 26Q40 21 46 16" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
-        <path d="M18 20Q12 12 19 8Q25 14 18 20Z" fill="#22c55e" stroke="#15803d" strokeWidth="1.5"/>
-        <path d="M46 16Q52 8 45 4Q39 10 46 16Z" fill="#4ade80" stroke="#16a34a" strokeWidth="1.5"/>
-        <path d="M32 14Q27 4 32 2Q37 4 32 14Z" fill="#15803d" stroke="#14532d" strokeWidth="1.5"/>
+      <svg viewBox="0 0 280 230" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '290px', height: 'auto' }}>
+        <defs>
+          <linearGradient id="potGrad3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#1e3a8a"/>
+            <stop offset="100%" stopColor="#172554"/>
+          </linearGradient>
+          <linearGradient id="trunkGrad3" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="#3d1e06"/>
+            <stop offset="50%" stopColor="#5c2e0b"/>
+            <stop offset="100%" stopColor="#78350f"/>
+          </linearGradient>
+        </defs>
+
+        <ellipse cx="140" cy="205" rx="110" ry="14" fill="#000000" opacity="0.08"/>
+
+        {/* Traditional Ceramic Oval Pot */}
+        <path d="M60 172 L80 202 H200 L220 172 Z" fill="url(#potGrad3)" stroke="#2563eb" strokeWidth="2.5" strokeLinejoin="round"/>
+        <rect x="54" y="164" width="172" height="10" rx="4" fill="#1e40af"/>
+        <ellipse cx="140" cy="169" rx="80" ry="8" fill="#1c1917"/>
+
+        {/* Roots */}
+        <path d="M125 170 Q130 162 140 160 Q150 162 155 170" stroke="#3d1e06" strokeWidth="6" strokeLinecap="round" fill="none"/>
+
+        {/* Main Ancient S-curve Trunk */}
+        <path d="M140 162 C130 130 170 110 145 75 C135 60 140 45 138 35" stroke="url(#trunkGrad3)" strokeWidth="12" strokeLinecap="round" fill="none"/>
+        <path d="M138 120 C100 110 85 95 75 90" stroke="url(#trunkGrad3)" strokeWidth="7" strokeLinecap="round" fill="none"/>
+        <path d="M148 90 C185 85 205 75 215 70" stroke="url(#trunkGrad3)" strokeWidth="6" strokeLinecap="round" fill="none"/>
+
+        {/* Lush Green Foliage Pads */}
+        <ellipse cx="75" cy="88" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
+        <ellipse cx="72" cy="83" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
+        
+        <ellipse cx="215" cy="68" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
+        <ellipse cx="218" cy="63" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
+
+        <ellipse cx="138" cy="32" rx="48" ry="24" fill={isThirsty ? '#854d0e' : '#15803d'}/>
+        <ellipse cx="138" cy="26" rx="38" ry="18" fill={isThirsty ? '#a16207' : '#22c55e'}/>
+        <circle cx="132" cy="20" r="18" fill="#4ade80" opacity="0.6"/>
+
+        {/* Sakura Accents */}
+        <circle cx="65" cy="82" r="3.5" fill="#f472b6"/>
+        <circle cx="85" cy="78" r="3" fill="#f472b6"/>
+        <circle cx="205" cy="62" r="3.5" fill="#f472b6"/>
+        <circle cx="225" cy="60" r="3" fill="#f472b6"/>
+        <circle cx="120" cy="24" r="3.5" fill="#f472b6"/>
+        <circle cx="155" cy="22" r="3" fill="#f472b6"/>
       </svg>
     );
   }
-  if (level === 3) {
-    return (
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-        <path d="M14 44L18 58H46L50 44H14Z" fill="#2563eb" stroke="#1d4ed8" strokeWidth="2" strokeLinejoin="round"/>
-        <rect x="12" y="40" width="40" height="5" rx="2" fill="#1d4ed8"/>
-        <ellipse cx="32" cy="43" rx="18" ry="3" fill="#1c1917"/>
-        <path d="M32 42C30 32 37 25 31 16" stroke="#78350f" strokeWidth="3.5" strokeLinecap="round"/>
-        <circle cx="31" cy="14" r="13" fill="#16a34a" stroke="#15803d" strokeWidth="2"/>
-        <circle cx="23" cy="16" r="8" fill="#22c55e"/>
-        <circle cx="39" cy="16" r="8" fill="#22c55e"/>
-        <circle cx="31" cy="8" r="7" fill="#4ade80"/>
-        <circle cx="26" cy="13" r="2.5" fill="#f472b6"/>
-        <circle cx="36" cy="12" r="2.5" fill="#f472b6"/>
-      </svg>
-    );
-  }
-  // Level 4: Golden Bonsai
+
+  // Stage 4: Grand Golden Masterpiece Bonsai
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <path d="M16 42L20 58H44L48 42H16Z" fill="#d97706" stroke="#b45309" strokeWidth="2" strokeLinejoin="round"/>
-      <rect x="14" y="38" width="36" height="5" rx="2" fill="#f59e0b" stroke="#b45309" strokeWidth="1.5"/>
-      <ellipse cx="32" cy="41" rx="16" ry="3" fill="#1c1917"/>
-      <path d="M32 41C31 30 35 25 32 18" stroke="#78350f" strokeWidth="5" strokeLinecap="round"/>
-      <circle cx="32" cy="16" r="14" fill="#15803d" stroke="#166534" strokeWidth="2"/>
-      <circle cx="23" cy="18" r="9" fill="#16a34a"/>
-      <circle cx="41" cy="18" r="9" fill="#16a34a"/>
-      <circle cx="32" cy="9" r="8" fill="#22c55e"/>
-      <circle cx="26" cy="16" r="3.2" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
-      <circle cx="37" cy="15" r="3.2" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
-      <circle cx="32" cy="22" r="3.2" fill="#f59e0b" stroke="#b45309" strokeWidth="1"/>
-      <circle cx="32" cy="8" r="2.8" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
-      <path d="M47 8L48 5L49 8L52 9L49 10L48 13L47 10L44 9Z" fill="#fde047"/>
+    <svg viewBox="0 0 280 235" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '300px', height: 'auto' }}>
+      <defs>
+        <radialGradient id="goldenAura" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stopColor="#fef08a" stopOpacity="0.45"/>
+          <stop offset="100%" stopColor="#fef08a" stopOpacity="0"/>
+        </radialGradient>
+        <linearGradient id="potGrad4" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#78350f"/>
+          <stop offset="100%" stopColor="#451a03"/>
+        </linearGradient>
+      </defs>
+
+      {/* Aura */}
+      <circle cx="140" cy="85" r="95" fill="url(#goldenAura)"/>
+      <ellipse cx="140" cy="210" rx="115" ry="14" fill="#000000" opacity="0.1"/>
+
+      {/* Imperial Bonsai Pot */}
+      <path d="M55 176 L75 208 H205 L225 176 Z" fill="url(#potGrad4)" stroke="#b45309" strokeWidth="2.5" strokeLinejoin="round"/>
+      <rect x="50" y="168" width="180" height="10" rx="4" fill="#d97706"/>
+      <ellipse cx="140" cy="173" rx="85" ry="8" fill="#1c1917"/>
+
+      {/* Ancient Roots Wrapping over Stone */}
+      <ellipse cx="140" cy="170" rx="28" ry="12" fill="#57534e"/>
+      <path d="M120 174 Q135 160 140 155 Q145 160 160 174" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
+
+      {/* Majestic Ancient Trunk */}
+      <path d="M140 158 C120 120 175 95 142 60 C132 45 138 30 138 22" stroke="#451a03" strokeWidth="15" strokeLinecap="round" fill="none"/>
+      <path d="M136 110 C85 98 70 85 58 78" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
+      <path d="M146 82 C195 75 218 62 228 55" stroke="#451a03" strokeWidth="7" strokeLinecap="round" fill="none"/>
+
+      {/* Golden Canopy Foliage Clouds */}
+      <ellipse cx="58" cy="76" rx="40" ry="21" fill="#15803d"/>
+      <ellipse cx="56" cy="70" rx="32" ry="16" fill="#16a34a"/>
+      <ellipse cx="56" cy="66" rx="22" ry="11" fill="#eab308"/>
+
+      <ellipse cx="228" cy="53" rx="40" ry="21" fill="#15803d"/>
+      <ellipse cx="230" cy="47" rx="32" ry="16" fill="#16a34a"/>
+      <ellipse cx="230" cy="43" rx="22" ry="11" fill="#eab308"/>
+
+      <ellipse cx="138" cy="22" rx="54" ry="26" fill="#15803d"/>
+      <ellipse cx="138" cy="16" rx="44" ry="20" fill="#16a34a"/>
+      <ellipse cx="138" cy="10" rx="30" ry="14" fill="#fbbf24"/>
+
+      {/* Golden Fruit of Wisdom */}
+      <circle cx="50" cy="68" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+      <circle cx="72" cy="64" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+      <circle cx="218" cy="44" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+      <circle cx="240" cy="40" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+      <circle cx="124" cy="12" r="5" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+      <circle cx="152" cy="10" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+
+      {/* Sparkles */}
+      <path d="M140 -4 L142 -9 L147 -7 L142 -5 Z" fill="#fef08a"/>
+      <path d="M260 25 L262 20 L266 22 L262 24 Z" fill="#fef08a"/>
+      <path d="M25 45 L27 40 L31 42 L27 44 Z" fill="#fef08a"/>
     </svg>
   );
 });
-
-const GUEST_STORAGE_KEY = 'hyper_guest_garden_srs';
 
 const GardenPage = ({ onNavigate }) => {
   const { user } = useApp();
   const [view, setView] = useState('garden'); // 'garden' | 'review'
   const [loading, setLoading] = useState(true);
   const [gardenItems, setGardenItems] = useState([]);
-  const [filterLevel, setFilterLevel] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [waterDrops, setWaterDrops] = useState(() => getGardenWater());
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 16;
-
+  
   // Modals
-  const [selectedPlant, setSelectedPlant] = useState(null);
-  const [plantModalOpen, setPlantModalOpen] = useState(false);
   const [seedModalOpen, setSeedModalOpen] = useState(false);
+  const [rootsModalOpen, setRootsModalOpen] = useState(false);
   const [lessons, setLessons] = useState([]);
   const [selectedLessonToPlant, setSelectedLessonToPlant] = useState(1);
   const [seedingLoading, setSeedingLoading] = useState(false);
+  const [rootsFilter, setRootsFilter] = useState('all');
+  const [rootsSearch, setRootsSearch] = useState('');
 
   // Review session state
   const [reviewItems, setReviewItems] = useState([]);
   const [reviewIdx, setReviewIdx] = useState(0);
   const [reviewFlipped, setReviewFlipped] = useState(false);
-  const [reviewResults, setReviewResults] = useState([]);
   const [wateringSplash, setWateringSplash] = useState(false);
-  const [waterWarning, setWaterWarning] = useState(false);
 
-  // Listen to cross-app watering awards
+  // Sync water drops event
   useEffect(() => {
     const handleWaterEvent = (e) => {
       if (e.detail && typeof e.detail.newTotal === 'number') {
@@ -205,29 +292,21 @@ const GardenPage = ({ onNavigate }) => {
       .catch(() => {});
   }, []);
 
-  // Load Garden Plants from Backend or Guest LocalStorage
+  // Load Tree Vocabulary Roots
   const loadGarden = useCallback(async () => {
     setLoading(true);
     try {
       if (user) {
-        // Logged-in: Fetch from PostgreSQL API
         const res = await srsService.getGarden();
-        if (res.data && res.data.items) {
-          setGardenItems(res.data.items);
-        } else {
-          setGardenItems([]);
-        }
+        setGardenItems(res.data?.items || []);
       } else {
-        // Guest mode: Read LocalStorage
         const raw = localStorage.getItem(GUEST_STORAGE_KEY);
         let items = [];
         if (raw) {
-          try {
-            items = JSON.parse(raw) || [];
-          } catch {}
+          try { items = JSON.parse(raw) || []; } catch {}
         }
 
-        // If guest garden is completely empty, auto-seed Lesson 1 so it's welcoming
+        // If brand new, seed Lesson 1 automatically so the Tree is alive
         if (items.length === 0) {
           try {
             const vRes = await vocabService.getVocabularies({ lesson: 1 });
@@ -246,7 +325,7 @@ const GardenPage = ({ onNavigate }) => {
                   reading: isKj ? clnK : '',
                   meaning: v.clean_vietnamese || v.vietnamese || '',
                   lesson_number: v.lesson_number || 1,
-                  next_review_date: new Date(now.getTime() - (i % 3 === 0 ? 3600000 : -86400000)).toISOString(),
+                  next_review_date: new Date(now.getTime() - (i % 2 === 0 ? 3600000 : -86400000)).toISOString(),
                   last_reviewed_at: now.toISOString(),
                   correct_count: 1,
                   wrong_count: 0
@@ -260,8 +339,7 @@ const GardenPage = ({ onNavigate }) => {
         const now = new Date();
         const evaluated = items.map(item => ({
           ...item,
-          is_due: item.level < 4 && (!item.next_review_date || new Date(item.next_review_date) <= now),
-          is_overdue: item.level < 4 && item.next_review_date && (now - new Date(item.next_review_date)) > 24 * 60 * 60 * 1000
+          is_due: item.level < 4 && (!item.next_review_date || new Date(item.next_review_date) <= now)
         }));
         setGardenItems(evaluated);
       }
@@ -276,48 +354,28 @@ const GardenPage = ({ onNavigate }) => {
     loadGarden();
   }, [loadGarden]);
 
-  // Statistics
+  // Tree Statistics & Mastery
   const stats = useMemo(() => {
     const total = gardenItems.length;
     const due = gardenItems.filter(i => i.is_due).length;
-    const overdue = gardenItems.filter(i => i.is_overdue).length;
     const l1 = gardenItems.filter(i => i.level === 1).length;
     const l2 = gardenItems.filter(i => i.level === 2).length;
     const l3 = gardenItems.filter(i => i.level === 3).length;
     const l4 = gardenItems.filter(i => i.level === 4).length;
-    return { total, due, overdue, l1, l2, l3, l4 };
+
+    // Vitality (Độ tươi tốt): 100% down to 20%
+    const vitality = total === 0 ? 100 : Math.max(20, Math.round(100 - (due / total) * 75));
+
+    // Tree stage (1 to 4) based on total vocabulary planted
+    let currentStage = 1;
+    if (total >= 400 || l4 >= 150) currentStage = 4;
+    else if (total >= 180 || l3 >= 80) currentStage = 3;
+    else if (total >= 50 || l2 >= 30) currentStage = 2;
+
+    return { total, due, l1, l2, l3, l4, vitality, stage: currentStage };
   }, [gardenItems]);
 
-  // Filtered & Searched Items
-  const filteredItems = useMemo(() => {
-    let list = gardenItems;
-    if (filterLevel === 'due') {
-      list = list.filter(i => i.is_due);
-    } else if (filterLevel === 'overdue') {
-      list = list.filter(i => i.is_overdue);
-    } else if (['1', '2', '3', '4'].includes(filterLevel)) {
-      list = list.filter(i => i.level === parseInt(filterLevel));
-    }
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      list = list.filter(i => 
-        (i.word && i.word.toLowerCase().includes(q)) ||
-        (i.reading && i.reading.toLowerCase().includes(q)) ||
-        (i.meaning && i.meaning.toLowerCase().includes(q))
-      );
-    }
-    return list;
-  }, [gardenItems, filterLevel, searchQuery]);
-
-  // Pagination for zero-lag silky smooth 60fps rendering
-  const totalPages = Math.ceil(filteredItems.length / pageSize) || 1;
-  const pagedItems = useMemo(() => {
-    const start = (currentPage - 1) * pageSize;
-    return filteredItems.slice(start, start + pageSize);
-  }, [filteredItems, currentPage, pageSize]);
-
-  // Handle Seeding Lesson
+  // Seed Lesson into the Tree
   const handleSeedLesson = async () => {
     setSeedingLoading(true);
     try {
@@ -330,6 +388,7 @@ const GardenPage = ({ onNavigate }) => {
         const existing = raw ? JSON.parse(raw) : [];
         const map = new Map(existing.map(p => [p.vocab_id || p.id, p]));
         const now = new Date();
+
         list.forEach(v => {
           if (!map.has(v.id)) {
             const isKj = Boolean(v.kanji && hasRealKanji(v.kanji));
@@ -354,7 +413,7 @@ const GardenPage = ({ onNavigate }) => {
       }
       awardGardenWater(25, 'Gieo mầm bài học mới');
       sounds.playLevelUp?.();
-      confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+      confetti({ particleCount: 60, spread: 65, origin: { y: 0.6 } });
       await loadGarden();
       setSeedModalOpen(false);
     } catch (err) {
@@ -364,14 +423,11 @@ const GardenPage = ({ onNavigate }) => {
     }
   };
 
-  // Start Watering Review Session
-  const startWateringSession = (itemsToReview = null) => {
-    let list = itemsToReview;
-    if (!list) {
-      list = gardenItems.filter(i => i.is_due);
-    }
+  // Start Watering Session for the Single Tree
+  const startWateringSession = () => {
+    let list = gardenItems.filter(i => i.is_due);
     if (list.length === 0) {
-      // If no due plants, review 10 lowest level plants
+      // If no due words, review 10 lowest level words to nurture tree
       list = [...gardenItems].sort((a, b) => a.level - b.level).slice(0, 10);
     }
     if (list.length === 0) return;
@@ -380,11 +436,10 @@ const GardenPage = ({ onNavigate }) => {
     setReviewItems(list);
     setReviewIdx(0);
     setReviewFlipped(false);
-    setReviewResults([]);
     setView('review');
   };
 
-  // Answer Watering Review Card
+  // Answer Card in Watering Review
   const handleReviewAnswer = async (isCorrect) => {
     const cur = reviewItems[reviewIdx];
     if (!cur) return;
@@ -393,17 +448,16 @@ const GardenPage = ({ onNavigate }) => {
       sounds.playCorrect?.();
       deductGardenWater(5);
       setWateringSplash(true);
-      setTimeout(() => setWateringSplash(false), 700);
+      setTimeout(() => setWateringSplash(false), 600);
     } else {
       sounds.playWrong?.();
     }
 
     const newLevel = isCorrect ? Math.min(4, cur.level + 1) : Math.max(1, cur.level - 1);
-    const stageInfo = STAGES[newLevel];
+    const intervalDays = newLevel === 1 ? 1 : newLevel === 2 ? 3 : newLevel === 3 ? 7 : 30;
     const now = new Date();
-    const nextDate = new Date(now.getTime() + stageInfo.intervalDays * 24 * 60 * 60 * 1000).toISOString();
+    const nextDate = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000).toISOString();
 
-    // Update in local array & database
     try {
       if (user) {
         await srsService.recordReview({ vocab_id: cur.vocab_id || cur.id, correct: isCorrect });
@@ -424,117 +478,73 @@ const GardenPage = ({ onNavigate }) => {
       }
     } catch {}
 
-    setReviewResults(prev => [...prev, { item: cur, isCorrect, newLevel }]);
-
-    // Move to next card after brief transition
     setTimeout(() => {
       if (reviewIdx < reviewItems.length - 1) {
         setReviewIdx(prev => prev + 1);
         setReviewFlipped(false);
       } else {
-        // Complete session
         sounds.playComplete?.();
-        confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 80, spread: 75, origin: { y: 0.6 } });
         loadGarden();
         setView('garden');
       }
-    }, 450);
+    }, 400);
   };
 
-  // Inspect Single Plant
-  const handleInspectPlant = (plant) => {
-    sounds.playFlip?.();
-    setSelectedPlant(plant);
-    setPlantModalOpen(true);
-  };
+  // Filtered Roots Words for Inspector Modal
+  const filteredRoots = useMemo(() => {
+    let list = gardenItems;
+    if (rootsFilter === 'due') list = list.filter(i => i.is_due);
+    else if (rootsFilter === 'mastered') list = list.filter(i => i.level === 4);
+    else if (rootsFilter === 'learning') list = list.filter(i => i.level < 4);
 
-  // Water Single Plant Directly from Modal
-  const handleWaterSinglePlant = async () => {
-    if (!selectedPlant) return;
-    if (waterDrops < 5) {
-      setWaterWarning(true);
-      setTimeout(() => setWaterWarning(false), 3500);
-      return;
+    if (rootsSearch.trim()) {
+      const q = rootsSearch.toLowerCase().trim();
+      list = list.filter(i => 
+        (i.word && i.word.toLowerCase().includes(q)) ||
+        (i.reading && i.reading.toLowerCase().includes(q)) ||
+        (i.meaning && i.meaning.toLowerCase().includes(q))
+      );
     }
-    deductGardenWater(5);
-    sounds.playCorrect?.();
-    confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 } });
+    return list;
+  }, [gardenItems, rootsFilter, rootsSearch]);
 
-    const newLevel = Math.min(4, selectedPlant.level + 1);
-    const stageInfo = STAGES[newLevel];
-    const now = new Date();
-    const nextDate = new Date(now.getTime() + stageInfo.intervalDays * 24 * 60 * 60 * 1000).toISOString();
-
-    if (user) {
-      try {
-        await srsService.recordReview({ vocab_id: selectedPlant.vocab_id || selectedPlant.id, correct: true });
-      } catch {}
-    } else {
-      const raw = localStorage.getItem(GUEST_STORAGE_KEY);
-      if (raw) {
-        const plants = JSON.parse(raw);
-        const found = plants.find(p => (p.vocab_id || p.id) === (selectedPlant.vocab_id || selectedPlant.id));
-        if (found) {
-          found.level = newLevel;
-          found.next_review_date = nextDate;
-          found.last_reviewed_at = now.toISOString();
-          found.correct_count = (found.correct_count || 0) + 1;
-          localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify(plants));
-        }
-      }
-    }
-
-    setPlantModalOpen(false);
-    await loadGarden();
-  };
-
-  // ── RENDER REVIEW / WATERING SESSION ──
+  // ── RENDER WATERING REVIEW SESSION ──
   if (view === 'review') {
-    const currentCard = reviewItems[reviewIdx];
-    const currentStage = currentCard ? (currentCard.is_overdue ? OVERDUE_STAGE : STAGES[currentCard.level]) : STAGES[1];
-    const progressPct = reviewItems.length > 0 ? Math.round(((reviewIdx + 1) / reviewItems.length) * 100) : 0;
+    const cur = reviewItems[reviewIdx];
+    const pct = reviewItems.length > 0 ? Math.round(((reviewIdx + 1) / reviewItems.length) * 100) : 0;
 
     return (
       <Container className="py-3 py-md-4" style={{ maxWidth: '640px' }}>
-        {/* Header Bar */}
+        {/* Top Header */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <button
             type="button"
             onClick={() => { setView('garden'); loadGarden(); }}
-            className="btn btn-sm btn-light rounded-pill px-3 py-1.5 fw-bold border d-flex align-items-center gap-1 shadow-xs"
+            className="app-btn-secondary"
+            style={{ height: '36px', padding: '0 14px', fontSize: '12.5px' }}
           >
             <ChevronLeft size={16} />
-            <span>Vườn Cây</span>
+            <span>Về Cây Bonsai</span>
           </button>
 
           <div className="d-flex align-items-center gap-1.5 text-primary fw-bold" style={{ fontSize: '13px' }}>
             <Droplets size={16} />
-            <span>Tưới cây {reviewIdx + 1} / {reviewItems.length}</span>
+            <span>Tưới cây: {reviewIdx + 1} / {reviewItems.length}</span>
           </div>
 
-          <div className="d-flex align-items-center gap-1 px-2.5 py-1 rounded-pill bg-light border" style={{ fontSize: '12px' }}>
-            <Droplets size={13} className="text-info" />
+          <div className="d-flex align-items-center gap-1.5 px-3 py-1 rounded-pill bg-light border" style={{ fontSize: '12px' }}>
+            <Droplets size={14} className="text-info" />
             <span className="fw-black text-navy-dark">{waterDrops} Giọt</span>
           </div>
         </div>
 
-        {/* Progress Bar */}
-        <Progress value={progressPct} color="primary" style={{ height: '5px', borderRadius: '4px' }} className="mb-4" />
+        <Progress value={pct} color="primary" style={{ height: '5px', borderRadius: '4px' }} className="mb-4" />
 
-        {/* Zen Watering Card */}
-        {currentCard && (
+        {/* Central Watering Focus Card */}
+        {cur && (
           <div
-            className={`p-4 p-md-5 rounded-4 bg-white border text-center position-relative shadow-sm transition-all ${
-              wateringSplash ? 'pulse-correct' : ''
-            }`}
-            style={{
-              borderColor: 'var(--slate-200)',
-              minHeight: '380px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              cursor: reviewFlipped ? 'default' : 'pointer'
-            }}
+            className={`zen-focus-card text-center p-4 p-md-5 ${wateringSplash ? 'pulse-correct' : ''}`}
             onClick={() => {
               if (!reviewFlipped) {
                 sounds.playFlip?.();
@@ -542,89 +552,65 @@ const GardenPage = ({ onNavigate }) => {
               }
             }}
           >
-            {/* Top Stage Chip */}
-            <div className="d-flex justify-content-between align-items-center">
-              <span
-                className="badge px-3 py-1 rounded-pill fw-bold"
-                style={{ background: currentStage.bgColor, color: currentStage.color, border: `1px solid ${currentStage.borderColor}` }}
-              >
-                {currentStage.badgeText} • Cấp {currentCard.level}/4
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="badge bg-light text-secondary border fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
+                Bài {cur.lesson_number} • Cấp {cur.level}/4
               </span>
 
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  speakJapanese(currentCard.reading || currentCard.word);
+                  speakJapanese(cur.reading || cur.word);
                 }}
-                className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn"
+                className="app-icon-btn"
                 style={{ width: 34, height: 34 }}
-                title="Nghe phát âm chuẩn Tokyo"
+                title="Nghe phát âm Tokyo"
               >
                 <Volume2 size={16} />
               </button>
             </div>
 
-            {/* Plant Vector Visual */}
-            <div className="my-3">
-              <BotanicalPlantVisual level={currentCard.level} isOverdue={currentCard.is_overdue} size={76} />
-            </div>
-
-            {/* Prompt Display */}
-            <div>
-              <h1
-                className="fw-black text-navy-dark mb-1 font-monospace"
-                style={{
-                  fontSize: 'clamp(2.2rem, 7vw, 3.4rem)',
-                  fontFamily: "'Noto Sans JP', 'Hiragino Sans', sans-serif"
-                }}
-              >
-                {currentCard.word}
+            <div className="my-4">
+              <h1 className="zen-kanji-title mb-1">
+                {cur.word}
               </h1>
 
-              {currentCard.reading && currentCard.reading !== currentCard.word && (
-                <div className="fw-bold font-monospace text-muted mb-2" style={{ fontSize: '1.25rem' }}>
-                  {currentCard.reading}
+              {cur.reading && cur.reading !== cur.word && (
+                <div className="zen-kana-sub">
+                  {cur.reading}
                 </div>
               )}
             </div>
 
-            {/* Flipped Meaning State */}
             {reviewFlipped ? (
               <div className="animate-fade-in my-3 p-3 rounded-3 bg-light border">
-                <h4 className="fw-black text-primary mb-0">{currentCard.meaning}</h4>
-                {currentCard.example_jp && (
-                  <div className="mt-2 text-muted small">
-                    <div className="fw-semibold text-dark">{currentCard.example_jp}</div>
-                    <div>{currentCard.example_vi}</div>
-                  </div>
-                )}
+                <h3 className="zen-meaning-display mb-0">{cur.meaning}</h3>
               </div>
             ) : (
               <div className="text-muted small my-3 user-select-none">
-                Chạm vào thẻ để xem nghĩa & kiểm tra trí nhớ
+                Chạm vào thẻ để xem nghĩa & tưới nước cho cây
               </div>
             )}
 
-            {/* Action Buttons */}
             {reviewFlipped ? (
-              <div className="d-flex justify-content-center gap-2.5 mt-2 flex-wrap">
+              <div className="d-flex justify-content-center gap-3 mt-4 flex-wrap">
                 <button
                   type="button"
                   onClick={() => handleReviewAnswer(false)}
                   className="btn btn-danger rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
                 >
-                  <XCircle size={16} />
+                  <RotateCcw size={15} />
                   <span>Cần Ôn Lại</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleReviewAnswer(true)}
-                  className="btn btn-success rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
+                  className="app-btn-primary"
                 >
-                  <Sprout size={15} />
-                  <span>Đã Thành Thạo (Tưới nước)</span>
+                  <Droplets size={16} />
+                  <span>Đã Thuộc (Tưới Nước)</span>
                 </button>
               </div>
             ) : (
@@ -640,346 +626,171 @@ const GardenPage = ({ onNavigate }) => {
     );
   }
 
-  // ── RENDER MAIN ZEN GARDEN DASHBOARD ──
+  // Current stage info
+  const stageInfo = TREE_STAGES[stats.stage] || TREE_STAGES[1];
+
+  // ── RENDER MAIN SINGLE TREE SANCTUARY ──
   return (
-    <Container className="py-2.5 py-md-4" style={{ maxWidth: '1180px' }}>
-      {/* ── 1. TOKYO HYDRAULIC RESERVOIR (BÌNH NƯỚC TRI THỨC 3D) ── */}
-      <div
-        className="p-3.5 p-md-4 mb-3.5 rounded-4 text-white shadow-sm position-relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, #091224 0%, #0f172a 50%, #1e3a8a 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.12)'
-        }}
-      >
-        <Row className="align-items-center g-3">
-          <Col xs={12} md={7}>
-            <div className="d-flex align-items-center gap-2 mb-1.5">
-              <span className="badge bg-primary bg-opacity-30 border border-primary text-info fw-bold px-2.5 py-1 rounded-pill">
-                HỆ THỐNG LẶP LẠI NGẮT QUÃNG • EBBINGHAUS SRS
-              </span>
+    <Container className="py-3 py-md-4" style={{ maxWidth: '1080px' }}>
+      {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
+      <div className="app-page-header">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div className="app-header-tag">
+              <Sprout size={13} />
+              <span>VƯỜN TRÍ NHỚ • EBBINGHAUS SRS</span>
             </div>
-            <h3 className="fw-black mb-1.5 text-white tracking-tight">
-              Vườn Cây Trí Nhớ Bonsai
-            </h3>
-            <p className="text-white text-opacity-75 small mb-0" style={{ maxWidth: '580px', lineHeight: '1.5' }}>
-              Mỗi từ vựng là một mầm cây lớn dần qua 4 giai đoạn. Nước tưới cây được tích lũy <strong>tự động</strong> khi bạn học bài, làm trắc nghiệm, lật Flashcard hoặc luyện gõ trên toàn hệ thống.
+            <h1 className="app-header-title">
+              Cây Bonsai Tri Thức
+            </h1>
+            <p className="app-header-subtitle">
+              Cây đại diện cho toàn bộ vốn từ vựng của bạn. Khi bạn chăm chỉ học tập và ôn tập đúng hạn, cây sẽ hấp thụ nước, lớn dần qua 4 cấp độ và đâm chồi nở hoa.
             </p>
-          </Col>
+          </div>
 
-          {/* Water Reservoir Widget */}
-          <Col xs={12} md={5}>
-            <div
-              className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 backdrop-blur"
-              style={{ backdropFilter: 'blur(16px)' }}
-            >
-              <div className="d-flex justify-content-between align-items-center mb-1.5">
-                <div className="d-flex align-items-center gap-1.5">
-                  <div
-                    className="d-flex align-items-center justify-content-center rounded-circle bg-info text-dark shadow-xs"
-                    style={{ width: 30, height: 30 }}
-                  >
-                    <Droplets size={16} />
-                  </div>
-                  <span className="fw-bold text-white small">Bình Nước Tri Thức</span>
+          {/* Hydration Reservoir Widget */}
+          <div className="p-2.5 px-3 rounded-3 bg-light border d-flex align-items-center gap-2.5 shadow-xs">
+            <div className="d-flex align-items-center justify-content-center rounded-circle bg-info text-white" style={{ width: 34, height: 34 }}>
+              <Droplets size={18} />
+            </div>
+            <div>
+              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Bình Nước Tri Thức</small>
+              <span className="fw-black text-navy-dark fs-6">{waterDrops} Giọt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 2. THE SINGLE TREE SANCTUARY (CÂY DUY NHẤT) ── */}
+      <div className="bonsai-sanctuary mb-4">
+        {loading ? (
+          <div className="py-5">
+            <Spinner color="primary" />
+            <p className="mt-2 text-muted small">Đang chăm sóc Cây Bonsai Tri Thức...</p>
+          </div>
+        ) : (
+          <>
+            {/* Tree Stage Badge */}
+            <div className="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill mb-3" style={{ background: stageInfo.bgColor, color: stageInfo.color, border: `1px solid ${stageInfo.borderColor}`, fontSize: '12px', fontWeight: 800 }}>
+              <Sparkles size={14} />
+              <span>Cấp {stageInfo.level}/4: {stageInfo.name}</span>
+            </div>
+
+            {/* The Single Bonsai Visual */}
+            <div className="my-2 d-flex justify-content-center">
+              <SingleBonsaiArtwork stage={stats.stage} isThirsty={stats.vitality < 60 || stats.due > 0} />
+            </div>
+
+            {/* Tree Vitality & Evolution Description */}
+            <div style={{ maxWidth: '540px', margin: '0 auto' }}>
+              <p className="small text-muted mb-3" style={{ lineHeight: '1.6' }}>
+                {stageInfo.desc}
+              </p>
+
+              {/* Vitality Bar */}
+              <div className="p-3 rounded-3 bg-white border shadow-xs mb-4 text-start">
+                <div className="d-flex justify-content-between align-items-center mb-1.5 small">
+                  <span className="fw-bold text-navy-dark d-flex align-items-center gap-1">
+                    <HeartPulse size={14} className={stats.vitality > 75 ? 'text-success' : 'text-danger'} />
+                    <span>Độ Tươi Tốt Của Cây</span>
+                  </span>
+                  <span className={`fw-black ${stats.vitality > 75 ? 'text-success' : 'text-danger'}`}>
+                    {stats.vitality}% • {stats.vitality > 75 ? 'Khỏe Mạnh' : 'Cần Tưới Nước!'}
+                  </span>
                 </div>
-                <span className="fw-black text-warning fs-5">{waterDrops} Giọt</span>
-              </div>
-
-              <Progress
-                value={Math.min(100, Math.round((waterDrops / 200) * 100))}
-                color="info"
-                style={{ height: '6px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.2)' }}
-                className="mb-2"
-              />
-
-              <div className="d-flex justify-content-between align-items-center small text-white text-opacity-70" style={{ fontSize: '11px' }}>
-                <span>Tưới 1 cây: 5 giọt nước</span>
-                <span>Học bài để nạp thêm nước</span>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </div>
-
-      {/* ── 2. METRIC STATS ROW (4 EQUAL BOXES) ── */}
-      <Row className="g-2.5 mb-3.5">
-        <Col xs={6} md={3}>
-          <div className="p-3 rounded-4 bg-white border shadow-xs d-flex align-items-center gap-2.5">
-            <div className="p-2.5 rounded-3 bg-light text-primary flex-shrink-0">
-              <Sprout size={20} />
-            </div>
-            <div>
-              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Tổng Cây Trồng</small>
-              <span className="fw-black text-navy-dark fs-5">{stats.total} Cây</span>
-            </div>
-          </div>
-        </Col>
-
-        <Col xs={6} md={3}>
-          <div className="p-3 rounded-4 bg-white border shadow-xs d-flex align-items-center gap-2.5" style={{ borderColor: stats.due > 0 ? '#fecaca' : 'var(--slate-200)' }}>
-            <div className="p-2.5 rounded-3 bg-danger bg-opacity-10 text-danger flex-shrink-0">
-              <Droplets size={20} />
-            </div>
-            <div>
-              <small className="text-danger d-block fw-semibold" style={{ fontSize: '11px' }}>Cần Tưới Hôm Nay</small>
-              <span className="fw-black text-danger fs-5">{stats.due} Cây</span>
-            </div>
-          </div>
-        </Col>
-
-        <Col xs={6} md={3}>
-          <div className="p-3 rounded-4 bg-white border shadow-xs d-flex align-items-center gap-2.5">
-            <div className="p-2.5 rounded-3 bg-success bg-opacity-10 text-success flex-shrink-0">
-              <Leaf size={20} />
-            </div>
-            <div>
-              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Đang Lớn Lên</small>
-              <span className="fw-black text-success fs-5">{stats.l1 + stats.l2 + stats.l3} Cây</span>
-            </div>
-          </div>
-        </Col>
-
-        <Col xs={6} md={3}>
-          <div className="p-3 rounded-4 bg-white border shadow-xs d-flex align-items-center gap-2.5">
-            <div className="p-2.5 rounded-3 bg-warning bg-opacity-10 text-warning flex-shrink-0">
-              <Star size={20} />
-            </div>
-            <div>
-              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Bonsai Vàng</small>
-              <span className="fw-black text-warning fs-5">{stats.l4} Cây</span>
-            </div>
-          </div>
-        </Col>
-      </Row>
-
-      {/* ── 3. ACTION CONTROLS & SEEDING BAR ── */}
-      <div className="p-3 rounded-4 bg-white border shadow-xs mb-3.5">
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2.5">
-          <div className="d-flex align-items-center gap-2 flex-wrap">
-            {/* Primary Action Button: Water Due Plants */}
-            <button
-              type="button"
-              disabled={stats.due === 0}
-              onClick={() => startWateringSession()}
-              className={`btn btn-sm rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs ${
-                stats.due > 0 ? 'btn-primary text-white' : 'btn-light text-muted border'
-              }`}
-              style={{ fontSize: '13px' }}
-            >
-              <Droplets size={16} />
-              <span>
-                {stats.due > 0 ? `Tưới Nước Cho Cây Đến Hạn (${stats.due} Cây)` : 'Tất Cả Cây Đều Đang Khỏe Mạnh'}
-              </span>
-            </button>
-
-            {/* Seeding New Lesson Button */}
-            <button
-              type="button"
-              onClick={() => setSeedModalOpen(true)}
-              className="btn btn-sm btn-light border rounded-pill px-3.5 py-2 fw-semibold text-dark d-flex align-items-center gap-1.5 shadow-xs"
-              style={{ fontSize: '13px' }}
-            >
-              <Plus size={15} className="text-primary" />
-              <span>Gieo Mầm Bài Mới</span>
-            </button>
-          </div>
-
-          {/* Search Box */}
-          <div className="position-relative flex-grow-1 flex-md-grow-0" style={{ maxWidth: '300px', width: '100%' }}>
-            <Input
-              type="text"
-              placeholder="Tìm theo Kanji, Kana, nghĩa..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="form-control-sm rounded-pill ps-4 border"
-              style={{ fontSize: '12.5px', height: '36px' }}
-            />
-            <Search size={14} className="position-absolute text-muted" style={{ left: '12px', top: '11px' }} />
-          </div>
-        </div>
-
-        {/* Filter Chips Bar */}
-        <div className="d-flex align-items-center gap-1.5 mt-3 pt-2.5 border-top border-slate-100 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-          {[
-            { id: 'all', label: `Tất cả (${stats.total})` },
-            { id: 'due', label: `Cần tưới ngay (${stats.due})`, highlight: stats.due > 0 },
-            { id: '1', label: `Mầm non (${stats.l1})` },
-            { id: '2', label: `Lá xanh (${stats.l2})` },
-            { id: '3', label: `Cây lớn (${stats.l3})` },
-            { id: '4', label: `Bonsai vàng (${stats.l4})` },
-          ].map(f => (
-            <button
-              key={f.id}
-              type="button"
-              onClick={() => {
-                setFilterLevel(f.id);
-                setCurrentPage(1);
-              }}
-              className={`btn btn-sm rounded-pill px-3 py-1 fw-bold border flex-shrink-0 ${
-                filterLevel === f.id
-                  ? 'btn-primary text-white shadow-xs'
-                  : f.highlight
-                  ? 'btn-danger text-white shadow-xs'
-                  : 'btn-light text-muted'
-              }`}
-              style={{ fontSize: '12px' }}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── 4. ZEN BONSAI SHELVES GRID (16 POTS PER PAGE) ── */}
-      {loading ? (
-        <div className="text-center py-5">
-          <Spinner color="primary" />
-          <p className="mt-2 text-muted small">Đang chăm sóc vườn cây Bonsai...</p>
-        </div>
-      ) : filteredItems.length === 0 ? (
-        <div className="p-5 text-center bg-white rounded-4 border shadow-xs">
-          <Sprout size={44} className="text-muted mb-2 opacity-50" />
-          <h6 className="fw-bold text-navy-dark">Không tìm thấy chậu cây nào</h6>
-          <p className="text-muted small mb-3">Bạn có thể gieo thêm hạt giống từ 25 bài học Minna no Nihongo vào vườn.</p>
-          <button
-            type="button"
-            onClick={() => setSeedModalOpen(true)}
-            className="btn btn-sm btn-primary rounded-pill px-3.5 py-1.5 fw-bold"
-          >
-            Gieo Mầm Ngay
-          </button>
-        </div>
-      ) : (
-        <>
-          <Row className="g-2.5">
-            {pagedItems.map((plant) => {
-              const stage = plant.is_overdue ? OVERDUE_STAGE : STAGES[plant.level] || STAGES[1];
-              return (
-                <Col xs={6} sm={4} md={3} key={plant.id || plant.vocab_id}>
+                <div className="bonsai-vitality-bar">
                   <div
-                    onClick={() => handleInspectPlant(plant)}
-                    className="p-3 rounded-4 bg-white border shadow-xs position-relative transition-all"
+                    className="bonsai-vitality-fill"
                     style={{
-                      cursor: 'pointer',
-                      borderColor: plant.is_due ? 'var(--danger-border)' : 'var(--slate-200)',
-                      background: plant.is_due ? '#fffdfd' : '#ffffff'
+                      width: `${stats.vitality}%`,
+                      background: stats.vitality > 75 
+                        ? 'linear-gradient(90deg, #10b981 0%, #059669 100%)' 
+                        : 'linear-gradient(90deg, #f59e0b 0%, #ef4444 100%)'
                     }}
-                  >
-                    {/* Top Status Badge */}
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span
-                        className="badge px-2 py-0.5 rounded-pill fw-bold"
-                        style={{
-                          fontSize: '10px',
-                          background: stage.bgColor,
-                          color: stage.color,
-                          border: `1px solid ${stage.borderColor}`
-                        }}
-                      >
-                        {stage.badgeText}
-                      </span>
+                  />
+                </div>
+              </div>
 
-                      {plant.is_due && (
-                        <span className="badge bg-danger text-white rounded-pill px-1.5 py-0.5 d-flex align-items-center gap-1 animate-pulse" style={{ fontSize: '9px' }}>
-                          <Droplets size={9} /> Cần tưới
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Plant Vector Visual */}
-                    <div className="text-center my-2">
-                      <BotanicalPlantVisual level={plant.level} isOverdue={plant.is_overdue} size={46} />
-                    </div>
-
-                    {/* Word Display */}
-                    <div className="text-center">
-                      <div
-                        className="fw-black text-navy-dark font-monospace text-truncate"
-                        style={{
-                          fontSize: '16px',
-                          fontFamily: "'Noto Sans JP', 'Hiragino Sans', sans-serif"
-                        }}
-                      >
-                        {plant.word}
-                      </div>
-
-                      {plant.reading && plant.reading !== plant.word && (
-                        <div className="small text-muted font-monospace text-truncate" style={{ fontSize: '11px' }}>
-                          {plant.reading}
-                        </div>
-                      )}
-
-                      <div className="small text-dark text-truncate mt-1 fw-semibold" style={{ fontSize: '12px' }}>
-                        {plant.meaning}
-                      </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="mt-2.5 pt-1.5 border-top border-slate-100">
-                      <div className="d-flex justify-content-between align-items-center mb-1 small text-muted" style={{ fontSize: '9.5px' }}>
-                        <span>Cấp {plant.level}/4</span>
-                        <span>{stage.pct}%</span>
-                      </div>
-                      <Progress
-                        value={stage.pct}
-                        color={plant.level === 4 ? 'warning' : 'success'}
-                        style={{ height: '3.5px', borderRadius: '3px' }}
-                      />
-                    </div>
+              {/* 3 Metric Stats Cards */}
+              <Row className="g-2.5 mb-4 text-start">
+                <Col xs={4}>
+                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100">
+                    <small className="text-muted d-block fw-semibold" style={{ fontSize: '10.5px' }}>Từ Đã Gieo</small>
+                    <span className="fw-black text-navy-dark fs-6">{stats.total} / 1,589</span>
                   </div>
                 </Col>
-              );
-            })}
-          </Row>
 
-          {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
-              <button
-                type="button"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                className="btn btn-sm btn-light rounded-pill px-3 py-1 fw-bold border shadow-xs"
-                style={{ fontSize: '12px' }}
-              >
-                <ChevronLeft size={14} className="me-1" />
-                <span>Trang trước</span>
-              </button>
+                <Col xs={4}>
+                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100" style={{ borderColor: stats.due > 0 ? '#fecaca' : undefined, background: stats.due > 0 ? '#fffdfd' : undefined }}>
+                    <small className={stats.due > 0 ? 'text-danger d-block fw-bold' : 'text-muted d-block fw-semibold'} style={{ fontSize: '10.5px' }}>
+                      Cần Tưới Hôm Nay
+                    </small>
+                    <span className={`fw-black fs-6 ${stats.due > 0 ? 'text-danger' : 'text-success'}`}>
+                      {stats.due} Từ
+                    </span>
+                  </div>
+                </Col>
 
-              <span className="text-muted small fw-bold px-2">
-                Trang {currentPage} / {totalPages}
-              </span>
+                <Col xs={4}>
+                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100">
+                    <small className="text-muted d-block fw-semibold" style={{ fontSize: '10.5px' }}>Đã Khắc Sâu</small>
+                    <span className="fw-black text-warning fs-6">{stats.l4} Từ</span>
+                  </div>
+                </Col>
+              </Row>
 
-              <button
-                type="button"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                className="btn btn-sm btn-light rounded-pill px-3 py-1 fw-bold border shadow-xs"
-                style={{ fontSize: '12px' }}
-              >
-                <span>Trang sau</span>
-                <ChevronRight size={14} className="ms-1" />
-              </button>
+              {/* Action Buttons Bar */}
+              <div className="d-flex justify-content-center align-items-center gap-2.5 flex-wrap">
+                <button
+                  type="button"
+                  onClick={startWateringSession}
+                  disabled={stats.total === 0}
+                  className="app-btn-primary"
+                  style={{ height: '46px', padding: '0 26px', fontSize: '14px' }}
+                >
+                  <Droplets size={18} />
+                  <span>
+                    {stats.due > 0 ? `Tưới Nước Cho Cây (Ôn ${stats.due} Từ Đến Hạn)` : 'Tưới Nước Rèn Luyện Cây'}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSeedModalOpen(true)}
+                  className="app-btn-secondary"
+                  style={{ height: '46px', padding: '0 20px', fontSize: '13.5px' }}
+                >
+                  <Plus size={16} className="text-primary" />
+                  <span>Gieo Thêm Bài Mới</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setRootsModalOpen(true)}
+                  className="app-btn-secondary"
+                  style={{ height: '46px', padding: '0 18px', fontSize: '13.5px' }}
+                >
+                  <Search size={15} />
+                  <span>Khám Phá Rễ Cây ({stats.total})</span>
+                </button>
+              </div>
             </div>
-          )}
-        </>
-      )}
+          </>
+        )}
+      </div>
 
-      {/* ── 5. SEEDING MODAL (GIEO MẦM BÀI HỌC) ── */}
+      {/* ── 3. MODAL: GIEO MẦM BÀI HỌC MỚI VÀO CÂY ── */}
       <Modal isOpen={seedModalOpen} toggle={() => setSeedModalOpen(false)} centered className="jlpt-modal">
         <ModalBody className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h5 className="fw-black mb-0 text-navy-dark d-flex align-items-center gap-2">
               <Sprout size={18} className="text-success" />
-              Gieo Mầm Bài Học Vào Vườn
+              <span>Gieo Từ Vựng Vào Cây Bonsai</span>
             </h5>
             <button
               type="button"
               onClick={() => setSeedModalOpen(false)}
-              className="btn btn-sm btn-light rounded-circle p-1"
+              className="app-icon-btn"
               style={{ width: 30, height: 30 }}
             >
               <X size={16} />
@@ -987,10 +798,9 @@ const GardenPage = ({ onNavigate }) => {
           </div>
 
           <p className="text-muted small mb-3">
-            Chọn bài học Minna no Nihongo để gieo các từ vựng thành mầm cây non. Mỗi bài gieo thành công được thưởng ngay <strong>+25 Giọt Nước</strong>.
+            Chọn bài học Minna no Nihongo để nuôi dưỡng thêm từ vựng mới vào cây. Mỗi bài gieo thành công được thưởng ngay <strong>+25 Giọt Nước</strong>.
           </p>
 
-          {/* 25 Lessons Grid Picker */}
           <div
             className="p-2.5 rounded-3 bg-light border mb-3"
             style={{
@@ -1020,7 +830,8 @@ const GardenPage = ({ onNavigate }) => {
             <button
               type="button"
               onClick={() => setSeedModalOpen(false)}
-              className="btn btn-sm btn-light rounded-pill px-3 py-1.5 fw-semibold"
+              className="app-btn-secondary"
+              style={{ height: '38px', padding: '0 16px', fontSize: '13px' }}
             >
               Hủy
             </button>
@@ -1028,111 +839,123 @@ const GardenPage = ({ onNavigate }) => {
               type="button"
               disabled={seedingLoading}
               onClick={handleSeedLesson}
-              className="btn btn-sm btn-primary rounded-pill px-4 py-1.5 fw-bold shadow-xs"
+              className="app-btn-primary"
+              style={{ height: '38px', padding: '0 20px', fontSize: '13px' }}
             >
-              {seedingLoading ? <Spinner size="sm" /> : <Sprout size={14} className="me-1" />}
-              <span>Gieo Bài {selectedLessonToPlant} Vào Vườn</span>
+              {seedingLoading ? <Spinner size="sm" /> : <Sprout size={15} />}
+              <span>Gieo Bài {selectedLessonToPlant} Vào Cây</span>
             </button>
           </div>
         </ModalBody>
       </Modal>
 
-      {/* ── 6. PLANT INSPECTION MODAL (XEM CHI TIẾT CÂY & TƯỚI LẺ) ── */}
-      <Modal isOpen={plantModalOpen} toggle={() => setPlantModalOpen(false)} centered className="jlpt-modal">
-        {selectedPlant && (
-          <ModalBody className="p-4 text-center">
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <span
-                className="badge px-3 py-1 rounded-pill fw-bold"
-                style={{
-                  background: (selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).bgColor,
-                  color: (selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).color,
-                  border: `1px solid ${(selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).borderColor}`
-                }}
-              >
-                {(selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).name} • Cấp {selectedPlant.level}/4
-              </span>
-
-              <button
-                type="button"
-                onClick={() => setPlantModalOpen(false)}
-                className="btn btn-sm btn-light rounded-circle p-1"
-                style={{ width: 30, height: 30 }}
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Plant Vector Visual */}
-            <div className="my-3">
-              <BotanicalPlantVisual level={selectedPlant.level} isOverdue={selectedPlant.is_overdue} size={84} />
-            </div>
-
-            {/* Word details */}
-            <h2
-              className="fw-black text-navy-dark mb-1 font-monospace"
-              style={{ fontFamily: "'Noto Sans JP', 'Hiragino Sans', sans-serif" }}
+      {/* ── 4. MODAL: KHÁM PHÁ RỄ CÂY (DANH SÁCH TỪ VỰNG TRONG CÂY) ── */}
+      <Modal isOpen={rootsModalOpen} toggle={() => setRootsModalOpen(false)} centered size="lg" className="jlpt-modal">
+        <ModalBody className="p-3.5 p-md-4">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="fw-black mb-0 text-navy-dark d-flex align-items-center gap-2">
+              <Leaf size={18} className="text-primary" />
+              <span>Rễ Cây Tri Thức ({filteredRoots.length} Từ)</span>
+            </h5>
+            <button
+              type="button"
+              onClick={() => setRootsModalOpen(false)}
+              className="app-icon-btn"
+              style={{ width: 30, height: 30 }}
             >
-              {selectedPlant.word}
-            </h2>
+              <X size={16} />
+            </button>
+          </div>
 
-            {selectedPlant.reading && selectedPlant.reading !== selectedPlant.word && (
-              <div className="text-primary fw-bold fs-5 font-monospace mb-1">
-                {selectedPlant.reading}
+          {/* Filter & Search Bar */}
+          <div className="d-flex justify-content-between align-items-center gap-2 mb-3 flex-wrap">
+            <div className="d-flex align-items-center gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+              {[
+                { id: 'all', label: `Tất cả (${gardenItems.length})` },
+                { id: 'due', label: `Cần tưới (${stats.due})` },
+                { id: 'learning', label: `Đang lớn (${stats.l1 + stats.l2 + stats.l3})` },
+                { id: 'mastered', label: `Khắc sâu (${stats.l4})` }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setRootsFilter(tab.id)}
+                  className={`btn btn-sm rounded-pill px-3 py-1 fw-bold border flex-shrink-0 ${
+                    rootsFilter === tab.id ? 'btn-primary text-white shadow-xs' : 'btn-light text-muted'
+                  }`}
+                  style={{ fontSize: '11.5px' }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="position-relative flex-grow-1 flex-md-grow-0" style={{ minWidth: '180px' }}>
+              <Input
+                type="text"
+                placeholder="Tìm từ vựng..."
+                value={rootsSearch}
+                onChange={(e) => setRootsSearch(e.target.value)}
+                className="form-control-sm rounded-pill ps-4 border"
+                style={{ fontSize: '12px', height: '34px' }}
+              />
+              <Search size={13} className="position-absolute text-muted" style={{ left: '12px', top: '10px' }} />
+            </div>
+          </div>
+
+          {/* Vocabulary List */}
+          <div style={{ maxHeight: '380px', overflowY: 'auto' }}>
+            {filteredRoots.length === 0 ? (
+              <div className="text-center py-4 text-muted small">
+                Không tìm thấy từ vựng nào phù hợp.
+              </div>
+            ) : (
+              <div className="d-flex flex-column gap-2">
+                {filteredRoots.map(item => (
+                  <div
+                    key={item.id || item.vocab_id}
+                    className="p-2.5 px-3 rounded-3 bg-light border d-flex justify-content-between align-items-center gap-2"
+                  >
+                    <div>
+                      <div className="d-flex align-items-baseline gap-2">
+                        <span className="fw-black text-navy-dark font-monospace" style={{ fontSize: '15px' }}>
+                          {item.word}
+                        </span>
+                        {item.reading && item.reading !== item.word && (
+                          <span className="small text-primary font-monospace fw-semibold">
+                            {item.reading}
+                          </span>
+                        )}
+                        <span className="badge bg-white text-muted border" style={{ fontSize: '10px' }}>
+                          Bài {item.lesson_number}
+                        </span>
+                      </div>
+                      <div className="small text-secondary fw-medium mt-0.5" style={{ fontSize: '12px' }}>
+                        {item.meaning}
+                      </div>
+                    </div>
+
+                    <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                      <span className={`badge rounded-pill px-2 py-1 ${item.is_due ? 'bg-danger text-white' : item.level === 4 ? 'bg-warning text-dark' : 'bg-success text-white'}`} style={{ fontSize: '10px' }}>
+                        {item.is_due ? 'Cần tưới' : `Cấp ${item.level}/4`}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => speakJapanese(item.reading || item.word)}
+                        className="app-icon-btn"
+                        style={{ width: 32, height: 32 }}
+                        title="Nghe phát âm Tokyo"
+                      >
+                        <Volume2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
-
-            <h5 className="fw-bold text-dark mt-2 mb-3">{selectedPlant.meaning}</h5>
-
-            <div className="d-flex justify-content-center gap-2 mb-3">
-              <button
-                type="button"
-                onClick={() => speakJapanese(selectedPlant.reading || selectedPlant.word)}
-                className="btn btn-sm btn-light border rounded-pill px-3 py-1 text-primary fw-semibold d-flex align-items-center gap-1"
-                style={{ fontSize: '12px' }}
-              >
-                <Volume2 size={14} />
-                <span>Nghe phát âm Tokyo</span>
-              </button>
-            </div>
-
-            {/* Stage info description */}
-            <div className="p-3 rounded-3 bg-light border text-start small mb-3">
-              <div className="fw-bold text-dark mb-1">Chu kỳ sinh trưởng Ebbinghaus:</div>
-              <div className="text-muted">
-                {(selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).desc}
-              </div>
-              <div className="text-primary fw-semibold mt-1">
-                Lịch tưới kế tiếp: {(selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).nextText}
-              </div>
-            </div>
-
-            {/* Water insufficient warning */}
-            {waterWarning && (
-              <div
-                className="p-2.5 rounded-3 mb-3 d-flex align-items-center gap-2 animate-fade-in"
-                style={{ background: '#fef2f2', border: '1px solid #fecaca' }}
-              >
-                <Droplets size={15} style={{ color: '#ef4444', flexShrink: 0 }} />
-                <span style={{ fontSize: '12.5px', color: '#dc2626', fontWeight: 600 }}>
-                  Bình nước chưa đủ 5 giọt! Hãy luyện tập thêm để nạp nước nhé.
-                </span>
-              </div>
-            )}
-
-            {/* Water Single Plant Button */}
-            <div className="d-flex justify-content-center gap-2">
-              <button
-                type="button"
-                onClick={handleWaterSinglePlant}
-                className="btn btn-primary rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
-              >
-                <Droplets size={16} />
-                <span>Tưới Riêng Cây Này (Dùng 5 Giọt Nước)</span>
-              </button>
-            </div>
-          </ModalBody>
-        )}
+          </div>
+        </ModalBody>
       </Modal>
     </Container>
   );
