@@ -90,7 +90,16 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
     fetchData();
   }, [user, guestProgress]);
 
+  const [lessonBundle, setLessonBundle] = useState('all'); // 'all' | 'b1_5' | 'b6_10' | 'b11_15' | 'b16_20' | 'b21_25'
+
   const filteredLessons = lessons.filter(l => {
+    // Bundle filter
+    if (lessonBundle === 'b1_5' && (l.lesson_number < 1 || l.lesson_number > 5)) return false;
+    if (lessonBundle === 'b6_10' && (l.lesson_number < 6 || l.lesson_number > 10)) return false;
+    if (lessonBundle === 'b11_15' && (l.lesson_number < 11 || l.lesson_number > 15)) return false;
+    if (lessonBundle === 'b16_20' && (l.lesson_number < 16 || l.lesson_number > 20)) return false;
+    if (lessonBundle === 'b21_25' && (l.lesson_number < 21 || l.lesson_number > 25)) return false;
+
     if (!lessonSearch.trim()) return true;
     const q = lessonSearch.toLowerCase();
     return (
@@ -575,10 +584,75 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
           </div>
         </div>
 
-        {/* Responsive CSS Grid: auto-fills smoothly without horizontal overflow */}
+        {/* Bundle Filter Tabs */}
+        <div className="home-lesson-bundle-tabs mb-3">
+          {[
+            { id: 'all', label: 'Tất cả 25 bài' },
+            { id: 'b1_5', label: 'Bài 1–5' },
+            { id: 'b6_10', label: 'Bài 6–10' },
+            { id: 'b11_15', label: 'Bài 11–15' },
+            { id: 'b16_20', label: 'Bài 16–20' },
+            { id: 'b21_25', label: 'Bài 21–25' }
+          ].map(b => (
+            <button
+              key={b.id}
+              type="button"
+              className={`home-lesson-bundle-pill ${lessonBundle === b.id ? 'is-active' : ''}`}
+              onClick={() => {
+                sounds.playFlip?.();
+                setLessonBundle(b.id);
+              }}
+            >
+              {b.label}
+            </button>
+          ))}
+        </div>
+
+        {/* ── MOBILE VIEW: SLEEK COMPACT MICRO-CARDS (d-md-none) ── */}
+        <div className="d-flex flex-column gap-2 d-md-none">
+          {filteredLessons.map((l) => (
+            <div
+              key={l.id}
+              onClick={() => {
+                sounds.playFlip?.();
+                if (onSelectLesson) onSelectLesson(l.lesson_number);
+                onNavigate('lessons');
+              }}
+              className="home-lesson-micro-card"
+            >
+              <div className="d-flex align-items-center gap-2.5 min-w-0">
+                <span
+                  className="badge rounded-pill fw-bold text-white flex-shrink-0"
+                  style={{
+                    background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
+                    fontSize: '11px',
+                    padding: '4px 8px'
+                  }}
+                >
+                  Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}
+                </span>
+                <div
+                  className="fw-bold text-navy-dark text-truncate"
+                  style={{ fontSize: '12.5px' }}
+                >
+                  {l.title}
+                </div>
+              </div>
+
+              <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                <span className="badge bg-light text-secondary border rounded-pill px-2 py-0.5" style={{ fontSize: '10.5px' }}>
+                  {l.vocab_count} từ
+                </span>
+                <ArrowRight size={14} className="text-primary" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── DESKTOP VIEW: LUXURY RESPONSIVE GRID (d-none d-md-grid) ── */}
         <div
+          className="d-none d-md-grid"
           style={{
-            display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
             gap: '14px',
             width: '100%'

@@ -686,7 +686,7 @@ const GardenPage = ({ onNavigate }) => {
       </div>
 
       {/* ── 2. THE SINGLE TREE SANCTUARY (CÂY DUY NHẤT) ── */}
-      <div className="bonsai-sanctuary mb-4">
+      <div className="bonsai-sanctuary-zen mb-4">
         {loading ? (
           <div className="py-5">
             <Spinner color="primary" />
@@ -700,9 +700,18 @@ const GardenPage = ({ onNavigate }) => {
               <span>Cấp {stageInfo.level}/4: {stageInfo.name}</span>
             </div>
 
-            {/* The Single Bonsai Visual */}
+            {/* The Single Bonsai Visual on Zen Pedestal */}
             <div className="my-2 d-flex justify-content-center">
-              <SingleBonsaiArtwork stage={stats.stage} isThirsty={stats.vitality < 60 || stats.due > 0} />
+              <div className="bonsai-zen-pedestal position-relative">
+                <SingleBonsaiArtwork stage={stats.stage} isThirsty={stats.vitality < 60 || stats.due > 0} />
+                {wateringSplash && (
+                  <div className="bonsai-water-can-stream">
+                    <div className="p-2 rounded-circle bg-info bg-opacity-20 text-info">
+                      <Droplets size={26} />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Tree Vitality & Evolution Description */}

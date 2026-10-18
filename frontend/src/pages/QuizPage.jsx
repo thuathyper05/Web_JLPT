@@ -359,223 +359,25 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </div>
           </div>
 
-          {/* Presets: 3 High-End Exam Packages */}
-          <div className="mb-3 mb-md-4">
-            <div className="d-flex justify-content-between align-items-center mb-2">
+          {/* Question Format Mode Cards (Luxury 2x2 Grid) */}
+          <div className="mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-2.5">
               <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11px' }}>
-                Chế Độ Kiểm Tra Tiêu Chuẩn N5
+                Chọn dạng câu hỏi trắc nghiệm
+              </span>
+              <span className="badge bg-slate-100 text-slate-700 border border-slate-200 rounded-pill px-2.5 py-0.5 small fw-semibold">
+                4 định dạng chuẩn N5
               </span>
             </div>
 
-            {/* Desktop 3-column row */}
-            <div className="d-none d-md-flex row g-2.5">
-              <Col md={4}>
-                <div
-                  className="p-3 rounded-4 bg-white border hover-shadow cursor-pointer transition-all h-100 d-flex flex-column justify-content-between"
-                  style={{ borderColor: 'var(--slate-200)' }}
-                  onClick={() => {
-                    sounds.playFlip();
-                    setQuestionCount(15);
-                    setTimerSetting('15');
-                    setQuizMode('mixed');
-                    startQuizWithConfig({ count: 15, timer: '15', mode: 'mixed' });
-                  }}
-                >
-                  <div>
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span className="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
-                        15 Câu Cấp Tốc
-                      </span>
-                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>15s / câu</small>
-                    </div>
-                    <div className="d-flex align-items-center gap-1.5 mb-1">
-                      <Zap size={15} className="text-warning flex-shrink-0" />
-                      <h6 className="fw-bold text-dark mb-0">Khởi Động Phản Xạ</h6>
-                    </div>
-                    <p className="text-muted small mb-0" style={{ fontSize: '12px' }}>
-                      15 câu xáo trộn ngẫu nhiên để khởi động tốc độ tư duy.
-                    </p>
-                  </div>
-                  <div className="d-flex align-items-center gap-1 text-primary fw-bold small mt-2.5" style={{ fontSize: '12px' }}>
-                    <span>Bắt đầu</span>
-                    <ArrowRight size={13} />
-                  </div>
-                </div>
-              </Col>
-
-              <Col md={4}>
-                <div
-                  className="p-3 rounded-4 bg-white border hover-shadow cursor-pointer transition-all h-100 d-flex flex-column justify-content-between"
-                  style={{ borderColor: 'var(--primary)', borderWidth: '1.5px', background: 'linear-gradient(180deg, #ffffff 0%, #eff6ff 100%)' }}
-                  onClick={() => {
-                    sounds.playFlip();
-                    setQuestionCount(30);
-                    setTimerSetting('20');
-                    setQuizMode('mixed');
-                    startQuizWithConfig({ count: 30, timer: '20', mode: 'mixed' });
-                  }}
-                >
-                  <div>
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span className="badge bg-primary text-white fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
-                        Tiêu Chuẩn JLPT
-                      </span>
-                      <small className="text-primary fw-bold" style={{ fontSize: '11px' }}>20s / câu</small>
-                    </div>
-                    <div className="d-flex align-items-center gap-1.5 mb-1">
-                      <Target size={15} className="text-primary flex-shrink-0" />
-                      <h6 className="fw-bold text-primary mb-0">Đề 30 Câu Chuẩn</h6>
-                    </div>
-                    <p className="text-muted small mb-0" style={{ fontSize: '12px' }}>
-                      Mô phỏng bài thi chính thức với giới hạn thời gian thực tế.
-                    </p>
-                  </div>
-                  <div className="d-flex align-items-center gap-1 text-primary fw-bold small mt-2.5" style={{ fontSize: '12px' }}>
-                    <span>Bắt đầu</span>
-                    <ArrowRight size={13} />
-                  </div>
-                </div>
-              </Col>
-
-              <Col md={4}>
-                <div
-                  className="p-3 rounded-4 bg-white border hover-shadow cursor-pointer transition-all h-100 d-flex flex-column justify-content-between"
-                  style={{ borderColor: 'var(--slate-200)' }}
-                  onClick={() => {
-                    sounds.playFlip();
-                    setQuestionCount('all');
-                    setTimerSetting('none');
-                    setQuizMode('mixed');
-                    startQuizWithConfig({ count: 'all', timer: 'none', mode: 'mixed' });
-                  }}
-                >
-                  <div>
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span className="badge bg-danger bg-opacity-10 text-danger fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
-                        Toàn Bộ Từ Vựng
-                      </span>
-                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>100% Bài</small>
-                    </div>
-                    <div className="d-flex align-items-center gap-1.5 mb-1">
-                      <Award size={15} className="text-danger flex-shrink-0" />
-                      <h6 className="fw-bold text-dark mb-0">Chinh Phục Toàn Bài</h6>
-                    </div>
-                    <p className="text-muted small mb-0" style={{ fontSize: '12px' }}>
-                      Kiểm tra toàn bộ 100% từ vựng của bài học đang chọn.
-                    </p>
-                  </div>
-                  <div className="d-flex align-items-center gap-1 text-danger fw-bold small mt-2.5" style={{ fontSize: '12px' }}>
-                    <span>Làm ngay</span>
-                    <ArrowRight size={13} />
-                  </div>
-                </div>
-              </Col>
-            </div>
-
-            {/* Mobile Horizontal Scrollable Cards */}
-            <div className="d-flex d-md-none gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-              <div
-                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
-                style={{ width: '220px', borderColor: 'var(--slate-200)' }}
-                onClick={() => {
-                  sounds.playFlip();
-                  setQuestionCount(15);
-                  setTimerSetting('15');
-                  setQuizMode('mixed');
-                  startQuizWithConfig({ count: 15, timer: '15', mode: 'mixed' });
-                }}
-              >
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <span className="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
-                    15 Câu Cấp Tốc
-                  </span>
-                  <small className="text-muted" style={{ fontSize: '10.5px' }}>15s</small>
-                </div>
-                <div className="fw-bold text-dark d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
-                  <Zap size={13} className="text-warning" />
-                  <span>Khởi Động Phản Xạ</span>
-                </div>
-                <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-1.5" style={{ fontSize: '11px' }}>
-                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
-                </div>
-              </div>
-
-              <div
-                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
-                style={{ width: '220px', borderColor: 'var(--primary)', background: 'linear-gradient(180deg, #ffffff 0%, #eff6ff 100%)' }}
-                onClick={() => {
-                  sounds.playFlip();
-                  setQuestionCount(30);
-                  setTimerSetting('20');
-                  setQuizMode('mixed');
-                  startQuizWithConfig({ count: 30, timer: '20', mode: 'mixed' });
-                }}
-              >
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <span className="badge bg-primary text-white fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
-                    Tiêu Chuẩn N5
-                  </span>
-                  <small className="text-primary fw-bold" style={{ fontSize: '10.5px' }}>20s</small>
-                </div>
-                <div className="fw-bold text-primary d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
-                  <Target size={13} className="text-primary" />
-                  <span>Đề 30 Câu Chuẩn</span>
-                </div>
-                <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-1.5" style={{ fontSize: '11px' }}>
-                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
-                </div>
-              </div>
-
-              <div
-                className="p-2.5 rounded-3 bg-white border cursor-pointer transition-all flex-shrink-0"
-                style={{ width: '220px', borderColor: 'var(--slate-200)' }}
-                onClick={() => {
-                  sounds.playFlip();
-                  setQuestionCount('all');
-                  setTimerSetting('none');
-                  setQuizMode('mixed');
-                  startQuizWithConfig({ count: 'all', timer: 'none', mode: 'mixed' });
-                }}
-              >
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <span className="badge bg-danger bg-opacity-10 text-danger fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
-                    Toàn Bộ Từ Vựng
-                  </span>
-                  <small className="text-muted" style={{ fontSize: '10.5px' }}>100%</small>
-                </div>
-                <div className="fw-bold text-dark d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
-                  <Award size={13} className="text-danger" />
-                  <span>Chinh Phục Toàn Bài</span>
-                </div>
-                <div className="d-flex align-items-center gap-1 text-danger fw-bold mt-1.5" style={{ fontSize: '11px' }}>
-                  <span>Bắt đầu ngay</span> <ArrowRight size={11} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Mode Cards (2x2 Grid) */}
-          <div className="mb-3 mb-md-4">
-            <span className="small text-muted fw-bold text-uppercase tracking-wider d-block mb-2" style={{ fontSize: '11px' }}>
-              Chọn dạng câu hỏi trắc nghiệm
-            </span>
-
-            <Row className="g-2 g-md-2.5">
+            <Row className="g-2.5 g-md-3">
               {modeCards.map(m => {
                 const isSelected = quizMode === m.id;
                 const IconComponent = m.icon;
                 return (
-                  <Col xs={6} key={m.id}>
+                  <Col xs={12} sm={6} key={m.id}>
                     <div
-                      className={`p-2.5 p-md-3 rounded-4 border transition-all cursor-pointer h-100 d-flex flex-column justify-content-between ${
-                        isSelected
-                          ? 'bg-primary bg-opacity-10 border-primary shadow-xs'
-                          : 'bg-white hover-shadow'
-                      }`}
-                      style={{
-                        borderColor: isSelected ? 'var(--primary)' : 'var(--slate-200)',
-                        borderWidth: isSelected ? '2px' : '1px'
-                      }}
+                      className={`quiz-mode-card ${isSelected ? 'is-selected' : ''}`}
                       onClick={() => {
                         sounds.playFlip();
                         setQuizMode(m.id);
@@ -583,29 +385,42 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     >
                       <div>
                         <div className="d-flex justify-content-between align-items-center mb-2">
-                          <div className="d-flex align-items-center gap-2 min-w-0">
+                          <div className="d-flex align-items-center gap-2.5">
                             <div
-                              className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                              className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
                               style={{
-                                width: 30,
-                                height: 30,
-                                background: isSelected ? 'rgba(37, 99, 235, 0.15)' : '#f1f5f9',
-                                color: isSelected ? '#2563eb' : m.color || '#64748b'
+                                width: 36,
+                                height: 36,
+                                background: isSelected ? '#2563eb' : '#f1f5f9',
+                                color: isSelected ? '#ffffff' : m.color || '#64748b'
                               }}
                             >
-                              <IconComponent size={15} />
+                              <IconComponent size={18} strokeWidth={2.2} />
                             </div>
-                            <span className={`fw-bold text-truncate ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '12.5px' }}>
-                              {m.title}
-                            </span>
+                            <div>
+                              <h6 className={`fw-bold mb-0 ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '14.5px' }}>
+                                {m.title}
+                              </h6>
+                              <span className="text-muted small" style={{ fontSize: '11px' }}>{m.sub}</span>
+                            </div>
                           </div>
-                          {isSelected && (
-                            <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 16, height: 16 }}>
-                              <Check size={10} color="#fff" />
+                          <div className="d-flex align-items-center gap-1.5">
+                            <span
+                              className={`badge rounded-pill fw-semibold px-2 py-0.5 ${
+                                isSelected ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600'
+                              }`}
+                              style={{ fontSize: '10.5px' }}
+                            >
+                              {m.badge}
                             </span>
-                          )}
+                            {isSelected && (
+                              <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center" style={{ width: 18, height: 18 }}>
+                                <Check size={11} color="#fff" />
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <p className="text-muted small mb-0 d-none d-sm-block" style={{ fontSize: '11.5px', lineHeight: '1.4' }}>
+                        <p className="text-muted small mb-0 mt-1" style={{ fontSize: '12px', lineHeight: '1.45' }}>
                           {m.desc}
                         </p>
                       </div>
@@ -807,20 +622,20 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 </div>
               </div>
 
-              {/* 4 Options Grid (Pure ABCD Multiple Choice) */}
-              <Row className="g-2 g-md-3 mb-3 mb-md-4">
+              {/* 4 Options Grid (Luxury ABCD Multiple Choice) */}
+              <Row className="g-2.5 g-md-3 mb-3 mb-md-4">
                 {currentQ.options?.map((opt, idx) => {
-                  let cardClass = 'quiz-option-card';
+                  let choiceClass = 'quiz-choice-card';
                   if (isAnswerSubmitted) {
                     if (opt === currentQ.correct_answer) {
-                      cardClass += ' correct';
+                      choiceClass += ' is-correct';
                     } else if (selectedOption === opt) {
-                      cardClass += ' wrong';
+                      choiceClass += ' is-wrong';
                     } else {
-                      cardClass += ' disabled opacity-50';
+                      choiceClass += ' opacity-50 pe-none';
                     }
                   } else if (selectedOption === opt) {
-                    cardClass += ' selected';
+                    choiceClass += ' is-selected';
                   }
 
                   return (
@@ -832,19 +647,20 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                             setSelectedOption(opt);
                           }
                         }}
-                        className={cardClass}
-                        style={{ minHeight: '48px', padding: '10px 14px' }}
+                        className={choiceClass}
                       >
-                        <span className="quiz-option-badge">
+                        <div className="quiz-choice-letter">
                           {String.fromCharCode(65 + idx)}
-                        </span>
-                        <span className="fs-6 fw-semibold flex-grow-1 text-slate-800 font-monospace" style={{ fontSize: '13.5px' }}>{opt}</span>
+                        </div>
+                        <div className="fs-6 fw-bold flex-grow-1 text-slate-800 font-monospace">
+                          {opt}
+                        </div>
 
                         {isAnswerSubmitted && opt === currentQ.correct_answer && (
-                          <CheckCircle size={17} className="text-success flex-shrink-0" />
+                          <CheckCircle size={20} className="text-success flex-shrink-0" />
                         )}
                         {isAnswerSubmitted && selectedOption === opt && opt !== currentQ.correct_answer && (
-                          <XCircle size={17} className="text-danger flex-shrink-0" />
+                          <XCircle size={20} className="text-danger flex-shrink-0" />
                         )}
                       </div>
                     </Col>

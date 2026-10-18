@@ -70,7 +70,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
         <Container fluid className="d-flex justify-content-between align-items-center px-0 flex-nowrap">
 
           {/* ── Left: Professional Branding + Compact Level Pill ── */}
-          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0 min-w-0">
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2.5 flex-shrink-0 min-w-0">
             <NavbarBrand href="#" onClick={e => { e.preventDefault(); setActiveTab('home'); }}
               className="p-0 m-0 text-decoration-none d-flex align-items-center" style={{ cursor: 'pointer' }}>
               <Logo size={32} />
@@ -165,8 +165,8 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             </NavItem>
           </Nav>
 
-          {/* ── Right: Search + Account + Mobile Menu Toggle (Unified Squircles & Proper Spacing) ── */}
-          <div className="d-flex align-items-center gap-2.5 flex-shrink-0">
+          {/* ── Right: Search + Account + Mobile Menu Toggle (Spacious Anti-Cramming Row) ── */}
+          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
@@ -428,43 +428,42 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             )}
 
             {/* VIP Group: 2 Flagship New Games */}
-            <div className="p-2.5 rounded-3 border" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #f0fdf4 100%)', borderColor: '#fde68a' }}>
-              <div className="d-flex align-items-center justify-content-between mb-2 px-1">
-                <span className="fw-black text-uppercase text-dark d-flex align-items-center gap-1" style={{ fontSize: '10.5px', letterSpacing: '0.05em' }}>
-                  <Zap size={11} className="text-warning" /> 2 Trò Chơi Mới Đột Phá
+            <div className="p-3 rounded-4 border mb-1" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #f0fdf4 100%)', borderColor: '#fde68a' }}>
+              <div className="d-flex align-items-center justify-content-between mb-2.5 px-1">
+                <span className="fw-black text-uppercase text-dark d-flex align-items-center gap-1.5" style={{ fontSize: '11px', letterSpacing: '0.05em' }}>
+                  <Zap size={13} className="text-warning" /> 2 Trò Chơi Mới Đột Phá
                 </span>
-                <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '8.5px', padding: '1px 5px' }}>MỚI</span>
+                <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '9px', padding: '1px 6px' }}>MỚI</span>
               </div>
-              <div className="d-flex flex-column gap-1.5">
+              <div className="d-flex flex-column gap-2.5">
                 {gameNavItems.map(item => {
                   const Icon = item.icon;
-                  const isActive = activeTab === item.id;
                   const isRush = item.id === 'wordmatch';
                   return (
                     <div
                       key={item.id}
                       onClick={() => handleMobileNav(item.id)}
-                      className="p-2 rounded-3 bg-white border d-flex align-items-center justify-content-between cursor-pointer shadow-xs"
-                      style={{ borderColor: isRush ? '#fed7aa' : '#bbf7d0' }}
+                      className="p-2.5 rounded-3 bg-white border d-flex align-items-center justify-content-between cursor-pointer shadow-xs"
+                      style={{ borderColor: isRush ? '#fed7aa' : '#bbf7d0', minHeight: 48 }}
                     >
-                      <div className="d-flex align-items-center gap-2 min-w-0">
+                      <div className="d-flex align-items-center gap-2.5 min-w-0">
                         <div
                           className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
-                          style={{ width: 30, height: 30, background: item.bg, color: item.color }}
+                          style={{ width: 34, height: 34, background: item.bg, color: item.color }}
                         >
-                          <Icon size={16} />
+                          <Icon size={18} />
                         </div>
                         <div className="min-w-0">
                           <div className="d-flex align-items-center gap-1.5">
-                            <span className="fw-bold text-dark" style={{ fontSize: '12.5px' }}>{item.label}</span>
+                            <span className="fw-bold text-dark" style={{ fontSize: '13px' }}>{item.label}</span>
                             <span className={`badge-new-blink ${isRush ? 'badge-new-blink--rush' : 'badge-new-blink--garden'}`} style={{ fontSize: '8.5px', padding: '1px 5px' }}>
                               MỚI
                             </span>
                           </div>
-                          <div className="text-muted text-truncate" style={{ fontSize: '10px' }}>{item.desc}</div>
+                          <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>{item.desc}</div>
                         </div>
                       </div>
-                      <ChevronRight size={14} className="text-muted flex-shrink-0" />
+                      <ChevronRight size={15} className="text-muted flex-shrink-0" />
                     </div>
                   );
                 })}
@@ -472,12 +471,12 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             </div>
 
             {/* Group 1: Study Modes */}
-            <div>
-              <div className="text-muted fw-bold text-uppercase mb-2 px-1" style={{ fontSize: '10.5px', letterSpacing: '0.06em' }}>
+            <div className="mb-1">
+              <div className="text-muted fw-bold text-uppercase mb-2.5 px-1" style={{ fontSize: '11px', letterSpacing: '0.06em' }}>
                 Phương pháp học tập & Luyện tập
               </div>
 
-              <div className="d-flex flex-column gap-1.5">
+              <div className="d-flex flex-column gap-2.5">
                 {mainNavItems.map(item => {
                   const Icon = item.icon;
                   const isActive = activeTab === item.id;
@@ -485,35 +484,35 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <div
                       key={item.id}
                       onClick={() => handleMobileNav(item.id)}
-                      className={`p-2 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
+                      className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
                         isActive
                           ? 'border-primary bg-primary bg-opacity-10 text-primary'
                           : 'bg-white text-dark hover-shadow'
                       }`}
-                      style={{ cursor: 'pointer', transition: 'all 0.18s ease' }}
+                      style={{ cursor: 'pointer', transition: 'all 0.18s ease', minHeight: 48 }}
                     >
                       <div className="d-flex align-items-center gap-2.5 min-w-0">
                         <div
                           className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
                           style={{
-                            width: 32,
-                            height: 32,
+                            width: 34,
+                            height: 34,
                             background: isActive ? item.color : item.bg,
                             color: isActive ? '#fff' : item.color
                           }}
                         >
-                          <Icon size={16} />
+                          <Icon size={17} />
                         </div>
                         <div className="min-w-0">
-                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13px' }}>
+                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13.5px' }}>
                             {item.label}
                           </div>
-                          <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>
+                          <div className="text-muted text-truncate" style={{ fontSize: '11px' }}>
                             {item.desc}
                           </div>
                         </div>
                       </div>
-                      <ChevronRight size={14} className={isActive ? 'text-primary' : 'text-muted'} />
+                      <ChevronRight size={15} className={isActive ? 'text-primary' : 'text-muted'} />
                     </div>
                   );
                 })}
@@ -522,11 +521,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
             {/* Group 2: Tools & Retention */}
             <div>
-              <div className="text-muted fw-bold text-uppercase mb-2 px-1" style={{ fontSize: '10.5px', letterSpacing: '0.06em' }}>
+              <div className="text-muted fw-bold text-uppercase mb-2.5 px-1" style={{ fontSize: '11px', letterSpacing: '0.06em' }}>
                 Sổ tay cá nhân & Củng cố
               </div>
 
-              <div className="d-flex flex-column gap-1.5">
+              <div className="d-flex flex-column gap-2.5">
                 {moreNavItems.map(item => {
                   const Icon = item.icon;
                   const isActive = activeTab === item.id;
@@ -534,35 +533,35 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                     <div
                       key={item.id}
                       onClick={() => handleMobileNav(item.id)}
-                      className={`p-2 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
+                      className={`p-2.5 rounded-3 border d-flex align-items-center justify-content-between transition-all ${
                         isActive
                           ? 'border-primary bg-primary bg-opacity-10 text-primary'
                           : 'bg-white text-dark hover-shadow'
                       }`}
-                      style={{ cursor: 'pointer', transition: 'all 0.18s ease' }}
+                      style={{ cursor: 'pointer', transition: 'all 0.18s ease', minHeight: 48 }}
                     >
                       <div className="d-flex align-items-center gap-2.5 min-w-0">
                         <div
                           className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
                           style={{
-                            width: 32,
-                            height: 32,
+                            width: 34,
+                            height: 34,
                             background: isActive ? item.color : item.bg,
                             color: isActive ? '#fff' : item.color
                           }}
                         >
-                          <Icon size={16} />
+                          <Icon size={17} />
                         </div>
                         <div className="min-w-0">
-                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13px' }}>
+                          <div className={`fw-bold text-truncate ${isActive ? 'text-primary' : 'text-navy-dark'}`} style={{ fontSize: '13.5px' }}>
                             {item.label}
                           </div>
-                          <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>
+                          <div className="text-muted text-truncate" style={{ fontSize: '11px' }}>
                             {item.desc}
                           </div>
                         </div>
                       </div>
-                      <ChevronRight size={14} className={isActive ? 'text-primary' : 'text-muted'} />
+                      <ChevronRight size={15} className={isActive ? 'text-primary' : 'text-muted'} />
                     </div>
                   );
                 })}
