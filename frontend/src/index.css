@@ -3260,6 +3260,136 @@ p {
 /* ── Interactive Cursor ───────────────────────────────────── */
 .cursor-pointer { cursor: pointer; }
 
+/* ==========================================================================
+   TOKYO PRECISION GLASS — UNIFIED ZEN FOCUS CARD & DESIGN SYSTEM
+   ========================================================================== */
+
+/* Unified Zen Focus Card used across Practice Input, Flashcards, Quiz, Lessons */
+.zen-focus-card {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--slate-200);
+  border-radius: 24px !important;
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto;
+  overflow: hidden;
+  transition: transform 0.24s var(--ease-spring), box-shadow 0.24s var(--ease-spring);
+}
+
+@media (max-width: 576px) {
+  .zen-focus-card {
+    padding: 24px 16px;
+    border-radius: 20px !important;
+  }
+}
+
+/* Zen Japanese Kanji Headings */
+.zen-kanji-title {
+  font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif !important;
+  font-size: clamp(2.4rem, 8vw, 3.8rem);
+  font-weight: 900;
+  color: var(--slate-900);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Zen Japanese Kana Reading */
+.zen-kana-sub {
+  font-family: 'Noto Sans JP', 'Hiragino Sans', sans-serif !important;
+  font-size: clamp(1.2rem, 3.8vw, 1.55rem);
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+/* Zen Vietnamese Meaning Text */
+.zen-meaning-display {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: clamp(1.25rem, 4.2vw, 1.85rem);
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Zen High-Contrast Input Box */
+.zen-input-field {
+  width: 100%;
+  height: 52px;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 14px !important;
+  border: 2px solid var(--slate-200);
+  background: #ffffff;
+  color: var(--slate-900);
+  padding: 0 16px;
+  transition: all 0.2s var(--ease-spring);
+  outline: none;
+}
+
+@media (max-width: 576px) {
+  .zen-input-field {
+    height: 48px;
+    font-size: 15.5px;
+  }
+}
+
+.zen-input-field:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.zen-input-field.is-correct {
+  border-color: var(--success) !important;
+  background: #f0fdf4 !important;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16) !important;
+}
+
+.zen-input-field.is-wrong {
+  border-color: var(--danger) !important;
+  background: #fef2f2 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.16) !important;
+}
+
+/* Anti-cramming 8-point Spacing Containers */
+.anti-cramming-page {
+  padding-left: clamp(14px, 3.5vw, 24px) !important;
+  padding-right: clamp(14px, 3.5vw, 24px) !important;
+}
+
+.button-group-spaced {
+  display: flex;
+  align-items: center;
+  gap: 10px !important;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 576px) {
+  .button-group-spaced {
+    gap: 12px !important;
+  }
+}
+
+/* Universal Button Tactile Feedback */
+.btn {
+  transition: transform 0.16s var(--ease-spring), box-shadow 0.16s var(--ease-spring), background-color 0.16s ease !important;
+}
+.btn:active {
+  transform: scale(0.97) !important;
+}
+
 
 
 

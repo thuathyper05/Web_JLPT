@@ -417,7 +417,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             {/* Floating +10 XP badge */}
             {floatingXp && (
               <div className="floating-xp-badge">
-                +10 XP ✨ Đã Thành Thạo!
+                +10 XP · Đã Thành Thạo!
               </div>
             )}
             {/* Top Tools */}
@@ -453,34 +453,20 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             {/* Main Word Display */}
             <div className="text-center my-2 my-md-3 w-100 overflow-hidden">
               {currentWord.kanji && currentWord.kanji !== '–' && currentWord.kanji !== '-' && (
-                <h1
-                  className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
-                  style={{
-                    fontSize: 'clamp(1.6rem, 6vw, 2.8rem)',
-                    wordBreak: 'break-word',
-                    overflowWrap: 'anywhere'
-                  }}
-                >
+                <h1 className="zen-kanji-title mb-1.5">
                   {currentWord.kanji}
                 </h1>
               )}
 
-              <div className="d-flex align-items-center justify-content-center gap-2 mb-1 flex-wrap">
-                <h2
-                  className="text-primary fw-bold mb-0 font-monospace text-center"
-                  style={{
-                    fontSize: 'clamp(1.25rem, 5vw, 2.2rem)',
-                    wordBreak: 'break-word',
-                    overflowWrap: 'anywhere'
-                  }}
-                >
+              <div className="d-flex align-items-center justify-content-center gap-2 mb-1.5 flex-wrap">
+                <div className="zen-kana-sub font-monospace text-center">
                   {currentWord.clean_kana || currentWord.kana}
-                </h2>
+                </div>
                 <Button
                   color="light"
                   size="sm"
                   className="p-1 rounded-circle border text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{ width: 32, height: 32 }}
+                  style={{ width: 34, height: 34 }}
                   onClick={() => speakJapanese(currentWord.clean_kana || currentWord.kana)}
                   title="Nghe phát âm chuẩn Tokyo"
                 >
@@ -488,13 +474,9 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 </Button>
               </div>
 
-              <div className="text-muted fst-italic small mb-2.5" style={{ fontSize: '12px' }}>
-                [{currentWord.romaji}]
-              </div>
-
               {/* Clean Vietnamese Meaning */}
               <div
-                className="p-2.5 p-md-3 rounded-3 fw-bold text-dark fs-6 fs-md-5 mb-2.5"
+                className="p-2.5 p-md-3 rounded-3 fw-bold text-dark mb-2.5 zen-meaning-display"
                 style={{
                   background: 'var(--slate-50)',
                   border: '1px solid var(--slate-200)',
@@ -713,7 +695,8 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                               <span className="fw-bold text-dark">{cleanMeaning}</span>
                               {item.usage_note && (
                                 <small className="text-muted d-block mt-1" style={{ fontSize: '11px' }}>
-                                  💡 {item.usage_note}
+                                  <span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>
+                                  {item.usage_note}
                                 </small>
                               )}
                             </div>
@@ -845,7 +828,8 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                         )}
                         {item.usage_note && (
                           <div className="text-muted small mt-0.5" style={{ fontSize: '11px' }}>
-                            💡 {item.usage_note}
+                            <span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>
+                            {item.usage_note}
                           </div>
                         )}
                       </div>

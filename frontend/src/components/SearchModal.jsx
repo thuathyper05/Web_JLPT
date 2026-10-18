@@ -155,7 +155,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                   <div className="text-secondary small mt-0.5">{cleanMeaning}</div>
                   {item.usage_note && (
                     <div className="text-muted small" style={{ fontSize: '11px' }}>
-                      💡 {item.usage_note}
+                      {item.usage_note}
                     </div>
                   )}
                 </div>

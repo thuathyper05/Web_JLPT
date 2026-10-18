@@ -155,8 +155,8 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                           <Icon size={15} style={{ color: activeTab === item.id ? '#2563eb' : item.color || '#64748b' }} />
                           <span>{item.label}</span>
                         </div>
-                        {isRush && <span className="badge-new-blink badge-new-blink--rush ms-2">NEW 🔥</span>}
-                        {isGarden && <span className="badge-new-blink badge-new-blink--garden ms-2">NEW 🌸</span>}
+                        {isRush && <span className="badge-new-blink badge-new-blink--rush ms-2">MỚI</span>}
+                        {isGarden && <span className="badge-new-blink badge-new-blink--garden ms-2">MỚI</span>}
                       </DropdownItem>
                     );
                   })}
@@ -166,7 +166,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
           </Nav>
 
           {/* ── Right: Search + Account + Mobile Menu Toggle (Unified Squircles & Proper Spacing) ── */}
-          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
+          <div className="d-flex align-items-center gap-2.5 flex-shrink-0">
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
@@ -180,7 +180,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             {/* Mobile-only Unified Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
               className="d-flex d-sm-none align-items-center justify-content-center"
-              style={{ width: 35, height: 35, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
+              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
               title="Tìm kiếm từ vựng">
               <Search size={15} />
             </button>
@@ -208,15 +208,15 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   </div>
                   <DropdownItem onClick={() => setActiveTab('wordmatch')} className="d-flex align-items-center justify-content-between py-2">
                     <div className="d-flex align-items-center gap-2">
-                      <Zap size={15} style={{ color: '#f59e0b' }} /> <span>Nối từ siêu tốc ⚡</span>
+                      <Zap size={15} style={{ color: '#f59e0b' }} /> <span>Nối từ siêu tốc</span>
                     </div>
-                    <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '9px', padding: '1px 5px' }}>NEW 🔥</span>
+                    <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '9px', padding: '1px 5px' }}>MỚI</span>
                   </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('garden')} className="d-flex align-items-center justify-content-between py-2">
                     <div className="d-flex align-items-center gap-2">
-                      <Sprout size={15} style={{ color: '#10b981' }} /> <span>Vườn cây trí nhớ 🌱</span>
+                      <Sprout size={15} style={{ color: '#10b981' }} /> <span>Vườn cây trí nhớ</span>
                     </div>
-                    <span className="badge-new-blink badge-new-blink--garden" style={{ fontSize: '9px', padding: '1px 5px' }}>NEW 🌸</span>
+                    <span className="badge-new-blink badge-new-blink--garden" style={{ fontSize: '9px', padding: '1px 5px' }}>MỚI</span>
                   </DropdownItem>
                   <DropdownItem onClick={() => setActiveTab('dashboard')} className="d-flex align-items-center gap-2 py-2">
                     <BarChart2 size={15} style={{ color: '#2563eb' }} /> Tiến độ học tập

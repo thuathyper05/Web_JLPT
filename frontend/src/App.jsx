@@ -352,7 +352,7 @@ function App() {
               <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
                 {[
                   { id: 'lessons', label: '25 Bài học Minna', icon: BookOpen, color: '#3b82f6' },
-                  { id: 'wordmatch', label: 'Nối từ siêu tốc ⚡', icon: Zap, color: '#f59e0b' },
+                  { id: 'wordmatch', label: 'Nối từ siêu tốc', icon: Zap, color: '#f59e0b' },
                   { id: 'kanji', label: 'Chữ Hán Kanji N5', icon: PenTool, color: '#38bdf8' },
                   { id: 'flashcard', label: 'Thẻ nhớ Flashcard 3D', icon: Layers, color: '#10b981' },
                   { id: 'quiz', label: 'Trắc nghiệm JLPT ABCD', icon: CheckSquare, color: '#ef4444' },
@@ -388,7 +388,7 @@ function App() {
               </h6>
               <ul className="list-unstyled small d-flex flex-column gap-2 mb-0">
                 {[
-                  { id: 'garden', label: 'Vườn cây trí nhớ 🌱', icon: Sprout, color: '#10b981' },
+                  { id: 'garden', label: 'Vườn cây trí nhớ', icon: Sprout, color: '#10b981' },
                   { id: 'review', label: 'Ôn tập từ làm sai', icon: RefreshCw, color: '#ef4444' },
                   { id: 'favorites', label: 'Từ vựng yêu thích', icon: Star, color: '#f59e0b' },
                   { id: 'notes', label: 'Sổ ghi chú cá nhân', icon: FileText, color: '#38bdf8' },

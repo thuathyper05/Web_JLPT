@@ -250,12 +250,12 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
       let notifyText = `+${roundGained} ĐIỂM`;
       if (newCombo >= 4) {
-        notifyText = `🔥 FEVER x${newCombo}! +${roundGained}`;
+        notifyText = `FEVER x${newCombo}! +${roundGained}`;
       } else if (newCombo > 1) {
         notifyText = `COMBO x${newCombo}! +${roundGained}`;
       }
       if (isSuperSpeed) {
-        notifyText += ` ⚡ Phản xạ ${matchSpeedSec}s!`;
+        notifyText += ` • Phản xạ ${matchSpeedSec}s!`;
       }
       setFloatingNotification({ text: notifyText, id: Date.now() });
       setTimeout(() => setFloatingNotification(null), 850);
@@ -439,9 +439,9 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               </div>
               <div className="d-flex align-items-center gap-1.5 bg-light p-1 rounded-pill border">
                 {[
-                  { id: 'blitz', label: '⚡ Chớp Nhoáng (30s)' },
-                  { id: 'standard', label: '🔥 Tiêu Chuẩn (60s)' },
-                  { id: 'relax', label: '🌿 Thư Giãn (90s)' }
+                  { id: 'blitz', label: 'Chớp Nhoáng (30s)' },
+                  { id: 'standard', label: 'Tiêu Chuẩn (60s)' },
+                  { id: 'relax', label: 'Thư Giãn (90s)' }
                 ].map(m => (
                   <button
                     key={m.id}
@@ -496,7 +496,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               <div className="mb-2.5">
                 <div className="d-flex align-items-center justify-content-between mb-1.5 flex-wrap gap-1">
                   <small className="text-muted fw-semibold" style={{ fontSize: 11 }}>
-                    ⚡ Gói chọn bài nhanh:
+                    Gói chọn bài nhanh:
                   </small>
                   <div className="d-flex align-items-center gap-1.5">
                     <button
@@ -556,7 +556,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                   >
                     <span>{num}</span>
                     {isSelected && selectionMode === 'multi' && (
-                      <span className="wm-lesson-check-dot">✓</span>
+                      <span className="wm-lesson-check-dot"><Check size={8} strokeWidth={3} /></span>
                     )}
                   </button>
                 );
@@ -566,8 +566,8 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             <div className="text-center mt-2.5">
               <small className="text-muted" style={{ fontSize: 11.5 }}>
                 {selectionMode === 'single'
-                  ? '💡 Đang ở chế độ 1 bài. Bấm vào bài học để chọn bài thi đấu.'
-                  : '💡 Đang ở chế độ nhiều bài. Chạm để chọn hoặc bỏ chọn bất kỳ sự kết hợp nào.'}
+                  ? 'Đang ở chế độ 1 bài. Bấm vào bài học để chọn bài thi đấu.'
+                  : 'Đang ở chế độ nhiều bài. Chạm để chọn hoặc bỏ chọn bất kỳ sự kết hợp nào.'}
               </small>
             </div>
           </div>
@@ -579,23 +579,23 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               <span>Cơ chế trò chơi:</span>
             </div>
             <div className="wm-rule">
-              <span className="wm-rule-icon">👆</span>
+              <span className="wm-rule-icon"><Target size={14} className="text-primary" /></span>
               <span>Chạm <strong>từ tiếng Nhật</strong> bên trái ➔ chạm ngay <strong>nghĩa tiếng Việt</strong> tương ứng bên phải.</span>
             </div>
             <div className="wm-rule">
-              <span className="wm-rule-icon">🔥</span>
+              <span className="wm-rule-icon"><Flame size={14} className="text-danger" /></span>
               <span>Ghép đúng liên tiếp tích <strong>Combo</strong>. Từ Combo x4 mở khóa <strong>Fever Mode</strong> thưởng điểm gấp rưỡi!</span>
             </div>
             <div className="wm-rule">
-              <span className="wm-rule-icon">⚡</span>
+              <span className="wm-rule-icon"><Zap size={14} className="text-warning" /></span>
               <span>Ghép xong 5 cặp, hệ thống tự động tải vòng tiếp theo ngay lập tức không có độ trễ!</span>
             </div>
           </div>
 
           {/* Start Button */}
           <button type="button" onClick={startGame} className="wm-start-btn">
-            <Play size={22} />
-            Bắt đầu thi đấu ({selectedCountText}) ⚡
+            <Play size={20} />
+            Bắt đầu thi đấu ({selectedCountText})
           </button>
         </Container>
       </div>
@@ -769,7 +769,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         <div className="wm-result-card">
           {isNewRecord ? (
             <>
-              <div className="wm-result-badge new-record">🏆 KỶ LỤC MỚI CỦA BẠN!</div>
+              <div className="wm-result-badge new-record">KỶ LỤC MỚI CỦA BẠN!</div>
               <h2 className="wm-result-score highlight">{score.toLocaleString()}</h2>
             </>
           ) : (
@@ -814,7 +814,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
           <div className="wm-result-actions mb-3.5">
             <button type="button" onClick={startGame} className="wm-start-btn">
               <RotateCcw size={18} />
-              Chơi lại ngay ⚡
+              Chơi lại ngay
             </button>
 
             {matchedHistory.length > 0 && (
@@ -831,8 +831,8 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                 <Sprout size={18} />
                 <span>
                   {gardenPlanted
-                    ? `✓ Đã gieo ${matchedHistory.length} từ vào Vườn Trí Nhớ!`
-                    : `Gieo ${matchedHistory.length} từ này vào Vườn Cây Trí Nhớ 🌱`}
+                    ? `Đã gieo ${matchedHistory.length} từ vào Vườn Trí Nhớ!`
+                    : `Gieo ${matchedHistory.length} từ này vào Vườn Cây Trí Nhớ`}
                 </span>
               </button>
             )}

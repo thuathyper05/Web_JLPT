@@ -30,7 +30,9 @@ import {
   BookOpen,
   VolumeX,
   Sparkles,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Trophy,
+  RotateCcw
 } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
@@ -521,7 +523,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             title="Đổi chiều lật thẻ"
           >
             <ArrowRightLeft size={11} className="text-primary" />
-            <span>{cardDirection === 'vi_to_jp' ? '🇻🇳 ➔ 🇯🇵' : '🇯🇵 ➔ 🇻🇳'}</span>
+            <span>{cardDirection === 'vi_to_jp' ? 'Việt ➔ Nhật' : 'Nhật ➔ Việt'}</span>
           </button>
 
           {/* Audio toggle button */}
@@ -564,7 +566,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
               }}
               className={`segmented-item ${cardDirection === 'vi_to_jp' ? 'active' : ''}`}
             >
-              <span>🇻🇳 Tiếng Việt ➔ 🇯🇵 Tiếng Nhật</span>
+              <span>Việt ➔ Nhật</span>
             </button>
             <button
               type="button"
@@ -575,7 +577,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
               }}
               className={`segmented-item ${cardDirection === 'jp_to_vi' ? 'active' : ''}`}
             >
-              <span>🇯🇵 Tiếng Nhật ➔ 🇻🇳 Tiếng Việt</span>
+              <span>Nhật ➔ Việt</span>
             </button>
           </div>
         </div>
@@ -594,8 +596,10 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
       ) : sessionDone ? (
         /* ── 3. Session Complete Celebration Card ── */
         <div className="jlpt-card p-4 p-md-5 text-center bg-white rounded-4 border shadow-sm animate-fade-up">
-          <div style={{ fontSize: '64px', lineHeight: 1 }} className="mb-2">
-            🎉
+          <div className="d-flex justify-content-center mb-3">
+            <div className="p-3 rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center shadow-xs" style={{ width: 68, height: 68 }}>
+              <Trophy size={36} />
+            </div>
           </div>
           <h3 className="fw-black text-navy-dark mb-1">Hoàn thành bộ thẻ Flashcard!</h3>
           <p className="text-muted small mb-4">
@@ -608,8 +612,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <div className="fs-3 fw-black" style={{ color: '#10b981' }}>
                   {masteredIds.size}
                 </div>
-                <small className="text-muted fw-semibold" style={{ fontSize: '11.5px' }}>
-                  ✓ Đã Thành Thạo
+                <small className="text-muted fw-semibold d-flex align-items-center justify-content-center gap-1" style={{ fontSize: '11.5px' }}>
+                  <Check size={13} className="text-success" /> Đã Thành Thạo
                 </small>
               </div>
             </div>
@@ -618,8 +622,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <div className="fs-3 fw-black" style={{ color: '#ef4444' }}>
                   {reviewIds.size}
                 </div>
-                <small className="text-muted fw-semibold" style={{ fontSize: '11.5px' }}>
-                  ✗ Cần ôn lại
+                <small className="text-muted fw-semibold d-flex align-items-center justify-content-center gap-1" style={{ fontSize: '11.5px' }}>
+                  <RotateCcw size={13} className="text-danger" /> Cần ôn lại
                 </small>
               </div>
             </div>
@@ -715,12 +719,12 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                   </span>
                 )}
               </span>
-              <div className="d-flex align-items-center gap-3">
-                <span className="small fw-bold" style={{ color: '#10b981', fontSize: '12px' }}>
-                  ✓ {masteredIds.size} đã thành thạo
+              <div className="d-flex align-items-center gap-2.5">
+                <span className="small fw-bold d-flex align-items-center gap-1" style={{ color: '#10b981', fontSize: '12px' }}>
+                  <Check size={13} /> {masteredIds.size} đã thành thạo
                 </span>
-                <span className="small fw-bold" style={{ color: '#ef4444', fontSize: '12px' }}>
-                  ✗ {reviewIds.size} cần ôn lại
+                <span className="small fw-bold d-flex align-items-center gap-1" style={{ color: '#ef4444', fontSize: '12px' }}>
+                  <RotateCcw size={13} /> {reviewIds.size} cần ôn lại
                 </span>
               </div>
             </div>
@@ -761,7 +765,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             {/* Floating +10 XP badge */}
             {floatingXp && (
               <div className="floating-xp-badge">
-                +10 XP ✨ Đã nhớ!
+                +10 XP · Đã Thành Thạo!
               </div>
             )}
             <div className={`flashcard-inner ${isFlipped ? 'is-flipped' : ''}`}>
@@ -828,14 +832,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <div className="text-center py-4 my-auto">
                   {cardDirection === 'vi_to_jp' ? (
                     <>
-                      <span
-                        className="d-inline-block small fw-bold text-uppercase tracking-wider mb-2"
-                        style={{ color: '#94a3b8', fontSize: '11.5px', letterSpacing: '0.08em' }}
-                      >
-                        Ý Nghĩa Tiếng Việt
-                      </span>
                       <h2
-                        className="fw-black text-navy-dark mb-0"
+                        className="fw-black text-navy-dark mb-0 zen-meaning-display"
                         style={{
                           fontSize: 'clamp(1.5rem, 5.5vw, 2.3rem)',
                           lineHeight: '1.3',
@@ -847,12 +845,6 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                     </>
                   ) : (
                     <>
-                      <span
-                        className="d-inline-block small fw-bold text-uppercase tracking-wider mb-2"
-                        style={{ color: '#94a3b8', fontSize: '11.5px', letterSpacing: '0.08em' }}
-                      >
-                        Từ Vựng Tiếng Nhật
-                      </span>
                       {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
                         <>
                           <div
@@ -918,7 +910,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                         padding: '4px 10px'
                       }}
                     >
-                      ✓ Đáp án chi tiết
+                      Đáp án chi tiết
                     </Badge>
                   </div>
 
@@ -1036,17 +1028,14 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                           border: '1px solid rgba(255, 255, 255, 0.25)'
                         }}
                       >
-                        <span className="small text-white text-opacity-75 d-block mb-1" style={{ fontSize: '11px' }}>
-                          NGHĨA TIẾNG VIỆT
-                        </span>
-                        <h4 className="fw-black mb-0 text-white" style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
+                        <h4 className="fw-black mb-0 text-white zen-meaning-display" style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)', color: '#ffffff' }}>
                           {cleanVietnamese}
                         </h4>
                       </div>
 
                       {currentCard.usage_note && (
                         <div className="small text-white text-opacity-80 mt-2" style={{ fontSize: '12px' }}>
-                          💡 {currentCard.usage_note}
+                          {currentCard.usage_note}
                         </div>
                       )}
                     </>
@@ -1187,7 +1176,8 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
             }`}
             style={{ fontSize: '13px' }}
           >
-            🌟 Toàn Bộ 25 Bài (1,589 Từ Vựng)
+            <Sparkles size={14} className="me-1.5 text-warning" />
+            <span>Toàn Bộ 25 Bài (1,589 Từ Vựng)</span>
           </button>
 
           <div

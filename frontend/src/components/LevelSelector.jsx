@@ -222,7 +222,7 @@ const LevelSelector = ({ currentLevel = 'N5', onChangeLevel }) => {
                   <div className="flex-shrink-0 text-end">
                     {isReady ? (
                       <Badge color="success" pill style={{ fontSize: '10px' }}>
-                        {isSelected ? '✓ Đang học' : 'Sẵn sàng'}
+                        {isSelected ? <span className="d-inline-flex align-items-center"><CheckCircle2 size={10} className="me-1" />Đang học</span> : 'Sẵn sàng'}
                       </Badge>
                     ) : (
                       <Badge color="warning" pill style={{ fontSize: '10px' }}>

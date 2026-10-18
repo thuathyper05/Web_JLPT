@@ -504,30 +504,25 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
         </div>
       ) : viewLayout === 'zen' ? (
         /* ── WORKSPACE A: ZEN FOCUS MODE (SINGLE CARD TYPING) ── */
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', width: '100%' }}>
           {currentZenWord && (
-            <Card
-              className={`border-0 shadow-sm rounded-4 position-relative overflow-hidden ${
+            <div
+              className={`zen-focus-card position-relative ${
                 zenShake ? 'shake-anim' : ''
               }`}
-              style={{
-                background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-                border: '1px solid var(--slate-200)',
-                boxShadow: '0 10px 30px rgba(15, 23, 42, 0.06)'
-              }}
             >
               {/* Floating +10 XP Celebration */}
               {floatingXp && (
                 <div className="floating-xp-badge">
-                  +10 XP ✨ Chính xác!
+                  +10 XP · Đã Thành Thạo!
                 </div>
               )}
 
-              <CardBody className="p-3.5 p-sm-4 text-center">
+              <div className="text-center">
                 {/* Top Badge Row */}
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div className="d-flex align-items-center gap-1.5">
-                    <span className="badge bg-light text-secondary border fw-bold px-2 py-1" style={{ fontSize: '11px' }}>
+                    <span className="badge bg-light text-secondary border fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
                       Từ {zenIndex + 1} / {total}
                     </span>
                     {combo >= 2 && (
@@ -557,36 +552,15 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                       {/* PROMPT: JAPANESE WORD (KANJI + KANA) */}
                       {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) ? (
                         <>
-                          <h1
-                            className="fw-black text-navy-dark font-monospace mb-1.5 tracking-tight"
-                            style={{
-                              fontSize: 'clamp(2.4rem, 8vw, 3.6rem)',
-                              fontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
-                              lineHeight: '1.2'
-                            }}
-                          >
+                          <h1 className="zen-kanji-title">
                             {currentZenWord.kanji}
                           </h1>
-                          <div
-                            className="fw-bold font-monospace"
-                            style={{
-                              fontSize: 'clamp(1.2rem, 3.5vw, 1.45rem)',
-                              color: 'var(--slate-600)',
-                              letterSpacing: '0.02em'
-                            }}
-                          >
+                          <div className="zen-kana-sub">
                             {getCleanKana(currentZenWord)}
                           </div>
                         </>
                       ) : (
-                        <h1
-                          className="fw-black text-navy-dark font-monospace mb-1 tracking-tight"
-                          style={{
-                            fontSize: 'clamp(2.2rem, 7.5vw, 3.2rem)',
-                            fontFamily: "'Noto Sans JP', 'Hiragino Sans', sans-serif",
-                            lineHeight: '1.2'
-                          }}
-                        >
+                        <h1 className="zen-kanji-title" style={{ fontSize: 'clamp(2rem, 7vw, 3rem)' }}>
                           {getCleanKana(currentZenWord)}
                         </h1>
                       )}
@@ -594,21 +568,15 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   ) : (
                     <>
                       {/* PROMPT: VIETNAMESE MEANING */}
-                      <h3
-                        className="fw-black text-navy-dark mb-1 tracking-tight"
-                        style={{
-                          fontSize: 'clamp(1.4rem, 4.5vw, 2.1rem)',
-                          lineHeight: '1.3'
-                        }}
-                      >
+                      <h2 className="zen-meaning-display">
                         {getCleanVietnamese(currentZenWord)}
-                      </h3>
+                      </h2>
 
                       {/* Subtle Kanji reference (if exists, without noisy 'Hán tự:' label) */}
                       {currentZenWord.kanji && hasRealKanji(currentZenWord.kanji) && (
-                        <div className="mt-1.5">
+                        <div className="mt-2">
                           <span
-                            className="badge bg-slate-100 text-slate-700 border font-monospace fw-bold px-3 py-1 rounded-pill"
+                            className="badge bg-light text-secondary border font-monospace fw-bold px-3 py-1 rounded-pill"
                             style={{ fontSize: '13.5px', letterSpacing: '0.04em' }}
                           >
                             {currentZenWord.kanji}
@@ -716,8 +684,8 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                     <span>Kiểm tra (Enter)</span>
                   </button>
                 </div>
-              </CardBody>
-            </Card>
+              </div>
+            </div>
           )}
 
           {/* Zen Navigation Controls (Prev / Next) */}

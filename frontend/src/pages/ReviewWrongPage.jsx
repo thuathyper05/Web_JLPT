@@ -160,7 +160,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
             <CheckCircle size={36} color="#10b981" />
           </div>
           <h5 className="fw-bold text-navy-dark">
-            {search || selectedLesson !== 'all' ? 'Không có từ nào khớp' : 'Không có từ nào bị sai! 🎉'}
+            {search || selectedLesson !== 'all' ? 'Không có từ nào khớp' : 'Không có từ nào bị sai!'}
           </h5>
           <p className="text-muted mb-4" style={{ maxWidth: 440, margin: '8px auto 20px' }}>
             {search || selectedLesson !== 'all'
@@ -209,7 +209,10 @@ const ReviewWrongPage = ({ onNavigate }) => {
                       </div>
 
                       {item.usage_note && (
-                        <div style={{ fontSize: 11.5, color: '#64748b' }}>💡 {item.usage_note}</div>
+                        <div style={{ fontSize: 11.5, color: '#64748b' }}>
+                          <span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>
+                          {item.usage_note}
+                        </div>
                       )}
                     </div>
 
@@ -249,19 +252,17 @@ const ReviewWrongPage = ({ onNavigate }) => {
                 style={{ cursor: 'pointer', minHeight: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 16, border: '1.5px solid', borderColor: qFlipped ? '#10b981' : '#fca5a5', background: qFlipped ? '#ecfdf5' : '#fff', padding: '20px 24px', marginBottom: 16, transition: 'all .3s ease' }}>
                 {!qFlipped ? (
                   <>
-                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#94a3b8', marginBottom: 10 }}>TIẾNG NHẬT</span>
                     {qItem.kanji && qItem.kanji !== '–' && (
-                      <div style={{ fontSize: 36, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{qItem.kanji}</div>
+                      <h2 className="zen-kanji-title mb-1">{qItem.kanji}</h2>
                     )}
-                    <div style={{ fontSize: 22, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{qItem.clean_kana || qItem.kana}</div>
+                    <div className="zen-kana-sub mb-1">{qItem.clean_kana || qItem.kana}</div>
                     <div style={{ fontSize: 13, color: '#94a3b8', fontStyle: 'italic' }}>[{qItem.romaji}]</div>
-                    <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 10 }}><RotateCw size={12} style={{ marginRight: 4 }} />Chạm để xem nghĩa</div>
+                    <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 12 }}><RotateCw size={12} style={{ marginRight: 4 }} />Chạm để xem nghĩa</div>
                   </>
                 ) : (
                   <>
-                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#059669', marginBottom: 10 }}>NGHĨA TIẾNG VIỆT</span>
-                    <div style={{ fontSize: 22, fontWeight: 800, color: '#065f46' }}>{qItem.clean_vietnamese || qItem.vietnamese}</div>
-                    {qItem.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}>{qItem.usage_note}</div>}
+                    <h3 className="zen-meaning-display mb-1">{qItem.clean_vietnamese || qItem.vietnamese}</h3>
+                    {qItem.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}><span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>{qItem.usage_note}</div>}
                   </>
                 )}
               </div>

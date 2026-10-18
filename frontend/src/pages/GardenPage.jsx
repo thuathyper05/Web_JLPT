@@ -602,7 +602,7 @@ const GardenPage = ({ onNavigate }) => {
               </div>
             ) : (
               <div className="text-muted small my-3 user-select-none">
-                👆 Chạm vào thẻ để xem nghĩa & kiểm tra trí nhớ
+                Chạm vào thẻ để xem nghĩa & kiểm tra trí nhớ
               </div>
             )}
 
@@ -615,7 +615,7 @@ const GardenPage = ({ onNavigate }) => {
                   className="btn btn-danger rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
                 >
                   <XCircle size={16} />
-                  <span>Chưa thuộc (Cần ôn)</span>
+                  <span>Cần Ôn Lại</span>
                 </button>
 
                 <button
@@ -624,7 +624,7 @@ const GardenPage = ({ onNavigate }) => {
                   className="btn btn-success rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
                 >
                   <Sprout size={15} />
-                  <span>Đã nhớ vững (Tưới nước)</span>
+                  <span>Đã Thành Thạo (Tưới nước)</span>
                 </button>
               </div>
             ) : (

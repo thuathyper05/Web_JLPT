@@ -119,7 +119,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
             {search ? 'Không tìm thấy ghi chú nào' : 'Chưa có ghi chú nào'}
           </h5>
           <p className="text-muted mb-4" style={{ maxWidth: 420, margin: '8px auto 20px' }}>
-            {search ? 'Thử từ khóa khác.' : 'Khi học từ vựng, nhấn 📝 để thêm mẹo nhớ và ghi chú cá nhân vào sổ tay.'}
+            {search ? 'Thử từ khóa khác.' : 'Khi học từ vựng, bấm biểu tượng ghi chú để thêm mẹo nhớ và ghi chú cá nhân vào sổ tay.'}
           </p>
           <Button color="primary" className="fw-bold px-4 rounded-pill" onClick={() => onNavigate('lessons')}>
             <BookOpen size={16} className="me-1" /> Đến danh sách bài học
@@ -171,8 +171,9 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
 
                   {/* Note Content */}
                   <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 10, padding: '10px 14px' }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
-                      ✏️ Ghi chú của bạn
+                    <div className="d-flex align-items-center gap-1.5" style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
+                      <FileText size={12} />
+                      <span>Ghi chú của bạn</span>
                     </div>
                     <div style={{ fontSize: 13.5, color: '#0c4a6e', whiteSpace: 'pre-wrap', lineHeight: 1.55 }}>
                       {item.content}

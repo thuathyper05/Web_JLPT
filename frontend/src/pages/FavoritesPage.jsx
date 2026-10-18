@@ -201,7 +201,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
 
                       {item.usage_note && (
                         <div style={{ fontSize: 11.5, color: '#64748b', marginBottom: 6 }}>
-                          💡 {item.usage_note}
+                          {item.usage_note}
                         </div>
                       )}
                     </div>
@@ -246,7 +246,6 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                 style={{ cursor: 'pointer', minHeight: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 16, border: '1.5px solid', borderColor: fcFlipped ? '#10b981' : '#e2e8f0', background: fcFlipped ? 'linear-gradient(135deg,#ecfdf5,#f0fdf4)' : '#ffffff', padding: '20px 24px', marginBottom: 16, transition: 'all .3s ease' }}>
                 {!fcFlipped ? (
                   <>
-                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#94a3b8', marginBottom: 10 }}>TIẾNG NHẬT</span>
                     {fcWord.kanji && fcWord.kanji !== '–' && (
                       <div style={{ fontSize: 36, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{fcWord.kanji}</div>
                     )}
@@ -256,9 +255,8 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                   </>
                 ) : (
                   <>
-                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#059669', marginBottom: 10 }}>NGHĨA TIẾNG VIỆT</span>
                     <div style={{ fontSize: 22, fontWeight: 800, color: '#065f46' }}>{fcWord.clean_vietnamese || fcWord.vietnamese}</div>
-                    {fcWord.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}>💡 {fcWord.usage_note}</div>}
+                    {fcWord.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}>{fcWord.usage_note}</div>}
                   </>
                 )}
               </div>
@@ -274,7 +272,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                   <Volume2 size={18} color="#2563eb" />
                 </button>
                 <Button color="primary" className="rounded-pill fw-bold px-4 shadow-sm" onClick={fcNext}>
-                  {fcIndex < filtered.length - 1 ? 'Thẻ tiếp →' : '🎉 Xong!'}
+                  {fcIndex < filtered.length - 1 ? 'Thẻ tiếp →' : 'Hoàn thành'}
                 </Button>
               </div>
             </>

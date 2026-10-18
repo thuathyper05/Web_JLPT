@@ -330,7 +330,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
 
         // Security Constraint: Admin login restricted to Desktop only
         if (inputEmail === 'thuathyper05@gmail.com' && isMobileScreen) {
-          setErrorMsg('⚠️ Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop) để bảo đảm an toàn dữ liệu và tối ưu không gian điều hành!');
+          setErrorMsg('Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop) để bảo đảm an toàn dữ liệu và tối ưu không gian điều hành!');
           sounds.playWrong();
           setLoading(false);
           return;
@@ -342,7 +342,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
         });
 
         if (loginRes?.user?.role === 'admin' && isMobileScreen) {
-          setErrorMsg('⚠️ Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop)!');
+          setErrorMsg('Tài khoản Quản trị viên chỉ được phép đăng nhập trên máy tính (Desktop/Laptop)!');
           sounds.playWrong();
           setLoading(false);
           return;
@@ -386,7 +386,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
         const res = await authService.forgotPassword({ email: formData.email });
         sounds.playCorrect();
         if (res.data?.email_sent) {
-          setSuccessMsg(`✅ Mã OTP thật đã được gửi tới Gmail ${formData.email}! Vui lòng mở hộp thư Gmail để xem mã 6 số.`);
+          setSuccessMsg(`Mã OTP thật đã được gửi tới Gmail ${formData.email}! Vui lòng mở hộp thư Gmail để xem mã 6 số.`);
           setFormData((prev) => ({ ...prev, code: '' }));
         } else {
           setSuccessMsg(res.data?.message || 'Đã tạo mã xác thực OTP.');
@@ -887,7 +887,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
                   className="btn btn-link text-muted p-0 small text-decoration-none"
                   style={{ fontSize: '11px' }}
                 >
-                  {showGoogleDirect ? '▲ Ẩn đăng nhập nhanh bằng Gmail' : '⚡ Bị lỗi cấp quyền Google? Đăng nhập nhanh bằng Gmail'}
+                  {showGoogleDirect ? 'Ẩn đăng nhập nhanh bằng Gmail' : 'Gặp sự cố cấp quyền Google? Đăng nhập trực tiếp bằng Gmail'}
                 </button>
               </div>
 
@@ -1001,7 +1001,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
           {/* ── 5. Bottom Guest Reminder ── */}
           <div className="text-center mt-3 pt-2">
             <p className="text-muted small mb-0" style={{ fontSize: '11.5px', lineHeight: '1.4' }}>
-              💡 <strong>Không bắt buộc đăng nhập</strong> để học bài. Tài khoản giúp đồng bộ tiến độ & ghi chú trên mọi thiết bị.
+              <strong>Không bắt buộc đăng nhập</strong> để học bài. Tài khoản giúp đồng bộ tiến độ & ghi chú trên mọi thiết bị.
             </p>
           </div>
         </div>

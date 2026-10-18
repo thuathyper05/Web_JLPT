@@ -411,7 +411,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       <span className="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
                         15 Câu Cấp Tốc
                       </span>
-                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>⚡ 15s/câu</small>
+                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>15s / câu</small>
                     </div>
                     <div className="d-flex align-items-center gap-1.5 mb-1">
                       <Zap size={15} className="text-warning flex-shrink-0" />
@@ -422,7 +422,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     </p>
                   </div>
                   <div className="d-flex align-items-center gap-1 text-primary fw-bold small mt-2.5" style={{ fontSize: '12px' }}>
-                    <span>Làm ngay</span>
+                    <span>Bắt đầu</span>
                     <ArrowRight size={13} />
                   </div>
                 </div>
@@ -443,9 +443,9 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <div>
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <span className="badge bg-primary text-white fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
-                        ★ Tiêu Chuẩn JLPT
+                        Tiêu Chuẩn JLPT
                       </span>
-                      <small className="text-primary fw-bold" style={{ fontSize: '11px' }}>⏱️ 20s/câu</small>
+                      <small className="text-primary fw-bold" style={{ fontSize: '11px' }}>20s / câu</small>
                     </div>
                     <div className="d-flex align-items-center gap-1.5 mb-1">
                       <Target size={15} className="text-primary flex-shrink-0" />
@@ -456,7 +456,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     </p>
                   </div>
                   <div className="d-flex align-items-center gap-1 text-primary fw-bold small mt-2.5" style={{ fontSize: '12px' }}>
-                    <span>Làm ngay</span>
+                    <span>Bắt đầu</span>
                     <ArrowRight size={13} />
                   </div>
                 </div>
@@ -479,7 +479,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       <span className="badge bg-danger bg-opacity-10 text-danger fw-bold rounded-pill px-2.5 py-0.5" style={{ fontSize: '10.5px' }}>
                         Toàn Bộ Từ Vựng
                       </span>
-                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>🔥 100% Bài</small>
+                      <small className="text-muted fw-semibold" style={{ fontSize: '11px' }}>100% Bài</small>
                     </div>
                     <div className="d-flex align-items-center gap-1.5 mb-1">
                       <Award size={15} className="text-danger flex-shrink-0" />
@@ -514,7 +514,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <span className="badge bg-primary bg-opacity-10 text-primary fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
                     15 Câu Cấp Tốc
                   </span>
-                  <small className="text-muted" style={{ fontSize: '10.5px' }}>⚡ 15s</small>
+                  <small className="text-muted" style={{ fontSize: '10.5px' }}>15s</small>
                 </div>
                 <div className="fw-bold text-dark d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
                   <Zap size={13} className="text-warning" />
@@ -538,9 +538,9 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               >
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <span className="badge bg-primary text-white fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
-                    ★ Tiêu Chuẩn N5
+                    Tiêu Chuẩn N5
                   </span>
-                  <small className="text-primary fw-bold" style={{ fontSize: '10.5px' }}>⏱️ 20s</small>
+                  <small className="text-primary fw-bold" style={{ fontSize: '10.5px' }}>20s</small>
                 </div>
                 <div className="fw-bold text-primary d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
                   <Target size={13} className="text-primary" />
@@ -566,7 +566,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <span className="badge bg-danger bg-opacity-10 text-danger fw-bold rounded-pill px-2 py-0.5" style={{ fontSize: '10px' }}>
                     Toàn Bộ Từ Vựng
                   </span>
-                  <small className="text-muted" style={{ fontSize: '10.5px' }}>🔥 100%</small>
+                  <small className="text-muted" style={{ fontSize: '10.5px' }}>100%</small>
                 </div>
                 <div className="fw-bold text-dark d-flex align-items-center gap-1" style={{ fontSize: '13px' }}>
                   <Award size={13} className="text-danger" />
@@ -582,7 +582,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           {/* Interactive Mode Cards (2x2 Grid) */}
           <div className="mb-3 mb-md-4">
             <span className="small text-muted fw-bold text-uppercase tracking-wider d-block mb-2" style={{ fontSize: '11px' }}>
-              🎯 Chọn dạng câu hỏi trắc nghiệm
+              Chọn dạng câu hỏi trắc nghiệm
             </span>
 
             <Row className="g-2 g-md-2.5">
@@ -773,7 +773,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   style={{ fontSize: '11px' }}
                 >
                   <Flame size={12} color="#dc2626" className="flame-icon" />
-                  <span>Chuỗi {currentStreak} 🔥</span>
+                  <span>Chuỗi {currentStreak}</span>
                 </Badge>
               )}
             </div>
@@ -804,7 +804,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               {/* Floating +10 XP badge */}
               {floatingXp && (
                 <div className="floating-xp-badge">
-                  +10 XP ✨ Chính xác!
+                  +10 XP · Đã Thành Thạo!
                 </div>
               )}
               {/* Question Prompt Area */}
@@ -955,7 +955,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
 
                   {currentQ.usage_note && (
                     <div className="small text-secondary mt-2 pt-2 border-top" style={{ fontSize: '12px' }}>
-                      💡 <strong>Ngữ cảnh sử dụng:</strong> {currentQ.usage_note}
+                      <strong>Ngữ cảnh sử dụng:</strong> {currentQ.usage_note}
                     </div>
                   )}
                 </div>

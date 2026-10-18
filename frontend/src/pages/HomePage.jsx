@@ -361,7 +361,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                   <Zap size={14} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--rush">
-                  NEW 🔥
+                  MỚI
                 </span>
               </div>
 
@@ -371,7 +371,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Bottom Row: Micro Pill + Action */}
               <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
-                <span className="home-promo-compact-sub">⏱️ Phản Xạ 60s</span>
+                <span className="home-promo-compact-sub">Phản Xạ 60s</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--rush">
                   <span>Luyện ngay</span>
                   <ArrowRight size={10} />
@@ -395,7 +395,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                   <Sprout size={14} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--garden">
-                  NEW 🌸
+                  MỚI
                 </span>
               </div>
 
@@ -405,7 +405,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Bottom Row: Micro Pill + Action */}
               <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
-                <span className="home-promo-compact-sub">🌱 Bonsai SRS</span>
+                <span className="home-promo-compact-sub">Bonsai SRS</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--garden">
                   <span>Trải nghiệm</span>
                   <ArrowRight size={10} />
@@ -533,9 +533,9 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                           <IconComp size={18} />
                         </div>
                         {feat.id === 'wordmatch' ? (
-                          <span className="badge-new-blink badge-new-blink--rush">NEW 🔥</span>
+                          <span className="badge-new-blink badge-new-blink--rush">MỚI</span>
                         ) : feat.id === 'garden' ? (
-                          <span className="badge-new-blink badge-new-blink--garden">NEW 🌸</span>
+                          <span className="badge-new-blink badge-new-blink--garden">MỚI</span>
                         ) : (
                           <Badge color="light" pill className="border text-secondary px-2 py-0.5 d-none d-sm-inline" style={{ fontSize: '10.5px' }}>
                             {feat.badge}
