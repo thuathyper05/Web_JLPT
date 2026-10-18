@@ -703,7 +703,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
           <div className="wm-match-grid">
             {/* Left: Japanese Column */}
             <div className="wm-card-col">
-              <div className="wm-col-label">🇯🇵 Tiếng Nhật</div>
+              <div className="wm-col-label">Tiếng Nhật</div>
               {leftCards.map(card => {
                 const isSelected = selectedLeft?.id === card.id;
                 const isMatched = matchedPairs.has(card.pairId);
@@ -730,7 +730,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
             {/* Right: Vietnamese Column */}
             <div className="wm-card-col">
-              <div className="wm-col-label">🇻🇳 Tiếng Việt</div>
+              <div className="wm-col-label">Nghĩa Tiếng Việt</div>
               {rightCards.map(card => {
                 const isSelected = selectedRight?.id === card.id;
                 const isMatched = matchedPairs.has(card.pairId);
