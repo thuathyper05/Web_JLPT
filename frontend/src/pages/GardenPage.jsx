@@ -17,7 +17,7 @@ const STAGES = {
   1: {
     level: 1,
     name: 'Hạt Mầm Nở',
-    badgeText: 'Mầm Non 🌱',
+    badgeText: 'Mầm Non',
     color: '#10b981',
     bgColor: '#ecfdf5',
     borderColor: '#a7f3d0',
@@ -29,7 +29,7 @@ const STAGES = {
   2: {
     level: 2,
     name: 'Chồi Non Bén Rễ',
-    badgeText: 'Lá Xanh 🌿',
+    badgeText: 'Lá Xanh',
     color: '#059669',
     bgColor: '#d1fae5',
     borderColor: '#6ee7b7',
@@ -41,7 +41,7 @@ const STAGES = {
   3: {
     level: 3,
     name: 'Tán Lá Xanh Mướt',
-    badgeText: 'Cây Lớn 🌳',
+    badgeText: 'Cây Lớn',
     color: '#2563eb',
     bgColor: '#eff6ff',
     borderColor: '#bfdbfe',
@@ -53,7 +53,7 @@ const STAGES = {
   4: {
     level: 4,
     name: 'Bonsai Quả Vàng',
-    badgeText: 'Bonsai Vàng ⭐',
+    badgeText: 'Bonsai Vàng',
     color: '#f59e0b',
     bgColor: '#fffbeb',
     borderColor: '#fde68a',
@@ -66,7 +66,7 @@ const STAGES = {
 
 const OVERDUE_STAGE = {
   name: 'Đất Khô Cần Tưới',
-  badgeText: 'Cần Tưới Gấp 🥀',
+  badgeText: 'Cần Tưới Gấp',
   color: '#ef4444',
   bgColor: '#fef2f2',
   borderColor: '#fecaca',
@@ -181,6 +181,7 @@ const GardenPage = ({ onNavigate }) => {
   const [reviewFlipped, setReviewFlipped] = useState(false);
   const [reviewResults, setReviewResults] = useState([]);
   const [wateringSplash, setWateringSplash] = useState(false);
+  const [waterWarning, setWaterWarning] = useState(false);
 
   // Listen to cross-app watering awards
   useEffect(() => {
@@ -451,7 +452,8 @@ const GardenPage = ({ onNavigate }) => {
   const handleWaterSinglePlant = async () => {
     if (!selectedPlant) return;
     if (waterDrops < 5) {
-      alert('Bình nước của bạn chưa đủ 5 giọt nước! Hãy làm bài trắc nghiệm, luyện gõ hoặc lật thẻ Flashcard để nạp thêm nước.');
+      setWaterWarning(true);
+      setTimeout(() => setWaterWarning(false), 3500);
       return;
     }
     deductGardenWater(5);
@@ -621,8 +623,8 @@ const GardenPage = ({ onNavigate }) => {
                   onClick={() => handleReviewAnswer(true)}
                   className="btn btn-success rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-1.5 shadow-xs"
                 >
-                  <CheckCircle2 size={16} />
-                  <span>Đã nhớ vững (Tưới nước 🌱)</span>
+                  <Sprout size={15} />
+                  <span>Đã nhớ vững (Tưới nước)</span>
                 </button>
               </div>
             ) : (
@@ -743,7 +745,7 @@ const GardenPage = ({ onNavigate }) => {
               <Star size={20} />
             </div>
             <div>
-              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Bonsai Vàng ⭐</small>
+              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Bonsai Vàng</small>
               <span className="fw-black text-warning fs-5">{stats.l4} Cây</span>
             </div>
           </div>
@@ -766,7 +768,7 @@ const GardenPage = ({ onNavigate }) => {
             >
               <Droplets size={16} />
               <span>
-                {stats.due > 0 ? `Tưới Nước Cho Cây Đến Hạn (${stats.due} Cây)` : 'Tất Cả Cây Đều Đang Khỏe Mạnh 🌱'}
+                {stats.due > 0 ? `Tưới Nước Cho Cây Đến Hạn (${stats.due} Cây)` : 'Tất Cả Cây Đều Đang Khỏe Mạnh'}
               </span>
             </button>
 
@@ -807,7 +809,7 @@ const GardenPage = ({ onNavigate }) => {
             { id: '1', label: `Mầm non (${stats.l1})` },
             { id: '2', label: `Lá xanh (${stats.l2})` },
             { id: '3', label: `Cây lớn (${stats.l3})` },
-            { id: '4', label: `Bonsai vàng ⭐ (${stats.l4})` },
+            { id: '4', label: `Bonsai vàng (${stats.l4})` },
           ].map(f => (
             <button
               key={f.id}
@@ -847,7 +849,7 @@ const GardenPage = ({ onNavigate }) => {
             onClick={() => setSeedModalOpen(true)}
             className="btn btn-sm btn-primary rounded-pill px-3.5 py-1.5 fw-bold"
           >
-            Gieo Mầm Ngay 🌱
+            Gieo Mầm Ngay
           </button>
         </div>
       ) : (
@@ -881,8 +883,8 @@ const GardenPage = ({ onNavigate }) => {
                       </span>
 
                       {plant.is_due && (
-                        <span className="badge bg-danger text-white rounded-pill px-1.5 py-0.5 animate-pulse" style={{ fontSize: '9px' }}>
-                          💧 Khát
+                        <span className="badge bg-danger text-white rounded-pill px-1.5 py-0.5 d-flex align-items-center gap-1 animate-pulse" style={{ fontSize: '9px' }}>
+                          <Droplets size={9} /> Cần tưới
                         </span>
                       )}
                     </div>
@@ -970,7 +972,10 @@ const GardenPage = ({ onNavigate }) => {
       <Modal isOpen={seedModalOpen} toggle={() => setSeedModalOpen(false)} centered className="jlpt-modal">
         <ModalBody className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="fw-black mb-0 text-navy-dark">Gieo Mầm Bài Học Vào Vườn 🌱</h5>
+            <h5 className="fw-black mb-0 text-navy-dark d-flex align-items-center gap-2">
+              <Sprout size={18} className="text-success" />
+              Gieo Mầm Bài Học Vào Vườn
+            </h5>
             <button
               type="button"
               onClick={() => setSeedModalOpen(false)}
@@ -1101,6 +1106,19 @@ const GardenPage = ({ onNavigate }) => {
                 Lịch tưới kế tiếp: {(selectedPlant.is_overdue ? OVERDUE_STAGE : STAGES[selectedPlant.level]).nextText}
               </div>
             </div>
+
+            {/* Water insufficient warning */}
+            {waterWarning && (
+              <div
+                className="p-2.5 rounded-3 mb-3 d-flex align-items-center gap-2 animate-fade-in"
+                style={{ background: '#fef2f2', border: '1px solid #fecaca' }}
+              >
+                <Droplets size={15} style={{ color: '#ef4444', flexShrink: 0 }} />
+                <span style={{ fontSize: '12.5px', color: '#dc2626', fontWeight: 600 }}>
+                  Bình nước chưa đủ 5 giọt! Hãy luyện tập thêm để nạp nước nhé.
+                </span>
+              </div>
+            )}
 
             {/* Water Single Plant Button */}
             <div className="d-flex justify-content-center gap-2">

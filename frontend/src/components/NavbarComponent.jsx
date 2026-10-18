@@ -112,7 +112,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               >
                 <Zap size={13} className="text-warning flex-shrink-0" />
                 <span>Nối từ</span>
-                <span className="badge-new-blink badge-new-blink--rush">NEW 🔥</span>
+                <span className="badge-new-blink badge-new-blink--rush">MỚI</span>
               </NavLink>
             </NavItem>
 
@@ -125,7 +125,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               >
                 <Sprout size={13} className="text-success flex-shrink-0" />
                 <span>Vườn cây</span>
-                <span className="badge-new-blink badge-new-blink--garden">NEW 🌸</span>
+                <span className="badge-new-blink badge-new-blink--garden">MỚI</span>
               </NavLink>
             </NavItem>
 
@@ -430,10 +430,10 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             {/* VIP Group: 2 Flagship New Games */}
             <div className="p-2.5 rounded-3 border" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #f0fdf4 100%)', borderColor: '#fde68a' }}>
               <div className="d-flex align-items-center justify-content-between mb-2 px-1">
-                <span className="fw-black text-uppercase text-dark" style={{ fontSize: '10.5px', letterSpacing: '0.05em' }}>
-                  ⚡ 2 Trò Chơi Mới Đột Phá
+                <span className="fw-black text-uppercase text-dark d-flex align-items-center gap-1" style={{ fontSize: '10.5px', letterSpacing: '0.05em' }}>
+                  <Zap size={11} className="text-warning" /> 2 Trò Chơi Mới Đột Phá
                 </span>
-                <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '8.5px', padding: '1px 5px' }}>HOT 🔥</span>
+                <span className="badge-new-blink badge-new-blink--rush" style={{ fontSize: '8.5px', padding: '1px 5px' }}>MỚI</span>
               </div>
               <div className="d-flex flex-column gap-1.5">
                 {gameNavItems.map(item => {
@@ -458,7 +458,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                           <div className="d-flex align-items-center gap-1.5">
                             <span className="fw-bold text-dark" style={{ fontSize: '12.5px' }}>{item.label}</span>
                             <span className={`badge-new-blink ${isRush ? 'badge-new-blink--rush' : 'badge-new-blink--garden'}`} style={{ fontSize: '8.5px', padding: '1px 5px' }}>
-                              NEW {isRush ? '🔥' : '🌸'}
+                              MỚI
                             </span>
                           </div>
                           <div className="text-muted text-truncate" style={{ fontSize: '10px' }}>{item.desc}</div>

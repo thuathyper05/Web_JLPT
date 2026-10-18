@@ -201,7 +201,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         <Col sm={6} lg={3}>
           <Card className="jlpt-card border-0 shadow-sm h-100 rounded-4">
             <CardBody className="p-4 text-center">
-              <div className="text-secondary small fw-medium mb-1">Đã thuộc nhuần nhuyễn</div>
+              <div className="text-secondary small fw-medium mb-1">Đã Thành Thạo</div>
               <h2 className="fw-bold text-success mb-1">{overall.mastered_count}</h2>
               <small className="text-success fw-semibold" style={{ fontSize: '12px' }}>{overallMasteryPercent}% tỷ lệ thành thạo</small>
             </CardBody>
@@ -271,11 +271,11 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
           );
 
           if (percent >= 90) {
-            statusBadge = <Badge color="success" pill>Xuất sắc 🏆</Badge>;
+            statusBadge = <Badge color="success" pill>Xuất Sắc</Badge>;
           } else if (percent >= 50) {
-            statusBadge = <Badge color="primary" pill>Đang tiến bộ 👍</Badge>;
+            statusBadge = <Badge color="primary" pill>Đang Tiến Bộ</Badge>;
           } else if (lesson.studied_words > 0) {
-            statusBadge = <Badge color="warning" pill className="text-dark">Đang học 📖</Badge>;
+            statusBadge = <Badge color="warning" pill className="text-dark">Đang Rèn Luyện</Badge>;
           }
 
           return (

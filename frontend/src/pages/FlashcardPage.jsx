@@ -609,7 +609,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                   {masteredIds.size}
                 </div>
                 <small className="text-muted fw-semibold" style={{ fontSize: '11.5px' }}>
-                  ✓ Đã thuộc
+                  ✓ Đã Thành Thạo
                 </small>
               </div>
             </div>
@@ -653,7 +653,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 onClick={handleRetryWrongOnly}
               >
                 <Zap size={16} />
-                <span>Chỉ ôn {reviewIds.size} từ chưa nhớ</span>
+                <span>Chỉ ôn {reviewIds.size} từ cần ôn lại</span>
               </Button>
             )}
           </div>
@@ -669,7 +669,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <span className="small text-dark fw-medium" style={{ fontSize: '12px' }}>
                   Tiến độ đã lưu: <strong>Thẻ {savedProgressInfo.currentIndex + 1}/{savedProgressInfo.total || cards.length}</strong>
                   {savedProgressInfo.reviewIds?.length > 0 && (
-                    <span className="text-danger ms-1">({savedProgressInfo.reviewIds.length} từ chưa nhớ)</span>
+                    <span className="text-danger ms-1">({savedProgressInfo.reviewIds.length} từ cần ôn lại)</span>
                   )}
                 </span>
               </div>
@@ -681,7 +681,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                     className="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-0.5 fw-bold"
                     style={{ fontSize: '11px' }}
                   >
-                    Ôn {savedProgressInfo.reviewIds.length} từ chưa nhớ
+                    Ôn {savedProgressInfo.reviewIds.length} từ cần ôn lại
                   </button>
                 )}
                 <button
@@ -711,16 +711,16 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 Thẻ <strong className="text-dark">{currentIndex + 1}</strong> / {cards.length}
                 {deckMode === 'unlearned' && (
                   <span className="badge bg-danger bg-opacity-10 text-danger ms-1.5 rounded-pill px-2 py-0.5 fw-bold" style={{ fontSize: '10.5px' }}>
-                    Chế độ: Từ chưa nhớ
+                    Chế độ: Từ cần ôn lại
                   </span>
                 )}
               </span>
               <div className="d-flex align-items-center gap-3">
                 <span className="small fw-bold" style={{ color: '#10b981', fontSize: '12px' }}>
-                  ✓ {masteredIds.size} đã nhớ
+                  ✓ {masteredIds.size} đã thành thạo
                 </span>
                 <span className="small fw-bold" style={{ color: '#ef4444', fontSize: '12px' }}>
-                  ✗ {reviewIds.size} chưa nhớ
+                  ✗ {reviewIds.size} cần ôn lại
                 </span>
               </div>
             </div>
@@ -1056,7 +1056,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 {/* Bottom Assessment Hint */}
                 <div className="text-center pt-2 border-top border-white border-opacity-15">
                   <span className="small text-white text-opacity-75" style={{ fontSize: '12px' }}>
-                    Đánh giá: Phím <strong>1 (Chưa nhớ)</strong> • Phím <strong>2 (Đã nhớ)</strong>
+                    Đánh giá: Phím <strong>1 (Cần Ôn Lại)</strong> • Phím <strong>2 (Đã Thành Thạo)</strong>
                   </span>
                 </div>
               </div>
@@ -1081,7 +1081,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 }}
               >
                 <X size={18} />
-                <span>Chưa nhớ</span>
+                <span>Cần Ôn Lại</span>
                 <span className="badge bg-black bg-opacity-25 rounded-pill small fw-normal d-none d-sm-inline" style={{ fontSize: '10px' }}>
                   Phím 1 / ←
                 </span>
@@ -1103,7 +1103,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 }}
               >
                 <Check size={18} />
-                <span>Đã nhớ</span>
+                <span>Đã Thành Thạo</span>
                 <span className="badge bg-black bg-opacity-25 rounded-pill small fw-normal d-none d-sm-inline" style={{ fontSize: '10px' }}>
                   Phím 2 / →
                 </span>

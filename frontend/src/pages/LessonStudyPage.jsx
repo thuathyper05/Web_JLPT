@@ -417,7 +417,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             {/* Floating +10 XP badge */}
             {floatingXp && (
               <div className="floating-xp-badge">
-                +10 XP ✨ Đã thuộc!
+                +10 XP ✨ Đã Thành Thạo!
               </div>
             )}
             {/* Top Tools */}
@@ -561,7 +561,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                   onClick={() => handleStatusChange('needs_review')}
                 >
                   <XCircle size={12} className="me-1 flex-shrink-0" />
-                  <span className="text-truncate">Chưa nhớ</span>
+                  <span className="text-truncate">Cần Ôn Lại</span>
                 </Button>
                 <Button
                   color={currentWord.user_status === 'learning' ? 'warning' : 'light'}
@@ -574,7 +574,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                   onClick={() => handleStatusChange('learning')}
                 >
                   <HelpCircle size={12} className="me-1 flex-shrink-0" />
-                  <span className="text-truncate">Đang học</span>
+                  <span className="text-truncate">Đang Rèn Luyện</span>
                 </Button>
                 <Button
                   color={currentWord.user_status === 'mastered' ? 'success' : 'light'}
@@ -587,7 +587,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                   onClick={() => handleStatusChange('mastered')}
                 >
                   <CheckCircle2 size={12} className="me-1 flex-shrink-0" />
-                  <span className="text-truncate">Đã thuộc</span>
+                  <span className="text-truncate">Đã Thành Thạo</span>
                 </Button>
               </div>
             </div>

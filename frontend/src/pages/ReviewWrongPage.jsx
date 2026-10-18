@@ -106,7 +106,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
               <Flame size={26} color="#fff" />
             </div>
             <div>
-              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Ôn Tập Từ Chưa Nhớ</h4>
+              <h4 className="fw-bold mb-0 text-navy-dark" style={{ fontSize: 18 }}>Ôn Tập Từ Cần Ôn Lại</h4>
               <p className="text-muted small mb-0">Từ bị sai trong Flashcard, Trắc nghiệm hoặc Luyện gõ</p>
             </div>
           </div>
@@ -217,7 +217,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
                       <Button color="success" size="sm" block
                         className="d-flex align-items-center justify-content-center gap-1 fw-bold rounded-pill shadow-sm"
                         onClick={() => handleMastered(item.id)}>
-                        <CheckCircle size={14} /> Đã thuộc từ này
+                        <CheckCircle size={14} /> Đã Thành Thạo
                       </Button>
                     </div>
                   </CardBody>
@@ -261,7 +261,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
                   <>
                     <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#059669', marginBottom: 10 }}>NGHĨA TIẾNG VIỆT</span>
                     <div style={{ fontSize: 22, fontWeight: 800, color: '#065f46' }}>{qItem.clean_vietnamese || qItem.vietnamese}</div>
-                    {qItem.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}>💡 {qItem.usage_note}</div>}
+                    {qItem.usage_note && <div style={{ fontSize: 12.5, color: '#64748b', marginTop: 8 }}>{qItem.usage_note}</div>}
                   </>
                 )}
               </div>
@@ -273,7 +273,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
                 </button>
                 <Button color="success" className="rounded-pill fw-bold px-4 shadow-sm"
                   onClick={() => qMastered(qItem.id)}>
-                  <CheckCircle size={16} className="me-1" /> Đã thuộc
+                  <CheckCircle size={16} className="me-1" /> Đã Thành Thạo
                 </Button>
                 <Button color="primary" className="rounded-pill fw-bold px-4" onClick={qNext}>
                   Tiếp theo <ArrowRight size={16} className="ms-1" />

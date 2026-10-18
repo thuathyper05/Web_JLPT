@@ -1044,19 +1044,7 @@ p {
   transform: scale(0.97) !important;
 }
 
-/* Audio Playing Wave Pulse */
-@keyframes audioPulseRing {
-  0% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-  }
-}
-
+/* Audio Playing Wave Pulse — persistent speaking state */
 .audio-btn.is-speaking {
   animation: audioPulseRing 1.2s infinite;
   border-color: #2563eb !important;
@@ -3242,6 +3230,36 @@ p {
   -webkit-backdrop-filter: blur(14px);
   background-color: rgba(2, 6, 23, 0.45);
 }
+
+/* ── Unified Fade-in Utility ──────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.28s var(--ease-spring) both;
+}
+
+.animate-fade-in-delay-1 { animation: fadeInUp 0.28s var(--ease-spring) 0.05s both; }
+.animate-fade-in-delay-2 { animation: fadeInUp 0.28s var(--ease-spring) 0.10s both; }
+.animate-fade-in-delay-3 { animation: fadeInUp 0.28s var(--ease-spring) 0.15s both; }
+
+/* ── Hover Lift — Level 2 Elevation ──────────────────────── */
+.hover-lift {
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s var(--ease-spring) !important;
+}
+.hover-lift:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.12), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+}
+.hover-lift:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* ── Interactive Cursor ───────────────────────────────────── */
+.cursor-pointer { cursor: pointer; }
+
 
 
 
