@@ -131,7 +131,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
     {
       id: 'flashcard',
       title: 'Thẻ Nhớ Flashcard 3D',
-      desc: 'Lật thẻ 3D hai chiều Việt ➔ Nhật hoặc Nhật ➔ Việt, tích hợp âm thanh tự động',
+      desc: 'Lật thẻ 3D hai chiều Nhật sang Việt hoặc Việt sang Nhật, tích hợp âm thanh tự động',
       icon: Layers,
       color: '#059669',
       bg: 'linear-gradient(135deg, #059669, #047857)',
@@ -273,7 +273,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
             }}
           >
             Nền tảng học từ vựng tiếng Nhật thông minh với phương pháp phản xạ đa giác quan:
-            Flashcard 3D chuyển động, phát âm chuẩn Tokyo, trắc nghiệm bấm giờ thực tế và luyện gõ Romaji ➔ Hiragana.
+            Flashcard 3D chuyển động, phát âm chuẩn Tokyo, trắc nghiệm bấm giờ thực tế và luyện gõ Romaji chuyển đổi Hiragana.
           </p>
 
           {/* Action Buttons */}
@@ -465,7 +465,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                     <small style={{ fontSize: '11px' }}>
                       {stats.needs_review_count > 0 ? (
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('review'); }} className="text-danger fw-bold text-decoration-none">
-                          Ôn từ sai ➔
+                          Ôn từ sai ngay
                         </a>
                       ) : (
                         <span className="text-muted">Hoàn hảo</span>

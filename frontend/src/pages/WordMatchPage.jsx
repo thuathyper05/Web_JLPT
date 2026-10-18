@@ -588,7 +588,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             </div>
             <div className="wm-rule">
               <span className="wm-rule-icon"><Target size={14} className="text-primary" /></span>
-              <span>Chạm <strong>từ tiếng Nhật</strong> bên trái ➔ chạm ngay <strong>nghĩa tiếng Việt</strong> tương ứng bên phải.</span>
+              <span>Chạm <strong>từ tiếng Nhật</strong> bên trái rồi chạm ngay <strong>nghĩa tiếng Việt</strong> tương ứng bên phải.</span>
             </div>
             <div className="wm-rule">
               <span className="wm-rule-icon"><Flame size={14} className="text-danger" /></span>
@@ -866,7 +866,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               onClick={() => onNavigate?.('home')}
               className="btn btn-link text-decoration-none text-secondary small py-1"
             >
-              ← Về Trang chủ
+              Về Trang chủ
             </button>
           </div>
 

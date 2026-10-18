@@ -47,7 +47,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [cardDirection, setCardDirection] = useState('vi_to_jp'); // 'vi_to_jp' | 'jp_to_vi'
+  const [cardDirection, setCardDirection] = useState('jp_to_vi'); // 'jp_to_vi' | 'vi_to_jp'
   const [autoPlayAudio, setAutoPlayAudio] = useState(true);
   const [masteredIds, setMasteredIds] = useState(new Set());
   const [reviewIds, setReviewIds] = useState(new Set());
@@ -491,32 +491,34 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
         </div>
 
-        {/* Direction Switcher Strip */}
-        <div className="d-flex justify-content-center mt-3 pt-2.5 border-top border-slate-100">
-          <div className="segmented-control shadow-xs" style={{ maxWidth: '360px', width: '100%' }}>
+        {/* Direction Switcher Strip — 100% Unified, Zero Arrows */}
+        <div className="d-flex justify-content-center mt-3 pt-3 border-top border-slate-100">
+          <div className="app-direction-switcher">
             <button
               type="button"
               onClick={() => {
-                setCardDirection('vi_to_jp');
-                setIsFlipped(false);
-                sounds.playFlip();
+                if (cardDirection !== 'jp_to_vi') {
+                  setCardDirection('jp_to_vi');
+                  setIsFlipped(false);
+                  sounds.playFlip();
+                }
               }}
-              className={`segmented-item py-1.5 ${cardDirection === 'vi_to_jp' ? 'active' : ''}`}
-              style={{ fontSize: '12.5px' }}
+              className={`app-direction-btn ${cardDirection === 'jp_to_vi' ? 'is-active' : ''}`}
             >
-              <span>Việt ➔ Nhật</span>
+              <span>Nhật sang Việt</span>
             </button>
             <button
               type="button"
               onClick={() => {
-                setCardDirection('jp_to_vi');
-                setIsFlipped(false);
-                sounds.playFlip();
+                if (cardDirection !== 'vi_to_jp') {
+                  setCardDirection('vi_to_jp');
+                  setIsFlipped(false);
+                  sounds.playFlip();
+                }
               }}
-              className={`segmented-item py-1.5 ${cardDirection === 'jp_to_vi' ? 'active' : ''}`}
-              style={{ fontSize: '12.5px' }}
+              className={`app-direction-btn ${cardDirection === 'vi_to_jp' ? 'is-active' : ''}`}
             >
-              <span>Nhật ➔ Việt</span>
+              <span>Việt sang Nhật</span>
             </button>
           </div>
         </div>
@@ -728,7 +730,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                       Bài {currentCard.lesson_number} • #{currentIndex + 1}
                     </Badge>
                     <span className="badge rounded-pill bg-light text-muted border small" style={{ fontSize: '11px' }}>
-                      {cardDirection === 'vi_to_jp' ? 'Nghĩa Việt ➔ Tiếng Nhật' : 'Tiếng Nhật ➔ Nghĩa Việt'}
+                      {cardDirection === 'vi_to_jp' ? 'Việt sang Nhật' : 'Nhật sang Việt'}
                     </span>
                   </div>
 
@@ -1011,7 +1013,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <X size={18} />
                 <span>Cần Ôn Lại</span>
                 <span className="badge bg-black bg-opacity-25 rounded-pill small fw-normal d-none d-sm-inline" style={{ fontSize: '10px' }}>
-                  Phím 1 / ←
+                  Phím 1
                 </span>
               </Button>
             </Col>
@@ -1033,7 +1035,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <Check size={18} />
                 <span>Đã Thành Thạo</span>
                 <span className="badge bg-black bg-opacity-25 rounded-pill small fw-normal d-none d-sm-inline" style={{ fontSize: '10px' }}>
-                  Phím 2 / →
+                  Phím 2
                 </span>
               </Button>
             </Col>

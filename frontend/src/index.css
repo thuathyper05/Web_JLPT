@@ -3674,7 +3674,178 @@ p {
 /* Desktop spacing refinement */
 @media (min-width: 992px) {
   .app-page-header {
-    margin-bottom: 24px;
-    padding: 22px 26px;
+    margin-bottom: 28px;
+    padding: 24px 28px;
+  }
+}
+
+/* ==========================================================================
+   UNIVERSAL DIRECTION SWITCHER (100% UNIFIED ACROSS ALL PAGES - ZERO ARROWS)
+   ========================================================================== */
+.app-direction-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  padding: 5px;
+  border-radius: 9999px;
+  gap: 5px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 420px;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.app-direction-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--slate-600);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s var(--ease-spring);
+  white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
+}
+
+.app-direction-btn.is-active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.14), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.app-direction-btn:hover:not(.is-active) {
+  color: var(--slate-900);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.app-direction-btn:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   DYNAMIC BONSAI TREE MOTION ENGINE (LIVELY BOTANICAL ANIMATIONS)
+   ========================================================================== */
+
+.bonsai-tree-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+/* Swaying wind animation */
+.bonsai-tree-animated {
+  transform-origin: 50% 90%;
+  animation: treeWindBreeze 7s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 16px 30px rgba(16, 185, 129, 0.18));
+}
+
+@keyframes treeWindBreeze {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-1.5deg) scale(1.01) translateY(-2px);
+  }
+  50% {
+    transform: rotate(0.8deg) scale(0.995);
+  }
+  75% {
+    transform: rotate(-0.8deg) scale(1.015) translateY(-3px);
+  }
+}
+
+/* Individual foliage pads floating */
+.bonsai-foliage-pulse {
+  animation: foliageFlutter 4s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes foliageFlutter {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.04) translateY(-1px);
+  }
+}
+
+/* Golden & green wisdom aura */
+.bonsai-aura-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 72%);
+  filter: blur(20px);
+  pointer-events: none;
+  animation: auraPulse 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes auraPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+/* Floating Sakura Blossom Petals */
+.bonsai-petal {
+  position: absolute;
+  pointer-events: none;
+  animation: floatPetal 8s linear infinite;
+  opacity: 0.75;
+}
+
+@keyframes floatPetal {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(60px, 140px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Water drop splash ripple */
+.water-ripple {
+  animation: waterRippleExpand 0.8s ease-out forwards;
+}
+
+@keyframes waterRippleExpand {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
   }
 }

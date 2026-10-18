@@ -216,7 +216,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
                     onClick={(e) => { e.preventDefault(); onNavigate('review'); }}
                     className="text-danger text-decoration-none"
                   >
-                    Ôn lại ngay ➔
+                    Ôn lại ngay
                   </a>
                 ) : (
                   'Chưa có từ sai'

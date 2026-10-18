@@ -59,192 +59,216 @@ const TREE_STAGES = {
 const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
 const GUEST_STORAGE_KEY = 'hyper_guest_garden_srs';
 
-// ── THE ICONIC SINGLE BONSAI TREE VECTOR ARTWORK (RESPONSIVE SVG) ──
+// ── THE ICONIC SINGLE BONSAI TREE VECTOR ARTWORK (RESPONSIVE SVG & LIVELY MOTION) ──
 const SingleBonsaiArtwork = React.memo(({ stage = 1, isThirsty = false }) => {
-  // Stage 1: Sprout of Beginnings
-  if (stage === 1) {
-    return (
-      <svg viewBox="0 0 280 220" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '280px', height: 'auto' }}>
-        <defs>
-          <linearGradient id="potGrad1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1e293b"/>
-            <stop offset="100%" stopColor="#0f172a"/>
-          </linearGradient>
-          <linearGradient id="leafGrad1" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stopColor="#15803d"/>
-            <stop offset="100%" stopColor="#4ade80"/>
-          </linearGradient>
-        </defs>
-
-        {/* Soil Base / Zen Stand */}
-        <ellipse cx="140" cy="195" rx="90" ry="12" fill="#000000" opacity="0.08"/>
-        
-        {/* Ceramic Pot */}
-        <path d="M75 160 L90 190 H190 L205 160 Z" fill="url(#potGrad1)" stroke="#334155" strokeWidth="2.5" strokeLinejoin="round"/>
-        <rect x="70" y="152" width="140" height="10" rx="4" fill="#334155"/>
-        <ellipse cx="140" cy="157" rx="64" ry="7" fill="#451a03"/>
-
-        {/* Dew drops / Sprout shoot */}
-        <path d="M140 156 Q140 120 140 95" stroke={isThirsty ? '#a16207' : '#16a34a'} strokeWidth="5" strokeLinecap="round"/>
-        
-        {/* Leaves */}
-        <path d="M140 115 Q115 105 110 85 Q130 85 140 110" fill={isThirsty ? '#ca8a04' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
-        <path d="M140 105 Q165 95 170 75 Q150 75 140 100" fill={isThirsty ? '#a16207' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
-        <path d="M140 95 Q132 65 140 55 Q148 65 140 95" fill={isThirsty ? '#eab308' : '#22c55e'} stroke="#15803d" strokeWidth="1.5"/>
-
-        {/* Dew drop */}
-        <circle cx="160" cy="78" r="3" fill="#38bdf8" opacity="0.9"/>
-      </svg>
-    );
-  }
-
-  // Stage 2: Young Branching Bonsai
-  if (stage === 2) {
-    return (
-      <svg viewBox="0 0 280 220" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '280px', height: 'auto' }}>
-        <defs>
-          <linearGradient id="trunkGrad2" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stopColor="#451a03"/>
-            <stop offset="100%" stopColor="#78350f"/>
-          </linearGradient>
-          <linearGradient id="cloudGrad2" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#22c55e"/>
-            <stop offset="100%" stopColor="#15803d"/>
-          </linearGradient>
-        </defs>
-
-        <ellipse cx="140" cy="198" rx="100" ry="12" fill="#000000" opacity="0.08"/>
-
-        {/* Glazed Tokyo Pot */}
-        <path d="M70 165 L88 194 H192 L210 165 Z" fill="#0369a1" stroke="#0284c7" strokeWidth="2.5" strokeLinejoin="round"/>
-        <rect x="65" y="157" width="150" height="10" rx="4" fill="#0284c7"/>
-        <ellipse cx="140" cy="162" rx="70" ry="7" fill="#292524"/>
-
-        {/* Curved Trunk */}
-        <path d="M140 162 C135 130 165 115 140 85 C130 72 135 55 135 45" stroke="url(#trunkGrad2)" strokeWidth="9" strokeLinecap="round" fill="none"/>
-        <path d="M145 125 C120 115 105 105 95 100" stroke="url(#trunkGrad2)" strokeWidth="5.5" strokeLinecap="round" fill="none"/>
-        <path d="M142 95 C165 88 180 80 190 75" stroke="url(#trunkGrad2)" strokeWidth="4.5" strokeLinecap="round" fill="none"/>
-
-        {/* Foliage Clouds */}
-        <ellipse cx="95" cy="98" rx="28" ry="16" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
-        <ellipse cx="190" cy="74" rx="26" ry="15" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
-        <ellipse cx="135" cy="42" rx="34" ry="20" fill={isThirsty ? '#854d0e' : 'url(#cloudGrad2)'}/>
-        <circle cx="130" cy="36" r="16" fill="#4ade80" opacity="0.6"/>
-      </svg>
-    );
-  }
-
-  // Stage 3: Flourishing Green Bonsai with Sakura Accents
-  if (stage === 3) {
-    return (
-      <svg viewBox="0 0 280 230" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '290px', height: 'auto' }}>
-        <defs>
-          <linearGradient id="potGrad3" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1e3a8a"/>
-            <stop offset="100%" stopColor="#172554"/>
-          </linearGradient>
-          <linearGradient id="trunkGrad3" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%" stopColor="#3d1e06"/>
-            <stop offset="50%" stopColor="#5c2e0b"/>
-            <stop offset="100%" stopColor="#78350f"/>
-          </linearGradient>
-        </defs>
-
-        <ellipse cx="140" cy="205" rx="110" ry="14" fill="#000000" opacity="0.08"/>
-
-        {/* Traditional Ceramic Oval Pot */}
-        <path d="M60 172 L80 202 H200 L220 172 Z" fill="url(#potGrad3)" stroke="#2563eb" strokeWidth="2.5" strokeLinejoin="round"/>
-        <rect x="54" y="164" width="172" height="10" rx="4" fill="#1e40af"/>
-        <ellipse cx="140" cy="169" rx="80" ry="8" fill="#1c1917"/>
-
-        {/* Roots */}
-        <path d="M125 170 Q130 162 140 160 Q150 162 155 170" stroke="#3d1e06" strokeWidth="6" strokeLinecap="round" fill="none"/>
-
-        {/* Main Ancient S-curve Trunk */}
-        <path d="M140 162 C130 130 170 110 145 75 C135 60 140 45 138 35" stroke="url(#trunkGrad3)" strokeWidth="12" strokeLinecap="round" fill="none"/>
-        <path d="M138 120 C100 110 85 95 75 90" stroke="url(#trunkGrad3)" strokeWidth="7" strokeLinecap="round" fill="none"/>
-        <path d="M148 90 C185 85 205 75 215 70" stroke="url(#trunkGrad3)" strokeWidth="6" strokeLinecap="round" fill="none"/>
-
-        {/* Lush Green Foliage Pads */}
-        <ellipse cx="75" cy="88" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
-        <ellipse cx="72" cy="83" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
-        
-        <ellipse cx="215" cy="68" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
-        <ellipse cx="218" cy="63" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
-
-        <ellipse cx="138" cy="32" rx="48" ry="24" fill={isThirsty ? '#854d0e' : '#15803d'}/>
-        <ellipse cx="138" cy="26" rx="38" ry="18" fill={isThirsty ? '#a16207' : '#22c55e'}/>
-        <circle cx="132" cy="20" r="18" fill="#4ade80" opacity="0.6"/>
-
-        {/* Sakura Accents */}
-        <circle cx="65" cy="82" r="3.5" fill="#f472b6"/>
-        <circle cx="85" cy="78" r="3" fill="#f472b6"/>
-        <circle cx="205" cy="62" r="3.5" fill="#f472b6"/>
-        <circle cx="225" cy="60" r="3" fill="#f472b6"/>
-        <circle cx="120" cy="24" r="3.5" fill="#f472b6"/>
-        <circle cx="155" cy="22" r="3" fill="#f472b6"/>
-      </svg>
-    );
-  }
-
-  // Stage 4: Grand Golden Masterpiece Bonsai
   return (
-    <svg viewBox="0 0 280 235" className="bonsai-tree-art" style={{ width: '100%', maxWidth: '300px', height: 'auto' }}>
-      <defs>
-        <radialGradient id="goldenAura" cx="50%" cy="40%" r="50%">
-          <stop offset="0%" stopColor="#fef08a" stopOpacity="0.45"/>
-          <stop offset="100%" stopColor="#fef08a" stopOpacity="0"/>
-        </radialGradient>
-        <linearGradient id="potGrad4" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#78350f"/>
-          <stop offset="100%" stopColor="#451a03"/>
-        </linearGradient>
-      </defs>
+    <div className="bonsai-tree-wrapper">
+      {/* Ambient Pulsing Aura */}
+      <div className="bonsai-aura-glow" />
 
-      {/* Aura */}
-      <circle cx="140" cy="85" r="95" fill="url(#goldenAura)"/>
-      <ellipse cx="140" cy="210" rx="115" ry="14" fill="#000000" opacity="0.1"/>
+      {/* Floating Cherry Blossom Petals for Stages 3 & 4 */}
+      {stage >= 3 && (
+        <>
+          <div className="bonsai-petal" style={{ top: '15%', left: '20%', animationDelay: '0s' }}>
+            <svg width="12" height="12" viewBox="0 0 10 10"><path d="M5 0 C7 3 9 4 5 10 C1 4 3 3 5 0 Z" fill="#f472b6" opacity="0.8"/></svg>
+          </div>
+          <div className="bonsai-petal" style={{ top: '25%', right: '22%', animationDelay: '2.5s' }}>
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 0 C7 3 9 4 5 10 C1 4 3 3 5 0 Z" fill="#fb7185" opacity="0.75"/></svg>
+          </div>
+          <div className="bonsai-petal" style={{ top: '35%', left: '30%', animationDelay: '4.8s' }}>
+            <svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 0 C7 3 9 4 5 10 C1 4 3 3 5 0 Z" fill="#f472b6" opacity="0.7"/></svg>
+          </div>
+        </>
+      )}
 
-      {/* Imperial Bonsai Pot */}
-      <path d="M55 176 L75 208 H205 L225 176 Z" fill="url(#potGrad4)" stroke="#b45309" strokeWidth="2.5" strokeLinejoin="round"/>
-      <rect x="50" y="168" width="180" height="10" rx="4" fill="#d97706"/>
-      <ellipse cx="140" cy="173" rx="85" ry="8" fill="#1c1917"/>
+      {/* Stage 1: Sprout of Beginnings */}
+      {stage === 1 && (
+        <svg viewBox="0 0 280 220" className="bonsai-tree-animated" style={{ width: '100%', maxWidth: '280px', height: 'auto', position: 'relative', zIndex: 1 }}>
+          <defs>
+            <linearGradient id="potGrad1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#1e293b"/>
+              <stop offset="100%" stopColor="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="leafGrad1" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#15803d"/>
+              <stop offset="100%" stopColor="#4ade80"/>
+            </linearGradient>
+          </defs>
 
-      {/* Ancient Roots Wrapping over Stone */}
-      <ellipse cx="140" cy="170" rx="28" ry="12" fill="#57534e"/>
-      <path d="M120 174 Q135 160 140 155 Q145 160 160 174" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
+          {/* Soil Base / Zen Stand */}
+          <ellipse cx="140" cy="195" rx="90" ry="12" fill="#000000" opacity="0.08"/>
+          
+          {/* Ceramic Pot */}
+          <path d="M75 160 L90 190 H190 L205 160 Z" fill="url(#potGrad1)" stroke="#334155" strokeWidth="2.5" strokeLinejoin="round"/>
+          <rect x="70" y="152" width="140" height="10" rx="4" fill="#334155"/>
+          <ellipse cx="140" cy="157" rx="64" ry="7" fill="#451a03"/>
 
-      {/* Majestic Ancient Trunk */}
-      <path d="M140 158 C120 120 175 95 142 60 C132 45 138 30 138 22" stroke="#451a03" strokeWidth="15" strokeLinecap="round" fill="none"/>
-      <path d="M136 110 C85 98 70 85 58 78" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
-      <path d="M146 82 C195 75 218 62 228 55" stroke="#451a03" strokeWidth="7" strokeLinecap="round" fill="none"/>
+          {/* Dew drops / Sprout shoot */}
+          <path d="M140 156 Q140 120 140 95" stroke={isThirsty ? '#a16207' : '#16a34a'} strokeWidth="5" strokeLinecap="round"/>
+          
+          {/* Animated Fluttering Leaves */}
+          <g className="bonsai-foliage-pulse">
+            <path d="M140 115 Q115 105 110 85 Q130 85 140 110" fill={isThirsty ? '#ca8a04' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
+            <path d="M140 105 Q165 95 170 75 Q150 75 140 100" fill={isThirsty ? '#a16207' : 'url(#leafGrad1)'} stroke="#15803d" strokeWidth="1.5"/>
+            <path d="M140 95 Q132 65 140 55 Q148 65 140 95" fill={isThirsty ? '#eab308' : '#22c55e'} stroke="#15803d" strokeWidth="1.5"/>
+          </g>
 
-      {/* Golden Canopy Foliage Clouds */}
-      <ellipse cx="58" cy="76" rx="40" ry="21" fill="#15803d"/>
-      <ellipse cx="56" cy="70" rx="32" ry="16" fill="#16a34a"/>
-      <ellipse cx="56" cy="66" rx="22" ry="11" fill="#eab308"/>
+          {/* Dew drop */}
+          <circle cx="160" cy="78" r="3" fill="#38bdf8" opacity="0.9"/>
+        </svg>
+      )}
 
-      <ellipse cx="228" cy="53" rx="40" ry="21" fill="#15803d"/>
-      <ellipse cx="230" cy="47" rx="32" ry="16" fill="#16a34a"/>
-      <ellipse cx="230" cy="43" rx="22" ry="11" fill="#eab308"/>
+      {/* Stage 2: Young Branching Bonsai */}
+      {stage === 2 && (
+        <svg viewBox="0 0 280 220" className="bonsai-tree-animated" style={{ width: '100%', maxWidth: '280px', height: 'auto', position: 'relative', zIndex: 1 }}>
+          <defs>
+            <linearGradient id="trunkGrad2" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#451a03"/>
+              <stop offset="100%" stopColor="#78350f"/>
+            </linearGradient>
+            <linearGradient id="cloudGrad2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#22c55e"/>
+              <stop offset="100%" stopColor="#15803d"/>
+            </linearGradient>
+          </defs>
 
-      <ellipse cx="138" cy="22" rx="54" ry="26" fill="#15803d"/>
-      <ellipse cx="138" cy="16" rx="44" ry="20" fill="#16a34a"/>
-      <ellipse cx="138" cy="10" rx="30" ry="14" fill="#fbbf24"/>
+          <ellipse cx="140" cy="198" rx="100" ry="12" fill="#000000" opacity="0.08"/>
 
-      {/* Golden Fruit of Wisdom */}
-      <circle cx="50" cy="68" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
-      <circle cx="72" cy="64" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
-      <circle cx="218" cy="44" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
-      <circle cx="240" cy="40" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
-      <circle cx="124" cy="12" r="5" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
-      <circle cx="152" cy="10" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+          {/* Glazed Tokyo Pot */}
+          <path d="M70 165 L88 194 H192 L210 165 Z" fill="#0369a1" stroke="#0284c7" strokeWidth="2.5" strokeLinejoin="round"/>
+          <rect x="65" y="157" width="150" height="10" rx="4" fill="#0284c7"/>
+          <ellipse cx="140" cy="162" rx="70" ry="7" fill="#292524"/>
 
-      {/* Sparkles */}
-      <path d="M140 -4 L142 -9 L147 -7 L142 -5 Z" fill="#fef08a"/>
-      <path d="M260 25 L262 20 L266 22 L262 24 Z" fill="#fef08a"/>
-      <path d="M25 45 L27 40 L31 42 L27 44 Z" fill="#fef08a"/>
-    </svg>
+          {/* Curved Trunk */}
+          <path d="M140 162 C135 130 165 115 140 85 C130 72 135 55 135 45" stroke="url(#trunkGrad2)" strokeWidth="9" strokeLinecap="round" fill="none"/>
+          <path d="M145 125 C120 115 105 105 95 100" stroke="url(#trunkGrad2)" strokeWidth="5.5" strokeLinecap="round" fill="none"/>
+          <path d="M142 95 C165 88 180 80 190 75" stroke="url(#trunkGrad2)" strokeWidth="4.5" strokeLinecap="round" fill="none"/>
+
+          {/* Foliage Clouds with Flutter */}
+          <g className="bonsai-foliage-pulse">
+            <ellipse cx="95" cy="98" rx="28" ry="16" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
+            <ellipse cx="190" cy="74" rx="26" ry="15" fill={isThirsty ? '#a16207' : 'url(#cloudGrad2)'}/>
+            <ellipse cx="135" cy="42" rx="34" ry="20" fill={isThirsty ? '#854d0e' : 'url(#cloudGrad2)'}/>
+            <circle cx="130" cy="36" r="16" fill="#4ade80" opacity="0.6"/>
+          </g>
+        </svg>
+      )}
+
+      {/* Stage 3: Flourishing Green Bonsai with Sakura Accents */}
+      {stage === 3 && (
+        <svg viewBox="0 0 280 230" className="bonsai-tree-animated" style={{ width: '100%', maxWidth: '290px', height: 'auto', position: 'relative', zIndex: 1 }}>
+          <defs>
+            <linearGradient id="potGrad3" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#1e3a8a"/>
+              <stop offset="100%" stopColor="#172554"/>
+            </linearGradient>
+            <linearGradient id="trunkGrad3" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#3d1e06"/>
+              <stop offset="50%" stopColor="#5c2e0b"/>
+              <stop offset="100%" stopColor="#78350f"/>
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="140" cy="205" rx="110" ry="14" fill="#000000" opacity="0.08"/>
+
+          {/* Traditional Ceramic Oval Pot */}
+          <path d="M60 172 L80 202 H200 L220 172 Z" fill="url(#potGrad3)" stroke="#2563eb" strokeWidth="2.5" strokeLinejoin="round"/>
+          <rect x="54" y="164" width="172" height="10" rx="4" fill="#1e40af"/>
+          <ellipse cx="140" cy="169" rx="80" ry="8" fill="#1c1917"/>
+
+          {/* Roots */}
+          <path d="M125 170 Q130 162 140 160 Q150 162 155 170" stroke="#3d1e06" strokeWidth="6" strokeLinecap="round" fill="none"/>
+
+          {/* Main Ancient S-curve Trunk */}
+          <path d="M140 162 C130 130 170 110 145 75 C135 60 140 45 138 35" stroke="url(#trunkGrad3)" strokeWidth="12" strokeLinecap="round" fill="none"/>
+          <path d="M138 120 C100 110 85 95 75 90" stroke="url(#trunkGrad3)" strokeWidth="7" strokeLinecap="round" fill="none"/>
+          <path d="M148 90 C185 85 205 75 215 70" stroke="url(#trunkGrad3)" strokeWidth="6" strokeLinecap="round" fill="none"/>
+
+          {/* Lush Green Foliage Pads with Flutter */}
+          <g className="bonsai-foliage-pulse">
+            <ellipse cx="75" cy="88" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
+            <ellipse cx="72" cy="83" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
+            
+            <ellipse cx="215" cy="68" rx="36" ry="19" fill={isThirsty ? '#a16207' : '#15803d'}/>
+            <ellipse cx="218" cy="63" rx="28" ry="14" fill={isThirsty ? '#ca8a04' : '#16a34a'}/>
+
+            <ellipse cx="138" cy="32" rx="48" ry="24" fill={isThirsty ? '#854d0e' : '#15803d'}/>
+            <ellipse cx="138" cy="26" rx="38" ry="18" fill={isThirsty ? '#a16207' : '#22c55e'}/>
+            <circle cx="132" cy="20" r="18" fill="#4ade80" opacity="0.6"/>
+
+            {/* Sakura Accents */}
+            <circle cx="65" cy="82" r="3.5" fill="#f472b6"/>
+            <circle cx="85" cy="78" r="3" fill="#f472b6"/>
+            <circle cx="205" cy="62" r="3.5" fill="#f472b6"/>
+            <circle cx="225" cy="60" r="3" fill="#f472b6"/>
+            <circle cx="120" cy="24" r="3.5" fill="#f472b6"/>
+            <circle cx="155" cy="22" r="3" fill="#f472b6"/>
+          </g>
+        </svg>
+      )}
+
+      {/* Stage 4: Grand Golden Masterpiece Bonsai */}
+      {stage === 4 && (
+        <svg viewBox="0 0 280 235" className="bonsai-tree-animated" style={{ width: '100%', maxWidth: '300px', height: 'auto', position: 'relative', zIndex: 1 }}>
+          <defs>
+            <radialGradient id="goldenAura" cx="50%" cy="40%" r="50%">
+              <stop offset="0%" stopColor="#fef08a" stopOpacity="0.45"/>
+              <stop offset="100%" stopColor="#fef08a" stopOpacity="0"/>
+            </radialGradient>
+            <linearGradient id="potGrad4" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#78350f"/>
+              <stop offset="100%" stopColor="#451a03"/>
+            </linearGradient>
+          </defs>
+
+          {/* Aura */}
+          <circle cx="140" cy="85" r="95" fill="url(#goldenAura)"/>
+          <ellipse cx="140" cy="210" rx="115" ry="14" fill="#000000" opacity="0.1"/>
+
+          {/* Imperial Bonsai Pot */}
+          <path d="M55 176 L75 208 H205 L225 176 Z" fill="url(#potGrad4)" stroke="#b45309" strokeWidth="2.5" strokeLinejoin="round"/>
+          <rect x="50" y="168" width="180" height="10" rx="4" fill="#d97706"/>
+          <ellipse cx="140" cy="173" rx="85" ry="8" fill="#1c1917"/>
+
+          {/* Ancient Roots Wrapping over Stone */}
+          <ellipse cx="140" cy="170" rx="28" ry="12" fill="#57534e"/>
+          <path d="M120 174 Q135 160 140 155 Q145 160 160 174" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
+
+          {/* Majestic Ancient Trunk */}
+          <path d="M140 158 C120 120 175 95 142 60 C132 45 138 30 138 22" stroke="#451a03" strokeWidth="15" strokeLinecap="round" fill="none"/>
+          <path d="M136 110 C85 98 70 85 58 78" stroke="#451a03" strokeWidth="8" strokeLinecap="round" fill="none"/>
+          <path d="M146 82 C195 75 218 62 228 55" stroke="#451a03" strokeWidth="7" strokeLinecap="round" fill="none"/>
+
+          {/* Golden Canopy Foliage Clouds with Flutter */}
+          <g className="bonsai-foliage-pulse">
+            <ellipse cx="58" cy="76" rx="40" ry="21" fill="#15803d"/>
+            <ellipse cx="56" cy="70" rx="32" ry="16" fill="#16a34a"/>
+            <ellipse cx="56" cy="66" rx="22" ry="11" fill="#eab308"/>
+
+            <ellipse cx="228" cy="53" rx="40" ry="21" fill="#15803d"/>
+            <ellipse cx="230" cy="47" rx="32" ry="16" fill="#16a34a"/>
+            <ellipse cx="230" cy="43" rx="22" ry="11" fill="#eab308"/>
+
+            <ellipse cx="138" cy="22" rx="54" ry="26" fill="#15803d"/>
+            <ellipse cx="138" cy="16" rx="44" ry="20" fill="#16a34a"/>
+            <ellipse cx="138" cy="10" rx="30" ry="14" fill="#fbbf24"/>
+
+            {/* Golden Fruit of Wisdom */}
+            <circle cx="50" cy="68" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+            <circle cx="72" cy="64" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+            <circle cx="218" cy="44" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+            <circle cx="240" cy="40" r="4" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+            <circle cx="124" cy="12" r="5" fill="#fbbf24" stroke="#78350f" strokeWidth="1"/>
+            <circle cx="152" cy="10" r="4.5" fill="#f59e0b" stroke="#78350f" strokeWidth="1"/>
+          </g>
+
+          {/* Sparkles */}
+          <path d="M140 -4 L142 -9 L147 -7 L142 -5 Z" fill="#fef08a"/>
+          <path d="M260 25 L262 20 L266 22 L262 24 Z" fill="#fef08a"/>
+          <path d="M25 45 L27 40 L31 42 L27 44 Z" fill="#fef08a"/>
+        </svg>
+      )}
+    </div>
   );
 });
 

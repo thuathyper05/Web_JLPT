@@ -228,7 +228,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                       <span style={{ fontSize: 11, color: '#94a3b8' }}>#{item.order_num || item.id}</span>
                       <button type="button" style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: 12, fontWeight: 700, cursor: 'pointer', padding: 0 }}
                         onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
-                        Xem trong bài →
+                        Xem trong bài
                       </button>
                     </div>
                   </CardBody>
@@ -290,7 +290,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                   <Volume2 size={18} color="#2563eb" />
                 </button>
                 <Button color="primary" className="rounded-pill fw-bold px-4 shadow-sm" onClick={fcNext}>
-                  {fcIndex < filtered.length - 1 ? 'Thẻ tiếp →' : 'Hoàn thành'}
+                  {fcIndex < filtered.length - 1 ? 'Thẻ tiếp theo' : 'Hoàn thành'}
                 </Button>
               </div>
             </>

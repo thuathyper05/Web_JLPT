@@ -75,7 +75,7 @@ class AdminErrorBoundary extends React.Component {
                   this.props.onBackToApp();
                 }}
               >
-                ← Quay lại trang học tập
+                Quay lại trang học tập
               </button>
             </div>
           </div>

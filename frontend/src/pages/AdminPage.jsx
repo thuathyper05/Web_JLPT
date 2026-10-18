@@ -552,7 +552,7 @@ const AdminPage = ({ onBackToApp }) => {
             style={{ fontSize: '13px' }}
             onClick={onBackToApp}
           >
-            ← Quay lại ứng dụng học tập
+            Quay lại ứng dụng học tập
           </Button>
         </div>
       </div>

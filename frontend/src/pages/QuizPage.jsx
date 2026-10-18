@@ -303,7 +303,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     },
     {
       id: 'jp_to_vi',
-      title: 'Nhật ➔ Nghĩa Việt',
+      title: 'Nhật sang Việt',
       sub: 'Phản xạ đọc hiểu',
       icon: BookOpen,
       color: '#059669',
@@ -312,7 +312,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     },
     {
       id: 'vi_to_jp',
-      title: 'Việt ➔ Từ Nhật',
+      title: 'Việt sang Nhật',
       sub: 'Phản xạ diễn đạt',
       icon: Languages,
       color: '#d97706',
@@ -1015,7 +1015,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               className="btn btn-light fw-semibold px-4 rounded-pill border text-secondary"
               onClick={() => onNavigate('review')}
             >
-              Sổ tay từ cần ôn ➔
+              Sổ tay từ cần ôn
             </button>
           </div>
 

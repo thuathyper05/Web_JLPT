@@ -367,8 +367,8 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
         {/* Row 2: 2 Core Practice Modes & View Mode Switcher */}
         <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-2 border-top border-slate-100">
-          {/* Mode Switcher: Nhìn Nhật -> Gõ Việt vs Nhìn Việt -> Gõ Nhật */}
-          <div className="segmented-control" style={{ padding: '3px' }}>
+          {/* Universal Direction Switcher — 100% Unified, Zero Arrows */}
+          <div className="app-direction-switcher">
             <button
               type="button"
               onClick={() => {
@@ -378,12 +378,9 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1.5 px-3.5 ${practiceMode === 'jp_to_vi' ? 'active' : ''}`}
-              style={{ fontSize: '12.5px' }}
+              className={`app-direction-btn ${practiceMode === 'jp_to_vi' ? 'is-active' : ''}`}
             >
-              <span className="fw-bold">
-                Nhìn tiếng Nhật ➔ Gõ tiếng Việt
-              </span>
+              <span>Nhật sang Việt</span>
             </button>
 
             <button
@@ -395,12 +392,9 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                   handleReset();
                 }
               }}
-              className={`segmented-item py-1.5 px-3.5 ${practiceMode === 'vi_to_jp' ? 'active' : ''}`}
-              style={{ fontSize: '12.5px' }}
+              className={`app-direction-btn ${practiceMode === 'vi_to_jp' ? 'is-active' : ''}`}
             >
-              <span className="fw-bold">
-                Nhìn tiếng Việt ➔ Gõ tiếng Nhật
-              </span>
+              <span>Việt sang Nhật</span>
             </button>
           </div>
 
@@ -432,41 +426,41 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
         </div>
 
         {/* Row 3: 4 Clean Metrics Bar */}
-        <div className="row g-1.5 mt-2 text-center">
+        <div className="row g-2 g-md-3 mt-3 text-center">
           <div className="col-3">
-            <div className="p-1.5 rounded-3 bg-light border">
-              <small className="text-muted d-block" style={{ fontSize: '10px' }}>Đã làm</small>
-              <span className="fw-black text-navy-dark" style={{ fontSize: '13px' }}>
+            <div className="p-2 p-md-2.5 rounded-3 bg-light border shadow-xs">
+              <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Đã làm</small>
+              <span className="fw-black text-navy-dark" style={{ fontSize: '14.5px' }}>
                 {answeredCount}/{total}
               </span>
             </div>
           </div>
           <div className="col-3">
-            <div className="p-1.5 rounded-3 border" style={{ background: '#ecfdf5', borderColor: '#a7f3d0', color: '#059669' }}>
-              <small className="d-block" style={{ fontSize: '10px' }}>Chính xác</small>
-              <span className="fw-black" style={{ fontSize: '13px' }}>{correctCount}</span>
+            <div className="p-2 p-md-2.5 rounded-3 border shadow-xs" style={{ background: '#ecfdf5', borderColor: '#a7f3d0', color: '#059669' }}>
+              <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Chính xác</small>
+              <span className="fw-black" style={{ fontSize: '14.5px' }}>{correctCount}</span>
             </div>
           </div>
           <div className="col-3">
-            <div className="p-1.5 rounded-3 border" style={{ background: '#fef2f2', borderColor: '#fecaca', color: '#dc2626' }}>
-              <small className="d-block" style={{ fontSize: '10px' }}>Chưa đúng</small>
-              <span className="fw-black" style={{ fontSize: '13px' }}>{wrongCount}</span>
+            <div className="p-2 p-md-2.5 rounded-3 border shadow-xs" style={{ background: '#fef2f2', borderColor: '#fecaca', color: '#dc2626' }}>
+              <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Chưa đúng</small>
+              <span className="fw-black" style={{ fontSize: '14.5px' }}>{wrongCount}</span>
             </div>
           </div>
           <div className="col-3">
-            <div className="p-1.5 rounded-3 border" style={{ background: '#eff6ff', borderColor: '#bfdbfe', color: '#2563eb' }}>
-              <small className="d-block" style={{ fontSize: '10px' }}>Độ chuẩn</small>
-              <span className="fw-black" style={{ fontSize: '13px' }}>{accuracyRate}%</span>
+            <div className="p-2 p-md-2.5 rounded-3 border shadow-xs" style={{ background: '#eff6ff', borderColor: '#bfdbfe', color: '#2563eb' }}>
+              <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Độ chuẩn</small>
+              <span className="fw-black" style={{ fontSize: '14.5px' }}>{accuracyRate}%</span>
             </div>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="mt-2.5">
+        <div className="mt-3">
           <Progress
             value={progressPercent}
             color="primary"
-            style={{ height: '4px', borderRadius: '4px', background: 'var(--slate-100)' }}
+            style={{ height: '6px', borderRadius: '6px', background: 'var(--slate-100)' }}
           />
         </div>
       </div>
@@ -576,7 +570,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                     placeholder={
                       practiceMode === 'jp_to_vi'
                         ? 'Gõ nghĩa Tiếng Việt (VD: tôi)...'
-                        : 'Gõ Romaji (VD: watashi ➔ わたし)...'
+                        : 'Gõ Romaji (VD: watashi = わたし)...'
                     }
                     value={userInputs[currentZenWord.id] || ''}
                     onChange={(e) => handleInputChange(currentZenWord.id, e.target.value, currentZenWord)}
