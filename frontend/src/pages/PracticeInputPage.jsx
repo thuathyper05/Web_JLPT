@@ -87,7 +87,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
   const [vocabList, setVocabList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 2 Core Practice Modes: 'jp_to_vi' (Nhật -> Việt) | 'vi_to_jp' (Việt -> Nhật)
+  // 2 Core Practice Modes: 'jp_to_vi' (Nhật sang Việt) | 'vi_to_jp' (Việt sang Nhật)
   const [practiceMode, setPracticeMode] = useState('jp_to_vi'); 
 
   // View Layout: 'zen' (Tập trung từng từ) | 'grid' (Danh sách tất cả)
@@ -299,7 +299,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
   const currentZenWord = vocabList[zenIndex];
 
   return (
-    <Container className="py-2.5 py-md-4" style={{ maxWidth: '920px' }}>
+    <div className="app-shell" style={{ maxWidth: '920px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -745,7 +745,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
           </div>
 
           {/* Cards Grid: 2 columns on desktop, 1 column on mobile */}
-          <Row className="g-2.5">
+          <Row className="g-3 g-md-4">
             {filteredVocabList.length === 0 ? (
               <Col xs={12}>
                 <div className="p-4 text-center text-muted small bg-white rounded-3 border">
@@ -969,7 +969,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
           </div>
         </ModalBody>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

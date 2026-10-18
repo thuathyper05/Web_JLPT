@@ -394,7 +394,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
   if (gameState === 'setup') {
     return (
       <div className="wm-page">
-        <Container className="py-3 py-lg-4" style={{ maxWidth: 720 }}>
+        <div className="app-shell" style={{ maxWidth: 760 }}>
           {/* Back button */}
           <div className="mb-3">
             <button
@@ -605,7 +605,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             <Play size={20} />
             Bắt đầu thi đấu ({selectedCountText})
           </button>
-        </Container>
+        </div>
       </div>
     );
   }
@@ -627,7 +627,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
           </div>
         )}
 
-        <Container className="py-2 py-md-3" style={{ maxWidth: 760 }}>
+        <div className="app-shell" style={{ maxWidth: 780 }}>
           {/* Top Bar with Exit Button & Audio Toggle */}
           <div className="d-flex align-items-center justify-content-between mb-2 px-1">
             <button
@@ -762,7 +762,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
               />
             ))}
           </div>
-        </Container>
+        </div>
       </div>
     );
   }
@@ -773,7 +773,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
 
   return (
     <div className="wm-page">
-      <Container className="py-4 py-lg-5" style={{ maxWidth: 640 }}>
+      <div className="app-shell" style={{ maxWidth: 680 }}>
         <div className="wm-result-card">
           {isNewRecord ? (
             <>
@@ -906,7 +906,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
             </div>
           )}
         </div>
-      </Container>
+      </div>
     </div>
   );
 };

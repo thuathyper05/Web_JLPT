@@ -434,7 +434,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     : 0;
 
   return (
-    <Container className="py-3 py-md-4" style={{ maxWidth: '780px' }}>
+    <div className="app-shell" style={{ maxWidth: '820px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -1152,7 +1152,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           </div>
         </ModalBody>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

@@ -331,7 +331,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   ];
 
   return (
-    <Container className="py-3 py-md-4" style={{ maxWidth: '860px' }}>
+    <div className="app-shell" style={{ maxWidth: '880px' }}>
       {/* ── 1. SETUP STATE ── */}
       {quizState === 'setup' && (
         <>
@@ -1069,7 +1069,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
           </div>
         </Card>
       )}
-    </Container>
+    </div>
   );
 };
 

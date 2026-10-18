@@ -137,7 +137,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
     : 0;
 
   return (
-    <Container className="py-3 py-md-4">
+    <div className="app-shell" style={{ maxWidth: '1140px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -156,79 +156,71 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
 
           <div className="ms-auto">
             {!user ? (
-              <Badge color="light" pill className="border px-3 py-2 text-secondary d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
+              <span className="badge rounded-pill border px-3 py-2 text-secondary d-flex align-items-center gap-1.5 shadow-xs bg-white" style={{ fontSize: '12px' }}>
                 <ShieldCheck size={14} className="text-success" />
                 <span>Dữ liệu lưu cục bộ (Khách)</span>
-              </Badge>
+              </span>
             ) : (
-              <Badge color="success" pill className="px-3 py-2 d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
+              <span className="badge bg-success rounded-pill px-3 py-2 d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
                 <Sparkles size={14} />
                 <span>Đã đồng bộ tài khoản ({user.username})</span>
-              </Badge>
+              </span>
             )}
           </div>
         </div>
       </div>
 
       {/* 2. Top KPI Overview Cards */}
-      <Row className="g-3 mb-4">
+      <Row className="g-3 g-md-4 mb-4">
         <Col sm={6} lg={3}>
-          <Card className="jlpt-card border-0 shadow-sm h-100 rounded-4">
-            <CardBody className="p-4 text-center">
-              <div className="text-secondary small fw-medium mb-1">Tổng từ vựng N5</div>
-              <h2 className="fw-bold text-navy-dark mb-1">{overall.total_vocabularies}</h2>
-              <small className="text-muted" style={{ fontSize: '12px' }}>25 Bài Minna no Nihongo</small>
-            </CardBody>
-          </Card>
+          <div className="app-metric-card h-100 p-3.5 text-center">
+            <div className="app-metric-label mb-1">Tổng từ vựng N5</div>
+            <div className="app-metric-value text-navy-dark mb-1">{overall.total_vocabularies}</div>
+            <small className="text-muted" style={{ fontSize: '12px' }}>25 Bài Minna no Nihongo</small>
+          </div>
         </Col>
 
         <Col sm={6} lg={3}>
-          <Card className="jlpt-card border-0 shadow-sm h-100 rounded-4">
-            <CardBody className="p-4 text-center">
-              <div className="text-secondary small fw-medium mb-1">Từ đã học</div>
-              <h2 className="fw-bold text-primary mb-1">{overall.studied_vocabularies}</h2>
-              <small className="text-muted" style={{ fontSize: '12px' }}>
-                {Math.round((overall.studied_vocabularies / overall.total_vocabularies) * 100)}% toàn bộ giáo trình
-              </small>
-            </CardBody>
-          </Card>
+          <div className="app-metric-card h-100 p-3.5 text-center">
+            <div className="app-metric-label mb-1">Từ đã học</div>
+            <div className="app-metric-value text-primary mb-1">{overall.studied_vocabularies}</div>
+            <small className="text-muted" style={{ fontSize: '12px' }}>
+              {Math.round((overall.studied_vocabularies / overall.total_vocabularies) * 100)}% toàn bộ giáo trình
+            </small>
+          </div>
         </Col>
 
         <Col sm={6} lg={3}>
-          <Card className="jlpt-card border-0 shadow-sm h-100 rounded-4">
-            <CardBody className="p-4 text-center">
-              <div className="text-secondary small fw-medium mb-1">Đã Thành Thạo</div>
-              <h2 className="fw-bold text-success mb-1">{overall.mastered_count}</h2>
-              <small className="text-success fw-semibold" style={{ fontSize: '12px' }}>{overallMasteryPercent}% tỷ lệ thành thạo</small>
-            </CardBody>
-          </Card>
+          <div className="app-metric-card h-100 p-3.5 text-center">
+            <div className="app-metric-label mb-1">Đã Thành Thạo</div>
+            <div className="app-metric-value text-success mb-1">{overall.mastered_count}</div>
+            <small className="text-success fw-semibold" style={{ fontSize: '12px' }}>{overallMasteryPercent}% tỷ lệ thành thạo</small>
+          </div>
         </Col>
 
         <Col sm={6} lg={3}>
-          <Card className="jlpt-card border-0 shadow-sm h-100 rounded-4">
-            <CardBody className="p-4 text-center">
-              <div className="text-secondary small fw-medium mb-1">Cần ôn tập & từ sai</div>
-              <h2 className="fw-bold text-danger mb-1">{overall.needs_review_count}</h2>
-              <small className="text-danger fw-semibold" style={{ fontSize: '12px' }}>
-                {overall.needs_review_count > 0 ? (
-                  <a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); onNavigate('review'); }}
-                    className="text-danger text-decoration-none"
-                  >
-                    Ôn lại ngay
-                  </a>
-                ) : (
-                  'Chưa có từ sai'
-                )}
-              </small>
-            </CardBody>
-          </Card>
+          <div className="app-metric-card h-100 p-3.5 text-center">
+            <div className="app-metric-label mb-1">Cần ôn tập & từ sai</div>
+            <div className="app-metric-value text-danger mb-1">{overall.needs_review_count}</div>
+            <small className="text-danger fw-semibold" style={{ fontSize: '12px' }}>
+              {overall.needs_review_count > 0 ? (
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); onNavigate('review'); }}
+                  className="text-danger text-decoration-none fw-bold"
+                >
+                  Ôn lại ngay
+                </a>
+              ) : (
+                'Chưa có từ sai'
+              )}
+            </small>
+          </div>
         </Col>
       </Row>
 
       {/* 3. Overall Milestone Progress Bar */}
-      <Card className="jlpt-card border-0 shadow-sm p-4 rounded-4 mb-4">
+      <div className="app-surface-card p-4 mb-4">
         <div className="d-flex justify-content-between align-items-center mb-2">
           <div className="d-flex align-items-center gap-2">
             <Target size={20} className="text-primary" />
@@ -249,7 +241,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
           <span>Nửa chặng đường (50%)</span>
           <span>Sẵn sàng thi JLPT N5 (100%)</span>
         </div>
-      </Card>
+      </div>
 
       {/* 4. Lesson-by-Lesson Progress Grid */}
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -257,50 +249,52 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         <span className="text-muted small">Nhấn vào bài để chuyển tới chế độ học</span>
       </div>
 
-      <Row className="g-3">
+      <Row className="g-3 g-md-4">
         {lessons.map((lesson) => {
           const percent = lesson.mastery_percent || 0;
           let statusBadge = (
-            <Badge color="light" pill className="border text-muted">
+            <span className="badge rounded-pill bg-light text-muted border" style={{ fontSize: '11px' }}>
               Chưa học
-            </Badge>
+            </span>
           );
 
           if (percent >= 90) {
-            statusBadge = <Badge color="success" pill>Xuất Sắc</Badge>;
+            statusBadge = <span className="badge rounded-pill bg-success text-white" style={{ fontSize: '11px' }}>Xuất Sắc</span>;
           } else if (percent >= 50) {
-            statusBadge = <Badge color="primary" pill>Đang Tiến Bộ</Badge>;
+            statusBadge = <span className="badge rounded-pill bg-primary text-white" style={{ fontSize: '11px' }}>Đang Tiến Bộ</span>;
           } else if (lesson.studied_words > 0) {
-            statusBadge = <Badge color="warning" pill className="text-dark">Đang Rèn Luyện</Badge>;
+            statusBadge = <span className="badge rounded-pill bg-warning text-dark" style={{ fontSize: '11px' }}>Đang Rèn Luyện</span>;
           }
 
           return (
             <Col sm={6} lg={4} key={lesson.lesson_number}>
-              <Card
-                className="jlpt-card border-0 shadow-sm h-100 rounded-3 cursor-pointer hover-shadow"
+              <div
+                className="app-surface-card h-100 p-3.5 cursor-pointer hover-shadow d-flex flex-column justify-content-between"
                 onClick={() => {
                   if (onSelectLesson) onSelectLesson(lesson.lesson_number);
                   onNavigate('lessons');
                 }}
                 style={{ cursor: 'pointer' }}
               >
-                <CardBody className="p-3">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1">
+                <div>
+                  <div className="d-flex justify-content-between align-items-center mb-2.5">
+                    <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-bold px-2.5 py-1" style={{ fontSize: '11.5px' }}>
                       Bài {lesson.lesson_number < 10 ? `0${lesson.lesson_number}` : lesson.lesson_number}
                     </span>
                     {statusBadge}
                   </div>
 
-                  <h6 className="fw-bold text-dark mb-1 text-truncate" title={lesson.title}>
+                  <h6 className="fw-bold text-dark mb-1.5 text-truncate" title={lesson.title} style={{ fontSize: '14px' }}>
                     {lesson.title}
                   </h6>
+                </div>
 
-                  <div className="d-flex justify-content-between align-items-center small text-muted mb-2">
-                    <span>
+                <div className="mt-2.5 pt-2 border-top border-slate-100">
+                  <div className="d-flex justify-content-between align-items-center small text-muted mb-1.5">
+                    <span style={{ fontSize: '11.5px' }}>
                       {lesson.mastered_words || 0} / {lesson.total_words} từ
                     </span>
-                    <span className="fw-bold text-primary">{percent}%</span>
+                    <span className="fw-bold text-primary" style={{ fontSize: '12px' }}>{percent}%</span>
                   </div>
 
                   <Progress
@@ -309,13 +303,13 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
                     className="rounded-pill"
                     style={{ height: '6px' }}
                   />
-                </CardBody>
-              </Card>
+                </div>
+              </div>
             </Col>
           );
         })}
       </Row>
-    </Container>
+    </div>
   );
 };
 

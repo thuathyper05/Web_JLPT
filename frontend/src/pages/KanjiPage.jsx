@@ -40,7 +40,7 @@ const KanjiPage = ({ currentLevel = 'N5' }) => {
   });
 
   return (
-    <Container className="py-3 py-md-4">
+    <div className="app-shell" style={{ maxWidth: '1140px' }}>
 
       {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
@@ -85,17 +85,17 @@ const KanjiPage = ({ currentLevel = 'N5' }) => {
       ) : (
         <>
           {filtered.length === 0 ? (
-            <div className="jlpt-card p-5 text-center">
+            <div className="app-surface-card p-5 text-center">
               <p className="text-muted">Không tìm thấy Kanji nào khớp với "{search}"</p>
             </div>
           ) : (
-            <Row className="g-2 g-md-3">
+            <Row className="g-3 g-md-4">
               {filtered.map(item => (
                 <Col xs={6} sm={4} md={3} lg={2} key={item.id}>
                   <div className="kanji-card text-center" onClick={() => openDetail(item)}
-                    style={{ padding: '16px 12px', position: 'relative', overflow: 'hidden', minHeight: 140, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    style={{ padding: '18px 14px', position: 'relative', overflow: 'hidden', minHeight: 154, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderRadius: 16 }}>
                     {/* Stroke count badge */}
-                    <div style={{ position: 'absolute', top: 6, right: 8, fontSize: 10, fontWeight: 700, color: '#94a3b8', background: '#f8fafc', borderRadius: 999, padding: '1px 6px' }}>
+                    <div style={{ position: 'absolute', top: 8, right: 10, fontSize: 10.5, fontWeight: 700, color: '#94a3b8', background: '#f8fafc', borderRadius: 999, padding: '2px 7px', border: '1px solid #f1f5f9' }}>
                       {item.stroke_count} nét
                     </div>
 
@@ -199,7 +199,7 @@ const KanjiPage = ({ currentLevel = 'N5' }) => {
           </ModalBody>
         </Modal>
       )}
-    </Container>
+    </div>
   );
 };
 

@@ -185,10 +185,10 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
   ];
 
   return (
-    <Container className="py-2.5 py-md-4" style={{ maxWidth: '1240px', overflowX: 'hidden' }}>
+    <div className="app-shell" style={{ maxWidth: '1240px' }}>
       {/* ── 1. LUXURY TOKYO HERO BANNER ── */}
       <div
-        className="p-3 p-sm-4 p-md-5 mb-3 mb-md-4 rounded-4 shadow-lg position-relative overflow-hidden"
+        className="p-4 p-sm-4 p-md-5 mb-4 rounded-4 shadow-lg position-relative overflow-hidden"
         style={{
           background: 'radial-gradient(ellipse at top right, #1e3a8a 0%, #0f172a 50%, #030712 100%)',
           border: '1px solid rgba(255, 255, 255, 0.14)',
@@ -336,16 +336,16 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       </div>
 
       {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER (COMPACT & SLEEK FOR ALL DEVICES) ── */}
-      <div className="home-promo-section my-3 my-md-4">
-        <div className="d-flex align-items-center justify-content-between mb-1.5 px-0.5">
-          <div className="d-flex align-items-center gap-1.5">
+      <div className="home-promo-section mb-4">
+        <div className="d-flex align-items-center justify-content-between mb-2.5 px-0.5">
+          <div className="d-flex align-items-center gap-2">
             <span className="beacon-blink-dot" />
             <span className="home-promo-mini-label">2 TÍNH NĂNG MỚI ĐỘT PHÁ</span>
           </div>
           <span className="home-promo-mini-sub d-none d-sm-inline">Phản xạ ghép thẻ 60s & Vườn Bonsai SRS</span>
         </div>
 
-        <Row className="g-2 g-md-2.5">
+        <Row className="g-3 g-md-4">
           {/* Card 1: Nối Từ Siêu Tốc */}
           <Col xs={6} md={6}>
             <div 
@@ -356,9 +356,9 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
               }}
             >
               {/* Top Row: Icon + Blinking Neon Badge */}
-              <div className="d-flex align-items-center justify-content-between mb-1">
+              <div className="d-flex align-items-center justify-content-between mb-1.5">
                 <div className="home-promo-compact-icon home-promo-compact-icon--rush">
-                  <Zap size={14} />
+                  <Zap size={15} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--rush">
                   MỚI
@@ -367,14 +367,14 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Title & Desktop Subtitle */}
               <div className="home-promo-compact-title">Nối Từ Siêu Tốc</div>
-              <div className="home-promo-compact-sub d-none d-md-block mb-1">Ghép 10 thẻ trong 60s • Rèn phản xạ nhanh</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1.5">Ghép 10 thẻ trong 60s • Rèn phản xạ nhanh</div>
 
               {/* Bottom Row: Micro Pill + Action */}
-              <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-1.5">
                 <span className="home-promo-compact-sub">Phản Xạ 60s</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--rush">
                   <span>Luyện ngay</span>
-                  <ArrowRight size={10} />
+                  <ArrowRight size={11} />
                 </span>
               </div>
             </div>
@@ -390,9 +390,9 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
               }}
             >
               {/* Top Row: Icon + Blinking Neon Badge */}
-              <div className="d-flex align-items-center justify-content-between mb-1">
+              <div className="d-flex align-items-center justify-content-between mb-1.5">
                 <div className="home-promo-compact-icon home-promo-compact-icon--garden">
-                  <Sprout size={14} />
+                  <Sprout size={15} />
                 </div>
                 <span className="badge-new-blink badge-new-blink--garden">
                   MỚI
@@ -401,14 +401,14 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               {/* Title & Desktop Subtitle */}
               <div className="home-promo-compact-title">Vườn Cây Trí Nhớ</div>
-              <div className="home-promo-compact-sub d-none d-md-block mb-1">Bonsai 4 cấp SRS • Ghi nhớ dài hạn</div>
+              <div className="home-promo-compact-sub d-none d-md-block mb-1.5">Bonsai 4 cấp SRS • Ghi nhớ dài hạn</div>
 
               {/* Bottom Row: Micro Pill + Action */}
-              <div className="d-flex align-items-center justify-content-between mt-auto pt-1">
+              <div className="d-flex align-items-center justify-content-between mt-auto pt-1.5">
                 <span className="home-promo-compact-sub">Bonsai SRS</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--garden">
                   <span>Trải nghiệm</span>
-                  <ArrowRight size={10} />
+                  <ArrowRight size={11} />
                 </span>
               </div>
             </div>
@@ -418,145 +418,134 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
       {/* ── 2. USER PROGRESS KPI SUMMARY BAR ── */}
       {stats && (
-        <Row className="g-2 g-md-3 mb-3 mb-md-4">
+        <Row className="g-3 g-md-4 mb-4">
           <Col xs={6} lg={3}>
-            <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-2.5 p-md-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Đã học</small>
-                    <h4 className="fw-black mb-0 text-primary mt-0.5">{stats.studied_vocabularies}</h4>
-                    <small className="text-muted" style={{ fontSize: '11px' }}>/ 1,589 từ vựng</small>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '38px', height: '38px', background: '#eff6ff', color: '#2563eb' }}>
-                    <BookOpen size={18} />
-                  </div>
+            <div className="app-metric-card h-100">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="app-metric-label">Đã học</div>
+                  <div className="app-metric-value text-primary">{stats.studied_vocabularies}</div>
+                  <small className="text-muted" style={{ fontSize: '11px' }}>/ 1,589 từ vựng</small>
                 </div>
-              </CardBody>
-            </Card>
+                <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '42px', height: '42px', background: '#eff6ff', color: '#2563eb' }}>
+                  <BookOpen size={20} />
+                </div>
+              </div>
+            </div>
           </Col>
 
           <Col xs={6} lg={3}>
-            <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-2.5 p-md-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Đã Thành Thạo</small>
-                    <h4 className="fw-black mb-0 text-success mt-0.5">{stats.mastered_count}</h4>
-                    <small className="text-muted" style={{ fontSize: '11px' }}>
-                      {Math.round((stats.mastered_count / 1589) * 100)}% hoàn thành
-                    </small>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '38px', height: '38px', background: '#ecfdf5', color: '#10b981' }}>
-                    <Award size={18} />
-                  </div>
+            <div className="app-metric-card h-100">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="app-metric-label">Đã Thành Thạo</div>
+                  <div className="app-metric-value text-success">{stats.mastered_count}</div>
+                  <small className="text-muted" style={{ fontSize: '11px' }}>
+                    {Math.round((stats.mastered_count / 1589) * 100)}% hoàn thành
+                  </small>
                 </div>
-              </CardBody>
-            </Card>
+                <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '42px', height: '42px', background: '#ecfdf5', color: '#10b981' }}>
+                  <Award size={20} />
+                </div>
+              </div>
+            </div>
           </Col>
 
           <Col xs={6} lg={3}>
-            <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-2.5 p-md-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Cần ôn lại</small>
-                    <h4 className="fw-black mb-0 text-danger mt-0.5">{stats.needs_review_count}</h4>
-                    <small style={{ fontSize: '11px' }}>
-                      {stats.needs_review_count > 0 ? (
-                        <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('review'); }} className="text-danger fw-bold text-decoration-none">
-                          Ôn từ sai ngay
-                        </a>
-                      ) : (
-                        <span className="text-muted">Hoàn hảo</span>
-                      )}
-                    </small>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '38px', height: '38px', background: '#fef2f2', color: '#ef4444' }}>
-                    <Flame size={18} />
-                  </div>
+            <div className="app-metric-card h-100">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="app-metric-label">Cần ôn lại</div>
+                  <div className="app-metric-value text-danger">{stats.needs_review_count}</div>
+                  <small style={{ fontSize: '11px' }}>
+                    {stats.needs_review_count > 0 ? (
+                      <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('review'); }} className="text-danger fw-bold text-decoration-none">
+                        Ôn từ sai ngay
+                      </a>
+                    ) : (
+                      <span className="text-muted">Hoàn hảo</span>
+                    )}
+                  </small>
                 </div>
-              </CardBody>
-            </Card>
+                <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '42px', height: '42px', background: '#fef2f2', color: '#ef4444' }}>
+                  <Flame size={20} />
+                </div>
+              </div>
+            </div>
           </Col>
 
           <Col xs={6} lg={3}>
-            <Card className="jlpt-card border-0 shadow-sm h-100 rounded-3">
-              <CardBody className="p-2.5 p-md-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <small className="text-secondary fw-semibold text-uppercase" style={{ fontSize: '10.5px' }}>Tỷ lệ đúng</small>
-                    <h4 className="fw-black mb-0 text-warning mt-0.5">{stats.accuracy_rate}%</h4>
-                    <small className="text-muted" style={{ fontSize: '11px' }}>Độ ghi nhớ sâu</small>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '38px', height: '38px', background: '#fffbeb', color: '#f59e0b' }}>
-                    <TrendingUp size={18} />
-                  </div>
+            <div className="app-metric-card h-100">
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="app-metric-label">Tỷ lệ đúng</div>
+                  <div className="app-metric-value text-warning">{stats.accuracy_rate}%</div>
+                  <small className="text-muted" style={{ fontSize: '11px' }}>Độ ghi nhớ sâu</small>
                 </div>
-              </CardBody>
-            </Card>
+                <div className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style={{ width: '42px', height: '42px', background: '#fffbeb', color: '#f59e0b' }}>
+                  <TrendingUp size={20} />
+                </div>
+              </div>
+            </div>
           </Col>
         </Row>
       )}
-
       {/* ── 3. 6 CORE LEARNING METHODS ── */}
-      <div className="mb-3 mb-md-4">
-        <div className="d-flex justify-content-between align-items-center mb-2.5">
+      <div className="mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-3">
           <div>
-            <h5 className="fw-black text-navy-dark tracking-tight mb-0" style={{ fontSize: '1.15rem' }}>
+            <h5 className="fw-black text-navy-dark tracking-tight mb-1" style={{ fontSize: '1.2rem' }}>
               Phương Pháp Học Tập Khoa Học
             </h5>
             <small className="text-muted">Lộ trình rèn luyện 4 kỹ năng ghi nhớ từ vựng N5</small>
           </div>
         </div>
 
-        <Row className="g-2 g-md-3">
+        <Row className="g-3 g-md-4">
           {features.map((feat) => {
             const IconComp = feat.icon;
             return (
               <Col xs={6} md={6} lg={4} key={feat.id}>
-                <Card
-                  className="jlpt-card border-0 shadow-sm h-100 rounded-3 cursor-pointer hover-shadow"
+                <div
+                  className="app-surface-card h-100 p-3 p-md-3.5 d-flex flex-column justify-content-between"
                   onClick={() => {
                     sounds.playFlip();
                     onNavigate(feat.id);
                   }}
-                  style={{ cursor: 'pointer', transition: 'all 0.2s ease' }}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <CardBody className="p-3 d-flex flex-column justify-content-between">
-                    <div>
-                      <div className="d-flex justify-content-between align-items-center mb-2">
-                        <div
-                          className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs"
-                          style={{ width: '36px', height: '36px', background: feat.bg }}
-                        >
-                          <IconComp size={18} />
-                        </div>
-                        {feat.id === 'wordmatch' ? (
-                          <span className="badge-new-blink badge-new-blink--rush">MỚI</span>
-                        ) : feat.id === 'garden' ? (
-                          <span className="badge-new-blink badge-new-blink--garden">MỚI</span>
-                        ) : (
-                          <Badge color="light" pill className="border text-secondary px-2 py-0.5 d-none d-sm-inline" style={{ fontSize: '10.5px' }}>
-                            {feat.badge}
-                          </Badge>
-                        )}
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center mb-2.5">
+                      <div
+                        className="d-flex align-items-center justify-content-center rounded-3 text-white shadow-xs"
+                        style={{ width: '40px', height: '40px', background: feat.bg }}
+                      >
+                        <IconComp size={20} />
                       </div>
-
-                      <h6 className="fw-bold text-navy-dark mb-1" style={{ fontSize: '14px' }}>
-                        {feat.title}
-                      </h6>
-                      <p className="text-muted small mb-0 d-none d-md-block" style={{ fontSize: '12px', lineHeight: '1.45' }}>
-                        {feat.desc}
-                      </p>
+                      {feat.id === 'wordmatch' ? (
+                        <span className="badge-new-blink badge-new-blink--rush">MỚI</span>
+                      ) : feat.id === 'garden' ? (
+                        <span className="badge-new-blink badge-new-blink--garden">MỚI</span>
+                      ) : (
+                        <Badge color="light" pill className="border text-secondary px-2.5 py-1 d-none d-sm-inline" style={{ fontSize: '11px' }}>
+                          {feat.badge}
+                        </Badge>
+                      )}
                     </div>
 
-                    <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-2" style={{ fontSize: '12px' }}>
-                      <span>Vào học</span>
-                      <ArrowRight size={12} />
-                    </div>
-                  </CardBody>
-                </Card>
+                    <h6 className="fw-bold text-navy-dark mb-1.5" style={{ fontSize: '14.5px' }}>
+                      {feat.title}
+                    </h6>
+                    <p className="text-muted small mb-0 d-none d-md-block" style={{ fontSize: '12px', lineHeight: '1.5' }}>
+                      {feat.desc}
+                    </p>
+                  </div>
+
+                  <div className="d-flex align-items-center gap-1.5 text-primary fw-bold mt-3 pt-2 border-top border-slate-100" style={{ fontSize: '12.5px' }}>
+                    <span>Vào học</span>
+                    <ArrowRight size={13} />
+                  </div>
+                </div>
               </Col>
             );
           })}
@@ -564,25 +553,25 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       </div>
 
       {/* ── 4. 25 LESSON DIRECTORY (REFINED RESPONSIVE AUTO-FIT GRID) ── */}
-      <div className="bg-white p-3 p-md-4 rounded-4 shadow-sm border mb-4" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <div className="app-surface-card p-3.5 p-md-4 mb-4" style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2.5 mb-3.5">
           <div>
-            <h5 className="fw-black text-navy-dark mb-0" style={{ fontSize: '1.15rem' }}>
+            <h5 className="fw-black text-navy-dark mb-1" style={{ fontSize: '1.2rem' }}>
               25 Bài Học Minna no Nihongo N5
             </h5>
             <small className="text-muted">Chọn bài học để bắt đầu học từ vựng, flashcard hoặc làm bài thi</small>
           </div>
 
-          <div className="position-relative flex-grow-1 flex-sm-grow-0" style={{ maxWidth: '260px', width: '100%' }}>
+          <div className="position-relative flex-grow-1 flex-sm-grow-0" style={{ maxWidth: '280px', width: '100%' }}>
             <Input
               type="text"
               placeholder="Tìm theo số bài, chủ đề..."
               value={lessonSearch}
               onChange={(e) => setLessonSearch(e.target.value)}
               className="form-control-sm rounded-pill pe-4"
-              style={{ fontSize: '12.5px', background: '#f8fafc' }}
+              style={{ fontSize: '12.5px', background: '#f8fafc', height: '36px' }}
             />
-            <Search size={14} className="position-absolute top-50 end-0 translate-middle-y me-2.5 text-muted" />
+            <Search size={14} className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted" />
           </div>
         </div>
 
@@ -591,7 +580,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
-            gap: '12px',
+            gap: '14px',
             width: '100%'
           }}
         >
@@ -603,18 +592,18 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 if (onSelectLesson) onSelectLesson(l.lesson_number);
                 onNavigate('lessons');
               }}
-              className="p-3 rounded-3 border bg-light bg-opacity-40 hover-shadow transition-all cursor-pointer d-flex flex-column justify-content-between"
+              className="p-3 rounded-3 border bg-white hover-shadow transition-all cursor-pointer d-flex flex-column justify-content-between"
               style={{
                 cursor: 'pointer',
                 borderColor: '#e2e8f0',
                 transition: 'all 0.18s ease',
-                minHeight: '110px'
+                minHeight: '116px'
               }}
             >
               <div>
-                <div className="d-flex justify-content-between align-items-center mb-1.5">
+                <div className="d-flex justify-content-between align-items-center mb-2">
                   <span
-                    className="badge rounded-pill fw-bold px-2 py-0.5 text-white"
+                    className="badge rounded-pill fw-bold px-2.5 py-1 text-white"
                     style={{
                       background: 'linear-gradient(135deg, #1e3a8a, #2563eb)',
                       fontSize: '11px'
@@ -622,7 +611,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                   >
                     第{l.lesson_number}課 • Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}
                   </span>
-                  <span className="badge bg-white text-secondary border px-2 py-0.5 rounded-pill" style={{ fontSize: '11px' }}>
+                  <span className="badge bg-light text-secondary border px-2 py-0.5 rounded-pill" style={{ fontSize: '11px' }}>
                     {l.vocab_count} từ
                   </span>
                 </div>
@@ -632,7 +621,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                   className="fw-bold text-navy-dark"
                   title={l.title}
                   style={{
-                    fontSize: '12.5px',
+                    fontSize: '13px',
                     lineHeight: '1.45',
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
@@ -645,7 +634,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 </div>
               </div>
 
-              <div className="d-flex align-items-center justify-content-between pt-2 mt-2 border-top border-slate-200 border-opacity-60 text-primary small fw-semibold" style={{ fontSize: '11.5px' }}>
+              <div className="d-flex align-items-center justify-content-between pt-2.5 mt-2.5 border-top border-slate-100 text-primary small fw-semibold" style={{ fontSize: '11.5px' }}>
                 <span>Vào học bài</span>
                 <ArrowRight size={13} />
               </div>
@@ -653,7 +642,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
           ))}
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 

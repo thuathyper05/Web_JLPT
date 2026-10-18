@@ -96,7 +96,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
   const lessonNums = [...new Set(reviewList.map(v => v.lesson_number))].sort((a, b) => a - b);
 
   return (
-    <Container className="py-3 py-md-4">
+    <div className="app-shell" style={{ maxWidth: '1040px' }}>
 
       {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
@@ -199,54 +199,52 @@ const ReviewWrongPage = ({ onNavigate }) => {
           </div>
         </div>
       ) : (
-        <Row className="g-3">
+        <Row className="g-3 g-md-4">
           {filteredItems.map(item => {
             const meaning = item.clean_vietnamese || item.vietnamese;
             const kana = item.clean_kana || item.kana;
             return (
               <Col md={6} lg={4} key={item.id}>
-                <Card className="review-card h-100 shadow-sm" style={{ borderRadius: 12, borderLeft: '4px solid #ef4444', border: '1px solid #fee2e2' }}>
-                  <CardBody className="p-3 d-flex flex-column justify-content-between">
-                    <div>
-                      <div className="d-flex justify-content-between align-items-center mb-2">
-                        <span style={{ background: '#fef2f2', color: '#dc2626', fontSize: 11.5, fontWeight: 700, borderRadius: 999, padding: '3px 10px' }}>
-                          Bài {item.lesson_number}
-                        </span>
-                        <button type="button" style={{ background: '#eff6ff', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                          onClick={() => speakJapanese(kana)} title="Nghe phát âm">
-                          <Volume2 size={14} color="#2563eb" />
-                        </button>
-                      </div>
+                <div className="app-surface-card h-100 p-3.5 d-flex flex-column justify-content-between" style={{ borderLeft: '4px solid #ef4444' }}>
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center mb-2.5">
+                      <span className="badge rounded-pill px-2.5 py-1 fw-bold" style={{ background: '#fef2f2', color: '#dc2626', fontSize: '11.5px', border: '1px solid #fecaca' }}>
+                        Bài {item.lesson_number}
+                      </span>
+                      <button type="button" className="app-icon-btn" style={{ width: 32, height: 32 }}
+                        onClick={() => speakJapanese(kana)} title="Nghe phát âm">
+                        <Volume2 size={15} />
+                      </button>
+                    </div>
 
-                      <div className="mb-2">
-                        {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
-                          <div style={{ fontSize: 22, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{item.kanji}</div>
-                        )}
-                        <div style={{ fontSize: 16, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{kana}</div>
-                        <div style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</div>
-                      </div>
-
-                      <div style={{ background: '#f8fafc', borderRadius: 10, padding: '8px 12px', fontSize: 13.5, fontWeight: 700, color: '#1e293b', marginBottom: 8 }}>
-                        {meaning}
-                      </div>
-
-                      {item.usage_note && (
-                        <div style={{ fontSize: 11.5, color: '#64748b' }}>
-                          <span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>
-                          {item.usage_note}
-                        </div>
+                    <div className="mb-2.5">
+                      {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                        <div style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif', lineHeight: '1.2' }}>{item.kanji}</div>
                       )}
+                      <div style={{ fontSize: '16px', fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{kana}</div>
+                      <div style={{ fontSize: '12px', color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</div>
                     </div>
 
-                    <div className="pt-2 border-top mt-2">
-                      <Button color="success" size="sm" block
-                        className="d-flex align-items-center justify-content-center gap-1 fw-bold rounded-pill shadow-sm"
-                        onClick={() => handleMastered(item.id)}>
-                        <CheckCircle size={14} /> Đã Thành Thạo
-                      </Button>
+                    <div style={{ background: '#f8fafc', borderRadius: 10, padding: '10px 14px', fontSize: '13.5px', fontWeight: 700, color: '#1e293b', marginBottom: 10, border: '1px solid #e2e8f0' }}>
+                      {meaning}
                     </div>
-                  </CardBody>
-                </Card>
+
+                    {item.usage_note && (
+                      <div style={{ fontSize: '11.5px', color: '#64748b', marginBottom: 8 }}>
+                        <span style={{ color: '#0284c7', fontWeight: 600, marginRight: 4 }}>Ghi chú:</span>
+                        {item.usage_note}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2.5 border-top border-slate-100 mt-2">
+                    <Button color="success" size="sm" block
+                      className="d-flex align-items-center justify-content-center gap-1.5 fw-bold rounded-pill shadow-xs py-1.5"
+                      onClick={() => handleMastered(item.id)}>
+                      <CheckCircle size={15} /> Đã Thành Thạo
+                    </Button>
+                  </div>
+                </div>
               </Col>
             );
           })}
@@ -320,7 +318,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
           <Button color="danger" className="fw-bold" onClick={handleResetAll}>Xác nhận xóa</Button>
         </ModalFooter>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

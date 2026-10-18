@@ -655,7 +655,7 @@ const GardenPage = ({ onNavigate }) => {
 
   // ── RENDER MAIN SINGLE TREE SANCTUARY ──
   return (
-    <Container className="py-3 py-md-4" style={{ maxWidth: '1080px' }}>
+    <div className="app-shell" style={{ maxWidth: '1040px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -981,7 +981,7 @@ const GardenPage = ({ onNavigate }) => {
           </div>
         </ModalBody>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

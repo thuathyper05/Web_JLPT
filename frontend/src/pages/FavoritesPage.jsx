@@ -83,7 +83,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
   const lessonNums = [...new Set(favorites.map(v => v.lesson_number))].sort((a, b) => a - b);
 
   return (
-    <Container className="py-3 py-md-4">
+    <div className="app-shell" style={{ maxWidth: '1040px' }}>
 
       {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
@@ -172,67 +172,65 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
           </Button>
         </div>
       ) : (
-        <Row className="g-3">
+        <Row className="g-3 g-md-4">
           {filtered.map(item => {
             const meaning = item.clean_vietnamese || item.vietnamese;
             const kana = item.clean_kana || item.kana;
             return (
               <Col md={6} lg={4} key={item.id}>
-                <Card className="fav-card h-100 shadow-sm" style={{ border: '1px solid #e8edf4', borderTop: '3px solid #f59e0b', borderRadius: 14 }}>
-                  <CardBody className="p-3 d-flex flex-column justify-content-between">
-                    <div>
-                      {/* Top row */}
-                      <div className="d-flex justify-content-between align-items-center mb-2">
-                        <span style={{ background: '#f1f5f9', color: '#475569', fontSize: 11.5, fontWeight: 700, borderRadius: 999, padding: '3px 10px', cursor: 'pointer' }}
-                          onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
-                          Bài {item.lesson_number}
-                        </span>
-                        <div className="d-flex gap-1">
-                          <button type="button" style={{ background: '#eff6ff', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                            onClick={() => speakJapanese(kana)} title="Nghe phát âm">
-                            <Volume2 size={14} color="#2563eb" />
-                          </button>
-                          <button type="button" style={{ background: '#fffbeb', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                            onClick={() => handleRemove(item)} title="Bỏ yêu thích">
-                            <Star size={14} fill="#f59e0b" color="#f59e0b" />
-                          </button>
-                        </div>
+                <div className="app-surface-card h-100 p-3.5 d-flex flex-column justify-content-between" style={{ borderTop: '3px solid #f59e0b' }}>
+                  <div>
+                    {/* Top row */}
+                    <div className="d-flex justify-content-between align-items-center mb-2.5">
+                      <span className="badge rounded-pill px-2.5 py-1 fw-bold" style={{ background: '#f1f5f9', color: '#475569', fontSize: '11.5px', border: '1px solid #e2e8f0', cursor: 'pointer' }}
+                        onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
+                        Bài {item.lesson_number}
+                      </span>
+                      <div className="d-flex gap-1.5">
+                        <button type="button" className="app-icon-btn" style={{ width: 32, height: 32 }}
+                          onClick={() => speakJapanese(kana)} title="Nghe phát âm">
+                          <Volume2 size={15} />
+                        </button>
+                        <button type="button" className="app-icon-btn" style={{ width: 32, height: 32, background: '#fffbeb', borderColor: '#fde68a' }}
+                          onClick={() => handleRemove(item)} title="Bỏ yêu thích">
+                          <Star size={15} fill="#f59e0b" color="#f59e0b" />
+                        </button>
                       </div>
+                    </div>
 
-                      {/* Word */}
-                      <div className="mb-2">
-                        {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
-                          <div style={{ fontSize: 24, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif', lineHeight: 1.2 }}>
-                            {item.kanji}
-                          </div>
-                        )}
-                        <div style={{ fontSize: 16, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>
-                          {kana}
-                        </div>
-                        <div style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</div>
-                      </div>
-
-                      {/* Meaning */}
-                      <div style={{ background: '#f8fafc', borderRadius: 10, padding: '8px 12px', fontSize: 13.5, fontWeight: 700, color: '#1e293b', marginBottom: 8 }}>
-                        {meaning}
-                      </div>
-
-                      {item.usage_note && (
-                        <div style={{ fontSize: 11.5, color: '#64748b', marginBottom: 6 }}>
-                          {item.usage_note}
+                    {/* Word */}
+                    <div className="mb-2.5">
+                      {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                        <div style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif', lineHeight: '1.2' }}>
+                          {item.kanji}
                         </div>
                       )}
+                      <div style={{ fontSize: '16px', fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>
+                        {kana}
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</div>
                     </div>
 
-                    <div className="pt-2 border-top d-flex justify-content-between align-items-center">
-                      <span style={{ fontSize: 11, color: '#94a3b8' }}>#{item.order_num || item.id}</span>
-                      <button type="button" style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: 12, fontWeight: 700, cursor: 'pointer', padding: 0 }}
-                        onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
-                        Xem trong bài
-                      </button>
+                    {/* Meaning */}
+                    <div style={{ background: '#f8fafc', borderRadius: 10, padding: '10px 14px', fontSize: '13.5px', fontWeight: 700, color: '#1e293b', marginBottom: 10, border: '1px solid #e2e8f0' }}>
+                      {meaning}
                     </div>
-                  </CardBody>
-                </Card>
+
+                    {item.usage_note && (
+                      <div style={{ fontSize: '11.5px', color: '#64748b', marginBottom: 8 }}>
+                        {item.usage_note}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-2.5 border-top border-slate-100 mt-2 d-flex justify-content-between align-items-center">
+                    <span style={{ fontSize: '11.5px', color: '#94a3b8' }}>#{item.order_num || item.id}</span>
+                    <button type="button" style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '12.5px', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                      onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
+                      Xem trong bài
+                    </button>
+                  </div>
+                </div>
               </Col>
             );
           })}
@@ -297,7 +295,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
           )}
         </ModalBody>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

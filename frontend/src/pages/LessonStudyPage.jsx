@@ -234,7 +234,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
   }
 
   return (
-    <Container className="py-2.5 py-md-4" style={{ maxWidth: '1000px', overflowX: 'hidden' }}>
+    <div className="app-shell" style={{ maxWidth: '1040px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-2.5">
@@ -366,12 +366,12 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
       {/* ── MODE 1: STEP-BY-STEP WORD CARD ── */}
       {viewMode === 'step_by_step' && currentWord && (
         <div style={{ maxWidth: '640px', margin: '0 auto', width: '100%' }}>
-          <div className="d-flex justify-content-between align-items-center mb-2 px-1 text-muted small w-100">
+          <div className="d-flex justify-content-between align-items-center mb-2.5 px-1 text-muted small w-100">
             <span>Từ số {currentIndex + 1} / {vocabularies.length}</span>
             <span className="d-none d-sm-inline">Dùng phím mũi tên <strong>Trái / Phải</strong> hoặc <strong>Phím Cách</strong></span>
           </div>
 
-          <Card className={`jlpt-card border-0 shadow-sm p-2.5 p-sm-3 p-md-4 rounded-4 mb-3 position-relative overflow-hidden ${wordAnim ? `word-card-${wordAnim}` : ''}`} style={{ width: '100%', maxWidth: '100%' }}>
+          <div className={`app-surface-card p-3.5 p-sm-4 p-md-5 mb-4 position-relative overflow-hidden ${wordAnim ? `word-card-${wordAnim}` : ''}`} style={{ width: '100%', maxWidth: '100%' }}>
             {/* Floating +10 XP badge */}
             {floatingXp && (
               <div className="floating-xp-badge">
@@ -531,7 +531,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 </Button>
               </div>
             </div>
-          </Card>
+          </div>
 
           {/* Navigation Controls */}
           <div className="d-flex justify-content-between align-items-center w-100 gap-2" style={{ minWidth: 0 }}>
@@ -828,7 +828,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
           <Button color="primary" size="sm" className="fw-bold px-3" onClick={handleSaveNote}>Lưu ghi chú</Button>
         </ModalFooter>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

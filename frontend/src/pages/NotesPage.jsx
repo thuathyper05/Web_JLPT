@@ -80,7 +80,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
   );
 
   return (
-    <Container className="py-3 py-md-4">
+    <div className="app-shell" style={{ maxWidth: '1040px' }}>
 
       {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
@@ -134,61 +134,59 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
           </Button>
         </div>
       ) : (
-        <Row className="g-3">
+        <Row className="g-3 g-md-4">
           {filtered.map(item => (
             <Col md={6} key={item.vocabulary_id}>
-              <Card style={{ border: '1px solid #e0edf8', borderLeft: '4px solid #3b82f6', borderRadius: 12, boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
-                <CardBody className="p-3 d-flex flex-column gap-2">
-                  {/* Top */}
-                  <div className="d-flex justify-content-between align-items-center">
-                    <span style={{ background: '#eff6ff', color: '#2563eb', fontSize: 11.5, fontWeight: 700, borderRadius: 999, padding: '3px 10px', cursor: 'pointer' }}
-                      onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
-                      Bài {item.lesson_number}
-                    </span>
-                    <div className="d-flex gap-1">
-                      <button type="button" style={{ background: '#eff6ff', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                        onClick={() => speakJapanese(item.clean_kana || item.kana)}>
-                        <Volume2 size={14} color="#2563eb" />
-                      </button>
-                      <button type="button" style={{ background: '#f0f9ff', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                        onClick={() => openEdit(item)}>
-                        <Edit3 size={14} color="#0ea5e9" />
-                      </button>
-                      <button type="button" style={{ background: '#fef2f2', border: 'none', borderRadius: 8, padding: '5px 7px', cursor: 'pointer' }}
-                        onClick={() => handleDelete(item)}>
-                        <Trash2 size={14} color="#ef4444" />
-                      </button>
-                    </div>
+              <div className="app-surface-card h-100 p-3.5 d-flex flex-column gap-2.5" style={{ borderLeft: '4px solid #3b82f6' }}>
+                {/* Top */}
+                <div className="d-flex justify-content-between align-items-center">
+                  <span className="badge rounded-pill px-2.5 py-1 fw-bold" style={{ background: '#eff6ff', color: '#2563eb', fontSize: '11.5px', border: '1px solid #bfdbfe', cursor: 'pointer' }}
+                    onClick={() => { if (onSelectLesson) onSelectLesson(item.lesson_number); onNavigate('lessons'); }}>
+                    Bài {item.lesson_number}
+                  </span>
+                  <div className="d-flex gap-1.5">
+                    <button type="button" className="app-icon-btn" style={{ width: 32, height: 32 }}
+                      onClick={() => speakJapanese(item.clean_kana || item.kana)}>
+                      <Volume2 size={15} />
+                    </button>
+                    <button type="button" className="app-icon-btn" style={{ width: 32, height: 32, color: '#0ea5e9' }}
+                      onClick={() => openEdit(item)}>
+                      <Edit3 size={15} />
+                    </button>
+                    <button type="button" className="app-icon-btn" style={{ width: 32, height: 32, color: '#ef4444' }}
+                      onClick={() => handleDelete(item)}>
+                      <Trash2 size={15} />
+                    </button>
                   </div>
+                </div>
 
-                  {/* Word */}
-                  <div className="d-flex align-items-baseline gap-2">
-                    {item.kanji && (
-                      <span style={{ fontSize: 20, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{item.kanji}</span>
-                    )}
-                    <span style={{ fontSize: 15, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>
-                      {item.clean_kana || item.kana}
-                    </span>
-                    <span style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</span>
-                  </div>
+                {/* Word */}
+                <div className="d-flex align-items-baseline gap-2 flex-wrap">
+                  {item.kanji && (
+                    <span style={{ fontSize: '20px', fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{item.kanji}</span>
+                  )}
+                  <span style={{ fontSize: '15px', fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>
+                    {item.clean_kana || item.kana}
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#94a3b8', fontStyle: 'italic' }}>[{item.romaji}]</span>
+                </div>
 
-                  {/* Meaning */}
-                  <div style={{ fontSize: 13, color: '#475569' }}>
-                    <strong>Nghĩa:</strong> {item.clean_vietnamese || item.vietnamese}
-                  </div>
+                {/* Meaning */}
+                <div style={{ fontSize: '13px', color: '#475569' }}>
+                  <strong>Nghĩa:</strong> {item.clean_vietnamese || item.vietnamese}
+                </div>
 
-                  {/* Note Content */}
-                  <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 10, padding: '10px 14px' }}>
-                    <div className="d-flex align-items-center gap-1.5" style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
-                      <FileText size={12} />
-                      <span>Ghi chú của bạn</span>
-                    </div>
-                    <div style={{ fontSize: 13.5, color: '#0c4a6e', whiteSpace: 'pre-wrap', lineHeight: 1.55 }}>
-                      {item.content}
-                    </div>
+                {/* Note Content */}
+                <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 10, padding: '12px 14px', marginTop: 'auto' }}>
+                  <div className="d-flex align-items-center gap-1.5" style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>
+                    <FileText size={12} />
+                    <span>Ghi chú của bạn</span>
                   </div>
-                </CardBody>
-              </Card>
+                  <div style={{ fontSize: '13.5px', color: '#0c4a6e', whiteSpace: 'pre-wrap', lineHeight: 1.55 }}>
+                    {item.content}
+                  </div>
+                </div>
+              </div>
             </Col>
           ))}
         </Row>
@@ -218,7 +216,7 @@ const NotesPage = ({ onNavigate, onSelectLesson }) => {
           </Button>
         </ModalFooter>
       </Modal>
-    </Container>
+    </div>
   );
 };
 
