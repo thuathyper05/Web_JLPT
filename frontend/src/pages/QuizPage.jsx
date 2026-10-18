@@ -370,7 +370,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
               </span>
             </div>
 
-            <Row className="g-2.5 g-md-3">
+            <Row className="g-3">
               {modeCards.map(m => {
                 const isSelected = quizMode === m.id;
                 const IconComponent = m.icon;
@@ -384,43 +384,41 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       }}
                     >
                       <div>
-                        <div className="d-flex justify-content-between align-items-center mb-2">
-                          <div className="d-flex align-items-center gap-2.5">
+                        <div className="d-flex justify-content-between align-items-center mb-2.5">
+                          <div className="d-flex align-items-center gap-3 min-w-0">
                             <div
-                              className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+                              className="quiz-mode-icon-box"
                               style={{
-                                width: 36,
-                                height: 36,
                                 background: isSelected ? '#2563eb' : '#f1f5f9',
                                 color: isSelected ? '#ffffff' : m.color || '#64748b'
                               }}
                             >
-                              <IconComponent size={18} strokeWidth={2.2} />
+                              <IconComponent size={20} strokeWidth={2.2} />
                             </div>
-                            <div>
-                              <h6 className={`fw-bold mb-0 ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '14.5px' }}>
+                            <div className="min-w-0">
+                              <h6 className={`fw-bold mb-0.5 text-truncate ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '15px' }}>
                                 {m.title}
                               </h6>
-                              <span className="text-muted small" style={{ fontSize: '11px' }}>{m.sub}</span>
+                              <span className="text-muted small d-block text-truncate" style={{ fontSize: '11.5px' }}>{m.sub}</span>
                             </div>
                           </div>
-                          <div className="d-flex align-items-center gap-1.5">
+                          <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-2">
                             <span
-                              className={`badge rounded-pill fw-semibold px-2 py-0.5 ${
+                              className={`badge rounded-pill fw-semibold px-2.5 py-1 ${
                                 isSelected ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600'
                               }`}
-                              style={{ fontSize: '10.5px' }}
+                              style={{ fontSize: '11px' }}
                             >
                               {m.badge}
                             </span>
                             {isSelected && (
-                              <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center" style={{ width: 18, height: 18 }}>
+                              <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 18, height: 18 }}>
                                 <Check size={11} color="#fff" />
                               </span>
                             )}
                           </div>
                         </div>
-                        <p className="text-muted small mb-0 mt-1" style={{ fontSize: '12px', lineHeight: '1.45' }}>
+                        <p className="text-muted small mb-0 mt-2" style={{ fontSize: '12.5px', lineHeight: '1.5' }}>
                           {m.desc}
                         </p>
                       </div>

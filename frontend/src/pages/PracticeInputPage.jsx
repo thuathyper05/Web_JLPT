@@ -302,7 +302,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
     <div className="app-shell" style={{ maxWidth: '920px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
       <div className="app-page-header">
-        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div className="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
           <div>
             <div className="app-header-tag">
               <Keyboard size={13} />
@@ -366,7 +366,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
         </div>
 
         {/* Row 2: 2 Core Practice Modes & View Mode Switcher */}
-        <div className="d-flex justify-content-between align-items-center gap-2 flex-wrap pt-2 border-top border-slate-100">
+        <div className="d-flex justify-content-between align-items-center gap-3 flex-wrap pt-3 border-top border-slate-200 border-opacity-70">
           {/* Universal Direction Switcher — 100% Unified, Zero Arrows */}
           <div className="app-direction-switcher">
             <button

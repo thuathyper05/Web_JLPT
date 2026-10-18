@@ -715,23 +715,30 @@ const GardenPage = ({ onNavigate }) => {
             </div>
 
             {/* Tree Vitality & Evolution Description */}
-            <div style={{ maxWidth: '540px', margin: '0 auto' }}>
-              <p className="small text-muted mb-3" style={{ lineHeight: '1.6' }}>
+            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+              <p className="small text-muted mb-3.5" style={{ lineHeight: '1.6' }}>
                 {stageInfo.desc}
               </p>
 
-              {/* Vitality Bar */}
-              <div className="p-3 rounded-3 bg-white border shadow-xs mb-4 text-start">
-                <div className="d-flex justify-content-between align-items-center mb-1.5 small">
-                  <span className="fw-bold text-navy-dark d-flex align-items-center gap-1">
-                    <HeartPulse size={14} className={stats.vitality > 75 ? 'text-success' : 'text-danger'} />
-                    <span>Độ Tươi Tốt Của Cây</span>
-                  </span>
-                  <span className={`fw-black ${stats.vitality > 75 ? 'text-success' : 'text-danger'}`}>
+              {/* Unified Zen Bonsai Control Hub */}
+              <div className="bonsai-control-hub p-3.5 p-md-4 text-start mb-2">
+                {/* 1. Vitality Bar HUD */}
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <div className="d-flex align-items-center gap-2">
+                    <div className={`p-1.5 rounded-circle ${stats.vitality > 75 ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger'}`}>
+                      <HeartPulse size={16} />
+                    </div>
+                    <div>
+                      <span className="fw-bold text-navy-dark small d-block" style={{ fontSize: '13px' }}>Độ Tươi Tốt Của Cây</span>
+                      <span className="text-muted" style={{ fontSize: '11px' }}>Hấp thụ dưỡng chất qua việc ôn tập đúng hạn</span>
+                    </div>
+                  </div>
+                  <span className={`badge rounded-pill fw-bold px-2.5 py-1 ${stats.vitality > 75 ? 'bg-success text-white' : 'bg-danger text-white'}`} style={{ fontSize: '11.5px' }}>
                     {stats.vitality}% • {stats.vitality > 75 ? 'Khỏe Mạnh' : 'Cần Tưới Nước!'}
                   </span>
                 </div>
-                <div className="bonsai-vitality-bar">
+
+                <div className="bonsai-vitality-bar mb-3.5">
                   <div
                     className="bonsai-vitality-fill"
                     style={{
@@ -742,70 +749,74 @@ const GardenPage = ({ onNavigate }) => {
                     }}
                   />
                 </div>
-              </div>
 
-              {/* 3 Metric Stats Cards */}
-              <Row className="g-2.5 mb-4 text-start">
-                <Col xs={4}>
-                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100">
-                    <small className="text-muted d-block fw-semibold" style={{ fontSize: '10.5px' }}>Từ Đã Gieo</small>
-                    <span className="fw-black text-navy-dark fs-6">{stats.total} / 1,589</span>
-                  </div>
-                </Col>
+                {/* 2. 3 Sleek Metric Stats */}
+                <Row className="g-2.5 mb-3.5">
+                  <Col xs={4}>
+                    <div className="p-2.5 rounded-3 bg-light border text-center h-100">
+                      <span className="text-muted d-block small mb-1" style={{ fontSize: '11px' }}>Từ Đã Gieo</span>
+                      <span className="fw-bold text-navy-dark fs-6 font-monospace">{stats.total} <small className="text-muted fw-normal" style={{ fontSize: '10.5px' }}>/ 1,589</small></span>
+                    </div>
+                  </Col>
+                  <Col xs={4}>
+                    <div className="p-2.5 rounded-3 border text-center h-100" style={{ background: stats.due > 0 ? '#fef2f2' : '#f8fafc', borderColor: stats.due > 0 ? '#fecaca' : '#e2e8f0' }}>
+                      <span className={`d-block small mb-1 ${stats.due > 0 ? 'text-danger fw-bold' : 'text-muted'}`} style={{ fontSize: '11px' }}>Cần Tưới</span>
+                      <span className={`fw-bold fs-6 font-monospace ${stats.due > 0 ? 'text-danger' : 'text-success'}`}>{stats.due} Từ</span>
+                    </div>
+                  </Col>
+                  <Col xs={4}>
+                    <div className="p-2.5 rounded-3 bg-light border text-center h-100">
+                      <span className="text-muted d-block small mb-1" style={{ fontSize: '11px' }}>Đã Khắc Sâu</span>
+                      <span className="fw-bold text-warning fs-6 font-monospace">{stats.l4} Từ</span>
+                    </div>
+                  </Col>
+                </Row>
 
-                <Col xs={4}>
-                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100" style={{ borderColor: stats.due > 0 ? '#fecaca' : undefined, background: stats.due > 0 ? '#fffdfd' : undefined }}>
-                    <small className={stats.due > 0 ? 'text-danger d-block fw-bold' : 'text-muted d-block fw-semibold'} style={{ fontSize: '10.5px' }}>
-                      Cần Tưới Hôm Nay
-                    </small>
-                    <span className={`fw-black fs-6 ${stats.due > 0 ? 'text-danger' : 'text-success'}`}>
-                      {stats.due} Từ
-                    </span>
-                  </div>
-                </Col>
+                {/* 3. Balanced Action Buttons Grid */}
+                <div className="d-flex flex-column gap-2">
+                  {/* Hero Primary Watering Button */}
+                  <button
+                    type="button"
+                    onClick={startWateringSession}
+                    disabled={stats.total === 0}
+                    className="btn btn-primary w-100 py-2.5 rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm"
+                    style={{
+                      background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                      fontSize: '14px',
+                      border: 'none',
+                      boxShadow: '0 4px 14px rgba(37, 99, 235, 0.25)'
+                    }}
+                  >
+                    <Droplets size={18} />
+                    <span>{stats.due > 0 ? `Tưới Nước Cho Cây (Ôn ${stats.due} Từ Đến Hạn)` : 'Tưới Nước Rèn Luyện Cây'}</span>
+                  </button>
 
-                <Col xs={4}>
-                  <div className="p-2.5 rounded-3 bg-white border shadow-xs h-100">
-                    <small className="text-muted d-block fw-semibold" style={{ fontSize: '10.5px' }}>Đã Khắc Sâu</small>
-                    <span className="fw-black text-warning fs-6">{stats.l4} Từ</span>
-                  </div>
-                </Col>
-              </Row>
-
-              {/* Action Buttons Bar */}
-              <div className="d-flex justify-content-center align-items-center gap-2.5 flex-wrap">
-                <button
-                  type="button"
-                  onClick={startWateringSession}
-                  disabled={stats.total === 0}
-                  className="app-btn-primary"
-                  style={{ height: '46px', padding: '0 26px', fontSize: '14px' }}
-                >
-                  <Droplets size={18} />
-                  <span>
-                    {stats.due > 0 ? `Tưới Nước Cho Cây (Ôn ${stats.due} Từ Đến Hạn)` : 'Tưới Nước Rèn Luyện Cây'}
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setSeedModalOpen(true)}
-                  className="app-btn-secondary"
-                  style={{ height: '46px', padding: '0 20px', fontSize: '13.5px' }}
-                >
-                  <Plus size={16} className="text-primary" />
-                  <span>Gieo Thêm Bài Mới</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setRootsModalOpen(true)}
-                  className="app-btn-secondary"
-                  style={{ height: '46px', padding: '0 18px', fontSize: '13.5px' }}
-                >
-                  <Search size={15} />
-                  <span>Khám Phá Rễ Cây ({stats.total})</span>
-                </button>
+                  {/* Secondary 2-Button Grid (50% / 50%) */}
+                  <Row className="g-2">
+                    <Col xs={6}>
+                      <button
+                        type="button"
+                        onClick={() => setSeedModalOpen(true)}
+                        className="btn btn-outline-secondary bg-white text-slate-700 w-100 py-2 rounded-3 fw-semibold small d-flex align-items-center justify-content-center gap-1.5 border-slate-200 hover-shadow"
+                        style={{ fontSize: '12.5px' }}
+                      >
+                        <Plus size={15} className="text-primary" />
+                        <span>Gieo Bài Mới</span>
+                      </button>
+                    </Col>
+                    <Col xs={6}>
+                      <button
+                        type="button"
+                        onClick={() => setRootsModalOpen(true)}
+                        className="btn btn-outline-secondary bg-white text-slate-700 w-100 py-2 rounded-3 fw-semibold small d-flex align-items-center justify-content-center gap-1.5 border-slate-200 hover-shadow"
+                        style={{ fontSize: '12.5px' }}
+                      >
+                        <Search size={14} className="text-slate-500" />
+                        <span>Rễ Cây ({stats.total})</span>
+                      </button>
+                    </Col>
+                  </Row>
+                </div>
               </div>
             </div>
           </>
