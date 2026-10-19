@@ -405,29 +405,39 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               </div>
             </div>
 
-            {/* Main Word Display */}
-            <div className="text-center my-2 my-md-3 w-100 overflow-hidden">
-              {currentWord.kanji && currentWord.kanji !== '–' && currentWord.kanji !== '-' && (
-                <h1 className="zen-kanji-title mb-1.5">
-                  {currentWord.kanji}
-                </h1>
-              )}
+              {/* Main Word Display */}
+              <div className="text-center my-2 my-md-3 w-100 overflow-hidden">
+                {currentWord.kanji && hasRealKanji(currentWord.kanji) ? (
+                  <h1 className="zen-kanji-title mb-1.5">
+                    {currentWord.kanji}
+                  </h1>
+                ) : (
+                  <h1 className="zen-kanji-title mb-1.5 font-monospace text-navy-dark" style={{ fontSize: 'clamp(2rem, 7vw, 3.2rem)' }}>
+                    {currentWord.clean_kana || currentWord.kana}
+                  </h1>
+                )}
 
-              <div className="d-flex align-items-center justify-content-center gap-2 mb-1.5 flex-wrap">
-                <div className="zen-kana-sub font-monospace text-center">
-                  {currentWord.clean_kana || currentWord.kana}
+                <div className="d-flex align-items-center justify-content-center gap-2 mb-1.5 flex-wrap">
+                  {currentWord.kanji && hasRealKanji(currentWord.kanji) ? (
+                    <div className="zen-kana-sub font-monospace text-center">
+                      {currentWord.clean_kana || currentWord.kana}
+                    </div>
+                  ) : /[\u30A0-\u30FF]/.test(currentWord.clean_kana || currentWord.kana || '') ? (
+                    <span className="badge bg-amber-50 text-amber-800 border border-amber-200 fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
+                      Từ mượn Katakana
+                    </span>
+                  ) : null}
+                  <Button
+                    color="light"
+                    size="sm"
+                    className="p-1 rounded-circle border text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0"
+                    style={{ width: 34, height: 34 }}
+                    onClick={() => speakJapanese(currentWord.clean_kana || currentWord.kana)}
+                    title="Nghe phát âm chuẩn Tokyo"
+                  >
+                    <Volume2 size={16} />
+                  </Button>
                 </div>
-                <Button
-                  color="light"
-                  size="sm"
-                  className="p-1 rounded-circle border text-primary audio-btn d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{ width: 34, height: 34 }}
-                  onClick={() => speakJapanese(currentWord.clean_kana || currentWord.kana)}
-                  title="Nghe phát âm chuẩn Tokyo"
-                >
-                  <Volume2 size={16} />
-                </Button>
-              </div>
 
               {/* Clean Vietnamese Meaning */}
               <div
@@ -609,7 +619,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 <thead className="table-light">
                   <tr>
                     <th style={{ width: '50px' }} className="text-center">STT</th>
-                    <th style={{ width: '160px' }}>Chữ Hán (Kanji)</th>
+                    <th style={{ width: '160px' }}>Chữ Hán / Từ gốc</th>
                     <th style={{ minWidth: '180px' }}>Cách đọc (Kana)</th>
                     <th style={{ minWidth: '240px' }}>Nghĩa Tiếng Việt</th>
                     <th style={{ width: '70px' }} className="text-center">Nghe</th>
@@ -626,7 +636,15 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                       <tr key={item.id}>
                         <td className="text-center text-muted small">{idx + 1}</td>
                         <td className="fw-bold fs-5 text-navy-dark font-monospace">
-                          {item.kanji && hasRealKanji(item.kanji) ? item.kanji : '—'}
+                          {item.kanji && hasRealKanji(item.kanji) ? (
+                            item.kanji
+                          ) : /[\u30A0-\u30FF]/.test(cleanK) ? (
+                            <span className="text-amber-800" style={{ color: '#b45309' }}>
+                              {cleanK}
+                            </span>
+                          ) : (
+                            '—'
+                          )}
                         </td>
                         <td>
                           {hideKana ? (

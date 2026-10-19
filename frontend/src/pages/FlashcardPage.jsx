@@ -809,16 +809,25 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                           </div>
                         </>
                       ) : (
-                        <div
-                          className="fw-black font-monospace"
-                          style={{
-                            fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
-                            lineHeight: '1.1',
-                            color: '#2563eb'
-                          }}
-                        >
-                          {cleanKana}
-                        </div>
+                        <>
+                          <div
+                            className="fw-black font-monospace"
+                            style={{
+                              fontSize: 'clamp(2.2rem, 8vw, 3.8rem)',
+                              lineHeight: '1.1',
+                              color: /[\u30A0-\u30FF]/.test(cleanKana) ? '#d97706' : '#2563eb'
+                            }}
+                          >
+                            {cleanKana}
+                          </div>
+                          {/[\u30A0-\u30FF]/.test(cleanKana) && (
+                            <div className="mt-2">
+                              <span className="badge bg-amber-50 text-amber-800 border border-amber-200 fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
+                                Từ mượn Katakana
+                              </span>
+                            </div>
+                          )}
+                        </>
                       )}
                     </>
                   )}

@@ -164,12 +164,54 @@ const getVocabularyById = async (req, res) => {
   }
 };
 
-// Search vocabulary across all fields with smart match and sorting
+// Helper to fetch comprehensive Japanese Dictionary words (N1 - N5)
+async function fetchGlobalDictionary(keyword) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const response = await fetch(`https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(keyword)}`, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) JLPT-Master-Dictionary/2.0'
+      }
+    });
+    clearTimeout(timeout);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return (data.data || []).slice(0, 30).map(item => {
+      const jp = (item.japanese && item.japanese[0]) || {};
+      const primaryWord = jp.word || jp.reading || '';
+      const primaryReading = jp.reading || jp.word || '';
+      const jlptTag = (item.jlpt || []).find(l => l.startsWith('jlpt-n'));
+      const jlptLevel = jlptTag ? jlptTag.replace('jlpt-', '').toUpperCase() : (item.is_common ? 'COMMON' : 'N1-N5');
+      const meanings = (item.senses || []).map(s => {
+        const defs = s.english_definitions.join(', ');
+        const pos = (s.parts_of_speech || []).slice(0, 2).join(', ');
+        return pos ? `[${pos}] ${defs}` : defs;
+      }).slice(0, 3).join('; ');
+
+      return {
+        id: `dict-${item.slug || Math.random().toString(36).substr(2, 9)}`,
+        kanji: primaryWord !== primaryReading ? primaryWord : '',
+        kana: primaryReading,
+        clean_kana: primaryReading,
+        meaning: meanings,
+        jlpt: jlptLevel,
+        is_common: Boolean(item.is_common),
+        item_type: 'dict_n1_n5'
+      };
+    });
+  } catch (e) {
+    return [];
+  }
+}
+
+// Search Vocabulary & Full N1-N5 Dictionary
 const searchVocabulary = async (req, res) => {
   try {
     const { q } = req.query;
     if (!q || !q.trim()) {
-      return res.json({ vocabularies: [], kanji: [], total: 0 });
+      return res.json({ vocabularies: [], kanji: [], dictionary: [], total: 0 });
     }
 
     const cleanQ = q.trim();
@@ -230,9 +272,10 @@ const searchVocabulary = async (req, res) => {
       LIMIT 30
     `;
 
-    const [vocabRes, kanjiRes] = await Promise.all([
+    const [vocabRes, kanjiRes, dictItems] = await Promise.all([
       db.query(vocabQuery, [term, exact]),
-      db.query(kanjiQuery, [term, exact]).catch(() => ({ rows: [] }))
+      db.query(kanjiQuery, [term, exact]).catch(() => ({ rows: [] })),
+      fetchGlobalDictionary(cleanQ).catch(() => [])
     ]);
 
     const vocabList = vocabRes.rows || [];
@@ -241,7 +284,8 @@ const searchVocabulary = async (req, res) => {
     res.json({
       vocabularies: vocabList,
       kanji: kanjiList,
-      total: vocabList.length + kanjiList.length
+      dictionary: dictItems || [],
+      total: vocabList.length + kanjiList.length + (dictItems ? dictItems.length : 0)
     });
   } catch (error) {
     console.error('searchVocabulary error:', error);

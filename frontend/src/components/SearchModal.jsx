@@ -10,7 +10,7 @@ import {
   Button,
   Spinner
 } from 'reactstrap';
-import { Search, Volume2, Star, X, Filter, Sparkles, BookOpen, PenTool, Hash } from 'lucide-react';
+import { Search, Volume2, Star, X, Filter, Sparkles, BookOpen, Globe, PenTool } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -19,22 +19,34 @@ const QUICK_SUGGESTIONS = [
   { text: 'わたし', type: 'vocab' },
   { text: '先生', type: 'vocab' },
   { text: '行きます', type: 'vocab' },
-  { text: '食べます', type: 'vocab' },
   { text: 'テレビ', type: 'katakana' },
   { text: 'コーヒー', type: 'katakana' },
   { text: 'ホテル', type: 'katakana' },
   { text: '日', type: 'kanji' },
   { text: '本', type: 'kanji' },
   { text: '人', type: 'kanji' },
-  { text: '学', type: 'kanji' }
+  { text: '経済', type: 'dict' },
+  { text: '政治', type: 'dict' },
+  { text: '法律', type: 'dict' }
 ];
+
+const JLPT_COLORS = {
+  N1: { bg: '#fef2f2', border: '#fca5a5', text: '#dc2626' },
+  N2: { bg: '#fff7ed', border: '#fdba74', text: '#ea580c' },
+  N3: { bg: '#fefce8', border: '#fde047', text: '#ca8a04' },
+  N4: { bg: '#f0fdf4', border: '#86efac', text: '#16a34a' },
+  N5: { bg: '#eff6ff', border: '#93c5fd', text: '#2563eb' },
+  COMMON: { bg: '#f5f3ff', border: '#d8b4fe', text: '#7c3aed' },
+  'N1-N5': { bg: '#f8fafc', border: '#cbd5e1', text: '#475569' }
+};
 
 const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [vocabResults, setVocabResults] = useState([]);
   const [kanjiResults, setKanjiResults] = useState([]);
+  const [dictResults, setDictResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('all'); // 'all', 'vocab', 'kanji', 'katakana'
+  const [activeTab, setActiveTab] = useState('all'); // 'all', 'vocab', 'kanji', 'katakana', 'dict'
   const [filterLesson, setFilterLesson] = useState('all');
   const { toggleFavorite, isFavorite } = useApp();
 
@@ -42,6 +54,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
     if (!searchTerm.trim()) {
       setVocabResults([]);
       setKanjiResults([]);
+      setDictResults([]);
       return;
     }
 
@@ -53,16 +66,18 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         if (Array.isArray(data)) {
           setVocabResults(data);
           setKanjiResults([]);
+          setDictResults([]);
         } else if (data) {
           setVocabResults(data.vocabularies || []);
           setKanjiResults(data.kanji || []);
+          setDictResults(data.dictionary || []);
         }
       } catch (err) {
         console.error('Search error:', err);
       } finally {
         setLoading(false);
       }
-    }, 160);
+    }, 180);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
@@ -76,21 +91,22 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
     if (activeTab === 'katakana') {
       return /[\u30A0-\u30FF]/.test(item.clean_kana || item.kana || '');
     }
-    if (activeTab === 'kanji') {
+    if (activeTab === 'kanji' || activeTab === 'dict') {
       return false;
     }
     return true;
   });
 
   const displayedKanji = (activeTab === 'all' || activeTab === 'kanji') ? kanjiResults : [];
+  const displayedDict = (activeTab === 'all' || activeTab === 'dict') ? dictResults : [];
 
-  const totalResultsCount = (activeTab === 'all'
-    ? vocabResults.length + kanjiResults.length
-    : activeTab === 'vocab'
-    ? vocabResults.length
-    : activeTab === 'kanji'
-    ? kanjiResults.length
-    : katakanaVocab.length);
+  const totalResultsCount = (
+    (activeTab === 'all' ? vocabResults.length + kanjiResults.length + dictResults.length : 0) +
+    (activeTab === 'vocab' ? vocabResults.length : 0) +
+    (activeTab === 'kanji' ? kanjiResults.length : 0) +
+    (activeTab === 'katakana' ? katakanaVocab.length : 0) +
+    (activeTab === 'dict' ? dictResults.length : 0)
+  );
 
   const availableLessons = Array.from(new Set(vocabResults.map(r => r.lesson_number)))
     .filter(Boolean)
@@ -110,9 +126,9 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
             <Search size={18} strokeWidth={2.5} />
           </div>
           <div>
-            <h6 className="fw-bold mb-0 text-navy-dark fs-6">Từ Điển & Tra Cứu Toàn Diện N5</h6>
+            <h6 className="fw-bold mb-0 text-navy-dark fs-6">Đại Từ Điển Tiếng Nhật N1 – N5</h6>
             <span className="text-muted small" style={{ fontSize: '11.5px' }}>
-              Tra cứu Từ vựng Minna no Nihongo, Katakana & Hán tự Kanji N5
+              Tra cứu toàn bộ Từ vựng Minna no Nihongo, Hán tự Kanji & 170.000+ từ điển JLPT N1-N5
             </span>
           </div>
         </div>
@@ -125,7 +141,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
           <input
             type="text"
             className="form-control border-0 bg-transparent shadow-none px-0 py-2 fs-6 spotlight-search-input"
-            placeholder="Gõ từ cần tra (VD: 先生, terebi, gakusei, học sinh, ăn, 日, học...)"
+            placeholder="Gõ từ cần tra (VD: 先生, terebi, gakusei, 経済, 日, ăn, đi...)"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             autoFocus
@@ -147,7 +163,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         </div>
 
         {/* Dynamic Category Tabs */}
-        {(vocabResults.length > 0 || kanjiResults.length > 0) && (
+        {(vocabResults.length > 0 || kanjiResults.length > 0 || dictResults.length > 0) && (
           <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 px-1">
             <div className="d-flex align-items-center gap-1.5 flex-wrap">
               <button
@@ -159,19 +175,21 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                 }`}
                 onClick={() => setActiveTab('all')}
               >
-                Tất cả ({vocabResults.length + kanjiResults.length})
+                Tất cả ({vocabResults.length + kanjiResults.length + dictResults.length})
               </button>
-              <button
-                type="button"
-                className={`btn btn-sm py-1 px-2.5 rounded-pill fw-semibold text-xs transition-all ${
-                  activeTab === 'vocab'
-                    ? 'btn-primary shadow-xs'
-                    : 'btn-outline-secondary bg-white text-dark border-slate-200'
-                }`}
-                onClick={() => setActiveTab('vocab')}
-              >
-                Từ vựng ({vocabResults.length})
-              </button>
+              {vocabResults.length > 0 && (
+                <button
+                  type="button"
+                  className={`btn btn-sm py-1 px-2.5 rounded-pill fw-semibold text-xs transition-all ${
+                    activeTab === 'vocab'
+                      ? 'btn-primary shadow-xs'
+                      : 'btn-outline-secondary bg-white text-dark border-slate-200'
+                  }`}
+                  onClick={() => setActiveTab('vocab')}
+                >
+                  Minna N5 ({vocabResults.length})
+                </button>
+              )}
               {kanjiResults.length > 0 && (
                 <button
                   type="button"
@@ -182,7 +200,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                   }`}
                   onClick={() => setActiveTab('kanji')}
                 >
-                  Chữ Hán Kanji ({kanjiResults.length})
+                  Hán tự Kanji ({kanjiResults.length})
                 </button>
               )}
               {katakanaVocab.length > 0 && (
@@ -198,9 +216,22 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                   Katakana ({katakanaVocab.length})
                 </button>
               )}
+              {dictResults.length > 0 && (
+                <button
+                  type="button"
+                  className={`btn btn-sm py-1 px-2.5 rounded-pill fw-semibold text-xs transition-all ${
+                    activeTab === 'dict'
+                      ? 'btn-primary shadow-xs'
+                      : 'btn-outline-secondary bg-white text-dark border-slate-200'
+                  }`}
+                  onClick={() => setActiveTab('dict')}
+                >
+                  Từ điển N1–N5 ({dictResults.length})
+                </button>
+              )}
             </div>
 
-            {availableLessons.length > 1 && activeTab !== 'kanji' && (
+            {availableLessons.length > 1 && activeTab !== 'kanji' && activeTab !== 'dict' && (
               <div className="d-flex align-items-center gap-1.5">
                 <Filter size={13} className="text-muted" />
                 <Input
@@ -224,7 +255,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         {loading && (
           <div className="text-center py-5">
             <Spinner color="primary" size="sm" />
-            <span className="ms-2 text-muted small fw-medium">Đang tra cứu từ điển N5...</span>
+            <span className="ms-2 text-muted small fw-medium">Đang tra cứu từ điển toàn quốc N1–N5...</span>
           </div>
         )}
 
@@ -232,11 +263,11 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         {!loading && !searchTerm && (
           <div className="py-4 px-2 text-center">
             <div className="d-inline-flex align-items-center justify-content-center p-3 rounded-circle bg-primary bg-opacity-10 text-primary mb-3">
-              <Sparkles size={24} />
+              <Globe size={24} />
             </div>
-            <h6 className="fw-bold text-dark mb-1">Gợi ý tra nhanh</h6>
+            <h6 className="fw-bold text-dark mb-1">Gợi ý tra nhanh toàn cấp độ</h6>
             <p className="text-muted small mb-3">
-              Bấm vào từ khóa để xem kết quả chi tiết từ kho từ điển:
+              Bấm vào từ khóa để xem kết quả chi tiết từ kho từ điển N1 – N5:
             </p>
             <div className="d-flex flex-wrap justify-content-center gap-2">
               {QUICK_SUGGESTIONS.map(s => (
@@ -248,6 +279,8 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                       ? 'btn-outline-info bg-white'
                       : s.type === 'katakana'
                       ? 'btn-outline-warning bg-white text-dark'
+                      : s.type === 'dict'
+                      ? 'btn-outline-danger bg-white text-dark'
                       : 'btn-outline-primary bg-white'
                   }`}
                   onClick={() => setSearchTerm(s.text)}
@@ -258,7 +291,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
             </div>
             <div className="mt-4 pt-3 border-top text-muted small d-flex align-items-center justify-content-center gap-2">
               <BookOpen size={14} />
-              <span>Kho dữ liệu tích hợp: 1,512 từ vựng Minna no Nihongo & 80 Chữ Hán N5</span>
+              <span>Kho dữ liệu tích hợp: 1.512 từ vựng Minna no Nihongo, 80 Kanji & 170.000+ từ JLPT N1-N5</span>
             </div>
           </div>
         )}
@@ -267,13 +300,13 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
         {!loading && searchTerm && totalResultsCount === 0 && (
           <div className="text-center py-5 text-muted">
             <p className="mb-1 fw-bold text-dark fs-6">Không tìm thấy từ khớp với "{searchTerm}"</p>
-            <small>Gợi ý: Thử tìm theo phiên âm Romaji, Hiragana, Katakana, âm Hán Việt hoặc từ khóa tiếng Việt ngắn hơn.</small>
+            <small>Gợi ý: Thử tìm theo phiên âm Romaji, Hiragana, Katakana, chữ Hán hoặc từ khóa tiếng Việt ngắn hơn.</small>
           </div>
         )}
 
         {/* Results List */}
         {!loading && totalResultsCount > 0 && (
-          <ListGroup flush className="search-results-list" style={{ maxHeight: '440px', overflowY: 'auto' }}>
+          <ListGroup flush className="search-results-list" style={{ maxHeight: '460px', overflowY: 'auto' }}>
             {/* 1. KANJI RESULTS CARDS */}
             {displayedKanji.map((kj) => (
               <ListGroupItem
@@ -331,7 +364,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
               </ListGroupItem>
             ))}
 
-            {/* 2. VOCABULARY RESULTS CARDS */}
+            {/* 2. MINNA NO NIHONGO VOCABULARY RESULTS CARDS */}
             {displayedVocab.map((item) => {
               const isFav = isFavorite(item.id, item.is_favorite);
               const cleanMeaning = item.clean_vietnamese || item.vietnamese;
@@ -341,7 +374,7 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
 
               return (
                 <ListGroupItem
-                  key={item.id}
+                  key={`vocab-${item.id}`}
                   className="d-flex justify-content-between align-items-center py-2.5 px-3 border rounded-3 mb-2 bg-white hover-shadow transition-all"
                   style={{ borderColor: 'var(--slate-200)' }}
                 >
@@ -390,6 +423,78 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
                       className="p-2 rounded-circle border text-primary audio-btn hover-squish"
                       onClick={() => speakJapanese(cleanK)}
                       title="Nghe phát âm chuẩn Tokyo"
+                    >
+                      <Volume2 size={15} />
+                    </Button>
+                    <Button
+                      color="light"
+                      size="sm"
+                      className="p-2 rounded-circle border text-warning hover-squish"
+                      onClick={() => {
+                        sounds.playFlip();
+                        toggleFavorite(item);
+                      }}
+                      title="Lưu vào yêu thích"
+                    >
+                      <Star
+                        size={15}
+                        className={isFav ? 'text-warning fill-warning' : 'text-muted'}
+                        fill={isFav ? '#f59e0b' : 'none'}
+                      />
+                    </Button>
+                  </div>
+                </ListGroupItem>
+              );
+            })}
+
+            {/* 3. GLOBAL N1-N5 DICTIONARY RESULTS CARDS */}
+            {displayedDict.map((item) => {
+              const isFav = isFavorite(item.id, false);
+              const badgeStyle = JLPT_COLORS[item.jlpt] || JLPT_COLORS.COMMON;
+
+              return (
+                <ListGroupItem
+                  key={`dict-${item.id}`}
+                  className="d-flex justify-content-between align-items-center py-2.5 px-3 border rounded-3 mb-2 bg-white hover-shadow transition-all"
+                  style={{ borderColor: 'var(--slate-200)', borderLeft: `4px solid ${badgeStyle.text}` }}
+                >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="d-flex align-items-baseline gap-2 flex-wrap">
+                      {item.kanji && (
+                        <span className="fs-5 fw-bold text-dark font-monospace">{item.kanji}</span>
+                      )}
+                      <span className="fs-6 fw-bold text-primary font-monospace">{item.kana}</span>
+                      <Badge
+                        pill
+                        style={{
+                          backgroundColor: badgeStyle.bg,
+                          borderColor: badgeStyle.border,
+                          color: badgeStyle.text,
+                          fontSize: '11px',
+                          borderWidth: 1,
+                          borderStyle: 'solid'
+                        }}
+                      >
+                        JLPT {item.jlpt}
+                      </Badge>
+                      {item.is_common && (
+                        <Badge color="light" pill className="text-muted border" style={{ fontSize: '10px' }}>
+                          Phổ biến
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="text-secondary small mt-0.5" style={{ fontSize: '12.5px', lineHeight: '1.4' }}>
+                      {item.meaning}
+                    </div>
+                  </div>
+
+                  <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-2">
+                    <Button
+                      color="light"
+                      size="sm"
+                      className="p-2 rounded-circle border text-primary audio-btn hover-squish"
+                      onClick={() => speakJapanese(item.kana || item.kanji)}
+                      title="Nghe phát âm Tokyo"
                     >
                       <Volume2 size={15} />
                     </Button>
