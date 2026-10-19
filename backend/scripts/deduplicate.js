@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const path = require('path');
+const fs = require('fs');
 const db = require('../config/db');
 
 const ADMIN_EMAIL = 'thuathyper05@gmail.com';
@@ -103,6 +105,55 @@ async function deduplicateDatabase() {
     await db.query(`
       CREATE UNIQUE INDEX IF NOT EXISTS uq_vocab_lesson_order ON vocabularies (lesson_number, order_num);
     `);
+
+    // 3.5. Standardize Katakana loanwords (fix loanwords mistakenly stored in kanji column or hiragana in kana column)
+    console.log('[Katakana Standardization] Auditing loanwords in vocabularies...');
+    try {
+      const kataFixResult = await db.query(`
+        UPDATE vocabularies
+        SET kana = kanji,
+            clean_kana = kanji,
+            kanji = NULL
+        WHERE kanji IS NOT NULL
+          AND kanji ~ '[\\u30A0-\\u30FF]'
+          AND kanji !~ '[\\u4E00-\\u9FAF\\u3400-\\u4DBF]';
+      `);
+      if (kataFixResult.rowCount > 0) {
+        console.log(`[Katakana Fix] Normalized ${kataFixResult.rowCount} Katakana loanwords (moved from kanji to kana column, cleared kanji).`);
+      }
+
+      // Also sync all Katakana words from n5_full_lessons.json into vocabularies
+      const jsonPath = path.join(__dirname, '../../database/n5_full_lessons.json');
+      if (fs.existsSync(jsonPath)) {
+        const fullJson = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+        const kataRegex = /[\u30A0-\u30FF]/;
+        const kanjiRegex = /[\u4E00-\u9FAF\u3400-\u4DBF]/;
+        let syncedCount = 0;
+
+        for (let lNum = 1; lNum <= 25; lNum++) {
+          const words = fullJson[String(lNum)] || [];
+          for (const w of words) {
+            if (w.kana && kataRegex.test(w.kana) && (!w.kanji || !kanjiRegex.test(w.kanji))) {
+              const res = await db.query(`
+                UPDATE vocabularies
+                SET kana = $1,
+                    clean_kana = $1,
+                    kanji = NULL
+                WHERE lesson_number = $2 
+                  AND (vietnamese = $3 OR romaji = $4)
+                  AND (kana != $1 OR kanji IS NOT NULL)
+              `, [w.kana.trim(), lNum, w.vietnamese.trim(), (w.romaji || '').trim()]);
+              syncedCount += res.rowCount;
+            }
+          }
+        }
+        if (syncedCount > 0) {
+          console.log(`[Katakana Sync] Synchronized ${syncedCount} Katakana loanwords from standard JSON curriculum.`);
+        }
+      }
+    } catch (kErr) {
+      console.warn('[Katakana Standardization Warning]', kErr.message);
+    }
 
     // 4. Deduplicate Kanji
     const dupKanjiCheck = await db.query(`

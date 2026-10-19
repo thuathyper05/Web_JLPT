@@ -1,6 +1,21 @@
 const db = require('../config/db');
 const fallback = require('../data/fallbackData');
 
+// Sanitize vocabulary record ensuring Katakana loanwords are never placed in kanji column or forced to Hiragana
+const sanitizeVocabItem = (item) => {
+  if (!item) return item;
+  const kanji = item.kanji ? String(item.kanji).trim() : '';
+  const hasRealKanji = /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(kanji);
+  const kanjiHasKata = /[\u30A0-\u30FF]/.test(kanji);
+
+  if (!hasRealKanji && kanjiHasKata) {
+    item.kana = kanji;
+    item.clean_kana = kanji;
+    item.kanji = null;
+  }
+  return item;
+};
+
 // Get vocabularies with optional filters (lesson, search, favorite, status)
 const getVocabularies = async (req, res) => {
   try {
@@ -100,7 +115,7 @@ const getVocabularies = async (req, res) => {
 
     const result = await db.query(query, params);
     if (result.rows && result.rows.length > 0) {
-      return res.json(result.rows);
+      return res.json(result.rows.map(sanitizeVocabItem));
     }
     // Fallback if empty and not user-specific status/favorite filter
     if (!status && !favorite) {
@@ -157,7 +172,7 @@ const getVocabularyById = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy từ vựng' });
     }
 
-    res.json(result.rows[0]);
+    res.json(sanitizeVocabItem(result.rows[0]));
   } catch (error) {
     console.error('getVocabularyById error:', error);
     res.status(500).json({ message: 'Lỗi khi lấy từ vựng' });

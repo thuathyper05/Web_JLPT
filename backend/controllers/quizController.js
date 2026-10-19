@@ -31,8 +31,21 @@ const getQuiz = async (req, res) => {
     let allVocabs = [];
 
     try {
-      const vocabResult = await db.query(query, params);
-      pool = vocabResult.rows;
+      const sanitizeQuizWord = (v) => {
+        if (!v) return v;
+        const kanji = v.kanji ? String(v.kanji).trim() : '';
+        const hasRealKj = /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(kanji);
+        const kanjiHasKata = /[\u30A0-\u30FF]/.test(kanji);
+        if (!hasRealKj && kanjiHasKata) {
+          v.kana = kanji;
+          v.clean_kana = kanji;
+          v.display_kana = kanji;
+          v.kanji = null;
+        }
+        return v;
+      };
+
+      pool = vocabResult.rows.map(sanitizeQuizWord);
 
       // Get all vocabularies for distractors
       const allVocabResult = await db.query(`
@@ -43,7 +56,7 @@ const getQuiz = async (req, res) => {
                usage_note
         FROM vocabularies
       `);
-      allVocabs = allVocabResult.rows;
+      allVocabs = allVocabResult.rows.map(sanitizeQuizWord);
     } catch (dbErr) {
       console.warn('[getQuiz DB Notice] Using fallback for quiz pool:', dbErr.message);
     }
