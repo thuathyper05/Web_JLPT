@@ -2993,6 +2993,18 @@ p {
   transform: translateY(-1px);
 }
 
+.nav-featured-pill--particles {
+  background: rgba(139, 92, 246, 0.16);
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  color: #ddd6fe !important;
+}
+
+.nav-featured-pill--particles:hover, .nav-featured-pill--particles.is-active {
+  background: rgba(139, 92, 246, 0.32);
+  border-color: #a855f7;
+  transform: translateY(-1px);
+}
+
 /* ─── HOMEPAGE PROMO SECTION: ULTRA COMPACT & ELEGANT ─── */
 .home-promo-section {
   position: relative;

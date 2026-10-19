@@ -76,9 +76,11 @@ const checkVietnameseMatch = (userInput, targetMeaning) => {
 
 const checkKanaMatch = (userInput, targetKana) => {
   if (!userInput || !targetKana) return false;
-  const cleanInput = (userInput || '').trim().replace(/[［\[］\]]/g, '');
-  const cleanTarget = (targetKana || '').trim().replace(/[［\[］\]]/g, '');
-  return cleanInput === cleanTarget;
+  const cleanInput = (userInput || '').trim().replace(/[［\[］\]\s]/g, '');
+  const cleanTarget = (targetKana || '').trim().replace(/[［\[］\]\s]/g, '');
+  if (cleanInput === cleanTarget) return true;
+  // Match across Hiragana/Katakana forms seamlessly
+  return wanakana.toHiragana(cleanInput) === wanakana.toHiragana(cleanTarget);
 };
 
 const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
@@ -160,7 +162,11 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
 
     // Apply Wanakana ONLY if practiceMode is 'vi_to_jp' (typing Japanese Kana) and autoKana is active
     if (practiceMode === 'vi_to_jp' && autoKana) {
-      finalValue = wanakana.toKana(rawValue, { IMEMode: true });
+      const targetKana = getCleanKana(item);
+      const isTargetKatakana = /[\u30A0-\u30FF]/.test(targetKana);
+      finalValue = isTargetKatakana
+        ? wanakana.toKatakana(rawValue, { IMEMode: true })
+        : wanakana.toKana(rawValue, { IMEMode: true });
     }
 
     setUserInputs(prev => ({ ...prev, [id]: finalValue }));
@@ -570,7 +576,9 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                     placeholder={
                       practiceMode === 'jp_to_vi'
                         ? 'Gõ nghĩa Tiếng Việt (VD: tôi)...'
-                        : 'Gõ Romaji (VD: watashi = わたし)...'
+                        : /[\u30A0-\u30FF]/.test(getCleanKana(currentZenWord))
+                        ? 'Gõ Romaji Katakana (VD: terebi = テレビ)...'
+                        : 'Gõ Romaji Hiragana (VD: watashi = わたし)...'
                     }
                     value={userInputs[currentZenWord.id] || ''}
                     onChange={(e) => handleInputChange(currentZenWord.id, e.target.value, currentZenWord)}
@@ -831,7 +839,9 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                           placeholder={
                             practiceMode === 'jp_to_vi'
                               ? 'Gõ nghĩa tiếng Việt...'
-                              : 'Gõ Kana...'
+                              : /[\u30A0-\u30FF]/.test(cleanKana)
+                              ? 'Gõ Katakana (VD: terebi)...'
+                              : 'Gõ Hiragana (VD: watashi)...'
                           }
                           value={userInputs[item.id] || ''}
                           onChange={(e) => handleInputChange(item.id, e.target.value, item)}

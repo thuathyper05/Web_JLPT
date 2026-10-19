@@ -321,12 +321,12 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     },
     {
       id: 'kanji_to_reading',
-      title: 'Chữ Hán Kanji',
-      sub: 'Đọc âm Hiragana',
+      title: 'Hán tự & Từ vựng',
+      sub: 'Đọc âm Kana',
       icon: Sparkles,
       color: '#7c3aed',
       badge: 'Chuyên Sâu',
-      desc: 'Nhìn Hán tự Kanji N5, chọn cách đọc Hiragana tương ứng trong Minna no Nihongo.'
+      desc: 'Nhìn Hán tự và từ vựng N5, chọn cách đọc Kana (Hiragana/Katakana) chuẩn xác.'
     }
   ];
 

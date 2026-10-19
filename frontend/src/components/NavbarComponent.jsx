@@ -7,7 +7,7 @@ import {
 import {
   Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
   BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
-  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout
+  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout, Compass
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -36,11 +36,13 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
   ];
 
   const gameNavItems = [
+    { id: 'particles', label: 'Luyện trợ từ', icon: Compass, color: '#8b5cf6', bg: '#f5f3ff', desc: 'Bách khoa toàn thư & Luyện điền 19 trợ từ N5' },
     { id: 'wordmatch', label: 'Nối từ siêu tốc', icon: Zap, color: '#f59e0b', bg: '#fffbeb', desc: 'Mini-game 60s ghép cặp phản xạ nhanh' },
     { id: 'garden', label: 'Vườn cây trí nhớ', icon: Sprout, color: '#10b981', bg: '#ecfdf5', desc: 'SRS ôn tập cây nở hoa thuộc vĩnh viễn' },
   ];
 
   const moreNavItems = [
+    { id: 'particles', label: 'Luyện trợ từ', icon: Compass, color: '#8b5cf6', bg: '#f5f3ff', desc: 'Bách khoa toàn thư & Luyện điền 19 trợ từ N5' },
     { id: 'wordmatch', label: 'Nối từ siêu tốc', icon: Zap, color: '#f59e0b', bg: '#fffbeb', desc: 'Mini-game 60s ghép cặp phản xạ nhanh' },
     { id: 'garden', label: 'Vườn cây trí nhớ', icon: Sprout, color: '#10b981', bg: '#ecfdf5', desc: 'SRS ôn tập cây nở hoa thuộc vĩnh viễn' },
     { id: 'review', label: 'Kho ôn từ sai', icon: RefreshCw, color: '#dc2626', bg: '#fef2f2', desc: 'Khắc phục các câu đã làm sai' },
@@ -126,6 +128,19 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 <Sprout size={13} className="text-success flex-shrink-0" />
                 <span>Vườn cây</span>
                 <span className="badge-new-blink badge-new-blink--garden">MỚI</span>
+              </NavLink>
+            </NavItem>
+
+            <NavItem>
+              <NavLink
+                href="#"
+                onClick={e => { e.preventDefault(); sounds.playFlip?.(); setActiveTab('particles'); }}
+                className={`nav-featured-pill nav-featured-pill--particles ${activeTab === 'particles' ? 'is-active' : ''}`}
+                title="Luyện 19 trợ từ tiếng Nhật N5 chuyên sâu"
+              >
+                <Compass size={13} className="text-purple-400 flex-shrink-0" style={{ color: '#c084fc' }} />
+                <span>Trợ từ</span>
+                <span className="badge-new-blink" style={{ background: '#7c3aed', color: '#fff' }}>MỚI</span>
               </NavLink>
             </NavItem>
 

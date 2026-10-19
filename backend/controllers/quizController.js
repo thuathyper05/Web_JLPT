@@ -115,8 +115,13 @@ const getQuiz = async (req, res) => {
         options = shuffleArray([correctAnswer, ...distractors]);
       } else {
         // kanji_to_reading
-        prompt = 'Chọn cách đọc Hiragana đúng cho chữ Hán';
-        questionText = item.kanji;
+        const isKatakanaWord = /[\u30A0-\u30FF]/.test(cleanK);
+        prompt = isKatakanaWord
+          ? 'Chọn cách đọc Katakana đúng'
+          : hasKj
+          ? 'Chọn cách đọc Kana đúng cho chữ Hán'
+          : 'Chọn cách đọc Kana đúng';
+        questionText = hasKj ? item.kanji : cleanMeaning;
         correctAnswer = cleanK;
 
         const distractors = shuffleArray(

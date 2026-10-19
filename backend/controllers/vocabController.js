@@ -169,13 +169,15 @@ const searchVocabulary = async (req, res) => {
   try {
     const { q } = req.query;
     if (!q || !q.trim()) {
-      return res.json([]);
+      return res.json({ vocabularies: [], kanji: [], total: 0 });
     }
 
-    const term = `%${q.trim().toLowerCase()}%`;
-    const exact = q.trim().toLowerCase();
+    const cleanQ = q.trim();
+    const term = `%${cleanQ.toLowerCase()}%`;
+    const exact = cleanQ.toLowerCase();
 
-    const query = `
+    // 1. Search Vocabularies (expanded limit to 250)
+    const vocabQuery = `
       SELECT 
         v.id, v.lesson_number, v.order_num, v.kanji, v.kana, 
         COALESCE(v.clean_kana, v.kana) as clean_kana,
@@ -204,13 +206,46 @@ const searchVocabulary = async (req, res) => {
         END,
         v.lesson_number ASC, 
         v.order_num ASC
-      LIMIT 100
+      LIMIT 250
     `;
-    const result = await db.query(query, [term, exact]);
-    res.json(result.rows);
+
+    // 2. Search Kanji Table
+    const kanjiQuery = `
+      SELECT 
+        id, kanji, onyomi, kunyomi, han_viet, meaning, stroke_count, level, examples
+      FROM kanji
+      WHERE 
+        kanji = $2 OR
+        LOWER(han_viet) LIKE $1 OR
+        LOWER(meaning) LIKE $1 OR
+        LOWER(onyomi) LIKE $1 OR
+        LOWER(kunyomi) LIKE $1
+      ORDER BY 
+        CASE 
+          WHEN kanji = $2 THEN 1 
+          WHEN LOWER(han_viet) = $2 THEN 2 
+          ELSE 3 
+        END,
+        id ASC
+      LIMIT 30
+    `;
+
+    const [vocabRes, kanjiRes] = await Promise.all([
+      db.query(vocabQuery, [term, exact]),
+      db.query(kanjiQuery, [term, exact]).catch(() => ({ rows: [] }))
+    ]);
+
+    const vocabList = vocabRes.rows || [];
+    const kanjiList = kanjiRes.rows || [];
+
+    res.json({
+      vocabularies: vocabList,
+      kanji: kanjiList,
+      total: vocabList.length + kanjiList.length
+    });
   } catch (error) {
     console.error('searchVocabulary error:', error);
-    res.status(500).json({ message: 'Lỗi tìm kiếm từ vựng' });
+    res.status(500).json({ message: 'Lỗi tìm kiếm từ điển' });
   }
 };
 

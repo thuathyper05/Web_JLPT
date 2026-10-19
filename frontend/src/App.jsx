@@ -14,6 +14,7 @@ import KanjiPage from './pages/KanjiPage';
 import AdminPage from './pages/AdminPage';
 import WordMatchPage from './pages/WordMatchPage';
 import GardenPage from './pages/GardenPage';
+import ParticlesPage from './pages/ParticlesPage';
 import Logo from './components/Logo';
 import WelcomeBannerModal from './components/WelcomeBannerModal';
 import { authService } from './services/api';
@@ -246,6 +247,12 @@ function App() {
       case 'garden':
         return (
           <GardenPage
+            onNavigate={handleTabChange}
+          />
+        );
+      case 'particles':
+        return (
+          <ParticlesPage
             onNavigate={handleTabChange}
           />
         );

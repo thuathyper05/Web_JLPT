@@ -183,6 +183,15 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       badge: 'Bonsai SRS'
     },
     {
+      id: 'particles',
+      title: 'Luyện Trợ Từ N5 (助詞)',
+      desc: 'Bách khoa 19 trợ từ căn bản, bí quyết phân biệt và 35+ câu trắc nghiệm thực chiến',
+      icon: Compass,
+      color: '#8b5cf6',
+      bg: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+      badge: 'Chuyên Đề Mới'
+    },
+    {
       id: 'review',
       title: 'Kho Ôn Tập Từ Sai',
       desc: 'Tự động lưu và nhắc lại các từ bạn từng làm sai để khắc phục triệt để lỗ hổng',
