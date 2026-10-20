@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { normalizeVocabCollection } from '../utils/katakanaNormalize';
 
 const resolveApiBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
@@ -26,6 +27,17 @@ const api = axios.create({
 });
 
 // Request interceptor to attach JWT token if available
+// Response interceptor to normalize Katakana loanwords across all API responses
+api.interceptors.response.use(
+  (response) => {
+    if (response && response.data) {
+      response.data = normalizeVocabCollection(response.data);
+    }
+    return response;
+  },
+  (error) => Promise.reject(error)
+);
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('jlpt_token');
   if (token) {

@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import {
   Compass, BookOpen, CheckCircle2, XCircle, Volume2, Sparkles,
-  ArrowRight, RotateCcw, HelpCircle, Layers, Check, ChevronRight,
+  RotateCcw, HelpCircle, Layers, Check, ChevronRight, ChevronLeft,
   Zap, Award, Search, Info, Bookmark, Filter
 } from 'lucide-react';
 import { speakJapanese } from '../services/api';
@@ -1279,261 +1279,290 @@ const ParticlesPage = ({ onNavigate }) => {
       {/* ── 2. TAB 1: 25 LESSONS DRILL STUDIO (PRACTICE) ── */}
       {activeTab === 'practice' && (
         <div className="practice-workspace animate-fade-in">
-          {/* 25 LESSON SELECTOR GRID */}
-          <div className="p-3 rounded-4 bg-white border shadow-xs mb-3">
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <div className="d-flex align-items-center gap-1.5">
-                <Bookmark size={15} className="text-primary" />
-                <span className="fw-bold text-navy-dark small">Chọn bài học cần luyện tập (25 Bài Minna no Nihongo):</span>
+          {/* ── 1. ULTRA-COMPACT MODERN LESSON SELECTOR & STUDIO BAR ── */}
+          <div className="p-2.5 p-sm-3 rounded-4 bg-white border shadow-xs mb-2.5">
+            {/* Row 1: Dropdown + Quick Prev/Next Lesson Nav */}
+            <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
+              <div className="d-flex align-items-center gap-1.5 flex-grow-1 min-w-0" style={{ maxWidth: '480px' }}>
+                <Bookmark size={15} className="text-primary flex-shrink-0" />
+                <select
+                  value={selectedLesson}
+                  onChange={(e) => handleSelectLesson(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                  className="form-select form-select-sm rounded-pill fw-bold border bg-white shadow-xs text-truncate"
+                  style={{ fontSize: '12.5px', borderColor: 'var(--slate-200)', height: '34px' }}
+                >
+                  <option value="all">🌟 Tất cả 25 Bài N5 (75 câu hỏi chuẩn)</option>
+                  {LESSON_GRAMMAR_CURRICULUM.map(l => (
+                    <option key={l.lesson} value={l.lesson}>
+                      {l.title}
+                    </option>
+                  ))}
+                </select>
               </div>
+
+              {/* Prev / Next & Reset Controls */}
+              <div className="d-flex align-items-center gap-1 flex-shrink-0">
+                <button
+                  type="button"
+                  disabled={selectedLesson === 'all'}
+                  onClick={() => {
+                    const prevL = typeof selectedLesson === 'number'
+                      ? (selectedLesson > 1 ? selectedLesson - 1 : 25)
+                      : 1;
+                    handleSelectLesson(prevL);
+                  }}
+                  className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center text-dark"
+                  style={{ width: '32px', height: '32px' }}
+                  title="Bài trước"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button
+                  type="button"
+                  disabled={selectedLesson === 'all'}
+                  onClick={() => {
+                    const nextL = typeof selectedLesson === 'number'
+                      ? (selectedLesson < 25 ? selectedLesson + 1 : 1)
+                      : 1;
+                    handleSelectLesson(nextL);
+                  }}
+                  className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center text-dark"
+                  style={{ width: '32px', height: '32px' }}
+                  title="Bài tiếp theo"
+                >
+                  <ChevronRight size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResetPractice}
+                  className="btn btn-sm btn-light border rounded-pill px-2.5 py-1 text-muted d-flex align-items-center gap-1"
+                  style={{ height: '32px', fontSize: '11.5px' }}
+                  title="Làm lại từ đầu"
+                >
+                  <RotateCcw size={12} />
+                  <span className="d-none d-sm-inline">Làm lại</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Row 2: Horizontal Scrolling Snap Track (25 Lesson Quick Pills) */}
+            <div
+              className="d-flex align-items-center gap-1 overflow-x-auto pb-1 mb-2 no-scrollbar"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
               <button
                 type="button"
                 onClick={() => handleSelectLesson('all')}
-                className={`btn btn-sm py-0.5 px-2.5 rounded-pill fw-bold text-xs ${
-                  selectedLesson === 'all' ? 'btn-primary shadow-xs' : 'btn-outline-secondary bg-white text-dark'
+                className={`btn btn-sm py-1 px-2.5 rounded-pill fw-bold text-xs flex-shrink-0 transition-all ${
+                  selectedLesson === 'all'
+                    ? 'btn-primary shadow-xs'
+                    : 'btn-light text-secondary border'
                 }`}
+                style={{ fontSize: '11px' }}
               >
-                Tất cả 25 Bài
+                Tất cả
               </button>
-            </div>
-
-            {/* 25 Lesson Pills Grid */}
-            <div className="d-flex flex-wrap gap-1.5 justify-content-start">
               {Array.from({ length: 25 }, (_, i) => i + 1).map(num => (
                 <button
                   key={num}
                   type="button"
                   onClick={() => handleSelectLesson(num)}
-                  className={`btn btn-sm py-1 px-2.5 rounded-3 fw-bold font-monospace transition-all ${
+                  className={`btn btn-sm py-1 px-2 rounded-pill fw-bold font-monospace flex-shrink-0 transition-all ${
                     selectedLesson === num
                       ? 'btn-primary text-white shadow-xs'
                       : 'btn-light text-secondary border'
                   }`}
-                  style={{ minWidth: '40px', fontSize: '12px' }}
+                  style={{ minWidth: '34px', fontSize: '11.5px' }}
                 >
                   {num < 10 ? `0${num}` : num}
                 </button>
               ))}
             </div>
 
-            {/* Selected Lesson Banner */}
-            <div className="mt-3 p-2.5 rounded-3 border d-flex align-items-center justify-content-between flex-wrap gap-2" style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}>
-              <div>
-                <span className="fw-black text-navy-dark small d-block">
+            {/* Row 3: Active Focus Banner & Inline Live Metrics Strip */}
+            <div
+              className="p-2 rounded-3 border d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-1.5"
+              style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}
+            >
+              <div className="min-w-0 flex-grow-1">
+                <span className="fw-bold text-navy-dark small text-truncate d-block" style={{ fontSize: '12px' }}>
                   {currentLessonData.title}
                 </span>
-                <span className="text-muted small" style={{ fontSize: '11.5px' }}>
-                  🎯 Trọng tâm: <strong>{currentLessonData.focus}</strong>
+                <span className="text-muted small text-truncate d-block" style={{ fontSize: '11px' }}>
+                  🎯 {currentLessonData.focus}
                 </span>
               </div>
-              <span className="badge bg-purple-100 text-purple-700 border border-purple-200 fw-bold px-2 py-1">
-                {activeQuestions.length} câu hỏi chuẩn
-              </span>
-            </div>
-          </div>
 
-          {/* Top Control Bar: Progress & Metrics */}
-          <div className="p-3 rounded-4 bg-white border shadow-xs mb-3">
-            <div className="d-flex justify-content-between align-items-center mb-2.5">
-              <div className="d-flex align-items-center gap-2">
-                <span className="badge bg-primary text-white fw-bold px-2.5 py-1">
+              {/* Compact Metrics Pills */}
+              <div className="d-flex align-items-center gap-1.5 flex-shrink-0 flex-wrap">
+                <span className="badge bg-primary text-white fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
                   Câu {practiceIndex + 1}/{activeQuestions.length}
                 </span>
                 {streak >= 3 && (
-                  <span className="badge bg-amber-100 text-amber-800 border border-amber-200 fw-bold px-2 py-1 animate-pulse">
-                    🔥 Combo {streak}
+                  <span className="badge bg-amber-100 text-amber-800 border border-amber-200 fw-bold px-2 py-0.5 animate-pulse" style={{ fontSize: '10.5px' }}>
+                    🔥 x{streak}
                   </span>
                 )}
-              </div>
-              <button
-                type="button"
-                onClick={handleResetPractice}
-                className="btn btn-sm btn-link text-muted p-0 text-decoration-none small d-flex align-items-center gap-1"
-                title="Làm lại từ đầu"
-              >
-                <RotateCcw size={13} />
-                <span>Làm lại</span>
-              </button>
-            </div>
-
-            {/* 4 Clean Metrics Bar */}
-            <div className="row g-2 text-center">
-              <div className="col-3">
-                <div className="p-2 rounded-3 bg-light border shadow-xs">
-                  <small className="text-muted d-block fw-semibold" style={{ fontSize: '11px' }}>Số câu</small>
-                  <span className="fw-black text-navy-dark" style={{ fontSize: '14.5px' }}>
-                    {activeQuestions.length}
-                  </span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="p-2 rounded-3 border shadow-xs" style={{ background: '#ecfdf5', borderColor: '#a7f3d0', color: '#059669' }}>
-                  <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Chính xác</small>
-                  <span className="fw-black" style={{ fontSize: '14.5px' }}>{score.correct}</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="p-2 rounded-3 border shadow-xs" style={{ background: '#fef2f2', borderColor: '#fecaca', color: '#dc2626' }}>
-                  <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Chưa đúng</small>
-                  <span className="fw-black" style={{ fontSize: '14.5px' }}>{score.wrong}</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="p-2 rounded-3 border shadow-xs" style={{ background: '#eff6ff', borderColor: '#bfdbfe', color: '#2563eb' }}>
-                  <small className="d-block fw-semibold" style={{ fontSize: '11px' }}>Tỷ lệ</small>
-                  <span className="fw-black" style={{ fontSize: '14.5px' }}>
-                    {score.correct + score.wrong > 0
-                      ? Math.round((score.correct / (score.correct + score.wrong)) * 100)
-                      : 0}%
-                  </span>
-                </div>
+                <span className="badge bg-emerald-50 text-emerald-700 border border-emerald-200 fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
+                  ✓ {score.correct} / ✗ {score.wrong}
+                </span>
               </div>
             </div>
 
-            {/* Progress Bar */}
-            <div className="mt-2.5">
+            {/* Micro Progress Line */}
+            <div className="mt-2">
               <Progress
                 value={((practiceIndex + 1) / activeQuestions.length) * 100}
                 color="primary"
-                style={{ height: '5px', borderRadius: '5px' }}
+                style={{ height: '4px', borderRadius: '4px' }}
               />
             </div>
           </div>
 
-          {/* Interactive Drill Card */}
-          <Card className="border-0 rounded-4 shadow-sm bg-white overflow-hidden mb-3">
-            <CardBody className="p-4 p-md-5 text-center">
-              {/* Question Speaker */}
-              <div className="d-flex justify-content-end mb-2">
-                <button
-                  type="button"
-                  onClick={() => speakJapanese(currentQ.fullSentence)}
-                  className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn"
-                  style={{ width: 34, height: 34 }}
-                  title="Nghe câu hoàn chỉnh chuẩn Tokyo"
-                >
-                  <Volume2 size={16} />
-                </button>
-              </div>
+          {/* ── 2. INTERACTIVE DRILL STUDIO CARD ── */}
+          <div className="p-3 p-md-4 rounded-4 shadow-sm bg-white border mb-2.5 text-center">
+            {/* Top Row: Tag & Audio button */}
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="badge bg-light text-secondary border fw-bold px-2 py-0.5" style={{ fontSize: '11px' }}>
+                Minna no Nihongo N5
+              </span>
+              <button
+                type="button"
+                onClick={() => speakJapanese(currentQ.fullSentence)}
+                className="btn btn-sm btn-light rounded-circle border p-1 text-primary audio-btn d-flex align-items-center justify-content-center"
+                style={{ width: 32, height: 32 }}
+                title="Nghe câu hoàn chỉnh chuẩn Tokyo"
+              >
+                <Volume2 size={15} />
+              </button>
+            </div>
 
-              {/* Japanese Question Sentence */}
-              <h2 className="fw-black text-navy-dark font-monospace mb-2" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.25rem)', letterSpacing: '0.02em' }}>
-                {isAnswered ? (
-                  <span>
-                    {currentQ.sentence.split('[ ? ]')[0]}
-                    <span
-                      className="px-2 py-0.5 rounded-3 mx-1 text-white fw-black"
-                      style={{
-                        backgroundColor: selectedAnswer === currentQ.target ? '#10b981' : '#ef4444'
-                      }}
-                    >
-                      {currentQ.target}
-                    </span>
-                    {currentQ.sentence.split('[ ? ]')[1]}
-                  </span>
-                ) : (
-                  <span>
-                    {currentQ.sentence.split('[ ? ]')[0]}
-                    <span className="badge bg-purple-50 text-purple-700 border border-purple-300 font-monospace px-3 py-1 mx-1">
-                      ?
-                    </span>
-                    {currentQ.sentence.split('[ ? ]')[1]}
-                  </span>
-                )}
-              </h2>
-
-              {/* Vietnamese Meaning Prompt */}
-              <p className="text-secondary fs-6 mb-4 fw-medium">
-                Nghĩa câu: <strong className="text-dark">"{currentQ.translation}"</strong>
-              </p>
-
-              {/* 4 ABCD Particle Options */}
-              <div className="row g-2.5 justify-content-center max-w-md mx-auto mb-4" style={{ maxWidth: '520px' }}>
-                {currentQ.options.map((opt, idx) => {
-                  const letters = ['A', 'B', 'C', 'D'];
-                  const isCorrect = opt === currentQ.target;
-                  const isSelected = opt === selectedAnswer;
-
-                  let btnStyle = 'btn-outline-secondary bg-white text-dark border-slate-200';
-                  if (isAnswered) {
-                    if (isCorrect) {
-                      btnStyle = 'btn-success text-white shadow-xs border-success';
-                    } else if (isSelected) {
-                      btnStyle = 'btn-danger text-white shadow-xs border-danger';
-                    } else {
-                      btnStyle = 'btn-light text-muted border opacity-50';
-                    }
-                  }
-
-                  return (
-                    <div className="col-6" key={opt}>
-                      <button
-                        type="button"
-                        disabled={isAnswered}
-                        onClick={() => handleSelectOption(opt)}
-                        className={`btn w-100 py-3 rounded-4 fw-bold font-monospace transition-all d-flex align-items-center justify-content-between px-3 ${btnStyle}`}
-                        style={{ fontSize: '18px' }}
-                      >
-                        <span className="small text-muted font-sans fw-bold" style={{ fontSize: '12px' }}>
-                          {letters[idx]}.
-                        </span>
-                        <span className="fs-5">{opt}</span>
-                        {isAnswered && isCorrect && <Check size={18} className="text-white" />}
-                        {isAnswered && isSelected && !isCorrect && <XCircle size={18} className="text-white" />}
-                        {!isAnswered && <span style={{ width: 18 }} />}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Feedback & Explanation Box */}
-              {isAnswered && (
-                <div
-                  className="p-3.5 rounded-4 text-start animate-slide-up border mb-3"
-                  style={{
-                    backgroundColor: selectedAnswer === currentQ.target ? '#f0fdf4' : '#fef2f2',
-                    borderColor: selectedAnswer === currentQ.target ? '#bbf7d0' : '#fecaca'
-                  }}
-                >
-                  <div className="d-flex align-items-center gap-2 mb-1.5">
-                    {selectedAnswer === currentQ.target ? (
-                      <>
-                        <CheckCircle2 size={18} className="text-success flex-shrink-0" />
-                        <strong className="text-success fs-6">Chính xác! (+2 Nước Vườn cây)</strong>
-                      </>
-                    ) : (
-                      <>
-                        <XCircle size={18} className="text-danger flex-shrink-0" />
-                        <strong className="text-danger fs-6">
-                          Chưa chính xác! Đáp án đúng là: <span className="badge bg-success ms-1">{currentQ.target}</span>
-                        </strong>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-dark small mb-0" style={{ fontSize: '13px', lineHeight: '1.5' }}>
-                    💡 <strong>Quy tắc bài học:</strong> {currentQ.explanation}
-                  </p>
-                </div>
-              )}
-
-              {/* Next Question / Restart Button */}
-              {isAnswered && (
-                <div className="d-flex justify-content-center gap-2">
-                  <Button
-                    color="primary"
-                    onClick={handleNextQuestion}
-                    className="rounded-pill px-4 py-2 fw-bold shadow-xs d-flex align-items-center gap-2 hover-lift"
+            {/* Japanese Question Sentence with glowing blank slot */}
+            <h2 className="fw-black text-navy-dark font-monospace mb-2" style={{ fontSize: 'clamp(1.35rem, 4.5vw, 2rem)', letterSpacing: '0.02em', lineHeight: '1.4' }}>
+              {isAnswered ? (
+                <span>
+                  {currentQ.sentence.split('[ ? ]')[0]}
+                  <span
+                    className="px-2.5 py-0.5 rounded-3 mx-1 text-white fw-black shadow-xs d-inline-block"
+                    style={{
+                      backgroundColor: selectedAnswer === currentQ.target ? '#10b981' : '#ef4444'
+                    }}
                   >
-                    <span>
-                      {practiceIndex < activeQuestions.length - 1 ? 'Câu kế tiếp' : 'Hoàn thành bài này'}
-                    </span>
-                    <ArrowRight size={16} />
-                  </Button>
-                </div>
+                    {currentQ.target}
+                  </span>
+                  {currentQ.sentence.split('[ ? ]')[1]}
+                </span>
+              ) : (
+                <span>
+                  {currentQ.sentence.split('[ ? ]')[0]}
+                  <span
+                    className="badge font-monospace px-2.5 py-1 mx-1 shadow-xs"
+                    style={{
+                      background: '#f5f3ff',
+                      color: '#4f46e5',
+                      border: '2px dashed #818cf8',
+                      fontSize: 'clamp(1rem, 3.5vw, 1.4rem)'
+                    }}
+                  >
+                    ?
+                  </span>
+                  {currentQ.sentence.split('[ ? ]')[1]}
+                </span>
               )}
-            </CardBody>
-          </Card>
+            </h2>
+
+            {/* Vietnamese Meaning Prompt */}
+            <p className="text-secondary small mb-3 mb-md-4 fw-medium" style={{ fontSize: '13px' }}>
+              Ý nghĩa câu: <strong className="text-dark">"{currentQ.translation}"</strong>
+            </p>
+
+            {/* 4 ABCD Particle Options (Mobile-friendly 2x2 grid with compact height) */}
+            <div className="row g-2 max-w-md mx-auto mb-3" style={{ maxWidth: '520px' }}>
+              {currentQ.options.map((opt, idx) => {
+                const letters = ['A', 'B', 'C', 'D'];
+                const isCorrect = opt === currentQ.target;
+                const isSelected = opt === selectedAnswer;
+
+                let btnClass = 'btn-outline-secondary bg-white text-dark border-slate-200';
+                if (isAnswered) {
+                  if (isCorrect) {
+                    btnClass = 'btn-success text-white shadow-xs border-success';
+                  } else if (isSelected) {
+                    btnClass = 'btn-danger text-white shadow-xs border-danger';
+                  } else {
+                    btnClass = 'btn-light text-muted border opacity-50';
+                  }
+                }
+
+                return (
+                  <div className="col-6" key={opt}>
+                    <button
+                      type="button"
+                      disabled={isAnswered}
+                      onClick={() => handleSelectOption(opt)}
+                      className={`btn w-100 py-2.5 px-3 rounded-3 fw-bold font-monospace transition-all d-flex align-items-center justify-content-between ${btnClass}`}
+                      style={{ height: '46px', fontSize: '16.5px' }}
+                    >
+                      <span className="small text-muted font-sans fw-bold" style={{ fontSize: '11px' }}>
+                        {letters[idx]}.
+                      </span>
+                      <span className="fs-5">{opt}</span>
+                      {isAnswered && isCorrect && <Check size={16} className="text-white" />}
+                      {isAnswered && isSelected && !isCorrect && <XCircle size={16} className="text-white" />}
+                      {!isAnswered && <span style={{ width: 16 }} />}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Explanation & Feedback (Slide up with smooth micro-animation) */}
+            {isAnswered && (
+              <div
+                className="p-3 rounded-3 text-start animate-slide-up border mb-2.5"
+                style={{
+                  backgroundColor: selectedAnswer === currentQ.target ? '#f0fdf4' : '#fef2f2',
+                  borderColor: selectedAnswer === currentQ.target ? '#bbf7d0' : '#fecaca'
+                }}
+              >
+                <div className="d-flex align-items-center gap-2 mb-1">
+                  {selectedAnswer === currentQ.target ? (
+                    <>
+                      <CheckCircle2 size={16} className="text-success flex-shrink-0" />
+                      <strong className="text-success small">Chính xác! (+2 Nước Vườn cây)</strong>
+                    </>
+                  ) : (
+                    <>
+                      <XCircle size={16} className="text-danger flex-shrink-0" />
+                      <strong className="text-danger small">
+                        Chưa chính xác! Đáp án đúng: <span className="badge bg-success ms-1">{currentQ.target}</span>
+                      </strong>
+                    </>
+                  )}
+                </div>
+                <p className="text-dark small mb-0" style={{ fontSize: '12px', lineHeight: '1.5' }}>
+                  💡 <strong>Quy tắc bài học:</strong> {currentQ.explanation}
+                </p>
+              </div>
+            )}
+
+            {/* Action Button: Next Question (Zero Arrows: ChevronRight instead of ArrowRight) */}
+            {isAnswered && (
+              <div className="d-flex justify-content-center">
+                <Button
+                  color="primary"
+                  onClick={handleNextQuestion}
+                  className="rounded-pill px-4 py-2 fw-bold shadow-xs d-flex align-items-center gap-1.5 hover-lift"
+                  style={{ fontSize: '13px' }}
+                >
+                  <span>
+                    {practiceIndex < activeQuestions.length - 1 ? 'Câu kế tiếp' : 'Hoàn thành bài này'}
+                  </span>
+                  <ChevronRight size={15} />
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -1566,7 +1595,7 @@ const ParticlesPage = ({ onNavigate }) => {
             </div>
 
             {/* Category Pills */}
-            <div className="d-flex align-items-center gap-1.5 flex-wrap">
+            <div className="d-flex align-items-center gap-1.5 overflow-x-auto no-scrollbar pb-1" style={{ WebkitOverflowScrolling: "touch" }}>
               {CATEGORIES.map(c => (
                 <button
                   key={c.id}

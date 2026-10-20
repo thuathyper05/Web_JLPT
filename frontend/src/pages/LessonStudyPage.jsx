@@ -430,10 +430,6 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                     <div className="zen-kana-sub font-monospace text-center">
                       {currentWord.clean_kana || currentWord.kana}
                     </div>
-                  ) : /[\u30A0-\u30FF]/.test(currentWord.clean_kana || currentWord.kana || currentWord.kanji || '') ? (
-                    <span className="badge bg-amber-50 text-amber-800 border border-amber-200 fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
-                      Từ mượn Katakana
-                    </span>
                   ) : null}
                   <Button
                     color="light"
@@ -660,18 +656,11 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                             </span>
                           ) : (
                             <div>
-                              <div className="d-flex align-items-center gap-1.5 flex-wrap">
+                              <div>
                                 <span className={`fw-bold fs-6 font-monospace ${isKatakana ? 'text-amber-800' : 'text-primary'}`}>
                                   {effectiveWord}
                                 </span>
-                                {isKatakana && (
-                                  <span
-                                    className="badge bg-amber-50 text-amber-800 border border-amber-200 fw-bold px-1.5 py-0.5"
-                                    style={{ fontSize: '10px' }}
-                                  >
-                                    Katakana
-                                  </span>
-                                )}
+
                               </div>
                               <small className="text-muted d-block fst-italic">[{item.romaji}]</small>
                             </div>
@@ -781,11 +770,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                               {effectiveWord}
                             </span>
                           )}
-                          {isKatakana && (
-                            <span className="badge bg-amber-50 text-amber-800 border border-amber-200 fw-bold px-1.5 py-0.5" style={{ fontSize: '9.5px' }}>
-                              Katakana
-                            </span>
-                          )}
+
                           <span className="text-muted small fst-italic" style={{ fontSize: '11px' }}>[{item.romaji}]</span>
                         </div>
 
