@@ -184,16 +184,13 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
   const cleanVietnamese = currentCard ? (currentCard.clean_vietnamese || currentCard.vietnamese) : '';
   const cleanKana = currentCard ? getEffectiveKana(currentCard) : '';
 
-  // Auto-play pronunciation when card becomes active or flips to Japanese
+  // Only play pronunciation when the card is flipped (khi lật thẻ mới nói)
   useEffect(() => {
     if (!currentCard || !autoPlayAudio || loading || sessionDone || isTransitioning) return;
-
-    if (cardDirection === 'jp_to_vi' && !isFlipped) {
-      speakJapanese(cleanKana);
-    } else if (cardDirection === 'vi_to_jp' && isFlipped) {
+    if (isFlipped) {
       speakJapanese(cleanKana);
     }
-  }, [currentIndex, isFlipped, cardDirection, autoPlayAudio, currentCard, cleanKana, loading, sessionDone, isTransitioning]);
+  }, [isFlipped, autoPlayAudio, currentCard, cleanKana, loading, sessionDone, isTransitioning]);
 
   // Flip the 3D card
   const handleFlip = useCallback(() => {

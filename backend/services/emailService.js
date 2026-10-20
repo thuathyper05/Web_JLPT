@@ -4,8 +4,8 @@ const nodemailer = require('nodemailer');
  * Create reusable Gmail SMTP transporter
  */
 const createTransporter = () => {
-  const user = process.env.EMAIL_USER || process.env.SMTP_USER;
-  const pass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
+  const user = process.env.EMAIL_USER || process.env.SMTP_USER || 'bahuy3373@gmail.com';
+  const pass = process.env.EMAIL_PASS || process.env.SMTP_PASS || 'aewqjwvtysdzmbrt';
 
   if (!user || !pass) {
     return null;
@@ -27,7 +27,7 @@ const createTransporter = () => {
  * Send real OTP verification email for Password Reset
  */
 const sendPasswordResetOtpEmail = async (toEmail, otpCode, username = 'Học viên') => {
-  const user = process.env.EMAIL_USER || process.env.SMTP_USER;
+  const user = process.env.EMAIL_USER || process.env.SMTP_USER || 'bahuy3373@gmail.com';
   const transporter = createTransporter();
 
   if (!transporter) {

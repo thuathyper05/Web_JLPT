@@ -361,68 +361,67 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </div>
           </div>
 
-          {/* Question Format Mode Cards (Luxury 2x2 Grid) */}
-          <div className="mb-4">
-            <div className="d-flex justify-content-between align-items-center mb-2.5">
+          {/* Question Format Mode Cards (Compact & Modern) */}
+          <div className="mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-2">
               <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11px' }}>
-                Chọn dạng câu hỏi trắc nghiệm
+                Chọn dạng câu hỏi
               </span>
-              <span className="badge bg-slate-100 text-slate-700 border border-slate-200 rounded-pill px-2.5 py-0.5 small fw-semibold">
+              <span className="badge bg-slate-100 text-slate-700 border border-slate-200 rounded-pill px-2.5 py-0.5 small fw-semibold" style={{ fontSize: '10.5px' }}>
                 4 định dạng chuẩn N5
               </span>
             </div>
 
-            <Row className="g-3">
+            <Row className="g-2">
               {modeCards.map(m => {
                 const isSelected = quizMode === m.id;
                 const IconComponent = m.icon;
                 return (
-                  <Col xs={12} sm={6} key={m.id}>
+                  <Col xs={6} md={3} key={m.id}>
                     <div
-                      className={`quiz-mode-card ${isSelected ? 'is-selected' : ''}`}
+                      className={`p-2.5 rounded-3 border transition-all h-100 d-flex flex-column justify-content-between ${
+                        isSelected
+                          ? 'border-primary bg-primary bg-opacity-10 shadow-xs'
+                          : 'bg-white border-slate-200 hover-shadow'
+                      }`}
+                      style={{
+                        borderColor: isSelected ? '#2563eb' : '#e2e8f0',
+                        cursor: 'pointer'
+                      }}
                       onClick={() => {
                         sounds.playFlip();
                         setQuizMode(m.id);
                       }}
                     >
-                      <div>
-                        <div className="d-flex justify-content-between align-items-center mb-2.5">
-                          <div className="d-flex align-items-center gap-3 min-w-0">
-                            <div
-                              className="quiz-mode-icon-box"
-                              style={{
-                                background: isSelected ? '#2563eb' : '#f1f5f9',
-                                color: isSelected ? '#ffffff' : m.color || '#64748b'
-                              }}
-                            >
-                              <IconComponent size={20} strokeWidth={2.2} />
-                            </div>
-                            <div className="min-w-0">
-                              <h6 className={`fw-bold mb-0.5 text-truncate ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '15px' }}>
-                                {m.title}
-                              </h6>
-                              <span className="text-muted small d-block text-truncate" style={{ fontSize: '11.5px' }}>{m.sub}</span>
-                            </div>
-                          </div>
-                          <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-2">
-                            <span
-                              className={`badge rounded-pill fw-semibold px-2.5 py-1 ${
-                                isSelected ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600'
-                              }`}
-                              style={{ fontSize: '11px' }}
-                            >
-                              {m.badge}
-                            </span>
-                            {isSelected && (
-                              <span className="badge bg-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center flex-shrink-0" style={{ width: 18, height: 18 }}>
-                                <Check size={11} color="#fff" />
-                              </span>
-                            )}
-                          </div>
+                      <div className="d-flex align-items-center justify-content-between mb-1.5">
+                        <div
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{
+                            background: isSelected ? '#2563eb' : '#f1f5f9',
+                            color: isSelected ? '#ffffff' : m.color || '#64748b',
+                            width: '28px',
+                            height: '28px'
+                          }}
+                        >
+                          <IconComponent size={14} strokeWidth={2.4} />
                         </div>
-                        <p className="text-muted small mb-0 mt-2" style={{ fontSize: '12.5px', lineHeight: '1.5' }}>
-                          {m.desc}
-                        </p>
+                        {isSelected ? (
+                          <span className="badge bg-primary rounded-circle p-0.5 d-inline-flex align-items-center justify-content-center" style={{ width: 16, height: 16 }}>
+                            <Check size={10} color="#fff" />
+                          </span>
+                        ) : (
+                          <span className="badge bg-light text-muted border rounded-pill px-1.5 py-0.5" style={{ fontSize: '9.5px' }}>
+                            {m.badge}
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <h6 className={`fw-bold mb-0 text-truncate ${isSelected ? 'text-primary' : 'text-dark'}`} style={{ fontSize: '12.5px' }}>
+                          {m.title}
+                        </h6>
+                        <span className="text-muted small d-block text-truncate" style={{ fontSize: '10.5px' }}>
+                          {m.sub}
+                        </span>
                       </div>
                     </div>
                   </Col>

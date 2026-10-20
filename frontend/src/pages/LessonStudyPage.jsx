@@ -58,7 +58,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
 
   // View mode: 'step_by_step' | 'table_view'
   const [viewMode, setViewMode] = useState('step_by_step');
-  const [autoPlayAudio, setAutoPlayAudio] = useState(true);
+  const [autoPlayAudio, setAutoPlayAudio] = useState(false);
 
   // Filter & Search for table mode
   const [statusFilter, setStatusFilter] = useState('all');
@@ -116,12 +116,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
 
   const currentWord = vocabularies[currentIndex];
 
-  // Auto-play audio when switching word in Step-by-Step mode
-  useEffect(() => {
-    if (viewMode === 'step_by_step' && currentWord && autoPlayAudio && !loading) {
-      speakJapanese(currentWord.clean_kana || currentWord.kana);
-    }
-  }, [currentIndex, viewMode, currentWord, autoPlayAudio, loading]);
+
 
   // Keyboard navigation for Step-by-Step
   useEffect(() => {

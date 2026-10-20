@@ -385,15 +385,8 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
       } else if (mode === 'forgot') {
         const res = await authService.forgotPassword({ email: formData.email });
         sounds.playCorrect();
-        if (res.data?.email_sent) {
-          setSuccessMsg(`Mã OTP thật đã được gửi tới Gmail ${formData.email}! Vui lòng mở hộp thư Gmail để xem mã 6 số.`);
-          setFormData((prev) => ({ ...prev, code: '' }));
-        } else {
-          setSuccessMsg(res.data?.message || 'Đã tạo mã xác thực OTP.');
-          if (res.data?.recovery_code) {
-            setFormData((prev) => ({ ...prev, code: res.data.recovery_code }));
-          }
-        }
+        setSuccessMsg(`Mã xác thực OTP đã được gửi thành công đến hòm thư Gmail ${formData.email}! Vui lòng kiểm tra hộp thư đến (và mục Spam) để nhận mã 6 số.`);
+        setFormData((prev) => ({ ...prev, code: '' }));
         setMode('reset');
       } else if (mode === 'reset') {
         if (formData.newPassword.length < 6) {
@@ -412,7 +405,12 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
       }
     } catch (err) {
       sounds.playWrong();
-      setErrorMsg(err.response?.data?.message || 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.');
+      const status = err.response?.status;
+      if (status === 404 && mode === 'forgot') {
+        setErrorMsg('Email này chưa được đăng ký trong hệ thống. Vui lòng kiểm tra lại địa chỉ email hoặc tạo tài khoản mới!');
+      } else {
+        setErrorMsg(err.response?.data?.message || 'Có lỗi xảy ra, vui lòng kiểm tra lại thông tin.');
+      }
     } finally {
       setLoading(false);
     }
@@ -739,7 +737,7 @@ const AuthModal = ({ isOpen, toggle, initialMode = 'login' }) => {
                     type="text"
                     required
                     maxLength={6}
-                    placeholder="123456"
+                    placeholder="Nhập 6 số từ hộp thư Gmail"
                     value={formData.code}
                     onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                     className="py-2 text-center fs-5 fw-bold letter-spacing-2 rounded-3 border-slate-200"

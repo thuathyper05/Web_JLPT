@@ -1249,25 +1249,25 @@ const ParticlesPage = ({ onNavigate }) => {
           </div>
 
           {/* Master 2 Tabs Switcher */}
-          <div className="d-flex align-items-center p-1 bg-light rounded-pill border shadow-xs">
+          <div className="d-flex align-items-center p-1 bg-light rounded-pill border shadow-xs w-100 w-md-auto">
             <button
               type="button"
               onClick={() => { sounds.playFlip(); setActiveTab('practice'); }}
-              className={`btn btn-sm rounded-pill py-1.5 px-3 fw-bold transition-all ${
+              className={`btn btn-sm rounded-pill py-1.5 px-3 fw-bold flex-fill transition-all ${
                 activeTab === 'practice' ? 'btn-primary text-white shadow-xs' : 'text-muted border-0 bg-transparent'
               }`}
-              style={{ fontSize: '12.5px' }}
+              style={{ fontSize: '12px' }}
             >
               <Zap size={14} className="me-1.5" />
-              <span>Luyện 25 bài chuẩn</span>
+              <span>Luyện 25 bài</span>
             </button>
             <button
               type="button"
               onClick={() => { sounds.playFlip(); setActiveTab('theory'); }}
-              className={`btn btn-sm rounded-pill py-1.5 px-3 fw-bold transition-all ${
+              className={`btn btn-sm rounded-pill py-1.5 px-3 fw-bold flex-fill transition-all ${
                 activeTab === 'theory' ? 'btn-primary text-white shadow-xs' : 'text-muted border-0 bg-transparent'
               }`}
-              style={{ fontSize: '12.5px' }}
+              style={{ fontSize: '12px' }}
             >
               <BookOpen size={14} className="me-1.5" />
               <span>Bách khoa Trợ từ</span>
@@ -1381,10 +1381,10 @@ const ParticlesPage = ({ onNavigate }) => {
 
             {/* Row 3: Active Focus Banner & Inline Live Metrics Strip */}
             <div
-              className="p-2 rounded-3 border d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-1.5"
+              className="p-2 rounded-3 border d-flex align-items-center justify-content-between gap-1.5"
               style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}
             >
-              <div className="min-w-0 flex-grow-1">
+              <div className="min-w-0 flex-grow-1 pe-1">
                 <span className="fw-bold text-navy-dark small text-truncate d-block" style={{ fontSize: '12px' }}>
                   {currentLessonData.title}
                 </span>
@@ -1394,17 +1394,12 @@ const ParticlesPage = ({ onNavigate }) => {
               </div>
 
               {/* Compact Metrics Pills */}
-              <div className="d-flex align-items-center gap-1.5 flex-shrink-0 flex-wrap">
+              <div className="d-flex align-items-center gap-1 flex-shrink-0">
                 <span className="badge bg-primary text-white fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
-                  Câu {practiceIndex + 1}/{activeQuestions.length}
+                  {practiceIndex + 1}/{activeQuestions.length}
                 </span>
-                {streak >= 3 && (
-                  <span className="badge bg-amber-100 text-amber-800 border border-amber-200 fw-bold px-2 py-0.5 animate-pulse" style={{ fontSize: '10.5px' }}>
-                    🔥 x{streak}
-                  </span>
-                )}
                 <span className="badge bg-emerald-50 text-emerald-700 border border-emerald-200 fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
-                  ✓ {score.correct} / ✗ {score.wrong}
+                  ✓{score.correct} ✗{score.wrong}
                 </span>
               </div>
             </div>
@@ -1500,8 +1495,8 @@ const ParticlesPage = ({ onNavigate }) => {
                       type="button"
                       disabled={isAnswered}
                       onClick={() => handleSelectOption(opt)}
-                      className={`btn w-100 py-2.5 px-3 rounded-3 fw-bold font-monospace transition-all d-flex align-items-center justify-content-between ${btnClass}`}
-                      style={{ height: '46px', fontSize: '16.5px' }}
+                      className={`btn w-100 py-2 px-2.5 rounded-3 fw-bold font-monospace transition-all d-flex align-items-center justify-content-between ${btnClass}`}
+                      style={{ height: '44px', fontSize: '16px' }}
                     >
                       <span className="small text-muted font-sans fw-bold" style={{ fontSize: '11px' }}>
                         {letters[idx]}.
