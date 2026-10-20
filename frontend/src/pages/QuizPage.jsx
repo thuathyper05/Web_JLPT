@@ -32,6 +32,7 @@ import {
   Shuffle
 } from 'lucide-react';
 import { quizService, speakJapanese } from '../services/api';
+import { normalizeQuizQuestion, cleanKatakanaDisplay, getEffectiveKana } from '../utils/katakanaNormalize';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
@@ -149,7 +150,8 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
         count: targetCount,
         mode: targetMode
       });
-      setQuestions(res.data.questions);
+      const cleanQuestions = (res.data?.questions || []).map(normalizeQuizQuestion);
+      setQuestions(cleanQuestions);
       setCurrentIndex(0);
       setUserAnswers([]);
       setSelectedOption(null);
@@ -606,13 +608,13 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     className="fw-bold text-navy-dark mb-0 font-monospace"
                     style={{ fontSize: 'clamp(1.4rem, 5vw, 2.2rem)' }}
                   >
-                    {currentQ.question}
+                    {cleanKatakanaDisplay(currentQ.question)}
                   </h2>
                   <Button
                     color="light"
                     size="sm"
                     className="p-1.5 rounded-circle border text-primary audio-btn"
-                    onClick={() => speakJapanese(currentQ.audio_text || currentQ.clean_kana || currentQ.kana)}
+                    onClick={() => speakJapanese(getEffectiveKana(currentQ) || currentQ.audio_text || currentQ.clean_kana || currentQ.kana)}
                     title="Nghe phát âm chuẩn"
                   >
                     <Volume2 size={16} />
@@ -651,7 +653,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                           {String.fromCharCode(65 + idx)}
                         </div>
                         <div className="fs-6 fw-bold flex-grow-1 text-slate-800 font-monospace">
-                          {opt}
+                          {cleanKatakanaDisplay(opt)}
                         </div>
 
                         {isAnswerSubmitted && opt === currentQ.correct_answer && (
@@ -723,7 +725,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       color="light"
                       size="sm"
                       className="border rounded-circle p-1 audio-btn"
-                      onClick={() => speakJapanese(currentQ.clean_kana || currentQ.kana)}
+                      onClick={() => speakJapanese(getEffectiveKana(currentQ) || currentQ.clean_kana || currentQ.kana)}
                       title="Nghe phát âm"
                     >
                       <Volume2 size={14} className="text-primary" />
@@ -733,7 +735,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   <div className="row g-2 small">
                     <div className="col-sm-6">
                       <span className="text-muted">Từ tiếng Nhật:</span>{' '}
-                      <strong className="text-navy-dark font-monospace">{currentQ.clean_kana || currentQ.kana}</strong>{' '}
+                      <strong className="text-navy-dark font-monospace">{getEffectiveKana(currentQ) || currentQ.clean_kana || currentQ.kana}</strong>{' '}
                       {currentQ.kanji && hasRealKanji(currentQ.kanji) && `(${currentQ.kanji})`}
                     </div>
                     <div className="col-sm-6">

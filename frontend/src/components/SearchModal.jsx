@@ -14,6 +14,7 @@ import { Search, Volume2, Star, X, Filter, Sparkles, BookOpen, Globe, PenTool } 
 import { vocabService, speakJapanese } from '../services/api';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
+import { hasRealKanji, getEffectiveKana, cleanKatakanaDisplay } from '../utils/katakanaNormalize';
 
 const QUICK_SUGGESTIONS = [
   { text: 'わたし', type: 'vocab' },
@@ -82,14 +83,14 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const katakanaVocab = vocabResults.filter(v => /[\u30A0-\u30FF]/.test(v.clean_kana || v.kana || ''));
+  const katakanaVocab = vocabResults.filter(v => /[\u30A0-\u30FF]/.test(getEffectiveKana(v)));
 
   const displayedVocab = vocabResults.filter(item => {
     if (filterLesson !== 'all' && item.lesson_number !== parseInt(filterLesson, 10)) {
       return false;
     }
     if (activeTab === 'katakana') {
-      return /[\u30A0-\u30FF]/.test(item.clean_kana || item.kana || '');
+      return /[\u30A0-\u30FF]/.test(getEffectiveKana(item));
     }
     if (activeTab === 'kanji' || activeTab === 'dict') {
       return false;
@@ -368,8 +369,8 @@ const SearchModal = ({ isOpen, toggle, onSelectLesson }) => {
             {displayedVocab.map((item) => {
               const isFav = isFavorite(item.id, item.is_favorite);
               const cleanMeaning = item.clean_vietnamese || item.vietnamese;
-              const cleanK = item.clean_kana || item.kana;
-              const hasKanji = item.kanji && item.kanji !== '–' && item.kanji !== '-' && item.kanji.trim() !== '';
+              const cleanK = getEffectiveKana(item);
+              const hasKanji = item.kanji && hasRealKanji(item.kanji);
               const isKatakana = /[\u30A0-\u30FF]/.test(cleanK);
 
               return (

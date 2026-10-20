@@ -7,6 +7,7 @@ import {
   BookOpen, Plus, HeartPulse
 } from 'lucide-react';
 import { srsService, vocabService, lessonService, speakJapanese } from '../services/api';
+import { hasRealKanji, getEffectiveKana } from '../utils/katakanaNormalize';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import { getGardenWater, deductGardenWater, awardGardenWater } from '../services/gardenRewards';
@@ -56,7 +57,7 @@ const TREE_STAGES = {
   }
 };
 
-const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
+
 const GUEST_STORAGE_KEY = 'hyper_guest_garden_srs';
 
 // ── THE ICONIC SINGLE BONSAI TREE VECTOR ARTWORK (RESPONSIVE SVG & LIVELY MOTION) ──
@@ -339,7 +340,7 @@ const GardenPage = ({ onNavigate }) => {
               const now = new Date();
               items = list.slice(0, 15).map((v, i) => {
                 const isKj = Boolean(v.kanji && hasRealKanji(v.kanji));
-                const clnK = v.clean_kana || v.kana || '';
+                const clnK = getEffectiveKana(v);
                 return {
                   id: v.id,
                   vocab_id: v.id,
@@ -416,7 +417,7 @@ const GardenPage = ({ onNavigate }) => {
         list.forEach(v => {
           if (!map.has(v.id)) {
             const isKj = Boolean(v.kanji && hasRealKanji(v.kanji));
-            const clnK = v.clean_kana || v.kana || '';
+            const clnK = getEffectiveKana(v);
             map.set(v.id, {
               id: v.id,
               vocab_id: v.id,

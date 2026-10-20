@@ -8,6 +8,7 @@ import {
   ChevronLeft, ChevronRight, RefreshCw, RotateCw, X
 } from 'lucide-react';
 import { favoriteService, speakJapanese } from '../services/api';
+import { hasRealKanji, getEffectiveKana } from '../utils/katakanaNormalize';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
 
@@ -175,7 +176,8 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
         <Row className="g-3 g-md-4">
           {filtered.map(item => {
             const meaning = item.clean_vietnamese || item.vietnamese;
-            const kana = item.clean_kana || item.kana;
+            const kana = getEffectiveKana(item) || item.clean_kana || item.kana;
+            const hasKj = Boolean(item.kanji && hasRealKanji(item.kanji));
             return (
               <Col md={6} lg={4} key={item.id}>
                 <div className="app-surface-card h-100 p-3.5 d-flex flex-column justify-content-between" style={{ borderTop: '3px solid #f59e0b' }}>
@@ -200,7 +202,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
 
                     {/* Word */}
                     <div className="mb-2.5">
-                      {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                      {hasKj && (
                         <div style={{ fontSize: '24px', fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif', lineHeight: '1.2' }}>
                           {item.kanji}
                         </div>
@@ -262,10 +264,10 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                 style={{ cursor: 'pointer', minHeight: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 16, border: '1.5px solid', borderColor: fcFlipped ? '#10b981' : '#e2e8f0', background: fcFlipped ? 'linear-gradient(135deg,#ecfdf5,#f0fdf4)' : '#ffffff', padding: '20px 24px', marginBottom: 16, transition: 'all .3s ease' }}>
                 {!fcFlipped ? (
                   <>
-                    {fcWord.kanji && fcWord.kanji !== '–' && (
+                    {fcWord.kanji && hasRealKanji(fcWord.kanji) && (
                       <div style={{ fontSize: 36, fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif' }}>{fcWord.kanji}</div>
                     )}
-                    <div style={{ fontSize: 22, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{fcWord.clean_kana || fcWord.kana}</div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{getEffectiveKana(fcWord)}</div>
                     <div style={{ fontSize: 13, color: '#94a3b8', fontStyle: 'italic' }}>[{fcWord.romaji}]</div>
                     <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 10 }}><RotateCw size={12} style={{ marginRight: 4 }} />Chạm để xem nghĩa</div>
                   </>
@@ -284,7 +286,7 @@ const FavoritesPage = ({ onNavigate, onSelectLesson }) => {
                   <ChevronLeft size={18} color="#475569" />
                 </button>
                 <button type="button" style={{ background: '#eff6ff', border: 'none', borderRadius: 9, padding: '8px 12px', cursor: 'pointer' }}
-                  onClick={() => speakJapanese(fcWord.clean_kana || fcWord.kana)}>
+                  onClick={() => speakJapanese(getEffectiveKana(fcWord))}>
                   <Volume2 size={18} color="#2563eb" />
                 </button>
                 <Button color="primary" className="rounded-pill fw-bold px-4 shadow-sm" onClick={fcNext}>

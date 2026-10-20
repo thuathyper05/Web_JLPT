@@ -8,6 +8,7 @@ import {
   Award, Trash2, Layers, CheckSquare, Keyboard, Filter, ChevronLeft, ChevronRight, RotateCw
 } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
+import { hasRealKanji, getEffectiveKana } from '../utils/katakanaNormalize';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
 
@@ -202,7 +203,8 @@ const ReviewWrongPage = ({ onNavigate }) => {
         <Row className="g-3 g-md-4">
           {filteredItems.map(item => {
             const meaning = item.clean_vietnamese || item.vietnamese;
-            const kana = item.clean_kana || item.kana;
+            const kana = getEffectiveKana(item) || item.clean_kana || item.kana;
+            const hasKj = Boolean(item.kanji && hasRealKanji(item.kanji));
             return (
               <Col md={6} lg={4} key={item.id}>
                 <div className="app-surface-card h-100 p-3.5 d-flex flex-column justify-content-between" style={{ borderLeft: '4px solid #ef4444' }}>
@@ -218,7 +220,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
                     </div>
 
                     <div className="mb-2.5">
-                      {item.kanji && item.kanji !== '–' && item.kanji !== '-' && (
+                      {hasKj && (
                         <div style={{ fontSize: '22px', fontWeight: 900, color: '#0f172a', fontFamily: 'Noto Sans JP,sans-serif', lineHeight: '1.2' }}>{item.kanji}</div>
                       )}
                       <div style={{ fontSize: '16px', fontWeight: 700, color: '#2563eb', fontFamily: 'Noto Sans JP,sans-serif' }}>{kana}</div>
@@ -272,10 +274,10 @@ const ReviewWrongPage = ({ onNavigate }) => {
                 style={{ cursor: 'pointer', minHeight: 200, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 16, border: '1.5px solid', borderColor: qFlipped ? '#10b981' : '#fca5a5', background: qFlipped ? '#ecfdf5' : '#fff', padding: '20px 24px', marginBottom: 16, transition: 'all .3s ease' }}>
                 {!qFlipped ? (
                   <>
-                    {qItem.kanji && qItem.kanji !== '–' && (
+                    {qItem.kanji && hasRealKanji(qItem.kanji) && (
                       <h2 className="zen-kanji-title mb-1">{qItem.kanji}</h2>
                     )}
-                    <div className="zen-kana-sub mb-1">{qItem.clean_kana || qItem.kana}</div>
+                    <div className="zen-kana-sub mb-1">{getEffectiveKana(qItem)}</div>
                     <div style={{ fontSize: 13, color: '#94a3b8', fontStyle: 'italic' }}>[{qItem.romaji}]</div>
                     <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 12 }}><RotateCw size={12} style={{ marginRight: 4 }} />Chạm để xem nghĩa</div>
                   </>
@@ -289,7 +291,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
 
               <div className="d-flex justify-content-center gap-2">
                 <button type="button" style={{ background: '#eff6ff', border: 'none', borderRadius: 9, padding: '8px 12px', cursor: 'pointer' }}
-                  onClick={() => speakJapanese(qItem.clean_kana || qItem.kana)}>
+                  onClick={() => speakJapanese(getEffectiveKana(qItem))}>
                   <Volume2 size={18} color="#2563eb" />
                 </button>
                 <Button color="success" className="rounded-pill fw-bold px-4 shadow-sm"

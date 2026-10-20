@@ -39,6 +39,7 @@ import {
 } from 'lucide-react';
 import * as wanakana from 'wanakana';
 import { vocabService, speakJapanese } from '../services/api';
+import { getEffectiveKana, cleanKatakanaDisplay } from '../utils/katakanaNormalize';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import { awardGardenWater } from '../services/gardenRewards';
@@ -149,7 +150,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
   }, [zenIndex, viewLayout, loading, practiceMode]);
 
   const getCleanKana = (item) => {
-    const raw = item.clean_kana || item.kana || '';
+    const raw = getEffectiveKana(item) || item.clean_kana || item.kana || '';
     return raw.replace(/[［\[］\]]/g, '').trim();
   };
 

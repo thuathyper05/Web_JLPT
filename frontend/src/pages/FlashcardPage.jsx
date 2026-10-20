@@ -35,6 +35,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
+import { hasRealKanji, getEffectiveKana, cleanKatakanaDisplay } from '../utils/katakanaNormalize';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
@@ -181,7 +182,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
 
   const currentCard = cards[currentIndex];
   const cleanVietnamese = currentCard ? (currentCard.clean_vietnamese || currentCard.vietnamese) : '';
-  const cleanKana = currentCard ? (currentCard.clean_kana || currentCard.kana) : '';
+  const cleanKana = currentCard ? getEffectiveKana(currentCard) : '';
 
   // Auto-play pronunciation when card becomes active or flips to Japanese
   useEffect(() => {
@@ -786,7 +787,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                     </>
                   ) : (
                     <>
-                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
+                      {Boolean(currentCard.kanji && hasRealKanji(currentCard.kanji)) ? (
                         <>
                           <div
                             className="fw-black mb-1 font-monospace"
@@ -903,7 +904,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                 <div className="text-center py-3 my-auto">
                   {cardDirection === 'vi_to_jp' ? (
                     <>
-                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
+                      {Boolean(currentCard.kanji && hasRealKanji(currentCard.kanji)) ? (
                         <>
                           <div
                             className="fw-black mb-1 font-monospace"
@@ -955,7 +956,7 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
                     </>
                   ) : (
                     <>
-                      {Boolean(currentCard.kanji && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(currentCard.kanji)) ? (
+                      {Boolean(currentCard.kanji && hasRealKanji(currentCard.kanji)) ? (
                         <div className="small text-white text-opacity-75 mb-1" style={{ fontSize: '15px' }}>
                           <strong className="text-warning font-monospace fs-5">{currentCard.kanji}</strong> ({cleanKana})
                         </div>

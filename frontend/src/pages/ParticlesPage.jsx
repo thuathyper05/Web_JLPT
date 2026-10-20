@@ -1292,7 +1292,7 @@ const ParticlesPage = ({ onNavigate }) => {
                   style={{ fontSize: '12.5px', borderColor: 'var(--slate-200)', height: '34px' }}
                 >
                   <option value="all">🌟 Tất cả 25 Bài N5 (75 câu hỏi chuẩn)</option>
-                  {LESSON_GRAMMAR_CURRICULUM.map(l => (
+                  {LESSONS_CURRICULUM.map(l => (
                     <option key={l.lesson} value={l.lesson}>
                       {l.title}
                     </option>

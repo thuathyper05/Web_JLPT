@@ -7,6 +7,7 @@ import {
   ArrowRight, Heart, BarChart3, Shuffle, RefreshCw, Sprout
 } from 'lucide-react';
 import { vocabService, speakJapanese, lessonService, srsService } from '../services/api';
+import { hasRealKanji, getEffectiveKana, cleanKatakanaDisplay } from '../utils/katakanaNormalize';
 import { sounds } from '../services/sounds';
 import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
@@ -128,9 +129,10 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
       const hasRealKanji = (str) => Boolean(str && /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str));
 
       const leftItems = selected.map(v => {
-        const hasKj = hasRealKanji(v.kanji);
-        const text = hasKj ? v.kanji : (v.clean_kana || v.kana || v.word || '');
-        const reading = hasKj ? (v.clean_kana || v.kana || v.reading || '') : '';
+        const hasKj = Boolean(v.kanji && hasRealKanji(v.kanji));
+        const effKana = getEffectiveKana(v);
+        const text = hasKj ? v.kanji : effKana;
+        const reading = hasKj ? effKana : '';
         return { 
           id: v.id, 
           text, 
@@ -885,17 +887,17 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
                   <div key={v.id} className="p-2 rounded-3 border bg-light d-flex align-items-center justify-content-between">
                     <div>
                       <span className="fw-bold text-dark me-2" style={{ fontFamily: 'Noto Sans JP, sans-serif' }}>
-                        {v.kanji || v.clean_kana || v.kana}
+                        {Boolean(v.kanji && hasRealKanji(v.kanji)) ? v.kanji : getEffectiveKana(v)}
                       </span>
-                      {v.kanji && v.kana && (
-                        <small className="text-muted me-2">({v.clean_kana || v.kana})</small>
+                      {Boolean(v.kanji && hasRealKanji(v.kanji)) && (
+                        <small className="text-muted me-2">({getEffectiveKana(v)})</small>
                       )}
                       <small className="text-secondary">{v.clean_vietnamese || v.vietnamese}</small>
                     </div>
                     <button
                       type="button"
                       className="btn btn-sm btn-link p-0 text-primary"
-                      onClick={() => speakJapanese(v.kanji || v.clean_kana || v.kana)}
+                      onClick={() => speakJapanese(Boolean(v.kanji && hasRealKanji(v.kanji)) ? v.kanji : getEffectiveKana(v))}
                       title="Phát âm Tokyo"
                     >
                       <Volume2 size={16} />
