@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { authService, progressService, favoriteService, noteService, onlineService } from '../services/api';
 import { awardGardenWater, getGardenWater } from '../services/gardenRewards';
+import { OnlineTracker } from '../services/onlineTracker';
 
 const AppContext = createContext();
 
@@ -70,75 +71,14 @@ export const AppProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Real-time Online Tracking Heartbeat (Unique per active tab)
-  const tabIdRef = useRef(
-    'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36)
-  );
-
+  // Real-time Triple-Shield Online Tracking Engine (Local Registry + Cloud SSE + Backend)
   useEffect(() => {
-    const tabId = tabIdRef.current;
-    let bc = null;
-    try {
-      if (typeof BroadcastChannel !== 'undefined') {
-        bc = new BroadcastChannel('hyper_online_sync');
-        bc.onmessage = (event) => {
-          if (event.data?.type === 'COUNT_UPDATE' && typeof event.data.count === 'number') {
-            setOnlineCount(Math.max(1, event.data.count));
-          } else if (event.data?.type === 'FORCE_REFRESH') {
-            sendPing();
-          }
-        };
-      }
-    } catch {}
-
-    const sendPing = async () => {
-      try {
-        const res = await onlineService.ping(tabId);
-        if (res.data && typeof res.data.onlineCount === 'number') {
-          const freshCount = Math.max(1, res.data.onlineCount);
-          setOnlineCount(freshCount);
-          try {
-            bc?.postMessage({ type: 'COUNT_UPDATE', count: freshCount });
-          } catch {}
-        }
-      } catch (e) {
-        // Silently preserve current count
-      }
-    };
-
-    // Immediate ping on mount
-    sendPing();
-
-    // Fast, responsive heartbeat interval (8 seconds)
-    const interval = setInterval(sendPing, 8000);
-
-    // Immediate refresh when tab becomes visible or receives window focus
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        sendPing();
-      }
-    };
-    const handleFocus = () => sendPing();
-
-    const handleBeforeUnload = () => {
-      try {
-        bc?.postMessage({ type: 'FORCE_REFRESH' });
-        onlineService.leave(tabId);
-      } catch {}
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('focus', handleFocus);
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    const tracker = new OnlineTracker((count) => {
+      setOnlineCount(count);
+    });
 
     return () => {
-      clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', handleFocus);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      try {
-        bc?.close();
-      } catch {}
+      tracker.cleanup();
     };
   }, []);
 
