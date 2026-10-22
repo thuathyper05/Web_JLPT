@@ -1,266 +1,177 @@
 import { onlineService } from './api';
 
-const STORAGE_KEY = 'hyper_active_tabs_registry';
-const DEVICE_KEY = 'hyper_presence_device_id';
-const CLOUD_TOPIC = 'hyper_jlpt_live_presence_2026';
-const TAB_TIMEOUT_MS = 25000;
-const CLOUD_TIMEOUT_MS = 30000;
+const MACHINE_STORAGE_KEY = 'hyper_presence_machine_id';
+const CLOUD_PRESENCE_URL = 'https://extendsclass.com/api/json-storage/bin/ddaebef';
+const MACHINE_LEASE_MS = 35000; // 35 seconds active lease
+const PING_INTERVAL_MS = 10000; // 10 seconds heartbeat
 
 export class OnlineTracker {
   constructor(onCountChange) {
     this.onCountChange = onCountChange;
-    this.tabId = 'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
-    this.deviceId = this.getOrCreateDeviceId();
-    this.cloudDevices = new Map();
-    this.backendCount = 1;
-    this.eventSource = null;
+    this.machineId = this.getOrCreateMachineId();
     this.broadcastChannel = null;
     this.heartbeatTimer = null;
     this.isDestroyed = false;
+    this.backendCount = 1;
+    this.cloudCount = 1;
 
     this.init();
   }
 
-  getOrCreateDeviceId() {
+  getOrCreateMachineId() {
     try {
-      let id = localStorage.getItem(DEVICE_KEY);
+      let id = localStorage.getItem(MACHINE_STORAGE_KEY);
       if (!id) {
-        id = 'dev_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
-        localStorage.setItem(DEVICE_KEY, id);
+        id = 'm_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+        localStorage.setItem(MACHINE_STORAGE_KEY, id);
       }
       return id;
     } catch {
-      return 'dev_' + Date.now();
+      return 'm_' + Date.now();
     }
   }
 
   init() {
-    // 1. Setup BroadcastChannel for 0ms cross-tab updates
+    // 1. Cross-tab synchronization within the same physical machine
     try {
       if (typeof BroadcastChannel !== 'undefined') {
-        this.broadcastChannel = new BroadcastChannel('hyper_presence_sync_channel');
+        this.broadcastChannel = new BroadcastChannel('hyper_presence_machine_sync');
         this.broadcastChannel.onmessage = (event) => {
-          if (event.data?.type === 'TAB_CHANGE') {
-            this.recalculateTotal();
+          if (event.data?.type === 'MACHINE_COUNT' && typeof event.data.count === 'number') {
+            this.notify(event.data.count);
           }
         };
       }
     } catch {}
 
-    // 2. Storage event listener (syncs across tabs even without BroadcastChannel)
-    this.handleStorageEvent = (e) => {
-      if (e.key === STORAGE_KEY) {
-        this.recalculateTotal();
-      }
-    };
-    window.addEventListener('storage', this.handleStorageEvent);
-
-    // 3. Register self in local tab registry
-    this.touchLocalTab();
-
-    // 4. Setup Cloud SSE Presence Relay (syncs across devices without backend dependency)
-    this.setupCloudPresence();
-
-    // 5. Setup Backend Ping (syncs with local or cloud Express server)
+    // 2. Perform immediate presence ping across global cloud & backend
+    this.syncGlobalPresence();
     this.pingBackend();
 
-    // 6. Regular heartbeats every 4 seconds
+    // 3. Heartbeat loop (10-12s interval with slight jitter to prevent collisions)
+    const jitter = Math.floor(Math.random() * 2000);
     this.heartbeatTimer = setInterval(() => {
-      this.touchLocalTab();
-      this.sendCloudPing();
+      this.syncGlobalPresence();
       this.pingBackend();
-      this.recalculateTotal();
-    }, 4000);
+    }, PING_INTERVAL_MS + jitter);
 
-    // 7. Event listeners for tab focus and visibility
+    // 4. Trigger sync when tab becomes visible or receives focus
     this.handleVisibility = () => {
       if (document.visibilityState === 'visible') {
-        this.touchLocalTab();
-        this.sendCloudPing();
+        this.syncGlobalPresence();
         this.pingBackend();
-        this.recalculateTotal();
       }
     };
     document.addEventListener('visibilitychange', this.handleVisibility);
     window.addEventListener('focus', this.handleVisibility);
 
-    // 8. Tab unload and departure
+    // 5. Explicit departure notification on tab/browser close
     this.handleUnload = () => {
       this.cleanup();
     };
     window.addEventListener('beforeunload', this.handleUnload);
     window.addEventListener('pagehide', this.handleUnload);
-
-    // Initial calculation
-    this.recalculateTotal();
   }
 
-  touchLocalTab() {
+  async syncGlobalPresence(isLeaving = false) {
+    if (this.isDestroyed && !isLeaving) return;
+
     try {
+      const getRes = await fetch(CLOUD_PRESENCE_URL, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      if (!getRes.ok) return;
+
+      const data = await getRes.json();
+      let clients = data?.activeClients || {};
       const now = Date.now();
-      const raw = localStorage.getItem(STORAGE_KEY);
-      let registry = raw ? JSON.parse(raw) : {};
-      if (typeof registry !== 'object' || registry === null) registry = {};
 
-      // Purge expired tabs
-      for (const [id, time] of Object.entries(registry)) {
-        if (now - Number(time) > TAB_TIMEOUT_MS) {
-          delete registry[id];
+      // Clean up machines that stopped pinging longer than 35s
+      for (const [id, lastSeen] of Object.entries(clients)) {
+        if (now - Number(lastSeen) > MACHINE_LEASE_MS) {
+          delete clients[id];
         }
       }
 
-      // Refresh current tab
-      registry[this.tabId] = now;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(registry));
-      this.broadcastChannel?.postMessage({ type: 'TAB_CHANGE' });
-    } catch {}
-  }
-
-  removeLocalTab() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        let registry = JSON.parse(raw);
-        if (typeof registry === 'object' && registry !== null) {
-          delete registry[this.tabId];
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(registry));
-        }
+      if (isLeaving) {
+        delete clients[this.machineId];
+      } else {
+        clients[this.machineId] = now;
       }
-      this.broadcastChannel?.postMessage({ type: 'TAB_CHANGE' });
-    } catch {}
-  }
 
-  getLocalTabCount() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return 1;
-      const registry = JSON.parse(raw);
-      if (typeof registry !== 'object' || registry === null) return 1;
-      const now = Date.now();
-      let count = 0;
-      for (const [, time] of Object.entries(registry)) {
-        if (now - Number(time) <= TAB_TIMEOUT_MS) {
-          count++;
+      // Save updated active machines
+      const payload = JSON.stringify({ activeClients: clients });
+
+      if (isLeaving) {
+        if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+          navigator.sendBeacon(CLOUD_PRESENCE_URL, payload);
+        } else {
+          fetch(CLOUD_PRESENCE_URL, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true
+          }).catch(() => {});
         }
+        return;
       }
-      return Math.max(1, count);
+
+      await fetch(CLOUD_PRESENCE_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+      });
+
+      const uniqueMachinesCount = Math.max(1, Object.keys(clients).length);
+      this.cloudCount = uniqueMachinesCount;
+      this.recalculateTotal();
     } catch {
-      return 1;
+      // Cloud sync failure fallback
     }
   }
 
-  setupCloudPresence() {
-    try {
-      if (typeof EventSource !== 'undefined') {
-        const sseUrl = `https://ntfy.sh/${CLOUD_TOPIC}/sse`;
-        this.eventSource = new EventSource(sseUrl);
-
-        this.eventSource.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.message) {
-              const payload = JSON.parse(data.message);
-              if (payload.deviceId) {
-                if (payload.action === 'leave') {
-                  this.cloudDevices.delete(payload.deviceId);
-                } else {
-                  this.cloudDevices.set(payload.deviceId, Date.now());
-                }
-                this.recalculateTotal();
-              }
-            }
-          } catch {}
-        };
-
-        this.eventSource.onerror = () => {
-          // SSE connection silent retry
-        };
-      }
-    } catch {}
-
-    this.sendCloudPing();
-  }
-
-  sendCloudPing() {
-    try {
-      fetch(`https://ntfy.sh/${CLOUD_TOPIC}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          deviceId: this.deviceId,
-          action: 'ping',
-          timestamp: Date.now()
-        })
-      }).catch(() => {});
-    } catch {}
-  }
-
-  sendCloudLeave() {
-    try {
-      const payload = JSON.stringify({
-        deviceId: this.deviceId,
-        action: 'leave',
-        timestamp: Date.now()
-      });
-      const url = `https://ntfy.sh/${CLOUD_TOPIC}`;
-      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        navigator.sendBeacon(url, payload);
-      } else {
-        fetch(url, { method: 'POST', body: payload, keepalive: true }).catch(() => {});
-      }
-    } catch {}
-  }
-
   async pingBackend() {
+    if (this.isDestroyed) return;
     try {
-      const res = await onlineService.ping(this.tabId);
+      const res = await onlineService.ping(this.machineId);
       if (res?.data && typeof res.data.onlineCount === 'number') {
         this.backendCount = Math.max(1, res.data.onlineCount);
         this.recalculateTotal();
       }
     } catch {
-      // Backend not reached or 404, fallback to local/cloud
+      // Backend not yet redeployed or 404, gracefully handled
     }
   }
 
   recalculateTotal() {
     if (this.isDestroyed) return;
+    const finalCount = Math.max(this.cloudCount, this.backendCount, 1);
+    this.notify(finalCount);
 
-    // 1. Local tabs in this browser
-    const localTabs = this.getLocalTabCount();
+    try {
+      this.broadcastChannel?.postMessage({
+        type: 'MACHINE_COUNT',
+        count: finalCount
+      });
+    } catch {}
+  }
 
-    // 2. Cloud devices in memory
-    const now = Date.now();
-    for (const [devId, time] of this.cloudDevices.entries()) {
-      if (now - time > CLOUD_TIMEOUT_MS) {
-        this.cloudDevices.delete(devId);
-      }
-    }
-    const cloudDevicesCount = Math.max(1, this.cloudDevices.size);
-
-    // 3. Combined total
-    const combined = Math.max(localTabs, cloudDevicesCount, this.backendCount, 1);
-
+  notify(count) {
     if (typeof this.onCountChange === 'function') {
-      this.onCountChange(combined);
+      this.onCountChange(count);
     }
   }
 
   cleanup() {
     this.isDestroyed = true;
-    this.removeLocalTab();
-    this.sendCloudLeave();
+    this.syncGlobalPresence(true);
     try {
-      onlineService.leave(this.tabId);
-    } catch {}
-    try {
-      this.eventSource?.close();
+      onlineService.leave(this.machineId);
     } catch {}
     try {
       this.broadcastChannel?.close();
     } catch {}
     clearInterval(this.heartbeatTimer);
-    window.removeEventListener('storage', this.handleStorageEvent);
     document.removeEventListener('visibilitychange', this.handleVisibility);
     window.removeEventListener('focus', this.handleVisibility);
     window.removeEventListener('beforeunload', this.handleUnload);

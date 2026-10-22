@@ -1,33 +1,47 @@
 const express = require('express');
 const router = express.Router();
 
-// Real-time active clients tracking (In-memory storage)
-// Key: clientId (string) : Value: timestamp of last ping (ms)
+// Real-time active physical machines and IP tracking (In-memory storage)
+// Key: clientKey (ip::clientId) : Value: timestamp of last ping (ms)
 const activeClients = new Map();
-const CLIENT_TIMEOUT_MS = 20000; // 20 seconds timeout window
+const CLIENT_TIMEOUT_MS = 25000; // 25 seconds timeout window
+
+const getClientIp = (req) => {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.headers['x-real-ip'] || req.socket?.remoteAddress || req.ip || 'anonymous';
+};
+
+const resolveClientKey = (req) => {
+  const ip = getClientIp(req);
+  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'] || 'machine';
+  return `${ip}::${clientId}`;
+};
 
 // Helper to remove expired clients
 const cleanupExpiredClients = () => {
   const now = Date.now();
-  for (const [clientId, lastSeen] of activeClients.entries()) {
+  for (const [key, lastSeen] of activeClients.entries()) {
     if (now - lastSeen > CLIENT_TIMEOUT_MS) {
-      activeClients.delete(clientId);
+      activeClients.delete(key);
     }
   }
 };
 
-// Periodic auto-cleanup every 8 seconds
-setInterval(cleanupExpiredClients, 8000);
+// Periodic auto-cleanup every 10 seconds
+setInterval(cleanupExpiredClients, 10000);
 
 /**
  * POST /api/online/ping
- * Heartbeat ping from an active browser tab/session
+ * Heartbeat ping from an active physical machine / IP
  */
 router.post('/ping', (req, res) => {
-  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'] || req.ip || 'anonymous';
+  const clientKey = resolveClientKey(req);
   const now = Date.now();
 
-  activeClients.set(String(clientId), now);
+  activeClients.set(clientKey, now);
   cleanupExpiredClients();
 
   const count = Math.max(1, activeClients.size);
@@ -40,7 +54,7 @@ router.post('/ping', (req, res) => {
 
 /**
  * GET /api/online/count
- * Retrieve current count of online users
+ * Retrieve current count of online users across all IP addresses
  */
 router.get('/count', (req, res) => {
   cleanupExpiredClients();
@@ -56,9 +70,9 @@ router.get('/count', (req, res) => {
  * Explicit departure notification on tab/window close (supports sendBeacon, GET, and POST)
  */
 router.all('/leave', (req, res) => {
-  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'];
-  if (clientId && activeClients.has(String(clientId))) {
-    activeClients.delete(String(clientId));
+  const clientKey = resolveClientKey(req);
+  if (activeClients.has(clientKey)) {
+    activeClients.delete(clientKey);
   }
   cleanupExpiredClients();
   const count = Math.max(1, activeClients.size);
