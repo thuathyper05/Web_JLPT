@@ -41,7 +41,7 @@ import { useApp } from '../context/AppContext';
 import confetti from 'canvas-confetti';
 
 const FlashcardPage = ({ initialLesson = 1 }) => {
-  const { toggleFavorite, isFavorite, updateProgress, awardGardenWater } = useApp();
+  const { toggleFavorite, isFavorite, updateProgress, awardGardenWater, guestProgress, user } = useApp();
   const [lessonNum, setLessonNum] = useState(initialLesson);
   const [allLessonCards, setAllLessonCards] = useState([]);
   const [cards, setCards] = useState([]);
@@ -163,10 +163,19 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
           }
         }
       } else {
+        // Initialize existing progress for cards in this lesson
+        const existingMastered = new Set();
+        const existingReview = new Set();
+        list.forEach(c => {
+          const p = guestProgress?.[c.id];
+          if (p?.status === 'mastered') existingMastered.add(c.id);
+          else if (p?.status === 'needs_review') existingReview.add(c.id);
+        });
+
         setSavedProgressInfo(null);
         setCurrentIndex(0);
-        setMasteredIds(new Set());
-        setReviewIds(new Set());
+        setMasteredIds(existingMastered);
+        setReviewIds(existingReview);
         setSessionDone(false);
       }
     } catch (err) {
@@ -207,19 +216,25 @@ const FlashcardPage = ({ initialLesson = 1 }) => {
     setIsTransitioning(true);
     setTransitionAnim(remembered ? 'slide-mastered' : 'slide-review');
 
-    // 2. Play tactile sound and record state
-    const nextMastered = remembered ? new Set(masteredIds).add(currentCard.id) : masteredIds;
-    const nextReview = !remembered ? new Set(reviewIds).add(currentCard.id) : reviewIds;
+    // 2. Play tactile sound and record state with instant mutual exclusivity
+    const nextMastered = new Set(masteredIds);
+    const nextReview = new Set(reviewIds);
 
     if (remembered) {
       sounds.playCorrect();
-      setMasteredIds(nextMastered);
+      nextMastered.add(currentCard.id);
+      nextReview.delete(currentCard.id);
+      setMasteredIds(new Set(nextMastered));
+      setReviewIds(new Set(nextReview));
       setFloatingXp(true);
       setTimeout(() => setFloatingXp(false), 850);
       updateProgress(currentCard.id, 'mastered', true).catch(() => {});
     } else {
       sounds.playWrong();
-      setReviewIds(nextReview);
+      nextReview.add(currentCard.id);
+      nextMastered.delete(currentCard.id);
+      setReviewIds(new Set(nextReview));
+      setMasteredIds(new Set(nextMastered));
       updateProgress(currentCard.id, 'needs_review', false).catch(() => {});
     }
 

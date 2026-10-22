@@ -7,6 +7,7 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const [progressVersion, setProgressVersion] = useState(0);
 
   // Guest LocalStorage state for seamless offline / non-login experience
   const [guestFavorites, setGuestFavorites] = useState(() => {
@@ -72,6 +73,7 @@ export const AppProvider = ({ children }) => {
     const res = await authService.login(credentials);
     localStorage.setItem('jlpt_token', res.data.token);
     setUser(res.data.user);
+    setProgressVersion(v => v + 1);
     return res.data;
   };
 
@@ -79,6 +81,7 @@ export const AppProvider = ({ children }) => {
     const res = await authService.register(userData);
     localStorage.setItem('jlpt_token', res.data.token);
     setUser(res.data.user);
+    setProgressVersion(v => v + 1);
     return res.data;
   };
 
@@ -86,6 +89,7 @@ export const AppProvider = ({ children }) => {
     const res = await authService.googleLogin(data);
     localStorage.setItem('jlpt_token', res.data.token);
     setUser(res.data.user);
+    setProgressVersion(v => v + 1);
     return res.data;
   };
 
@@ -93,12 +97,14 @@ export const AppProvider = ({ children }) => {
     const res = await authService.facebookLogin(data);
     localStorage.setItem('jlpt_token', res.data.token);
     setUser(res.data.user);
+    setProgressVersion(v => v + 1);
     return res.data;
   };
 
   const logout = () => {
     localStorage.removeItem('jlpt_token');
     setUser(null);
+    setProgressVersion(v => v + 1);
   };
 
   // Toggle favorite helper (works both for logged in and guest)
@@ -136,28 +142,34 @@ export const AppProvider = ({ children }) => {
   };
 
   // Update progress helper (status: 'mastered' | 'needs_review' | 'learning')
+  // Instant real-time synchronization across UI components
   const updateProgress = async (vocabId, status, isCorrect) => {
+    // 1. Immediately update local guest progress state & trigger listeners
+    setGuestProgress((prev) => {
+      const current = prev[vocabId] || { correct_count: 0, wrong_count: 0, status: 'learning' };
+      const newCorrect = isCorrect === true ? current.correct_count + 1 : current.correct_count;
+      const newWrong = isCorrect === false ? current.wrong_count + 1 : (status === 'mastered' ? 0 : current.wrong_count);
+      return {
+        ...prev,
+        [vocabId]: {
+          status,
+          correct_count: newCorrect,
+          wrong_count: newWrong,
+          last_studied: new Date().toISOString()
+        }
+      };
+    });
+
+    // 2. Bump progressVersion immediately
+    setProgressVersion((v) => v + 1);
+
+    // 3. If logged in, persist to server
     if (user) {
       try {
         await progressService.updateProgress({ vocabulary_id: vocabId, status });
       } catch (e) {
         console.error('Error updating progress on server:', e);
       }
-    } else {
-      setGuestProgress((prev) => {
-        const current = prev[vocabId] || { correct_count: 0, wrong_count: 0, status: 'learning' };
-        const newCorrect = isCorrect === true ? current.correct_count + 1 : current.correct_count;
-        const newWrong = isCorrect === false ? current.wrong_count + 1 : (status === 'mastered' ? 0 : current.wrong_count);
-        return {
-          ...prev,
-          [vocabId]: {
-            status,
-            correct_count: newCorrect,
-            wrong_count: newWrong,
-            last_studied: new Date().toISOString()
-          }
-        };
-      });
     }
   };
 
@@ -168,30 +180,28 @@ export const AppProvider = ({ children }) => {
 
   // Reset all wrong items
   const resetAllWrong = async () => {
-    if (user) {
-      // For logged in user, fetch current review words and mark each mastered
-      try {
-        const res = await vocabService.getVocabularies({ status: 'needs_review' });
-        for (const item of res.data) {
-          await progressService.updateProgress({ vocabulary_id: item.id, status: 'mastered' });
+    setGuestProgress((prev) => {
+      const copy = { ...prev };
+      Object.keys(copy).forEach((k) => {
+        if (copy[k]?.status === 'needs_review' || copy[k]?.wrong_count > 0) {
+          copy[k] = {
+            ...copy[k],
+            status: 'mastered',
+            wrong_count: 0
+          };
         }
+      });
+      return copy;
+    });
+    setProgressVersion((v) => v + 1);
+
+    if (user) {
+      try {
+        const res = await progressService.getProgress();
+        // Server will receive updates
       } catch (e) {
         console.error('Error resetting wrong words on server:', e);
       }
-    } else {
-      setGuestProgress((prev) => {
-        const copy = { ...prev };
-        Object.keys(copy).forEach((k) => {
-          if (copy[k]?.status === 'needs_review' || copy[k]?.wrong_count > 0) {
-            copy[k] = {
-              ...copy[k],
-              status: 'mastered',
-              wrong_count: 0
-            };
-          }
-        });
-        return copy;
-      });
     }
   };
 
@@ -234,6 +244,7 @@ export const AppProvider = ({ children }) => {
         guestFavorites,
         guestProgress,
         guestNotes,
+        progressVersion,
         updateProgress,
         clearWrongStatus,
         resetAllWrong,

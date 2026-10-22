@@ -37,7 +37,7 @@ import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
 const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
-  const { user, guestProgress } = useApp();
+  const { user, guestProgress, progressVersion } = useApp();
   const [lessons, setLessons] = useState([]);
   const [stats, setStats] = useState(null);
   const [lessonSearch, setLessonSearch] = useState('');
@@ -88,7 +88,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       }
     };
     fetchData();
-  }, [user, guestProgress]);
+  }, [user, guestProgress, progressVersion]);
 
   const [lessonBundle, setLessonBundle] = useState('all'); // 'all' | 'b1_5' | 'b6_10' | 'b11_15' | 'b16_20' | 'b21_25'
 

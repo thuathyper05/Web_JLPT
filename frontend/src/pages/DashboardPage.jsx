@@ -31,13 +31,13 @@ import { progressService, lessonService, vocabService } from '../services/api';
 import { useApp } from '../context/AppContext';
 
 const DashboardPage = ({ onSelectLesson, onNavigate }) => {
-  const { user, guestProgress } = useApp();
+  const { user, guestProgress, progressVersion } = useApp();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchDashboard();
-  }, [user, guestProgress]);
+  }, [user, guestProgress, progressVersion]);
 
   const fetchDashboard = async () => {
     setLoading(true);

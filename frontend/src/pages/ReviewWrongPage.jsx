@@ -13,7 +13,7 @@ import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
 
 const ReviewWrongPage = ({ onNavigate }) => {
-  const { user, guestProgress, clearWrongStatus, resetAllWrong } = useApp();
+  const { user, guestProgress, clearWrongStatus, resetAllWrong, progressVersion } = useApp();
   const [reviewList, setReviewList] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedLesson, setSelectedLesson] = useState('all');
@@ -25,7 +25,7 @@ const ReviewWrongPage = ({ onNavigate }) => {
   const [qIdx, setQIdx] = useState(0);
   const [qFlipped, setQFlipped] = useState(false);
 
-  useEffect(() => { fetchItems(); }, [user, guestProgress]);
+  useEffect(() => { fetchItems(); }, [user, guestProgress, progressVersion]);
 
   const fetchItems = async () => {
     setLoading(true);

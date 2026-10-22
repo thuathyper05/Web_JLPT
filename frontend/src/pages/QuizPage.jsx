@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -18,7 +17,6 @@ import {
   RefreshCw,
   CheckCircle,
   XCircle,
-  ArrowRight,
   Clock,
   RotateCcw,
   Sparkles,
@@ -29,7 +27,10 @@ import {
   BookOpen,
   Info,
   Languages,
-  Shuffle
+  Shuffle,
+  ChevronRight,
+  HelpCircle,
+  Layers
 } from 'lucide-react';
 import { quizService, speakJapanese } from '../services/api';
 import { normalizeQuizQuestion, cleanKatakanaDisplay, getEffectiveKana } from '../utils/katakanaNormalize';
@@ -39,7 +40,7 @@ import confetti from 'canvas-confetti';
 
 const hasRealKanji = (str) => /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(str || '');
 
-const QuizPage = ({ initialLesson = 1, onNavigate }) => {
+const QuizPage = ({ initialLesson = 1, onNavigate = () => {} }) => {
   const { updateProgress, awardGardenWater } = useApp();
   const [lessonNum, setLessonNum] = useState(initialLesson);
   const [questionCount, setQuestionCount] = useState(15);
@@ -91,7 +92,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     let timer;
     if (quizState === 'playing' && hasTimer && !isAnswerSubmitted && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft(prev => {
+        setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             handleTimeOut();
@@ -104,10 +105,11 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     return () => clearInterval(timer);
   }, [quizState, hasTimer, isAnswerSubmitted, timeLeft]);
 
-  // Keyboard navigation: 1, 2, 3, 4 to select option, Enter to check / next
+  // Keyboard shortcuts: 1, 2, 3, 4 to select, Enter to check / advance
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (quizState !== 'playing' || !currentQ) return;
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
       if (!isAnswerSubmitted) {
         if (['1', '2', '3', '4'].includes(e.key)) {
@@ -177,7 +179,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
     const isCorrect = selectedOption === currentQ.correct_answer;
     if (isCorrect) {
       sounds.playCorrect();
-      setCurrentStreak(prev => prev + 1);
+      setCurrentStreak((prev) => prev + 1);
       setFloatingXp(true);
       setTimeout(() => setFloatingXp(false), 850);
       if (typeof awardGardenWater === 'function') {
@@ -210,7 +212,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
       usage_note: currentQ.usage_note
     };
 
-    setUserAnswers(prev => [...prev, answerRecord]);
+    setUserAnswers((prev) => [...prev, answerRecord]);
     setIsAnswerSubmitted(true);
 
     // Speak correct answer
@@ -236,7 +238,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   const finishQuiz = async () => {
     if (loading) return;
     setLoading(true);
-    const correctCount = userAnswers.filter(a => a.is_correct).length;
+    const correctCount = userAnswers.filter((a) => a.is_correct).length;
     try {
       const submitRes = await quizService.submitQuiz({
         session_type: 'quiz',
@@ -273,11 +275,11 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   };
 
   const handleRetryWrongOnly = () => {
-    const wrongAnswers = userAnswers.filter(a => !a.is_correct);
+    const wrongAnswers = userAnswers.filter((a) => !a.is_correct);
     if (wrongAnswers.length === 0) return;
 
-    const wrongQList = questions.filter(q =>
-      wrongAnswers.some(w => w.vocabulary_id === q.vocabulary_id)
+    const wrongQList = questions.filter((q) =>
+      wrongAnswers.some((w) => w.vocabulary_id === q.vocabulary_id)
     );
 
     if (wrongQList.length > 0) {
@@ -333,11 +335,11 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
   ];
 
   return (
-    <div className="app-shell" style={{ maxWidth: '880px' }}>
+    <div className="app-shell" style={{ maxWidth: '860px' }}>
       {/* ── 1. SETUP STATE ── */}
       {quizState === 'setup' && (
         <>
-          {/* ── UNIFIED SYSTEMIC PAGE HEADER ── */}
+          {/* System Page Header */}
           <div className="app-page-header">
             <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
               <div>
@@ -361,7 +363,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </div>
           </div>
 
-          {/* Question Format Mode Cards (Compact & Modern) */}
+          {/* Mode Selection Cards */}
           <div className="mb-3">
             <div className="d-flex justify-content-between align-items-center mb-2">
               <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{ fontSize: '11px' }}>
@@ -373,7 +375,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </div>
 
             <Row className="g-2">
-              {modeCards.map(m => {
+              {modeCards.map((m) => {
                 const isSelected = quizMode === m.id;
                 const IconComponent = m.icon;
                 return (
@@ -430,7 +432,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </Row>
           </div>
 
-          {/* Detailed Customization Settings Panel */}
+          {/* Test Parameters Settings Panel */}
           <Card className="jlpt-card border-0 shadow-sm p-3 p-md-4 rounded-4 bg-white mb-3 mb-md-4">
             <h6 className="fw-bold text-navy-dark mb-2.5 d-flex align-items-center gap-2" style={{ fontSize: '13.5px' }}>
               <Target size={15} className="text-primary" />
@@ -438,9 +440,11 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
             </h6>
 
             <Row className="g-2.5">
-              {/* Scope */}
+              {/* Scope Selection */}
               <Col xs={12} md={4}>
-                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Phạm vi bài học</label>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>
+                  Phạm vi bài học
+                </label>
                 <Input
                   type="select"
                   value={lessonNum}
@@ -457,11 +461,13 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 </Input>
               </Col>
 
-              {/* Question Count Pills: 15, 20, 30, 40, all */}
+              {/* Question Count Selection */}
               <Col xs={12} md={4}>
-                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Số câu hỏi</label>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>
+                  Số lượng câu hỏi
+                </label>
                 <div className="d-flex gap-1 flex-wrap">
-                  {[15, 20, 30, 40, 'all'].map(cnt => (
+                  {[15, 20, 30, 40, 'all'].map((cnt) => (
                     <button
                       key={cnt}
                       type="button"
@@ -479,16 +485,18 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                 </div>
               </Col>
 
-              {/* Timer Setting Pills */}
-              <Col xs={6} md={4}>
-                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>Thời gian / câu</label>
+              {/* Timer Duration Selection */}
+              <Col xs={12} md={4}>
+                <label className="fw-semibold small text-secondary mb-1 d-block" style={{ fontSize: '11.5px' }}>
+                  Thời gian bấm giờ / câu
+                </label>
                 <div className="d-flex gap-1">
                   {[
                     { id: '15', label: '15s' },
                     { id: '20', label: '20s' },
                     { id: '30', label: '30s' },
                     { id: 'none', label: '∞' }
-                  ].map(t => (
+                  ].map((t) => (
                     <button
                       key={t.id}
                       type="button"
@@ -499,7 +507,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                           : 'btn-light text-dark'
                       }`}
                       style={{ fontSize: '11.5px', padding: '6px 2px' }}
-                      title={t.id === 'none' ? 'Không giới hạn' : `${t.id}s`}
+                      title={t.id === 'none' ? 'Không giới hạn thời gian' : `${t.id} giây mỗi câu`}
                     >
                       {t.label}
                     </button>
@@ -532,7 +540,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
         </>
       )}
 
-      {/* ── 2. PLAYING STATE (100% ABCD MULTIPLE CHOICE) ── */}
+      {/* ── 2. PLAYING STATE (ABCD MULTIPLE CHOICE) ── */}
       {quizState === 'playing' && currentQ && (
         <>
           {/* Top Status Bar */}
@@ -596,6 +604,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                   +10 XP · Đã Thành Thạo!
                 </div>
               )}
+
               {/* Question Prompt Area */}
               <div className="text-center mb-3 mb-md-4 pb-2.5 pb-md-3 border-bottom">
                 <span className="text-secondary small fw-semibold text-uppercase tracking-wider d-block mb-1.5" style={{ fontSize: '11px' }}>
@@ -614,14 +623,14 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     size="sm"
                     className="p-1.5 rounded-circle border text-primary audio-btn"
                     onClick={() => speakJapanese(getEffectiveKana(currentQ) || currentQ.audio_text || currentQ.clean_kana || currentQ.kana)}
-                    title="Nghe phát âm chuẩn"
+                    title="Nghe phát âm chuẩn Tokyo"
                   >
                     <Volume2 size={16} />
                   </Button>
                 </div>
               </div>
 
-              {/* 4 Options Grid (Luxury ABCD Multiple Choice) */}
+              {/* 4 Options Grid (ABCD) */}
               <Row className="g-2.5 g-md-3 mb-3 mb-md-4">
                 {currentQ.options?.map((opt, idx) => {
                   let choiceClass = 'quiz-choice-card';
@@ -692,7 +701,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     <span>
                       {currentIndex < questions.length - 1 ? 'Câu tiếp theo' : 'Xem kết quả bài thi'}
                     </span>
-                    <ArrowRight size={16} />
+                    <ChevronRight size={16} />
                   </button>
                 )}
               </div>
@@ -725,7 +734,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                       size="sm"
                       className="border rounded-circle p-1 audio-btn"
                       onClick={() => speakJapanese(getEffectiveKana(currentQ) || currentQ.clean_kana || currentQ.kana)}
-                      title="Nghe phát âm"
+                      title="Nghe phát âm chuẩn"
                     >
                       <Volume2 size={14} className="text-primary" />
                     </Button>
@@ -874,7 +883,7 @@ const QuizPage = ({ initialLesson = 1, onNavigate }) => {
                     size="sm"
                     className="p-1 rounded-circle border audio-btn"
                     onClick={() => speakJapanese(ans.kana)}
-                    title="Nghe phát âm"
+                    title="Nghe phát âm chuẩn Tokyo"
                   >
                     <Volume2 size={15} className="text-primary" />
                   </Button>
