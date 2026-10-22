@@ -6,7 +6,6 @@ import {
   PenTool,
   Layers,
   CheckSquare,
-  Keyboard,
   Sprout,
   RefreshCw,
   Star,
@@ -15,9 +14,7 @@ import {
   Zap,
   Compass,
   Headphones,
-  Mail,
-  ExternalLink,
-  Heart
+  ExternalLink
 } from 'lucide-react';
 import Logo from './Logo';
 
@@ -61,90 +58,66 @@ const Footer = ({ onNavigate = () => {} }) => {
           {/* Col 2: DEDICATED CUSTOMER SUPPORT SECTION (HOTLINE & FACEBOOK) */}
           <div className="col-12 col-sm-6 col-lg-3">
             <div className="d-flex align-items-center gap-2 mb-3">
-              <Headphones size={16} className="text-primary" />
+              <Headphones size={15} className="text-info" />
               <h6
                 className="fw-bold text-uppercase tracking-wider small mb-0 text-white"
-                style={{ fontSize: '12px', letterSpacing: '0.06em' }}
+                style={{ fontSize: '11.5px', letterSpacing: '0.07em' }}
               >
-                Hỗ Trợ Trực Tuyến 24/7
+                Hỗ Trợ & Kết Nối
               </h6>
             </div>
 
             <div className="d-flex flex-column gap-2.5">
-              {/* Hotline Contact Card */}
+              {/* Hotline Contact Card - Refined Luxury */}
               <a
                 href="tel:0345698251"
-                className="footer-support-card d-flex align-items-center gap-3 p-2.5 rounded-3 text-decoration-none transition-all"
-                style={{
-                  background: 'rgba(37, 99, 235, 0.08)',
-                  border: '1px solid rgba(59, 130, 246, 0.25)',
-                  color: '#ffffff'
-                }}
+                className="footer-contact-item text-decoration-none"
+                title="Gọi Hotline tư vấn 24/7"
               >
-                <div
-                  className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                    color: '#ffffff',
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)'
-                  }}
-                >
-                  <Phone size={18} />
+                <div className="footer-contact-icon-box hotline-glow">
+                  <Phone size={16} />
                 </div>
-                <div className="min-w-0">
-                  <div className="d-flex align-items-center gap-1.5">
-                    <span className="fw-bold fs-6 text-white" style={{ letterSpacing: '0.02em' }}>
-                      0345.698.251
-                    </span>
-                    <span className="badge bg-success bg-opacity-25 text-success rounded-pill px-1.5 py-0.5" style={{ fontSize: '9px' }}>
-                      24/7
+                <div className="min-w-0 flex-grow-1">
+                  <div className="d-flex align-items-center justify-content-between mb-0.5">
+                    <span className="footer-contact-num">0345.698.251</span>
+                    <span className="footer-status-pill">
+                      <span className="footer-pulse-dot" />
+                      <span>24/7</span>
                     </span>
                   </div>
-                  <div className="small text-muted" style={{ fontSize: '11px', color: '#94a3b8' }}>
-                    Hotline CSKH & Tư vấn lộ trình
+                  <div className="footer-contact-sub">
+                    Hotline tư vấn & hỗ trợ
                   </div>
                 </div>
               </a>
 
-              {/* Official Facebook Card */}
+              {/* Official Facebook Card - Refined Luxury with Nguyen Van Thuat */}
               <a
                 href="https://www.facebook.com/thuathyper.05"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="footer-support-card d-flex align-items-center gap-3 p-2.5 rounded-3 text-decoration-none transition-all"
-                style={{
-                  background: 'rgba(24, 119, 242, 0.08)',
-                  border: '1px solid rgba(24, 119, 242, 0.25)',
-                  color: '#ffffff'
-                }}
+                className="footer-contact-item text-decoration-none"
+                title="Mở Facebook cá nhân Nguyen Van Thuat"
               >
-                <div
-                  className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    background: 'linear-gradient(135deg, #1877f2 0%, #0d5cb6 100%)',
-                    color: '#ffffff',
-                    boxShadow: '0 4px 12px rgba(24, 119, 242, 0.35)'
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff">
+                <div className="footer-contact-icon-box fb-glow">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="#ffffff">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
                 </div>
-                <div className="min-w-0">
-                  <div className="d-flex align-items-center gap-1">
-                    <span className="fw-bold text-white small text-truncate" style={{ fontSize: '13px' }}>
-                      Thuat Hyper
+                <div className="min-w-0 flex-grow-1">
+                  <div className="d-flex align-items-center gap-1.5 mb-0.5">
+                    <span className="footer-contact-name">Nguyen Van Thuat</span>
+                    <span className="verified-badge-pill" title="Tài khoản chính thức">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="#38bdf8">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                      </svg>
                     </span>
-                    <ExternalLink size={12} className="text-muted flex-shrink-0" />
                   </div>
-                  <div className="small text-muted" style={{ fontSize: '11px', color: '#94a3b8' }}>
+                  <div className="footer-contact-sub">
                     Facebook hỗ trợ học viên
                   </div>
                 </div>
+                <ExternalLink size={12} className="text-muted flex-shrink-0 ms-1 opacity-75" />
               </a>
             </div>
           </div>
