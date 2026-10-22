@@ -4675,3 +4675,39 @@ p {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.35); opacity: 0.45; }
 }
+
+.online-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16, 185, 129, 0.10);
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  color: #34d399;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  cursor: default;
+}
+
+.online-live-badge:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+.online-live-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+
+.online-live-label {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 500;
+}

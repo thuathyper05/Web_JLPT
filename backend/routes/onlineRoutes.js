@@ -4,7 +4,7 @@ const router = express.Router();
 // Real-time active clients tracking (In-memory storage)
 // Key: clientId (string) : Value: timestamp of last ping (ms)
 const activeClients = new Map();
-const CLIENT_TIMEOUT_MS = 45000; // 45 seconds timeout window
+const CLIENT_TIMEOUT_MS = 20000; // 20 seconds timeout window
 
 // Helper to remove expired clients
 const cleanupExpiredClients = () => {
@@ -16,15 +16,15 @@ const cleanupExpiredClients = () => {
   }
 };
 
-// Periodic auto-cleanup every 30 seconds
-setInterval(cleanupExpiredClients, 30000);
+// Periodic auto-cleanup every 8 seconds
+setInterval(cleanupExpiredClients, 8000);
 
 /**
  * POST /api/online/ping
- * Heartbeat ping from an active browser session
+ * Heartbeat ping from an active browser tab/session
  */
 router.post('/ping', (req, res) => {
-  const clientId = req.body?.clientId || req.headers['x-client-id'] || req.ip || 'anonymous';
+  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'] || req.ip || 'anonymous';
   const now = Date.now();
 
   activeClients.set(String(clientId), now);
@@ -52,11 +52,11 @@ router.get('/count', (req, res) => {
 });
 
 /**
- * POST /api/online/leave
- * Explicit departure notification on tab/window close
+ * ALL /api/online/leave
+ * Explicit departure notification on tab/window close (supports sendBeacon, GET, and POST)
  */
-router.post('/leave', (req, res) => {
-  const clientId = req.body?.clientId || req.headers['x-client-id'];
+router.all('/leave', (req, res) => {
+  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'];
   if (clientId && activeClients.has(String(clientId))) {
     activeClients.delete(String(clientId));
   }

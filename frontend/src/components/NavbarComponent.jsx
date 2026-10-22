@@ -78,14 +78,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               <Logo size={32} />
             </NavbarBrand>
             <LevelSelector currentLevel={currentLevel} onChangeLevel={onChangeLevel} />
-            <div
-              className="online-live-pill"
-              title={`Thông số thật: ${onlineCount} người đang trực tuyến`}
-            >
-              <span className="online-live-dot" />
-              <span className="d-none d-sm-inline">{onlineCount} online</span>
-              <span className="d-inline d-sm-none">{onlineCount}</span>
-            </div>
           </div>
 
           {/* ── Center: Desktop Nav ── */}
@@ -190,6 +182,17 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
           {/* ── Right: Search + Account + Mobile Menu Toggle (Spacious Anti-Cramming Row) ── */}
           <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
+            {/* Live Online Badge (Desktop Luxury) */}
+            <div
+              className="d-none d-lg-inline-flex align-items-center gap-1.5 online-live-badge"
+              title={`Thông số thật: ${onlineCount} người đang trực tuyến`}
+            >
+              <span className="online-live-dot" />
+              <span className="online-live-text">
+                <strong className="text-white">{onlineCount}</strong>
+                <span className="online-live-label">online</span>
+              </span>
+            </div>
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"
@@ -392,10 +395,6 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   <span className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-2" style={{ fontSize: '10px' }}>
                     {currentLevel || 'N5'}
                   </span>
-                  <span className="online-live-pill ms-1" style={{ fontSize: '10px', padding: '1px 6px' }}>
-                    <span className="online-live-dot" />
-                    <span>{onlineCount} online</span>
-                  </span>
                 </div>
                 <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>Hệ thống học tiếng Nhật toàn diện</small>
               </div>
@@ -409,6 +408,34 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
           </div>
 
           <div className="p-3 d-flex flex-column gap-3" style={{ maxHeight: '72vh', overflowY: 'auto' }}>
+            {/* Real-time Community Online Card */}
+            <div
+              className="p-2.5 rounded-3 d-flex align-items-center justify-content-between"
+              style={{
+                background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.12) 100%)',
+                border: '1px solid rgba(16, 185, 129, 0.22)'
+              }}
+            >
+              <div className="d-flex align-items-center gap-2">
+                <span className="online-live-dot" />
+                <span className="small fw-semibold text-dark" style={{ fontSize: '12px' }}>
+                  Cộng đồng trực tuyến
+                </span>
+              </div>
+              <span
+                className="badge rounded-pill"
+                style={{
+                  background: '#10b981',
+                  color: '#ffffff',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '4px 10px',
+                  boxShadow: '0 2px 6px rgba(16, 185, 129, 0.25)'
+                }}
+              >
+                {onlineCount} người online
+              </span>
+            </div>
             {/* User Profile / Login Card */}
             {user ? (
               <div className="p-2.5 rounded-3 border d-flex flex-column gap-2" style={{ background: 'var(--slate-50)', borderColor: 'var(--slate-200)' }}>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { authService, progressService, favoriteService, noteService, onlineService } from '../services/api';
 import { awardGardenWater, getGardenWater } from '../services/gardenRewards';
 
@@ -70,43 +70,75 @@ export const AppProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Real-time Online Tracking Heartbeat (Exact real metrics)
+  // Real-time Online Tracking Heartbeat (Unique per active tab)
+  const tabIdRef = useRef(
+    'tab_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36)
+  );
+
   useEffect(() => {
-    let clientId = '';
+    const tabId = tabIdRef.current;
+    let bc = null;
     try {
-      clientId = sessionStorage.getItem('hyper_client_id');
-      if (!clientId) {
-        clientId = 'c_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now();
-        sessionStorage.setItem('hyper_client_id', clientId);
+      if (typeof BroadcastChannel !== 'undefined') {
+        bc = new BroadcastChannel('hyper_online_sync');
+        bc.onmessage = (event) => {
+          if (event.data?.type === 'COUNT_UPDATE' && typeof event.data.count === 'number') {
+            setOnlineCount(Math.max(1, event.data.count));
+          } else if (event.data?.type === 'FORCE_REFRESH') {
+            sendPing();
+          }
+        };
       }
-    } catch {
-      clientId = 'c_' + Date.now();
-    }
+    } catch {}
 
     const sendPing = async () => {
       try {
-        const res = await onlineService.ping(clientId);
-        if (res.data?.onlineCount) {
-          setOnlineCount(res.data.onlineCount);
+        const res = await onlineService.ping(tabId);
+        if (res.data && typeof res.data.onlineCount === 'number') {
+          const freshCount = Math.max(1, res.data.onlineCount);
+          setOnlineCount(freshCount);
+          try {
+            bc?.postMessage({ type: 'COUNT_UPDATE', count: freshCount });
+          } catch {}
         }
       } catch (e) {
         // Silently preserve current count
       }
     };
 
+    // Immediate ping on mount
     sendPing();
-    const interval = setInterval(sendPing, 25000);
+
+    // Fast, responsive heartbeat interval (8 seconds)
+    const interval = setInterval(sendPing, 8000);
+
+    // Immediate refresh when tab becomes visible or receives window focus
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        sendPing();
+      }
+    };
+    const handleFocus = () => sendPing();
 
     const handleBeforeUnload = () => {
       try {
-        onlineService.leave(clientId);
+        bc?.postMessage({ type: 'FORCE_REFRESH' });
+        onlineService.leave(tabId);
       } catch {}
     };
 
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
     window.addEventListener('beforeunload', handleBeforeUnload);
+
     return () => {
       clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      try {
+        bc?.close();
+      } catch {}
     };
   }, []);
 
@@ -275,6 +307,7 @@ export const AppProvider = ({ children }) => {
       value={{
         user,
         loadingUser,
+        onlineCount,
         login,
         register,
         googleLogin,

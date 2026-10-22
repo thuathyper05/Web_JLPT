@@ -17,7 +17,7 @@ const resolveApiBaseUrl = () => {
   return envUrl || 'http://localhost:5000/api';
 };
 
-const API_BASE_URL = resolveApiBaseUrl();
+export const API_BASE_URL = resolveApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -194,9 +194,19 @@ export const srsService = {
 };
 
 export const onlineService = {
-  ping: (clientId) => api.post('/online/ping', { clientId }),
+  ping: (clientId) => api.post(`/online/ping?clientId=${encodeURIComponent(clientId)}`, { clientId }),
   getCount: () => api.get('/online/count'),
-  leave: (clientId) => api.post('/online/leave', { clientId })
+  leave: (clientId) => {
+    try {
+      const url = `${API_BASE_URL}/online/leave?clientId=${encodeURIComponent(clientId)}`;
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        return navigator.sendBeacon(url);
+      }
+      return api.post(url, { clientId }).catch(() => {});
+    } catch (e) {
+      return false;
+    }
+  }
 };
 
 export default api;

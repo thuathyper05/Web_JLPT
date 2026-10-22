@@ -37,7 +37,7 @@ import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
 const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
-  const { user, guestProgress, progressVersion } = useApp();
+  const { user, guestProgress, progressVersion, onlineCount = 1 } = useApp();
   const [lessons, setLessons] = useState([]);
   const [stats, setStats] = useState(null);
   const [lessonSearch, setLessonSearch] = useState('');
@@ -249,7 +249,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         {/* Content Container */}
         <div className="position-relative" style={{ zIndex: 1, maxWidth: '720px' }}>
           {/* Top Pill Badge */}
-          <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3"
+          <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 flex-wrap"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(10px)',
@@ -262,6 +262,11 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
             </span>
             <span className="text-white text-opacity-90 fw-medium">
               Giáo trình Minna no Nihongo chuẩn 25 bài
+            </span>
+            <span className="d-none d-sm-inline text-white text-opacity-35">•</span>
+            <span className="d-inline-flex align-items-center gap-1.5" style={{ color: '#34d399', fontWeight: 600 }}>
+              <span className="online-live-dot" />
+              <span>{onlineCount} người đang học</span>
             </span>
           </div>
 
