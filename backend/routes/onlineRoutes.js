@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Real-time active physical machines and IP tracking (In-memory storage)
-// Key: clientKey (ip::clientId) : Value: timestamp of last ping (ms)
+// Real-time active clients tracking (In-memory storage)
+// Key: connectionKey (user_X__dev_Y or guest_IP__dev_Z)
+// Value: { userId, devId, lastSeen: timestamp (ms) }
 const activeClients = new Map();
 const CLIENT_TIMEOUT_MS = 25000; // 25 seconds timeout window
 
@@ -14,20 +15,32 @@ const getClientIp = (req) => {
   return req.headers['x-real-ip'] || req.socket?.remoteAddress || req.ip || 'anonymous';
 };
 
-const resolveClientKey = (req) => {
-  const ip = getClientIp(req);
-  const clientId = req.query?.clientId || req.body?.clientId || req.headers['x-client-id'] || 'machine';
-  return `${ip}::${clientId}`;
+// Calculate total online according to business rule:
+// 1 logged in account = 1 online user (even across multiple devices / IPs)
+// 1 guest device / IP = 1 online user
+const calculateTotalOnline = () => {
+  const now = Date.now();
+  const users = new Set();
+  const guests = new Set();
+
+  for (const [key, client] of activeClients.entries()) {
+    if (now - client.lastSeen > CLIENT_TIMEOUT_MS) {
+      activeClients.delete(key);
+    } else {
+      if (client.userId) {
+        users.add(String(client.userId));
+      } else {
+        guests.add(String(client.devId || key));
+      }
+    }
+  }
+
+  return Math.max(1, users.size + guests.size);
 };
 
 // Helper to remove expired clients
 const cleanupExpiredClients = () => {
-  const now = Date.now();
-  for (const [key, lastSeen] of activeClients.entries()) {
-    if (now - lastSeen > CLIENT_TIMEOUT_MS) {
-      activeClients.delete(key);
-    }
-  }
+  calculateTotalOnline();
 };
 
 // Periodic auto-cleanup every 10 seconds
@@ -35,16 +48,23 @@ setInterval(cleanupExpiredClients, 10000);
 
 /**
  * POST /api/online/ping
- * Heartbeat ping from an active physical machine / IP
+ * Heartbeat ping from an active user or guest
  */
 router.post('/ping', (req, res) => {
-  const clientKey = resolveClientKey(req);
+  const ip = getClientIp(req);
+  const userId = req.body?.userId || req.query?.userId || null;
+  const devId = req.body?.clientId || req.query?.clientId || req.headers['x-client-id'] || 'device';
   const now = Date.now();
 
-  activeClients.set(clientKey, now);
-  cleanupExpiredClients();
+  const connectionKey = userId ? `user_${userId}__${devId}` : `guest_${ip}__${devId}`;
 
-  const count = Math.max(1, activeClients.size);
+  activeClients.set(connectionKey, {
+    userId: userId ? String(userId) : null,
+    devId: `${ip}::${devId}`,
+    lastSeen: now
+  });
+
+  const count = calculateTotalOnline();
   res.json({
     success: true,
     onlineCount: count,
@@ -54,11 +74,10 @@ router.post('/ping', (req, res) => {
 
 /**
  * GET /api/online/count
- * Retrieve current count of online users across all IP addresses
+ * Retrieve current count of online users
  */
 router.get('/count', (req, res) => {
-  cleanupExpiredClients();
-  const count = Math.max(1, activeClients.size);
+  const count = calculateTotalOnline();
   res.json({
     onlineCount: count,
     timestamp: Date.now()
@@ -67,15 +86,20 @@ router.get('/count', (req, res) => {
 
 /**
  * ALL /api/online/leave
- * Explicit departure notification on tab/window close (supports sendBeacon, GET, and POST)
+ * Explicit departure notification on tab/window close
  */
 router.all('/leave', (req, res) => {
-  const clientKey = resolveClientKey(req);
-  if (activeClients.has(clientKey)) {
-    activeClients.delete(clientKey);
+  const ip = getClientIp(req);
+  const userId = req.body?.userId || req.query?.userId || null;
+  const devId = req.body?.clientId || req.query?.clientId || req.headers['x-client-id'] || 'device';
+
+  const connectionKey = userId ? `user_${userId}__${devId}` : `guest_${ip}__${devId}`;
+
+  if (activeClients.has(connectionKey)) {
+    activeClients.delete(connectionKey);
   }
-  cleanupExpiredClients();
-  const count = Math.max(1, activeClients.size);
+
+  const count = calculateTotalOnline();
   res.json({
     success: true,
     onlineCount: count

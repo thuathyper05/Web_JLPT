@@ -194,15 +194,15 @@ export const srsService = {
 };
 
 export const onlineService = {
-  ping: (clientId) => api.post(`/online/ping?clientId=${encodeURIComponent(clientId)}`, { clientId }),
+  ping: (clientId, userId) => api.post(`/online/ping?clientId=${encodeURIComponent(clientId)}${userId ? `&userId=${encodeURIComponent(userId)}` : ''}`, { clientId, userId }),
   getCount: () => api.get('/online/count'),
-  leave: (clientId) => {
+  leave: (clientId, userId) => {
     try {
-      const url = `${API_BASE_URL}/online/leave?clientId=${encodeURIComponent(clientId)}`;
+      const url = `${API_BASE_URL}/online/leave?clientId=${encodeURIComponent(clientId)}${userId ? `&userId=${encodeURIComponent(userId)}` : ''}`;
       if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
         return navigator.sendBeacon(url);
       }
-      return api.post(url, { clientId }).catch(() => {});
+      return api.post(url, { clientId, userId }).catch(() => {});
     } catch (e) {
       return false;
     }

@@ -2,18 +2,20 @@ import { onlineService } from './api';
 
 const MACHINE_STORAGE_KEY = 'hyper_presence_machine_id';
 const CLOUD_PRESENCE_URL = 'https://extendsclass.com/api/json-storage/bin/ddaebef';
-const MACHINE_LEASE_MS = 35000; // 35 seconds active lease
+const LEASE_MS = 35000; // 35 seconds active lease
 const PING_INTERVAL_MS = 10000; // 10 seconds heartbeat
 
 export class OnlineTracker {
-  constructor(onCountChange) {
+  constructor(initialUser, onCountChange) {
+    this.currentUser = initialUser || null;
     this.onCountChange = onCountChange;
     this.machineId = this.getOrCreateMachineId();
+    this.currentConnectionKey = this.resolveConnectionKey();
     this.broadcastChannel = null;
     this.heartbeatTimer = null;
     this.isDestroyed = false;
-    this.backendCount = 1;
     this.cloudCount = 1;
+    this.backendCount = 1;
 
     this.init();
   }
@@ -31,31 +33,52 @@ export class OnlineTracker {
     }
   }
 
+  resolveConnectionKey(targetUser = this.currentUser) {
+    if (targetUser && targetUser.id) {
+      return `user_${targetUser.id}__${this.machineId}`;
+    }
+    return `guest__${this.machineId}`;
+  }
+
+  updateUser(newUser) {
+    const oldKey = this.currentConnectionKey;
+    this.currentUser = newUser || null;
+    const newKey = this.resolveConnectionKey(this.currentUser);
+
+    if (oldKey !== newKey) {
+      // Immediately remove previous identity so count does not linger
+      this.syncGlobalPresence(true, oldKey);
+      this.currentConnectionKey = newKey;
+      this.syncGlobalPresence();
+      this.pingBackend();
+    }
+  }
+
   init() {
-    // 1. Cross-tab synchronization within the same physical machine
+    // 1. Cross-tab synchronization within the same machine
     try {
       if (typeof BroadcastChannel !== 'undefined') {
         this.broadcastChannel = new BroadcastChannel('hyper_presence_machine_sync');
         this.broadcastChannel.onmessage = (event) => {
-          if (event.data?.type === 'MACHINE_COUNT' && typeof event.data.count === 'number') {
+          if (event.data?.type === 'ONLINE_COUNT' && typeof event.data.count === 'number') {
             this.notify(event.data.count);
           }
         };
       }
     } catch {}
 
-    // 2. Perform immediate presence ping across global cloud & backend
+    // 2. Perform initial synchronization
     this.syncGlobalPresence();
     this.pingBackend();
 
-    // 3. Heartbeat loop (10-12s interval with slight jitter to prevent collisions)
+    // 3. Heartbeat loop (10-12 seconds with slight jitter)
     const jitter = Math.floor(Math.random() * 2000);
     this.heartbeatTimer = setInterval(() => {
       this.syncGlobalPresence();
       this.pingBackend();
     }, PING_INTERVAL_MS + jitter);
 
-    // 4. Trigger sync when tab becomes visible or receives focus
+    // 4. Tab visibility and focus listener
     this.handleVisibility = () => {
       if (document.visibilityState === 'visible') {
         this.syncGlobalPresence();
@@ -65,7 +88,7 @@ export class OnlineTracker {
     document.addEventListener('visibilitychange', this.handleVisibility);
     window.addEventListener('focus', this.handleVisibility);
 
-    // 5. Explicit departure notification on tab/browser close
+    // 5. Explicit departure notification on tab / browser close
     this.handleUnload = () => {
       this.cleanup();
     };
@@ -73,7 +96,7 @@ export class OnlineTracker {
     window.addEventListener('pagehide', this.handleUnload);
   }
 
-  async syncGlobalPresence(isLeaving = false) {
+  async syncGlobalPresence(isLeaving = false, specificKey = this.currentConnectionKey) {
     if (this.isDestroyed && !isLeaving) return;
 
     try {
@@ -83,24 +106,27 @@ export class OnlineTracker {
       if (!getRes.ok) return;
 
       const data = await getRes.json();
-      let clients = data?.activeClients || {};
+      let registry = data?.activeRegistry || {};
       const now = Date.now();
 
-      // Clean up machines that stopped pinging longer than 35s
-      for (const [id, lastSeen] of Object.entries(clients)) {
-        if (now - Number(lastSeen) > MACHINE_LEASE_MS) {
-          delete clients[id];
+      // Clean up entries older than 35s
+      for (const [key, record] of Object.entries(registry)) {
+        if (!record || typeof record !== 'object' || now - Number(record.time) > LEASE_MS) {
+          delete registry[key];
         }
       }
 
       if (isLeaving) {
-        delete clients[this.machineId];
+        delete registry[specificKey];
       } else {
-        clients[this.machineId] = now;
+        registry[this.currentConnectionKey] = {
+          userId: this.currentUser?.id ? String(this.currentUser.id) : null,
+          devId: this.machineId,
+          time: now
+        };
       }
 
-      // Save updated active machines
-      const payload = JSON.stringify({ activeClients: clients });
+      const payload = JSON.stringify({ activeRegistry: registry });
 
       if (isLeaving) {
         if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
@@ -122,18 +148,29 @@ export class OnlineTracker {
         body: payload
       });
 
-      const uniqueMachinesCount = Math.max(1, Object.keys(clients).length);
-      this.cloudCount = uniqueMachinesCount;
+      // Calculate distinct users + distinct guest machines
+      const validRecords = Object.values(registry).filter(
+        (r) => r && typeof r === 'object' && now - Number(r.time) <= LEASE_MS
+      );
+      const uniqueUsers = new Set(
+        validRecords.filter((r) => r.userId).map((r) => String(r.userId))
+      );
+      const uniqueGuests = new Set(
+        validRecords.filter((r) => !r.userId).map((r) => String(r.devId))
+      );
+
+      this.cloudCount = Math.max(1, uniqueUsers.size + uniqueGuests.size);
       this.recalculateTotal();
     } catch {
-      // Cloud sync failure fallback
+      // Graceful fallback
     }
   }
 
   async pingBackend() {
     if (this.isDestroyed) return;
     try {
-      const res = await onlineService.ping(this.machineId);
+      const userId = this.currentUser?.id || null;
+      const res = await onlineService.ping(this.machineId, userId);
       if (res?.data && typeof res.data.onlineCount === 'number') {
         this.backendCount = Math.max(1, res.data.onlineCount);
         this.recalculateTotal();
@@ -150,7 +187,7 @@ export class OnlineTracker {
 
     try {
       this.broadcastChannel?.postMessage({
-        type: 'MACHINE_COUNT',
+        type: 'ONLINE_COUNT',
         count: finalCount
       });
     } catch {}
@@ -166,7 +203,7 @@ export class OnlineTracker {
     this.isDestroyed = true;
     this.syncGlobalPresence(true);
     try {
-      onlineService.leave(this.machineId);
+      onlineService.leave(this.machineId, this.currentUser?.id || null);
     } catch {}
     try {
       this.broadcastChannel?.close();

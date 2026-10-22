@@ -71,16 +71,23 @@ export const AppProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Real-time Triple-Shield Online Tracking Engine (Local Registry + Cloud SSE + Backend)
+  // Real-time Account & Multi-Machine Online Tracking Engine
+  const trackerRef = useRef(null);
+
   useEffect(() => {
-    const tracker = new OnlineTracker((count) => {
+    trackerRef.current = new OnlineTracker(user, (count) => {
       setOnlineCount(count);
     });
 
     return () => {
-      tracker.cleanup();
+      trackerRef.current?.cleanup();
     };
   }, []);
+
+  // Sync tracker whenever user authenticates or logs out
+  useEffect(() => {
+    trackerRef.current?.updateUser(user);
+  }, [user]);
 
   const login = async (credentials) => {
     const res = await authService.login(credentials);
