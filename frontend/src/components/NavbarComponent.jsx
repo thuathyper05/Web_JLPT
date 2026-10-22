@@ -16,7 +16,7 @@ import LevelSelector from './LevelSelector';
 import AuthModal from './AuthModal';
 
 const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, onChangeLevel }) => {
-  const { user, logout } = useApp();
+  const { user, logout, onlineCount = 1 } = useApp();
   const [authMode, setAuthMode] = useState('login');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,6 +78,14 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               <Logo size={32} />
             </NavbarBrand>
             <LevelSelector currentLevel={currentLevel} onChangeLevel={onChangeLevel} />
+            <div
+              className="online-live-pill"
+              title={`Thông số thật: ${onlineCount} người đang trực tuyến`}
+            >
+              <span className="online-live-dot" />
+              <span className="d-none d-sm-inline">{onlineCount} online</span>
+              <span className="d-inline d-sm-none">{onlineCount}</span>
+            </div>
           </div>
 
           {/* ── Center: Desktop Nav ── */}
@@ -383,6 +391,10 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                   <h6 className="fw-bold mb-0 text-white">HYPER JAPAN</h6>
                   <span className="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 rounded-pill px-2" style={{ fontSize: '10px' }}>
                     {currentLevel || 'N5'}
+                  </span>
+                  <span className="online-live-pill ms-1" style={{ fontSize: '10px', padding: '1px 6px' }}>
+                    <span className="online-live-dot" />
+                    <span>{onlineCount} online</span>
                   </span>
                 </div>
                 <small className="text-white text-opacity-75" style={{ fontSize: '11px' }}>Hệ thống học tiếng Nhật toàn diện</small>

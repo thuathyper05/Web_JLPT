@@ -20,20 +20,22 @@ const CANDIDATE_MODELS = [
 ];
 
 const SYSTEM_INSTRUCTION = `
-Bạn là Sensei AI — Trợ lý ảo AI thông minh cao cấp của nền tảng HYPER JAPAN, chuyên gia ngôn ngữ học tiếng Nhật và luyện thi JLPT hàng đầu thế giới (N5 đến N1).
-Nhiệm vụ của bạn:
-1. Giải đáp mọi thắc mắc về tiếng Nhật của người học: từ vựng, ngữ pháp, chữ Hán Kanji, trợ từ, phát âm Tokyo, kính ngữ Keigo, giao tiếp đời sống và văn hóa Nhật Bản.
-2. Nắm rõ toàn bộ 25 bài giáo trình Minna no Nihongo I (N5) và 25 bài Minna no Nihongo II (N4).
-3. Đưa ra câu trả lời rõ ràng, sư phạm, chuẩn xác, súc tích và dễ nhớ.
-4. Khi đưa ra từ vựng hoặc ví dụ câu tiếng Nhật, luôn trình bày gồm:
-   - Chữ Hán (nếu có)
-   - Cách đọc Hiragana / Katakana
+Bạn là Sensei AI — Trợ lý ảo AI tiếng Nhật cao cấp của nền tảng HYPER JAPAN, chuyên gia JLPT (N5 - N1) và 25 bài Minna no Nihongo.
+
+TIÊU CHÍ CỐT LÕI: TRẢ LỜI ĐÚNG TRỌNG TÂM - NGẮN GỌN - SÚC TÍCH - TUYỆT ĐỐI KHÔNG DÀI DÒNG LAN MAN.
+
+Quy tắc trả lời bắt buộc:
+1. Độ dài tối ưu: từ 80 đến 180 từ. Không viết bài văn dài hoặc giải thích dông dài.
+2. Trả lời thẳng vào trọng tâm câu hỏi ngay ở 1-2 câu đầu tiên (không chào hỏi lặp đi lặp lại hoặc mào đầu sáo rỗng).
+3. Luôn đưa ra ví dụ câu thực tế, ngắn và chuẩn ngữ pháp:
+   - Câu tiếng Nhật (kèm Kanji + Hiragana cách đọc)
    - Dịch nghĩa tiếng Việt tự nhiên
-   - Giải thích ngắn gọn sắc thái hoặc ngữ cảnh sử dụng.
+4. Nếu người dùng hỏi phân biệt (ví dụ trợ từ に và で, は và が):
+   - Nêu điểm khác nhau cốt lõi bằng 2 gạch đầu dòng cực ngắn.
+   - 1 ví dụ đối chiếu trực quan.
 5. QUY TẮC BẮT BUỘC VỀ KÝ TỰ:
    - TUYỆT ĐỐI KHÔNG SỬ DỤNG bất kỳ ký hiệu mũi tên nào trong câu trả lời (thay bằng chữ "chuyển sang", "nghĩa là", "tương đương", hoặc gạch đầu dòng).
-   - Sử dụng định dạng Markdown đẹp mắt, có gạch đầu dòng và in đậm các điểm trọng tâm.
-   - Thân thiện, khích lệ tinh thần học viên bằng tinh thần võ sĩ đạo Nhật Bản (Ganbatte!).
+   - Dùng gạch đầu dòng và in đậm điểm then chốt để người học nắm bắt trong 5 giây.
 `;
 
 const HYPHEN_ARROW = ['-', '>'].join('');
@@ -56,8 +58,8 @@ export async function sendChatMessage(history = [], userMessage = '') {
   // Build contents array for Gemini
   const contents = [];
 
-  // Add conversation history
-  history.forEach((item) => {
+  // Add conversation history (keep last 6 turns for concise context)
+  history.slice(-6).forEach((item) => {
     contents.push({
       role: item.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: item.text }]
@@ -76,9 +78,9 @@ export async function sendChatMessage(history = [], userMessage = '') {
       parts: [{ text: SYSTEM_INSTRUCTION }]
     },
     generationConfig: {
-      temperature: 0.7,
-      topP: 0.95,
-      maxOutputTokens: 2048
+      temperature: 0.5, // Lower temperature for more direct, focused answers
+      topP: 0.9,
+      maxOutputTokens: 600 // Restrict token length to enforce concise, non-verbose responses
     }
   };
 
@@ -100,7 +102,7 @@ export async function sendChatMessage(history = [], userMessage = '') {
         const data = await res.json();
         const candidate = data.candidates && data.candidates[0];
         const textPart = candidate?.content?.parts && candidate.content.parts[0];
-        const replyText = textPart?.text || 'Sensei AI đã nhận câu hỏi của bạn. Hãy thử hỏi lại câu này nhé!';
+        const replyText = textPart?.text || 'Sensei AI đã nhận câu hỏi. Bạn vui lòng thử lại nhé!';
 
         // Sanitize any banned arrow characters
         const sanitizedText = replyText
@@ -128,9 +130,9 @@ export async function sendChatMessage(history = [], userMessage = '') {
  * Quick prompt suggestions for learners
  */
 export const AI_SUGGESTIONS = [
-  'Phân biệt trợ từ に và で khi chỉ địa điểm?',
-  'Giải thích cách dùng trợ từ は và が chuẩn?',
-  'Cách chia động từ thể Te (て) trong Minna Bài 14?',
-  'Mẹo nhớ Hán tự Kanji N5 nhanh thuộc?',
-  'Cách chào hỏi lịch sự trong giao tiếp tiếng Nhật?'
+  'Phân biệt trợ từ に và で?',
+  'Cách dùng trợ từ は và が?',
+  'Cách chia thể Te (Minna Bài 14)?',
+  'Mẹo nhớ Hán tự Kanji N5?',
+  'Dịch câu: "Ngày mai tôi đi Tokyo"'
 ];

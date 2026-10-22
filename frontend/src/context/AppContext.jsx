@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService, progressService, favoriteService, noteService } from '../services/api';
+import { authService, progressService, favoriteService, noteService, onlineService } from '../services/api';
 import { awardGardenWater, getGardenWater } from '../services/gardenRewards';
 
 const AppContext = createContext();
@@ -8,6 +8,7 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [progressVersion, setProgressVersion] = useState(0);
+  const [onlineCount, setOnlineCount] = useState(1);
 
   // Guest LocalStorage state for seamless offline / non-login experience
   const [guestFavorites, setGuestFavorites] = useState(() => {
@@ -67,6 +68,46 @@ export const AppProvider = ({ children }) => {
       setLoadingUser(false);
     };
     checkAuth();
+  }, []);
+
+  // Real-time Online Tracking Heartbeat (Exact real metrics)
+  useEffect(() => {
+    let clientId = '';
+    try {
+      clientId = sessionStorage.getItem('hyper_client_id');
+      if (!clientId) {
+        clientId = 'c_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now();
+        sessionStorage.setItem('hyper_client_id', clientId);
+      }
+    } catch {
+      clientId = 'c_' + Date.now();
+    }
+
+    const sendPing = async () => {
+      try {
+        const res = await onlineService.ping(clientId);
+        if (res.data?.onlineCount) {
+          setOnlineCount(res.data.onlineCount);
+        }
+      } catch (e) {
+        // Silently preserve current count
+      }
+    };
+
+    sendPing();
+    const interval = setInterval(sendPing, 25000);
+
+    const handleBeforeUnload = () => {
+      try {
+        onlineService.leave(clientId);
+      } catch {}
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   const login = async (credentials) => {

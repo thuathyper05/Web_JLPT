@@ -193,6 +193,12 @@ export const srsService = {
   addLessonToGarden: (lesson_number) => api.post('/srs/add-lesson', { lesson_number }),
 };
 
+export const onlineService = {
+  ping: (clientId) => api.post('/online/ping', { clientId }),
+  getCount: () => api.get('/online/count'),
+  leave: (clientId) => api.post('/online/leave', { clientId })
+};
+
 export default api;
 
 
