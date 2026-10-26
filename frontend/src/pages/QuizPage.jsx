@@ -64,6 +64,20 @@ const QuizPage = ({ initialLesson = 1, onNavigate = () => {} }) => {
   const [isNavigating, setIsNavigating] = useState(false);
   const [floatingXp, setFloatingXp] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
+  const [showAdModal, setShowAdModal] = useState(false);
+  const [adCountdown, setAdCountdown] = useState(3);
+  const [pendingSummaryData, setPendingSummaryData] = useState(null);
+
+  // Rewarded ad countdown before showing quiz scorecard
+  useEffect(() => {
+    let timer;
+    if (showAdModal && adCountdown > 0) {
+      timer = setTimeout(() => {
+        setAdCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [showAdModal, adCountdown]);
 
   // Animated Count-Up for Quiz Final Score
   useEffect(() => {
@@ -247,30 +261,42 @@ const QuizPage = ({ initialLesson = 1, onNavigate = () => {} }) => {
         correct_answers: correctCount,
         results: userAnswers
       });
-      setResultSummary(submitRes.data);
-      setQuizState('result');
 
-      if ((correctCount / questions.length) >= 0.75) {
-        sounds.playComplete();
-        try {
-          const end = Date.now() + 1500;
-          const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
-          (function frame() {
-            confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
-            confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
-            if (Date.now() < end) requestAnimationFrame(frame);
-          })();
-        } catch {}
-      }
-
-      if (typeof awardGardenWater === 'function') {
-        const bonus = Math.round(correctCount * 1.5) + 10;
-        awardGardenWater(bonus, `Hoàn thành trắc nghiệm (${correctCount}/${questions.length})`);
-      }
+      setPendingSummaryData(submitRes.data);
+      // Display short ad / sponsored transition modal (Google AdSense / Monetag UX)
+      setShowAdModal(true);
+      setAdCountdown(3);
     } catch (err) {
       console.error('Error submitting quiz:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleProceedToResult = () => {
+    setShowAdModal(false);
+    if (pendingSummaryData) {
+      setResultSummary(pendingSummaryData);
+    }
+    setQuizState('result');
+
+    const correctCount = userAnswers.filter((a) => a.is_correct).length;
+    if ((correctCount / questions.length) >= 0.75) {
+      sounds.playComplete();
+      try {
+        const end = Date.now() + 1500;
+        const colors = ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+        (function frame() {
+          confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0, y: 0.7 }, colors });
+          confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1, y: 0.7 }, colors });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        })();
+      } catch {}
+    }
+
+    if (typeof awardGardenWater === 'function') {
+      const bonus = Math.round(correctCount * 1.5) + 10;
+      awardGardenWater(bonus, `Hoàn thành trắc nghiệm (${correctCount}/${questions.length})`);
     }
   };
 
@@ -892,6 +918,130 @@ const QuizPage = ({ initialLesson = 1, onNavigate = () => {} }) => {
             </div>
           </div>
         </Card>
+      )}
+
+      {/* ── SHORT AD / SPONSORED ANALYSIS TRANSITION MODAL (Google AdSense / Monetag UX) ── */}
+      {showAdModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Đang chuẩn bị bảng điểm phân tích"
+          className="fixed-top w-100 h-100 d-flex align-items-center justify-content-center"
+          style={{
+            zIndex: 99999,
+            background: 'rgba(7, 12, 22, 0.85)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: '16px'
+          }}
+        >
+          <div
+            className="bg-white rounded-4 shadow-xl border overflow-hidden p-3 p-md-4 text-center"
+            style={{
+              maxWidth: '460px',
+              width: '100%',
+              borderColor: 'var(--slate-200)',
+              animation: 'scaleUp 0.22s ease-out'
+            }}
+          >
+            {/* Top Badges */}
+            <div className="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom border-slate-100">
+              <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 fw-bold px-2.5 py-1" style={{ fontSize: '11px' }}>
+                KẾT QUẢ THI TRẮC NGHIỆM
+              </span>
+              <span className="badge rounded-pill bg-slate-100 text-slate-500 border fw-semibold px-2 py-0.5" style={{ fontSize: '10px' }}>
+                TÀI TRỢ
+              </span>
+            </div>
+
+            <h5 className="fw-bold text-navy-dark mb-1" style={{ fontSize: '16.5px' }}>
+              Đang Chuẩn Bị Bảng Điểm Phân Tích
+            </h5>
+            <p className="text-muted small mb-3" style={{ fontSize: '12.5px', lineHeight: '1.5' }}>
+              Hệ thống đang đối chiếu đáp án và tổng hợp dữ liệu tiến độ Minna N5 của bạn.
+            </p>
+
+            {/* Sponsored / Ad Container Slot (Google AdSense & Monetag Ready) */}
+            <div
+              className="p-3 rounded-3 mb-3 text-start position-relative border"
+              style={{
+                background: 'linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%)',
+                borderColor: '#bfdbfe'
+              }}
+            >
+              <div className="d-flex align-items-center justify-content-between mb-1.5">
+                <div className="d-flex align-items-center gap-1.5">
+                  <Sparkles size={14} className="text-warning flex-shrink-0" />
+                  <span className="fw-bold small text-navy-dark" style={{ fontSize: '12px' }}>
+                    HYPER JAPAN VIP PRO & DU HỌC
+                  </span>
+                </div>
+                <span className="small text-muted" style={{ fontSize: '10.5px' }}>Quảng cáo đối tác</span>
+              </div>
+
+              {/* Slot for Google AdSense Responsive Unit */}
+              <div className="adsense-quiz-slot d-none">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: 'block', minHeight: '80px' }}
+                  data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                  data-ad-slot="XXXXXXXXXX"
+                  data-ad-format="rectangle"
+                />
+              </div>
+
+              <div className="small text-secondary mb-2" style={{ fontSize: '12px', lineHeight: '1.5' }}>
+                Mở khóa trọn bộ 25 bài Minna, 75 câu trợ từ nâng cao, phòng thi ảo JLPT không giới hạn và Sensei AI 24/7.
+              </div>
+
+              <div className="d-flex align-items-center justify-content-between pt-2 border-top border-blue-100">
+                <span className="fw-bold text-primary small" style={{ fontSize: '11.5px' }}>
+                  Ưu đãi học viên chỉ 49k/tháng
+                </span>
+                <span className="badge bg-primary text-white rounded-pill px-2.5 py-1 fw-bold" style={{ fontSize: '11px' }}>
+                  Khám phá ngay
+                </span>
+              </div>
+            </div>
+
+            {/* Countdown / CTA Action (Rule 6.1: 44px min touch target) */}
+            <div className="d-flex flex-column gap-2">
+              <Button
+                color="primary"
+                onClick={handleProceedToResult}
+                className="w-100 py-2.5 fw-bold rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-1.5 nav-btn-touch"
+                style={{
+                  fontSize: '13.5px',
+                  minHeight: '44px'
+                }}
+              >
+                {adCountdown > 0 ? (
+                  <>
+                    <Clock size={15} />
+                    <span>Xem Bảng Điểm Phân Tích ({adCountdown}s)</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Xem Bảng Điểm Phân Tích</span>
+                    <ChevronRight size={16} />
+                  </>
+                )}
+              </Button>
+
+              {adCountdown > 0 && (
+                <button
+                  type="button"
+                  onClick={handleProceedToResult}
+                  className="btn btn-sm btn-link text-muted text-decoration-none py-1 nav-btn-touch"
+                  style={{ fontSize: '11.5px', minHeight: '36px' }}
+                  aria-label="Bỏ qua quảng cáo và xem điểm ngay"
+                >
+                  Bỏ qua quảng cáo và xem điểm
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

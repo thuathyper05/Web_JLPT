@@ -4829,3 +4829,43 @@ textarea:focus-visible {
   border-color: var(--slate-300);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
+
+/* ── Sticky Footer Ad Dock (AGENTS.md Compliant) ── */
+.sticky-footer-ad-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1010;
+  pointer-events: none;
+}
+
+.sticky-footer-ad-card {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--slate-200);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.08);
+  padding: 6px 12px;
+  min-height: 48px;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 991.98px) {
+  .sticky-footer-ad-dock {
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+  .sticky-footer-ad-card {
+    border-bottom: 1px solid var(--slate-200);
+    border-radius: 12px;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+  }
+  .sticky-footer-ad-wrap {
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
