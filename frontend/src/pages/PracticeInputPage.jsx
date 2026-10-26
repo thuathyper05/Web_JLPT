@@ -794,7 +794,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                           </span>
 
                           {practiceMode === 'jp_to_vi' ? (
-                            /* Prompt: Japanese word -> User types Vietnamese */
+                            /* Prompt: Japanese word to Vietnamese */
                             <div className="min-w-0">
                               <span className="fw-black text-navy-dark font-monospace fs-5 d-block">
                                 {item.kanji && hasRealKanji(item.kanji) ? item.kanji : cleanKana}
@@ -806,7 +806,7 @@ const PracticeInputPage = ({ initialLesson = 1, onNavigate }) => {
                               )}
                             </div>
                           ) : (
-                            /* Prompt: Vietnamese meaning -> User types Japanese */
+                            /* Prompt: Vietnamese meaning to Japanese */
                             <div className="min-w-0">
                               <span className="fw-bold text-dark text-truncate d-block" style={{ fontSize: '13.5px' }}>
                                 {cleanMeaning}

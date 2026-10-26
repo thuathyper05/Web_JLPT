@@ -181,7 +181,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
           </Nav>
 
           {/* ── Right: Search + Account + Mobile Menu Toggle (Spacious Anti-Cramming Row) ── */}
-          <div className="d-flex align-items-center gap-2 gap-sm-2.5 flex-shrink-0">
+          <div className="d-flex align-items-center gap-1.5 gap-sm-2.5 flex-shrink-0">
             {/* Live Online Badge (Desktop Luxury) */}
             <div
               className="d-none d-lg-inline-flex align-items-center gap-1.5 online-live-badge"
@@ -205,11 +205,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
             {/* Mobile-only Unified Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
-              className="d-flex d-sm-none align-items-center justify-content-center nav-btn-touch"
-              style={{ width: 40, height: 40, minWidth: 44, minHeight: 44, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
+              className="d-flex d-sm-none align-items-center justify-content-center"
+              style={{ width: 35, height: 35, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
               title="Tìm kiếm từ vựng"
               aria-label="Tìm kiếm từ vựng">
-              <Search size={16} />
+              <Search size={15} />
             </button>
 
             {/* Account dropdown / Login button */}
@@ -218,9 +218,9 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 <DropdownToggle nav caret={false}
                   className="d-flex align-items-center p-0 text-white" style={{ gap: 6 }}>
                   {user.avatar_url ? (
-                    <img src={user.avatar_url} alt="" style={{ width: 34, height: 34, borderRadius: 10, border: '1.5px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
+                    <img src={user.avatar_url} alt="" style={{ width: 35, height: 35, borderRadius: 10, border: '1.5px solid rgba(255,255,255,.3)', objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ width: 34, height: 34, borderRadius: 10, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13.5, color: '#fff', border: '1.5px solid rgba(255,255,255,.25)' }}>
+                    <div style={{ width: 35, height: 35, borderRadius: 10, background: 'linear-gradient(135deg,#f59e0b,#d97706)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13.5, color: '#fff', border: '1.5px solid rgba(255,255,255,.25)' }}>
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -279,11 +279,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
                 {/* Mobile-only Unified Squircle Login Button */}
                 <button type="button" onClick={() => openAuth('login')}
-                  className="d-inline-flex d-sm-none align-items-center justify-content-center nav-btn-touch"
-                  style={{ width: 40, height: 40, minWidth: 44, minHeight: 44, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 10, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
+                  className="d-inline-flex d-sm-none align-items-center justify-content-center"
+                  style={{ width: 35, height: 35, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 10, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
                   title="Đăng nhập"
                   aria-label="Đăng nhập tài khoản">
-                  <LogIn size={16} />
+                  <LogIn size={15} />
                 </button>
               </>
             )}
@@ -291,13 +291,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
             {/* Mobile Menu Drawer Toggle Button */}
             <button
               type="button"
-              className="d-lg-none d-flex align-items-center justify-content-center nav-btn-touch"
+              className="d-lg-none d-flex align-items-center justify-content-center"
               onClick={() => setMobileMenuOpen(true)}
               style={{
-                width: 40,
-                height: 40,
-                minWidth: 44,
-                minHeight: 44,
+                width: 35,
+                height: 35,
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.16)',
                 borderRadius: 10,
@@ -309,7 +307,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               title="Menu mở rộng"
               aria-label="Mở danh mục menu"
             >
-              <Menu size={18} />
+              <Menu size={17} />
             </button>
           </div>
         </Container>

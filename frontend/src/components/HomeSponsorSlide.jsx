@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ExternalLink, ChevronRight, X, GraduationCap, ShieldCheck } from 'lucide-react';
+import { Sparkles, ChevronRight, X, GraduationCap, ShieldCheck } from 'lucide-react';
 
 const SPONSOR_SLIDES = [
   {
     id: 1,
     tag: 'TÀI TRỢ',
     title: 'Học Bổng Du Học Nhật Bản 2026',
-    desc: 'Lộ trình N5 lên N3 cấp tốc & Cơ hội học bổng toàn phần ngành Công nghệ & Kinh tế',
+    desc: 'Lộ trình N5 lên N3 cấp tốc & Học bổng 100% ngành Công nghệ',
     badge: 'Học bổng 100%',
-    badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     link: 'https://www.facebook.com/thuathyper.05',
     icon: GraduationCap,
     iconColor: '#059669'
@@ -17,9 +16,8 @@ const SPONSOR_SLIDES = [
     id: 2,
     tag: 'ĐỐI TÁC',
     title: 'Khóa Luyện Đề Thi JLPT N5–N3 Thực Chiến',
-    desc: 'Phòng thi ảo bấm giờ chuẩn format Tokyo • Phân tích điểm yếu tự động',
-    badge: 'Chuẩn format JLPT',
-    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+    desc: 'Phòng thi ảo bấm giờ chuẩn format Tokyo • Phân tích điểm yếu',
+    badge: 'Chuẩn JLPT',
     link: 'https://www.facebook.com/thuathyper.05',
     icon: ShieldCheck,
     iconColor: '#2563eb'
@@ -28,9 +26,8 @@ const SPONSOR_SLIDES = [
     id: 3,
     tag: 'ƯU ĐÃI',
     title: 'HYPER JAPAN VIP PRO • Tiết kiệm 50%',
-    desc: 'Mở khóa trọn bộ 25 bài Minna, 75 câu trợ từ nâng cao & Sensei AI 24/7',
+    desc: 'Mở khóa 25 bài Minna, 75 câu trợ từ nâng cao & Sensei AI 24/7',
     badge: 'Chỉ 49k/tháng',
-    badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
     link: 'https://www.facebook.com/thuathyper.05',
     icon: Sparkles,
     iconColor: '#d97706'
@@ -39,14 +36,6 @@ const SPONSOR_SLIDES = [
 
 const STORAGE_KEY = 'hyper_sponsor_slide_dismissed';
 
-/**
- * HomeSponsorSlide — Compact, elegant, non-intrusive sponsor slide banner
- * Adheres strictly to AGENTS.md:
- * - Multiples of 4px spacing (padding 12px 16px, mb-3 16px)
- * - Zero emojis, zero banned arrows (ChevronRight used)
- * - 44x44px touch targets on mobile
- * - Blends natively into the slide/hero section without blocking user learning
- */
 export default function HomeSponsorSlide() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isDismissed, setIsDismissed] = useState(() => {
@@ -57,7 +46,6 @@ export default function HomeSponsorSlide() {
     }
   });
 
-  // Auto-advance slide every 6 seconds
   useEffect(() => {
     if (isDismissed) return;
     const interval = setInterval(() => {
@@ -80,91 +68,63 @@ export default function HomeSponsorSlide() {
   };
 
   return (
-    <div className="home-sponsor-slide-container mb-3.5" role="region" aria-label="Thông tin tài trợ và khóa học">
-      <div className="home-sponsor-slide-card p-2.5 p-md-3 rounded-4 border bg-white shadow-xs d-flex align-items-center justify-content-between gap-2.5 transition-all">
-        {/* Left: Icon Box + Slide Content */}
+    <div className="home-sponsor-slide-container mb-3" role="region" aria-label="Thông tin tài trợ">
+      <div className="home-sponsor-slide-card px-2.5 py-1.5 rounded-pill border bg-white shadow-xs d-flex align-items-center justify-content-between gap-2">
+        {/* Left: Icon + Text */}
         <a
           href={currentSlide.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="d-flex align-items-center gap-2.5 flex-grow-1 min-w-0 text-decoration-none text-dark"
+          className="d-flex align-items-center gap-2 flex-grow-1 min-w-0 text-decoration-none text-dark"
           title={currentSlide.title}
         >
-          {/* Compact Icon */}
           <div
-            className="home-sponsor-icon-box d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+            className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
             style={{
-              width: '36px',
-              height: '36px',
-              background: 'linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%)',
-              border: '1px solid var(--slate-200)'
+              width: '24px',
+              height: '24px',
+              background: '#eff6ff',
+              border: '1px solid #dbeafe'
             }}
           >
-            <IconComponent size={17} style={{ color: currentSlide.iconColor }} />
+            <IconComponent size={13} style={{ color: currentSlide.iconColor }} />
           </div>
 
-          {/* Slide Text Content */}
-          <div className="min-w-0 flex-grow-1">
-            <div className="d-flex align-items-center gap-2 mb-0.5">
-              <span className="badge rounded-pill bg-slate-100 text-slate-600 border border-slate-200 fw-bold px-2 py-0.5" style={{ fontSize: '9.5px', letterSpacing: '0.04em' }}>
-                {currentSlide.tag}
-              </span>
-              <span className="fw-bold text-navy-dark text-truncate" style={{ fontSize: '12.8px' }}>
-                {currentSlide.title}
-              </span>
-              <span className={`badge rounded-pill border fw-semibold d-none d-md-inline-block px-2 py-0.5 ${currentSlide.badgeColor}`} style={{ fontSize: '10.5px' }}>
-                {currentSlide.badge}
-              </span>
-            </div>
-            <div className="text-muted text-truncate small" style={{ fontSize: '11.5px', lineHeight: '1.4' }}>
-              {currentSlide.desc}
-            </div>
+          <div className="d-flex align-items-center gap-1.5 min-w-0 text-truncate">
+            <span className="badge rounded-pill bg-slate-100 text-slate-600 border border-slate-200 fw-bold px-1.5 py-0.5" style={{ fontSize: '9px', letterSpacing: '0.02em' }}>
+              {currentSlide.tag}
+            </span>
+            <span className="fw-bold text-navy-dark text-truncate" style={{ fontSize: '11.5px' }}>
+              {currentSlide.title}
+            </span>
+            <span className="text-muted text-truncate small d-none d-md-inline" style={{ fontSize: '11px' }}>
+              • {currentSlide.desc}
+            </span>
           </div>
         </a>
 
-        {/* Right: Slide Dots, Action CTA & Close Button */}
-        <div className="d-flex align-items-center gap-2 flex-shrink-0">
-          {/* Micro Slide Dot Indicators */}
-          <div className="d-none d-sm-flex align-items-center gap-1 me-1">
-            {SPONSOR_SLIDES.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrentSlideIndex(idx)}
-                className="p-0 border-0 rounded-pill transition-all"
-                style={{
-                  width: idx === currentSlideIndex ? '16px' : '5px',
-                  height: '5px',
-                  background: idx === currentSlideIndex ? 'var(--primary)' : 'var(--slate-300)',
-                  cursor: 'pointer'
-                }}
-                aria-label={`Chuyển đến slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* CTA Link Button */}
+        {/* Right: Dot Indicators + Dismiss */}
+        <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
           <a
             href={currentSlide.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-sm btn-primary rounded-pill px-2.5 py-1 d-none d-sm-inline-flex align-items-center gap-1 fw-bold nav-btn-touch text-decoration-none"
-            style={{ fontSize: '11.5px', minHeight: '34px' }}
+            className="text-primary text-decoration-none small fw-bold d-inline-flex align-items-center gap-0.5 px-1"
+            style={{ fontSize: '11px' }}
           >
-            <span>Khám phá</span>
-            <ChevronRight size={13} />
+            <span>Chi tiết</span>
+            <ChevronRight size={12} />
           </a>
 
-          {/* Dismiss Button (Rule 6.1: 44px min touch target) */}
           <button
             type="button"
             onClick={handleDismiss}
-            className="btn btn-sm text-secondary p-0 d-flex align-items-center justify-content-center rounded-circle nav-btn-touch"
-            style={{ width: '32px', height: '32px', minWidth: '40px', minHeight: '40px' }}
-            title="Ẩn thông tin tài trợ"
-            aria-label="Ẩn thông tin tài trợ"
+            className="btn btn-sm text-secondary p-0 d-flex align-items-center justify-content-center rounded-circle border-0 bg-transparent"
+            style={{ width: '24px', height: '24px' }}
+            title="Đóng thông báo"
+            aria-label="Đóng thông báo"
           >
-            <X size={14} className="opacity-75" />
+            <X size={12} className="opacity-60" />
           </button>
         </div>
       </div>
