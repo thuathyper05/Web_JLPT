@@ -4869,3 +4869,39 @@ textarea:focus-visible {
   }
 }
 
+
+
+/* ── Home Sponsor Slide Banner (AGENTS.md Compliant) ── */
+.home-sponsor-slide-container {
+  width: 100%;
+}
+
+.home-sponsor-slide-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--slate-200);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-sponsor-slide-card:hover {
+  border-color: var(--primary-border, #bfdbfe);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+}
+
+/* ── Monetag In-Page Push Non-Intrusive Size Restraint ── */
+div[class*="inpage"],
+div[id*="inpage"],
+div[class*="in-page"] {
+  max-width: 290px !important;
+  transform: scale(0.88);
+  transform-origin: top right;
+  z-index: 1005 !important;
+}
+
+@media (max-width: 768px) {
+  div[class*="inpage"],
+  div[id*="inpage"],
+  div[class*="in-page"] {
+    max-width: 250px !important;
+    transform: scale(0.80);
+  }
+}

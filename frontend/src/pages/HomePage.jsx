@@ -35,6 +35,7 @@ import { lessonService, progressService } from '../services/api';
 import { useApp } from '../context/AppContext';
 import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
+import HomeSponsorSlide from '../components/HomeSponsorSlide';
 
 const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
   const { user, guestProgress, progressVersion, onlineCount = 1 } = useApp();
@@ -357,6 +358,9 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
           </div>
         </div>
       </div>
+
+      {/* ── 1.25. COMPACT SPONSOR & AD SLIDE (NON-INTRUSIVE & AGENTS.MD COMPLIANT) ── */}
+      <HomeSponsorSlide />
 
       {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER (COMPACT & SLEEK FOR ALL DEVICES) ── */}
       <div className="home-promo-section mb-4">

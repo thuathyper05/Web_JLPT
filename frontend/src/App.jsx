@@ -19,7 +19,6 @@ import Logo from './components/Logo';
 import WelcomeBannerModal from './components/WelcomeBannerModal';
 import Footer from './components/Footer';
 import AiChatBubble from './components/AiChatBubble';
-import StickyFooterAd from './components/StickyFooterAd';
 import { authService } from './services/api';
 import {
   BookOpen,
@@ -325,8 +324,7 @@ function App() {
 
       {/* ── Global Floating AI Assistant Bubble ── */}
       <AiChatBubble />
-      {/* Sticky Bottom Ad Banner (Google AdSense / Monetag UX) */}
-      <StickyFooterAd />
+      
     </div>
   );
 }
