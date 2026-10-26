@@ -6,7 +6,7 @@ import {
 import {
   Compass, BookOpen, CheckCircle2, XCircle, Volume2, Sparkles,
   RotateCcw, HelpCircle, Layers, Check, ChevronRight, ChevronLeft,
-  Zap, Award, Search, Info, Bookmark, Filter
+  Zap, Award, Search, Info, Bookmark, Filter, Target, Lightbulb, X
 } from 'lucide-react';
 import { speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
@@ -1291,7 +1291,7 @@ const ParticlesPage = ({ onNavigate }) => {
                   className="form-select form-select-sm rounded-pill fw-bold border bg-white shadow-xs text-truncate"
                   style={{ fontSize: '12.5px', borderColor: 'var(--slate-200)', height: '34px' }}
                 >
-                  <option value="all">🌟 Tất cả 25 Bài N5 (75 câu hỏi chuẩn)</option>
+                  <option value="all">Tất cả 25 Bài N5 (75 câu hỏi chuẩn)</option>
                   {LESSONS_CURRICULUM.map(l => (
                     <option key={l.lesson} value={l.lesson}>
                       {l.title}
@@ -1388,8 +1388,9 @@ const ParticlesPage = ({ onNavigate }) => {
                 <span className="fw-bold text-navy-dark small text-truncate d-block" style={{ fontSize: '12px' }}>
                   {currentLessonData.title}
                 </span>
-                <span className="text-muted small text-truncate d-block" style={{ fontSize: '11px' }}>
-                  🎯 {currentLessonData.focus}
+                <span className="text-muted small text-truncate d-flex align-items-center gap-1" style={{ fontSize: '11px' }}>
+                  <Target size={12} className="text-primary flex-shrink-0" />
+                  <span>{currentLessonData.focus}</span>
                 </span>
               </div>
 
@@ -1398,8 +1399,12 @@ const ParticlesPage = ({ onNavigate }) => {
                 <span className="badge bg-primary text-white fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
                   {practiceIndex + 1}/{activeQuestions.length}
                 </span>
-                <span className="badge bg-emerald-50 text-emerald-700 border border-emerald-200 fw-bold px-2 py-0.5" style={{ fontSize: '10.5px' }}>
-                  ✓{score.correct} ✗{score.wrong}
+                <span className="badge bg-emerald-50 text-emerald-700 border border-emerald-200 fw-bold px-2 py-0.5 d-flex align-items-center gap-1" style={{ fontSize: '10.5px' }}>
+                  <Check size={11} className="text-success" />
+                  <span>{score.correct}</span>
+                  <span className="text-muted mx-0.5">/</span>
+                  <X size={11} className="text-danger" />
+                  <span>{score.wrong}</span>
                 </span>
               </div>
             </div>
@@ -1535,9 +1540,12 @@ const ParticlesPage = ({ onNavigate }) => {
                     </>
                   )}
                 </div>
-                <p className="text-dark small mb-0" style={{ fontSize: '12px', lineHeight: '1.5' }}>
-                  💡 <strong>Quy tắc bài học:</strong> {currentQ.explanation}
-                </p>
+                <div className="text-dark small mb-0 d-flex align-items-start gap-1.5" style={{ fontSize: '12px', lineHeight: '1.5' }}>
+                  <Lightbulb size={14} className="text-warning flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong>Quy tắc bài học:</strong> {currentQ.explanation}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -1694,8 +1702,11 @@ const ParticlesPage = ({ onNavigate }) => {
 
                     {/* Notes (if any) */}
                     {p.notes && (
-                      <div className="p-2 rounded-3 bg-amber-50 border border-amber-200 text-amber-900 small mb-2.5" style={{ fontSize: '11.5px' }}>
-                        💡 <strong>Lưu ý:</strong> {p.notes}
+                      <div className="p-2 rounded-3 bg-amber-50 border border-amber-200 text-amber-900 small mb-2.5 d-flex align-items-start gap-1.5" style={{ fontSize: '11.5px' }}>
+                        <Lightbulb size={14} className="text-amber-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Lưu ý:</strong> {p.notes}
+                        </div>
                       </div>
                     )}
 

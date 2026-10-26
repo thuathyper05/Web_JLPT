@@ -34,8 +34,7 @@ import {
   Check,
   RefreshCw,
   Trophy,
-  ArrowRight,
-  X
+    X
 } from 'lucide-react';
 import * as wanakana from 'wanakana';
 import { vocabService, speakJapanese } from '../services/api';

@@ -4711,3 +4711,121 @@ p {
   font-size: 11px;
   font-weight: 500;
 }
+
+/* ==========================================================================
+   AGENTS.MD — DESIGN SYSTEM STANDARDS ENFORCEMENT
+   Tokens, Accessible Focus, Spacing & Touch Targets
+   ========================================================================== */
+
+:root {
+  /* Spacing Tokens (Multiples of 4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Typography Scale */
+  --type-h1: clamp(28px, 4vw, 36px);
+  --type-h2: clamp(22px, 3vw, 26px);
+  --type-h3: clamp(18px, 2.5vw, 20px);
+  --type-body: 15px;
+  --type-caption: 12.5px;
+}
+
+/* ── Rule 9: Accessibility Focus Indicators ── */
+:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── Rule 8: Reduced Motion Support ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Rule 6.1: Touch Target Minimum (44x44px for touch screens) ── */
+.touch-target-min {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 767.98px) {
+  .nav-btn-touch {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  .btn-mobile-touch {
+    min-height: 44px;
+  }
+}
+
+/* ── Rule 4: Standard Typography Classes ── */
+.ui-heading-1 {
+  font-size: var(--type-h1);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--slate-900);
+}
+
+.ui-heading-2 {
+  font-size: var(--type-h2);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--slate-900);
+}
+
+.ui-heading-3 {
+  font-size: var(--type-h3);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--slate-900);
+}
+
+.ui-body {
+  font-size: var(--type-body);
+  line-height: 1.55;
+  color: var(--slate-700);
+}
+
+.ui-caption {
+  font-size: var(--type-caption);
+  line-height: 1.45;
+  color: var(--slate-500);
+}
+
+/* ── Rule 6.3: Refined Card Borders & Elevation ── */
+.ui-card-standard {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ui-card-standard:hover {
+  border-color: var(--slate-300);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}

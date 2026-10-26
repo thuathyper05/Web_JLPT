@@ -4,7 +4,7 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, Progress
 } from 'reactstrap';
 import {
-  RefreshCw, Volume2, CheckCircle, BookOpen, ArrowRight, Flame, Search,
+  RefreshCw, Volume2, CheckCircle, BookOpen, Flame, Search,
   Award, Trash2, Layers, CheckSquare, Keyboard, Filter, ChevronLeft, ChevronRight, RotateCw
 } from 'lucide-react';
 import { vocabService, speakJapanese } from '../services/api';
@@ -298,8 +298,8 @@ const ReviewWrongPage = ({ onNavigate }) => {
                   onClick={() => qMastered(qItem.id)}>
                   <CheckCircle size={16} className="me-1" /> Đã Thành Thạo
                 </Button>
-                <Button color="primary" className="rounded-pill fw-bold px-4" onClick={qNext}>
-                  Tiếp theo <ArrowRight size={16} className="ms-1" />
+                <Button color="primary" className="rounded-pill fw-bold px-4 d-inline-flex align-items-center" onClick={qNext}>
+                  <span>Tiếp theo</span> <ChevronRight size={16} className="ms-1" />
                 </Button>
               </div>
             </>

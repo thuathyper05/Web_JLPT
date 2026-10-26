@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Rocket, ArrowRight } from 'lucide-react';
+import { X, Rocket, ChevronRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../services/sounds';
 
@@ -181,7 +181,7 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
               </div>
               <span style={{ fontSize: '15px', fontWeight: 800 }}>Khám Phá Ngay</span>
             </div>
-            <ArrowRight size={18} className="welcome-btn-arrow" />
+            <ChevronRight size={18} className="welcome-btn-arrow" />
           </button>
 
           {/* ── Bottom Preferences Bar ── */}
@@ -197,7 +197,7 @@ export default function WelcomeBannerModal({ onExploreCourses }) {
             </label>
 
             <span className="welcome-key-hint">
-              Nhấn <kbd className="welcome-kbd">ESC</kbd> hoặc <kbd className="welcome-kbd">✕</kbd> để đóng
+              Nhấn <kbd className="welcome-kbd">ESC</kbd> hoặc <kbd className="welcome-kbd">X</kbd> để đóng
             </span>
           </div>
         </div>

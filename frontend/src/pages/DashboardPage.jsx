@@ -17,7 +17,6 @@ import {
   AlertCircle,
   Clock,
   BookOpen,
-  ArrowRight,
   TrendingUp,
   Flame,
   Target,

@@ -42,7 +42,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
-  ArrowRight,
   Monitor
 } from 'lucide-react';
 import { adminService, speakJapanese } from '../services/api';

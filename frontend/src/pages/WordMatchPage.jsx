@@ -4,7 +4,7 @@ import {
   Zap, Trophy, RotateCcw, Play, Clock, Star, Volume2, VolumeX, 
   Flame, ChevronLeft, CheckCircle2, Sparkles, Award, Shield, Target,
   Layers, SlidersHorizontal, Check, BookOpen, AlertCircle, Eye,
-  ArrowRight, Heart, BarChart3, Shuffle, RefreshCw, Sprout
+  Heart, BarChart3, Shuffle, RefreshCw, Sprout
 } from 'lucide-react';
 import { vocabService, speakJapanese, lessonService, srsService } from '../services/api';
 import { hasRealKanji, getEffectiveKana, cleanKatakanaDisplay } from '../utils/katakanaNormalize';
@@ -211,7 +211,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
     processingRef.current = true;
 
     if (selectedLeft.pairId === selectedRight.pairId) {
-      // ✅ Correct match
+      // Correct match
       const now = Date.now();
       const matchSpeedSec = ((now - lastMatchTimeRef.current) / 1000).toFixed(1);
       lastMatchTimeRef.current = now;
@@ -281,7 +281,7 @@ const WordMatchPage = ({ initialLesson = 1, onNavigate, onSelectLesson }) => {
         }
       }, 240);
     } else {
-      // ❌ Wrong match
+      // Wrong match
       if (soundEnabled) {
         sounds.playWrong?.();
       }

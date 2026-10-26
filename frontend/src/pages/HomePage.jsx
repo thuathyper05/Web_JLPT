@@ -15,7 +15,7 @@ import {
   Layers,
   CheckSquare,
   Keyboard,
-  ArrowRight,
+  ChevronRight,
   Sparkles,
   Zap,
   Award,
@@ -397,7 +397,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 <span className="home-promo-compact-sub">Phản Xạ 60s</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--rush">
                   <span>Luyện ngay</span>
-                  <ArrowRight size={11} />
+                  <ChevronRight size={12} />
                 </span>
               </div>
             </div>
@@ -431,7 +431,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 <span className="home-promo-compact-sub">Bonsai SRS</span>
                 <span className="home-promo-compact-cta home-promo-compact-cta--garden">
                   <span>Trải nghiệm</span>
-                  <ArrowRight size={11} />
+                  <ChevronRight size={12} />
                 </span>
               </div>
             </div>
@@ -564,9 +564,9 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                     </p>
                   </div>
 
-                  <div className="d-flex align-items-center gap-1.5 text-primary fw-bold mt-3 pt-2 border-top border-slate-100" style={{ fontSize: '12.5px' }}>
+                  <div className="d-flex align-items-center gap-1 text-primary fw-bold mt-3 pt-2 border-top border-slate-100" style={{ fontSize: '12.5px' }}>
                     <span>Vào học</span>
-                    <ArrowRight size={13} />
+                    <ChevronRight size={14} />
                   </div>
                 </div>
               </Col>
@@ -653,11 +653,11 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
                 </div>
               </div>
 
-              <div className="d-flex align-items-center gap-2 flex-shrink-0">
+              <div className="d-flex align-items-center gap-1.5 flex-shrink-0">
                 <span className="badge bg-light text-secondary border rounded-pill px-2 py-0.5" style={{ fontSize: '10.5px' }}>
                   {l.vocab_count} từ
                 </span>
-                <ArrowRight size={14} className="text-primary" />
+                <ChevronRight size={15} className="text-primary" />
               </div>
             </div>
           ))}
@@ -724,7 +724,7 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
 
               <div className="d-flex align-items-center justify-content-between pt-2.5 mt-2.5 border-top border-slate-100 text-primary small fw-semibold" style={{ fontSize: '11.5px' }}>
                 <span>Vào học bài</span>
-                <ArrowRight size={13} />
+                <ChevronRight size={14} />
               </div>
             </div>
           ))}

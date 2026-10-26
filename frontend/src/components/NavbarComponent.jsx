@@ -104,7 +104,7 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
               );
             })}
 
-            {/* ⚡ NEW Flagship Games on Desktop Navbar */}
+            {/* NEW Flagship Games on Desktop Navbar */}
             <NavItem>
               <NavLink
                 href="#"
@@ -205,10 +205,11 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
             {/* Mobile-only Unified Squircle Search Button */}
             <button type="button" onClick={onOpenSearch}
-              className="d-flex d-sm-none align-items-center justify-content-center"
-              style={{ width: 34, height: 34, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
-              title="Tìm kiếm từ vựng">
-              <Search size={15} />
+              className="d-flex d-sm-none align-items-center justify-content-center nav-btn-touch"
+              style={{ width: 40, height: 40, minWidth: 44, minHeight: 44, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', borderRadius: 10, color: '#fff', cursor: 'pointer', transition: 'all .18s ease', backdropFilter: 'blur(8px)', padding: 0 }}
+              title="Tìm kiếm từ vựng"
+              aria-label="Tìm kiếm từ vựng">
+              <Search size={16} />
             </button>
 
             {/* Account dropdown / Login button */}
@@ -278,22 +279,25 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
                 {/* Mobile-only Unified Squircle Login Button */}
                 <button type="button" onClick={() => openAuth('login')}
-                  className="d-inline-flex d-sm-none align-items-center justify-content-center"
-                  style={{ width: 34, height: 34, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 10, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
-                  title="Đăng nhập">
-                  <LogIn size={15} />
+                  className="d-inline-flex d-sm-none align-items-center justify-content-center nav-btn-touch"
+                  style={{ width: 40, height: 40, minWidth: 44, minHeight: 44, background: 'linear-gradient(135deg,#f59e0b,#d97706)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 10, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(245,158,11,.35)', padding: 0 }}
+                  title="Đăng nhập"
+                  aria-label="Đăng nhập tài khoản">
+                  <LogIn size={16} />
                 </button>
               </>
             )}
 
-            {/* Mobile Menu Drawer Toggle Button (Unified 34px squircle) */}
+            {/* Mobile Menu Drawer Toggle Button */}
             <button
               type="button"
-              className="d-lg-none d-flex align-items-center justify-content-center"
+              className="d-lg-none d-flex align-items-center justify-content-center nav-btn-touch"
               onClick={() => setMobileMenuOpen(true)}
               style={{
-                width: 34,
-                height: 34,
+                width: 40,
+                height: 40,
+                minWidth: 44,
+                minHeight: 44,
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.16)',
                 borderRadius: 10,
@@ -303,8 +307,9 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 padding: 0
               }}
               title="Menu mở rộng"
+              aria-label="Mở danh mục menu"
             >
-              <Menu size={17} />
+              <Menu size={18} />
             </button>
           </div>
         </Container>

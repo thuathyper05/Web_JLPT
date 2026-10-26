@@ -238,6 +238,7 @@ const AiChatBubble = () => {
                 onClick={handleClearHistory}
                 className="ai-action-btn"
                 title="Làm mới hội thoại"
+                aria-label="Làm mới hội thoại"
               >
                 <RotateCcw size={13} />
               </button>
@@ -249,6 +250,7 @@ const AiChatBubble = () => {
                 }}
                 className="ai-action-btn close-btn"
                 title="Thu nhỏ cửa sổ"
+                aria-label="Thu nhỏ cửa sổ AI"
               >
                 <X size={15} />
               </button>
@@ -399,6 +401,7 @@ const AiChatBubble = () => {
                 disabled={!inputValue.trim() || isLoading}
                 className={`ai-send-action-btn ${inputValue.trim() && !isLoading ? 'is-ready' : ''}`}
                 title="Gửi câu hỏi (Enter)"
+                aria-label="Gửi câu hỏi"
               >
                 <Send size={14} />
               </button>
