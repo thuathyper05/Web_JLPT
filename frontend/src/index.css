@@ -4788,59 +4788,12 @@ p {
   color: var(--slate-500);
 }
 
-/* ── Home Sponsor Slide Banner (Clean, Slim Pill) ── */
-.home-sponsor-slide-container {
-  width: 100%;
-}
-
-.home-sponsor-slide-card {
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--slate-200);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.home-sponsor-slide-card:hover {
-  border-color: var(--primary-border, #bfdbfe);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
-}
-
-/* ── Tame & Minimize Monetag In-Page Push (Micro & Non-Intrusive) ── */
-div[class*="inpage"],
-div[id*="inpage"],
-div[class*="in-page"],
-div[id*="zone-"],
-div[class*="zone-tag"],
-iframe[id*="inpage"],
-iframe[src*="quge5"] {
-  max-width: 220px !important;
-  max-height: 70px !important;
-  transform: scale(0.72) !important;
-  transform-origin: top right !important;
-  top: 56px !important;
-  right: 6px !important;
-  z-index: 998 !important;
-  opacity: 0.88 !important;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12) !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  pointer-events: auto !important;
-}
-
-@media (max-width: 768px) {
-  div[class*="inpage"],
-  div[id*="inpage"],
-  div[class*="in-page"],
-  div[id*="zone-"],
-  div[class*="zone-tag"],
-  iframe[id*="inpage"],
-  iframe[src*="quge5"] {
-    max-width: 175px !important;
-    max-height: 60px !important;
-    transform: scale(0.62) !important;
-    transform-origin: top right !important;
-    top: 52px !important;
-    right: 4px !important;
-  }
+/* ── Ensure zero lingering ad iframes or popups ── */
+iframe[src*="quge5"],
+iframe[src*="5gvci"],
+div[id*="zone-tag"],
+div[class*="zone-tag"] {
+  display: none !important;
 }
 
 /* ── Mobile Viewport & Ergonomics Safety ── */
