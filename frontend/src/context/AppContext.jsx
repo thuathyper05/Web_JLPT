@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { authService, progressService, favoriteService, noteService, onlineService } from '../services/api';
+import { authService, progressService, favoriteService, noteService, onlineService, gamificationService } from '../services/api';
 import { awardGardenWater, getGardenWater } from '../services/gardenRewards';
 import { OnlineTracker } from '../services/onlineTracker';
 
@@ -29,6 +29,34 @@ export const AppProvider = ({ children }) => {
       return {};
     }
   });
+
+  // Guest Gamification State (Streak, XP, Badges)
+  const [guestGamification, setGuestGamification] = useState(() => {
+    try {
+      const saved = localStorage.getItem('guest_gamification');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return {
+      current_streak: 1,
+      longest_streak: 1,
+      last_study_date: new Date().toISOString().split('T')[0],
+      total_xp: 50,
+      level_tier: 'Mầm non N5',
+      next_tier_xp: 300,
+      min_tier_xp: 0,
+      gems_count: 100,
+      freeze_streak_count: 1,
+      badges: [
+        { key: 'first_step', title: 'Bước đầu tiên', desc: 'Khởi đầu hành trình học tiếng Nhật N5', icon: 'Award', unlocked: true }
+      ]
+    };
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('guest_gamification', JSON.stringify(guestGamification));
+    } catch {}
+  }, [guestGamification]);
 
   const [guestNotes, setGuestNotes] = useState(() => {
     try {
@@ -249,6 +277,83 @@ export const AppProvider = ({ children }) => {
     return guestNotes[vocabId] || '';
   };
 
+  // Fetch gamification status on mount or user change
+  const [gamificationStatus, setGamificationStatus] = useState(null);
+
+  const refreshGamification = async () => {
+    if (user) {
+      try {
+        const res = await gamificationService.getStatus();
+        if (res.data?.success) {
+          setGamificationStatus(res.data);
+        }
+      } catch (e) {
+        console.warn('Failed to load server gamification status:', e.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    refreshGamification();
+  }, [user]);
+
+  // Record study tick & reward XP + Streaks
+  const recordStudyTick = async (action_type = 'study_session', xp_gain = 15) => {
+    if (user) {
+      try {
+        const res = await gamificationService.recordStudyTick(action_type, xp_gain);
+        if (res.data?.success) {
+          await refreshGamification();
+          return res.data;
+        }
+      } catch (e) {
+        console.error('Error recording gamification on server:', e);
+      }
+    }
+
+    // Guest fallback calculation
+    setGuestGamification((prev) => {
+      const todayStr = new Date().toISOString().split('T')[0];
+      let newStreak = prev.current_streak || 1;
+      let newLongest = prev.longest_streak || 1;
+
+      if (prev.last_study_date !== todayStr) {
+        if (prev.last_study_date) {
+          const diffDays = Math.round((new Date(todayStr) - new Date(prev.last_study_date)) / (1000 * 60 * 60 * 24));
+          if (diffDays === 1) newStreak += 1;
+          else if (diffDays > 1) newStreak = 1;
+        }
+        newLongest = Math.max(newLongest, newStreak);
+      }
+
+      const newXp = (prev.total_xp || 0) + xp_gain;
+      let tier = 'Mầm non N5';
+      let nextXp = 300;
+      let minXp = 0;
+      if (newXp >= 8000) { tier = 'Shogun N1 (Tướng quân)'; nextXp = 15000; minXp = 8000; }
+      else if (newXp >= 4000) { tier = 'Lãng khách N3 (Ronin)'; nextXp = 8000; minXp = 4000; }
+      else if (newXp >= 2000) { tier = 'Chiến binh N4 (Bushi)'; nextXp = 4000; minXp = 2000; }
+      else if (newXp >= 900) { tier = 'Samurai N5'; nextXp = 2000; minXp = 900; }
+      else if (newXp >= 300) { tier = 'Tập sự N5 (Deshi)'; nextXp = 900; minXp = 300; }
+
+      return {
+        ...prev,
+        current_streak: newStreak,
+        longest_streak: newLongest,
+        last_study_date: todayStr,
+        total_xp: newXp,
+        level_tier: tier,
+        next_tier_xp: nextXp,
+        min_tier_xp: minXp,
+        gems_count: (prev.gems_count || 100) + 2
+      };
+    });
+
+    return { success: true, xp_added: xp_gain };
+  };
+
+  const currentGamification = user && gamificationStatus ? gamificationStatus : guestGamification;
+
   return (
     <AppContext.Provider
       value={{
@@ -272,7 +377,10 @@ export const AppProvider = ({ children }) => {
         saveNote,
         getNote,
         awardGardenWater,
-        getGardenWater
+        getGardenWater,
+        gamification: currentGamification,
+        recordStudyTick,
+        refreshGamification
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import {
 import {
   Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
   BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
-  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout, Compass
+  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout, Compass, Flame
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -16,7 +16,7 @@ import LevelSelector from './LevelSelector';
 import AuthModal from './AuthModal';
 
 const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, onChangeLevel }) => {
-  const { user, logout, onlineCount = 1 } = useApp();
+  const { user, logout, onlineCount = 1, gamification } = useApp();
   const [authMode, setAuthMode] = useState('login');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -28,7 +28,8 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
 
   const mainNavItems = [
     { id: 'home', label: 'Trang chủ', icon: Home, color: '#2563eb', bg: '#eff6ff', desc: 'Lộ trình & Tổng quan học tập' },
-    { id: 'lessons', label: 'Bài học', icon: BookOpen, color: '#4f46e5', bg: '#eef2ff', desc: '25 Bài từ vựng Minna no Nihongo I' },
+    { id: 'lessons', label: 'Từ vựng', icon: BookOpen, color: '#4f46e5', bg: '#eef2ff', desc: '25 Bài từ vựng Minna no Nihongo I' },
+    { id: 'grammar', label: 'Ngữ pháp', icon: FileText, color: '#0ea5e9', bg: '#f0f9ff', desc: 'Cấu trúc & Mẫu câu Minna 25 bài' },
     { id: 'kanji', label: 'Kanji', icon: PenTool, color: '#7c3aed', bg: '#f5f3ff', desc: 'Học bộ thủ, nét viết & Hán tự N5' },
     { id: 'flashcard', label: 'Flashcard', icon: Layers, color: '#f59e0b', bg: '#fffbeb', desc: 'Lật thẻ 3D tự chuyển từ thông minh' },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare, color: '#ef4444', bg: '#fef2f2', desc: 'Kiểm tra 4 lựa chọn ABCD bấm giờ' },
@@ -54,10 +55,10 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
   // Mobile Bottom Bar: 5 primary actions
   const bottomItems = [
     { id: 'home', label: 'Trang chủ', icon: Home },
-    { id: 'lessons', label: 'Bài học', icon: BookOpen },
+    { id: 'lessons', label: 'Từ vựng', icon: BookOpen },
+    { id: 'grammar', label: 'Ngữ pháp', icon: FileText },
     { id: 'flashcard', label: 'Flashcard', icon: Layers },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
-    { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
   ];
 
   const handleMobileNav = (id) => {
@@ -193,6 +194,45 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 <span className="online-live-label">online</span>
               </span>
             </div>
+            {/* Gamification: Flame Streak Pill (Desktop & Mobile) */}
+            <div
+              className="d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill cursor-pointer"
+              style={{
+                background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(239, 68, 68, 0.22) 100%)',
+                border: '1px solid rgba(245, 158, 11, 0.45)',
+                color: '#fbbf24',
+                fontSize: '11.5px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
+                userSelect: 'none'
+              }}
+              title={`Chuỗi ngày học liên tục: ${gamification?.current_streak || 1} ngày`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <Flame size={14} className="text-warning flex-shrink-0" fill="#f59e0b" />
+              <span>{gamification?.current_streak || 1}</span>
+            </div>
+
+            {/* Gamification: XP Points Pill (Desktop/Tablet) */}
+            <div
+              className="d-none d-md-inline-flex align-items-center gap-1 px-2.5 py-1 rounded-pill cursor-pointer"
+              style={{
+                background: 'rgba(59, 130, 246, 0.16)',
+                border: '1px solid rgba(96, 165, 250, 0.35)',
+                color: '#93c5fd',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                userSelect: 'none'
+              }}
+              title={`Cấp bậc: ${gamification?.level_tier || 'Mầm non N5'} • Tổng: ${gamification?.total_xp || 50} XP`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <Zap size={13} className="text-info flex-shrink-0" fill="#38bdf8" />
+              <span>{gamification?.total_xp || 50} XP</span>
+            </div>
+
             {/* Desktop / Tablet Search Pill */}
             <button type="button" onClick={onOpenSearch}
               className="d-none d-sm-flex align-items-center"

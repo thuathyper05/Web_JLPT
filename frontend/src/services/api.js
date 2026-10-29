@@ -209,6 +209,17 @@ export const onlineService = {
   }
 };
 
+export const grammarService = {
+  getGrammarList: (params) => api.get('/grammar', { params }),
+  getLessonGrammar: (lessonNumber) => api.get(`/grammar/lesson/${lessonNumber}`),
+};
+
+export const gamificationService = {
+  getStatus: () => api.get('/gamification/status'),
+  recordStudyTick: (action_type = 'study_session', xp_gain = 15) => api.post('/gamification/tick', { action_type, xp_gain }),
+  getLeaderboard: () => api.get('/gamification/leaderboard'),
+};
+
 export default api;
 
 

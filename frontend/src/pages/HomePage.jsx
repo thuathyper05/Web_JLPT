@@ -37,7 +37,7 @@ import Logo from '../components/Logo';
 import { sounds } from '../services/sounds';
 
 const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
-  const { user, guestProgress, progressVersion, onlineCount = 1 } = useApp();
+  const { user, guestProgress, progressVersion, onlineCount = 1, gamification } = useApp();
   const [lessons, setLessons] = useState([]);
   const [stats, setStats] = useState(null);
   const [lessonSearch, setLessonSearch] = useState('');
@@ -127,6 +127,15 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
       color: '#2563eb',
       bg: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
       badge: 'Cốt lõi'
+    },
+    {
+      id: 'grammar',
+      title: 'Ngữ Pháp Minna no Nihongo',
+      desc: '55 cấu trúc mẫu câu chuẩn, phân tích công thức, câu ví dụ thực tế và lưu ý bẫy đề thi',
+      icon: BookOpen,
+      color: '#0ea5e9',
+      bg: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+      badge: 'Chuyên Đề Mới'
     },
     {
       id: 'kanji',
@@ -268,6 +277,11 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
               <span className="online-live-dot" />
               <span>{onlineCount} người đang học</span>
             </span>
+            <span className="d-none d-sm-inline text-white text-opacity-35">•</span>
+            <span className="d-inline-flex align-items-center gap-1.5 px-2 py-0.5 rounded-pill" style={{ background: 'rgba(245, 158, 11, 0.2)', border: '1px solid rgba(245, 158, 11, 0.45)', color: '#fbbf24', fontWeight: 700, fontSize: '11px' }}>
+              <Flame size={12} fill="#f59e0b" />
+              <span>Chuỗi {gamification?.current_streak || 1} ngày</span>
+            </span>
           </div>
 
           <h1
@@ -317,6 +331,23 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
             >
               <PlayCircle size={18} />
               <span>Bắt đầu Bài 01 ngay</span>
+            </Button>
+
+            <Button
+              color="info"
+              size="lg"
+              onClick={() => {
+                sounds.playFlip?.();
+                onNavigate('grammar');
+              }}
+              className="fw-bold px-3.5 py-2.5 rounded-pill border-0 d-flex align-items-center gap-2 text-white shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+                fontSize: '14px'
+              }}
+            >
+              <BookOpen size={17} />
+              <span>Ngữ pháp 25 Bài</span>
             </Button>
 
             <Button

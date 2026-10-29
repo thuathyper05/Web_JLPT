@@ -24,19 +24,40 @@ import {
   Layers,
   CheckSquare,
   Keyboard,
-  ShieldCheck
+  ShieldCheck,
+  Zap,
+  Trophy,
+  Star,
+  Users
 } from 'lucide-react';
-import { progressService, lessonService, vocabService } from '../services/api';
+import { progressService, lessonService, vocabService, gamificationService } from '../services/api';
 import { useApp } from '../context/AppContext';
 
 const DashboardPage = ({ onSelectLesson, onNavigate }) => {
-  const { user, guestProgress, progressVersion } = useApp();
+  const { user, guestProgress, progressVersion, gamification } = useApp();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
 
   useEffect(() => {
     fetchDashboard();
+    fetchLeaderboard();
   }, [user, guestProgress, progressVersion]);
+
+  const fetchLeaderboard = async () => {
+    setLoadingLeaderboard(true);
+    try {
+      const res = await gamificationService.getLeaderboard();
+      if (res.data?.success && Array.isArray(res.data.leaderboard)) {
+        setLeaderboard(res.data.leaderboard);
+      }
+    } catch (e) {
+      console.warn('Leaderboard fetch note:', e.message);
+    } finally {
+      setLoadingLeaderboard(false);
+    }
+  };
 
   const fetchDashboard = async () => {
     setLoading(true);
@@ -98,13 +119,12 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         const needsReviewCount = Object.values(guestProgress).filter(p => p.status === 'needs_review').length;
         const totalCorrect = Object.values(guestProgress).reduce((acc, curr) => acc + (curr.correct_count || 0), 0);
         const totalWrong = Object.values(guestProgress).reduce((acc, curr) => acc + (curr.wrong_count || 0), 0);
-        const accuracyRate = (totalCorrect + totalWrong) > 0
-          ? Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100)
-          : (studiedCount > 0 ? Math.round((masteredCount / studiedCount) * 100) : 0);
+        const totalAnswers = totalCorrect + totalWrong;
+        const accuracyRate = totalAnswers > 0 ? Math.round((totalCorrect / totalAnswers) * 100) : 0;
 
         setData({
           overall: {
-            total_vocabularies: 1589,
+            total_vocabularies: allVocabs.length || 1589,
             studied_vocabularies: studiedCount,
             mastered_count: masteredCount,
             needs_review_count: needsReviewCount,
@@ -135,21 +155,27 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
     ? Math.round((overall.mastered_count / overall.total_vocabularies) * 100)
     : 0;
 
+  // Gamification progress bar calculations
+  const totalXp = gamification?.total_xp || 50;
+  const nextXp = gamification?.next_tier_xp || 300;
+  const minXp = gamification?.min_tier_xp || 0;
+  const xpProgressPercent = Math.min(100, Math.max(0, Math.round(((totalXp - minXp) / (nextXp - minXp)) * 100)));
+
   return (
     <div className="app-shell" style={{ maxWidth: '1140px' }}>
       {/* ── 1. UNIFIED SYSTEMIC PAGE HEADER ── */}
-      <div className="app-page-header">
+      <div className="app-page-header mb-4">
         <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
           <div>
             <div className="app-header-tag">
               <BarChart2 size={13} />
-              <span>BÁO CÁO TIẾN ĐỘ • THỐNG KÊ HỌC TẬP</span>
+              <span>BÁO CÁO TIẾN ĐỘ • GAMIFICATION HUB V2</span>
             </div>
             <h1 className="app-header-title">
-              Bảng Theo Dõi Tiến Độ Học Tập
+              Trung Tâm Tiến Độ & Danh Hiệu Học Tập
             </h1>
             <p className="app-header-subtitle">
-              Thống kê chi tiết mức độ thành thạo và phản xạ ghi nhớ 1,589 từ vựng qua 25 bài học Minna no Nihongo.
+              Theo dõi chuỗi ngày kiên trì (Streak), điểm kinh nghiệm (XP), cấp bậc danh hiệu và huy hiệu thử thách.
             </p>
           </div>
 
@@ -157,7 +183,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
             {!user ? (
               <span className="badge rounded-pill border px-3 py-2 text-secondary d-flex align-items-center gap-1.5 shadow-xs bg-white" style={{ fontSize: '12px' }}>
                 <ShieldCheck size={14} className="text-success" />
-                <span>Dữ liệu lưu cục bộ (Khách)</span>
+                <span>Tiến độ lưu cục bộ (Khách)</span>
               </span>
             ) : (
               <span className="badge bg-success rounded-pill px-3 py-2 d-flex align-items-center gap-1.5 shadow-xs" style={{ fontSize: '12px' }}>
@@ -169,7 +195,150 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         </div>
       </div>
 
-      {/* 2. Top KPI Overview Cards */}
+      {/* ── 2. GAMIFICATION SHOWCASE (STREAK & XP LEVEL TIER) ── */}
+      <Row className="g-3 g-md-4 mb-4">
+        {/* Streak Banner */}
+        <Col md={6}>
+          <div
+            className="p-3.5 p-md-4 rounded-4 text-white position-relative overflow-hidden h-100 d-flex flex-column justify-content-between"
+            style={{
+              background: 'linear-gradient(135deg, #b45309 0%, #d97706 40%, #ef4444 100%)',
+              boxShadow: '0 4px 16px rgba(217, 119, 6, 0.25)'
+            }}
+          >
+            <div className="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <span className="badge rounded-pill bg-white bg-opacity-25 text-white fw-bold px-2.5 py-1 mb-2" style={{ fontSize: '11px' }}>
+                  CHUỖI NGÀY LIÊN TIẾP
+                </span>
+                <div className="d-flex align-items-baseline gap-2">
+                  <span className="fw-black" style={{ fontSize: '2.5rem', lineHeight: 1 }}>
+                    {gamification?.current_streak || 1}
+                  </span>
+                  <span className="fs-5 fw-bold text-white text-opacity-90">ngày học</span>
+                </div>
+              </div>
+              <div
+                className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                style={{ width: '52px', height: '52px', background: 'rgba(255, 255, 255, 0.22)', backdropFilter: 'blur(8px)' }}
+              >
+                <Flame size={28} className="text-white" fill="#ffffff" />
+              </div>
+            </div>
+
+            <div className="pt-2 border-top border-white border-opacity-20 d-flex justify-content-between align-items-center small text-white text-opacity-90">
+              <span>Kỷ lục chuỗi: <strong>{gamification?.longest_streak || 1} ngày</strong></span>
+              <span>Khiên bảo vệ: <strong>{gamification?.freeze_streak_count || 1}</strong></span>
+            </div>
+          </div>
+        </Col>
+
+        {/* XP & Level Tier Banner */}
+        <Col md={6}>
+          <div
+            className="p-3.5 p-md-4 rounded-4 text-white position-relative overflow-hidden h-100 d-flex flex-column justify-content-between"
+            style={{
+              background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #4f46e5 100%)',
+              boxShadow: '0 4px 16px rgba(37, 99, 235, 0.25)'
+            }}
+          >
+            <div className="d-flex justify-content-between align-items-start mb-2.5">
+              <div>
+                <span className="badge rounded-pill bg-white bg-opacity-20 text-white fw-bold px-2.5 py-1 mb-2" style={{ fontSize: '11px' }}>
+                  CẤP BẬC HỌC VIÊN
+                </span>
+                <h4 className="fw-black mb-0 text-white" style={{ fontSize: '1.4rem' }}>
+                  {gamification?.level_tier || 'Mầm non N5'}
+                </h4>
+              </div>
+              <div
+                className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                style={{ width: '52px', height: '52px', background: 'rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(8px)' }}
+              >
+                <Zap size={26} className="text-white" fill="#fde047" />
+              </div>
+            </div>
+
+            {/* XP Progress Bar */}
+            <div>
+              <div className="d-flex justify-content-between align-items-center small mb-1 text-white text-opacity-90" style={{ fontSize: '12px' }}>
+                <span>{totalXp} XP</span>
+                <span>Mục tiêu tiếp: {nextXp} XP ({xpProgressPercent}%)</span>
+              </div>
+              <Progress
+                value={xpProgressPercent}
+                className="rounded-pill mb-2"
+                style={{ height: '8px', background: 'rgba(255, 255, 255, 0.25)' }}
+                barStyle={{ background: 'linear-gradient(90deg, #38bdf8, #facc15)' }}
+              />
+              <div className="d-flex justify-content-between align-items-center small text-white text-opacity-80" style={{ fontSize: '11px' }}>
+                <span>Đá quý tích lũy: <strong>{gamification?.gems_count || 100} Gems</strong></span>
+                <span>Học mỗi ngày +15 XP</span>
+              </div>
+            </div>
+          </div>
+        </Col>
+      </Row>
+
+      {/* ── 3. BADGES & ACHIEVEMENTS SHELF ── */}
+      <div className="app-surface-card p-3.5 p-md-4 rounded-4 border bg-white shadow-xs mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex align-items-center gap-2">
+            <Trophy size={18} className="text-warning" />
+            <h6 className="fw-black text-navy-dark mb-0" style={{ fontSize: '15px' }}>
+              Bộ Sưu Tập Huy Hiệu Thử Thách
+            </h6>
+          </div>
+          <span className="small text-muted" style={{ fontSize: '12px' }}>
+            {Array.isArray(gamification?.badges) ? gamification.badges.filter(b => b.unlocked).length : 1} / 6 Đã mở khóa
+          </span>
+        </div>
+
+        <Row className="g-2.5 g-md-3">
+          {(gamification?.badges || [
+            { key: 'first_step', title: 'Bước đầu tiên', desc: 'Hoàn thành bài học tiếng Nhật đầu tiên', unlocked: true },
+            { key: 'streak_3', title: 'Giữ lửa 3 ngày', desc: 'Học liên tục 3 ngày không nghỉ', unlocked: (gamification?.current_streak >= 3) },
+            { key: 'streak_7', title: 'Chiến binh 7 ngày', desc: 'Duy trì chuỗi học tập trọn vẹn 1 tuần', unlocked: (gamification?.current_streak >= 7) },
+            { key: 'streak_30', title: 'Kiên trì 30 ngày', desc: 'Thói quen vàng: 30 ngày liên tiếp', unlocked: (gamification?.current_streak >= 30) },
+            { key: 'speed_demon', title: 'Phản xạ Thần tốc', desc: 'Ghép cặp nối từ 10/10 dưới 40 giây', unlocked: false },
+            { key: 'kanji_explorer', title: 'Thám hiểm Chữ Hán', desc: 'Học và ghi nhớ 20 Kanji căn bản', unlocked: false }
+          ]).map((b, idx) => (
+            <Col xs={6} md={4} lg={2} key={b.key || idx}>
+              <div
+                className={`p-2.5 rounded-3 border text-center h-100 d-flex flex-column align-items-center justify-content-center transition-all ${
+                  b.unlocked ? 'bg-amber-50 border-amber-200' : 'bg-slate-50 border-slate-200 opacity-60'
+                }`}
+                style={{
+                  background: b.unlocked ? '#fffbeb' : '#f8fafc',
+                  borderColor: b.unlocked ? '#fde68a' : '#e2e8f0',
+                  minHeight: '105px'
+                }}
+                title={b.desc}
+              >
+                <div
+                  className="rounded-circle d-flex align-items-center justify-content-center mb-1.5"
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    background: b.unlocked ? '#fef3c7' : '#e2e8f0',
+                    color: b.unlocked ? '#d97706' : '#94a3b8'
+                  }}
+                >
+                  <Award size={18} />
+                </div>
+                <div className="fw-bold text-navy-dark text-truncate w-100" style={{ fontSize: '11.5px' }}>
+                  {b.title}
+                </div>
+                <span className="small text-muted mt-0.5" style={{ fontSize: '10px' }}>
+                  {b.unlocked ? 'Đạt được' : 'Chưa mở'}
+                </span>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
+
+      {/* ── 4. TOP KPI OVERVIEW CARDS ── */}
       <Row className="g-3 g-md-4 mb-4">
         <Col sm={6} lg={3}>
           <div className="app-metric-card h-100 p-3.5 text-center">
@@ -218,8 +387,70 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         </Col>
       </Row>
 
-      {/* 3. Overall Milestone Progress Bar */}
-      <div className="app-surface-card p-4 mb-4">
+      {/* ── 5. LEADERBOARD PREVIEW (BẢNG VÀNG HỌC VIÊN) ── */}
+      {leaderboard.length > 0 && (
+        <div className="app-surface-card p-3.5 p-md-4 rounded-4 border bg-white shadow-xs mb-4">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <div className="d-flex align-items-center gap-2">
+              <Users size={18} className="text-primary" />
+              <h6 className="fw-black text-navy-dark mb-0" style={{ fontSize: '15px' }}>
+                Bảng Vàng Học Viên Chăm Chỉ Nhất
+              </h6>
+            </div>
+            <span className="small text-muted" style={{ fontSize: '12px' }}>Cập nhật tự động</span>
+          </div>
+
+          <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0" style={{ fontSize: '13px' }}>
+              <thead>
+                <tr className="text-muted small border-bottom">
+                  <th style={{ width: '60px' }}>Hạng</th>
+                  <th>Học viên</th>
+                  <th>Danh hiệu</th>
+                  <th className="text-center">Chuỗi</th>
+                  <th className="text-end">Tổng XP</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderboard.slice(0, 5).map((lUser) => (
+                  <tr key={lUser.id}>
+                    <td>
+                      <span
+                        className={`badge rounded-pill fw-bold ${
+                          lUser.rank === 1 ? 'bg-warning text-dark' : lUser.rank === 2 ? 'bg-secondary text-white' : lUser.rank === 3 ? 'bg-danger text-white' : 'bg-light text-secondary border'
+                        }`}
+                        style={{ fontSize: '11px', minWidth: '24px' }}
+                      >
+                        #{lUser.rank}
+                      </span>
+                    </td>
+                    <td className="fw-bold text-navy-dark">
+                      {lUser.name}
+                    </td>
+                    <td>
+                      <span className="badge bg-light text-secondary border rounded-pill px-2 py-0.5" style={{ fontSize: '11px' }}>
+                        {lUser.level_tier}
+                      </span>
+                    </td>
+                    <td className="text-center">
+                      <span className="d-inline-flex align-items-center gap-1 text-warning fw-bold">
+                        <Flame size={13} fill="#f59e0b" />
+                        <span>{lUser.current_streak}d</span>
+                      </span>
+                    </td>
+                    <td className="text-end fw-black text-primary">
+                      {lUser.total_xp} XP
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── 6. OVERALL MILESTONE PROGRESS BAR ── */}
+      <div className="app-surface-card p-4 mb-4 rounded-4 border bg-white shadow-xs">
         <div className="d-flex justify-content-between align-items-center mb-2">
           <div className="d-flex align-items-center gap-2">
             <Target size={20} className="text-primary" />
@@ -242,7 +473,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
         </div>
       </div>
 
-      {/* 4. Lesson-by-Lesson Progress Grid */}
+      {/* ── 7. LESSON-BY-LESSON PROGRESS GRID ── */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="fw-bold text-navy-dark mb-0">Tiến độ chi tiết từng bài học (Bài 01 - 25):</h5>
         <span className="text-muted small">Nhấn vào bài để chuyển tới chế độ học</span>
@@ -268,7 +499,7 @@ const DashboardPage = ({ onSelectLesson, onNavigate }) => {
           return (
             <Col sm={6} lg={4} key={lesson.lesson_number}>
               <div
-                className="app-surface-card h-100 p-3.5 cursor-pointer hover-shadow d-flex flex-column justify-content-between"
+                className="app-surface-card h-100 p-3.5 cursor-pointer hover-shadow d-flex flex-column justify-content-between rounded-4 border bg-white shadow-xs"
                 onClick={() => {
                   if (onSelectLesson) onSelectLesson(lesson.lesson_number);
                   onNavigate('lessons');

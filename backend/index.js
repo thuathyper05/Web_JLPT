@@ -14,7 +14,10 @@ const kanjiRoutes = require('./routes/kanjiRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const srsRoutes = require('./routes/srsRoutes');
 const onlineRoutes = require('./routes/onlineRoutes');
+const grammarRoutes = require('./routes/grammarRoutes');
+const gamificationRoutes = require('./routes/gamificationRoutes');
 const { deduplicateDatabase } = require('./scripts/deduplicate');
+const { migrateV2 } = require('./scripts/migrate_v2');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,6 +31,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/vocabulary', vocabRoutes);
 app.use('/api/kanji', kanjiRoutes);
+app.use('/api/grammar', grammarRoutes);
+app.use('/api/gamification', gamificationRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/favorites', favoriteRoutes);
@@ -80,6 +85,7 @@ app.listen(PORT, async () => {
   // Auto-run deduplication and admin account sync on startup
   try {
     await deduplicateDatabase();
+    await migrateV2();
   } catch (err) {
     console.error('[Startup DB Migration Warning]', err.message);
   }

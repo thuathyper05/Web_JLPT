@@ -11,6 +11,7 @@ import FavoritesPage from './pages/FavoritesPage';
 import NotesPage from './pages/NotesPage';
 import DashboardPage from './pages/DashboardPage';
 import KanjiPage from './pages/KanjiPage';
+import GrammarStudyPage from './pages/GrammarStudyPage';
 import AdminPage from './pages/AdminPage';
 import WordMatchPage from './pages/WordMatchPage';
 import GardenPage from './pages/GardenPage';
@@ -195,6 +196,13 @@ function App() {
         );
       case 'kanji':
         return <KanjiPage currentLevel={currentLevel} />;
+      case 'grammar':
+        return (
+          <GrammarStudyPage
+            initialLesson={selectedLesson}
+            onNavigate={handleTabChange}
+          />
+        );
       case 'flashcard':
         return (
           <FlashcardPage
