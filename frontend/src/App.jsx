@@ -20,6 +20,7 @@ import Logo from './components/Logo';
 import WelcomeBannerModal from './components/WelcomeBannerModal';
 import Footer from './components/Footer';
 import AiChatBubble from './components/AiChatBubble';
+import PwaInstallPrompt from './components/PwaInstallPrompt';
 import { authService } from './services/api';
 import {
   BookOpen,
@@ -332,6 +333,9 @@ function App() {
 
       {/* ── Global Floating AI Assistant Bubble ── */}
       <AiChatBubble />
+
+      {/* PWA Install Prompt and Offline Status */}
+      <PwaInstallPrompt />
       
     </div>
   );

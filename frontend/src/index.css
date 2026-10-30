@@ -4808,3 +4808,132 @@ html, body, #root {
     padding-bottom: calc(76px + env(safe-area-inset-bottom, 12px)) !important;
   }
 }
+
+/* ==========================================================================
+   PROGRESSIVE WEB APP (PWA) & CROSS-DEVICE ERGONOMICS (HYPER JAPAN 2.0)
+   Covers: Standalone Mode, Safe-Area Notches, Touch Targets & Foldables
+   ========================================================================== */
+
+/* ── 1. Universal Touch & Viewport Polish ── */
+:root {
+  --app-safe-top: env(safe-area-inset-top, 0px);
+  --app-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --app-safe-left: env(safe-area-inset-left, 0px);
+  --app-safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Dynamic viewport height fallback */
+.min-vh-100 {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Smooth iOS momentum scrolling on all scrollable surfaces */
+.overflow-y-auto,
+.overflow-auto,
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch feedback hygiene */
+a, button, input, select, textarea, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── 2. Minimum Touch Target (WCAG 2.2 AA: 44px on mobile touch) ── */
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .dropdown-item,
+  .mobile-nav-btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .form-control,
+  .form-select {
+    min-height: 44px;
+  }
+}
+
+/* ── 3. PWA Standalone Mode Optimizations (Installed to Home Screen) ── */
+@media all and (display-mode: standalone), (display-mode: fullscreen) {
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    padding-top: var(--app-safe-top);
+    padding-left: var(--app-safe-left);
+    padding-right: var(--app-safe-right);
+  }
+
+  /* Allow text selection only in study cards and content */
+  p, h1, h2, h3, h4, h5, h6, span, .kanji-char, .ruby-text, .example-sentence, input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* Navbar padding under iOS Dynamic Island / Notch */
+  .navbar-custom {
+    padding-top: max(8px, var(--app-safe-top)) !important;
+  }
+
+  /* Bottom bar cushion for home bar indicator */
+  .mobile-bottom-nav {
+    padding-bottom: max(12px, calc(var(--app-safe-bottom) + 6px)) !important;
+  }
+
+  /* Floating elements (AI chat bubble, back-to-top) clearance */
+  .ai-chat-bubble-container,
+  .floating-action-btn {
+    bottom: calc(76px + var(--app-safe-bottom)) !important;
+  }
+}
+
+/* ── 4. Cross-Device Responsive Refinements (Phones, Foldables, Tablets) ── */
+
+/* Extra small devices (iPhone SE, Galaxy Fold 320px - 374px) */
+@media (max-width: 374.98px) {
+  .navbar-brand span {
+    font-size: 14px !important;
+  }
+  .mobile-nav-btn span {
+    font-size: 9.5px !important;
+  }
+  .mobile-nav-icon-box {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 10px !important;
+  }
+  .mobile-nav-icon-box svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+  .container, .container-fluid {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
+/* Foldables & Mid-sized Tablets (600px - 840px) */
+@media (min-width: 600px) and (max-width: 991.98px) {
+  .mobile-bottom-nav {
+    max-width: 580px;
+    left: 50% !important;
+    transform: translateX(-50%);
+    border-radius: 20px 20px 0 0;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-bottom: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Landscape orientation on mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+  main {
+    padding-bottom: 24px !important;
+  }
+}

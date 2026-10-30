@@ -13,9 +13,25 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 );
 
-// Register Monetag / Web Push Service Worker
+// Register PWA Service Worker for Offline Caching and Web App Install
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => {
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          if (installingWorker) {
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('HYPER JAPAN PWA: Bản cập nhật mới đã sẵn sàng!');
+              }
+            };
+          }
+        };
+      })
+      .catch((err) => {
+        console.warn('PWA ServiceWorker registration failed:', err);
+      });
   });
 }

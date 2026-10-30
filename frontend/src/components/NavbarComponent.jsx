@@ -7,7 +7,7 @@ import {
 import {
   Home, BookOpen, Layers, CheckSquare, Keyboard, Star, FileText,
   BarChart2, RefreshCw, Search, User, LogOut, LogIn, PenTool,
-  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout, Compass, Flame
+  Menu, X, MoreHorizontal, ChevronRight, ShieldCheck, Zap, Sprout, Compass, Flame, Download
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { sounds } from '../services/sounds';
@@ -176,6 +176,15 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                       </DropdownItem>
                     );
                   })}
+                  <DropdownItem divider />
+                  <DropdownItem
+                    onClick={() => window.dispatchEvent(new CustomEvent('hyper_open_pwa_install'))}
+                    className="d-flex align-items-center gap-2 py-2 text-primary fw-semibold"
+                    style={{ fontSize: 13.5 }}
+                  >
+                    <Download size={15} />
+                    <span>Cài đặt ứng dụng (PWA)</span>
+                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </NavItem>
@@ -302,6 +311,13 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                       </DropdownItem>
                     </>
                   )}
+                  <DropdownItem divider />
+                  <DropdownItem
+                    onClick={() => window.dispatchEvent(new CustomEvent('hyper_open_pwa_install'))}
+                    className="d-flex align-items-center gap-2 py-2 text-primary fw-semibold"
+                  >
+                    <Download size={15} /> Cài đặt Web App (PWA)
+                  </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={logout} className="d-flex align-items-center gap-2 py-2 text-secondary">
                     <LogOut size={15} /> Đăng xuất
@@ -523,6 +539,42 @@ const NavbarComponent = ({ activeTab, setActiveTab, onOpenSearch, currentLevel, 
                 </button>
               </div>
             )}
+
+            
+            {/* PWA Web App Install Card */}
+            <div
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent('hyper_open_pwa_install'));
+              }}
+              className="p-2.5 rounded-3 border d-flex align-items-center justify-content-between cursor-pointer"
+              style={{
+                background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(30, 58, 138, 0.12) 100%)',
+                borderColor: 'rgba(37, 99, 235, 0.25)',
+                minHeight: 48
+              }}
+            >
+              <div className="d-flex align-items-center gap-2.5 min-w-0">
+                <div
+                  className="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0"
+                  style={{ width: 34, height: 34, background: '#2563eb', color: '#fff' }}
+                >
+                  <Download size={18} />
+                </div>
+                <div className="min-w-0">
+                  <div className="d-flex align-items-center gap-1.5">
+                    <span className="fw-bold text-dark" style={{ fontSize: '13px' }}>Cài đặt Web App</span>
+                    <span className="badge rounded-pill bg-primary" style={{ fontSize: '8.5px', padding: '1px 5px' }}>
+                      PWA
+                    </span>
+                  </div>
+                  <div className="text-muted text-truncate" style={{ fontSize: '10.5px' }}>
+                    Mở toàn màn hình, học mượt & lưu offline
+                  </div>
+                </div>
+              </div>
+              <ChevronRight size={15} className="text-primary flex-shrink-0" />
+            </div>
 
             {/* VIP Group: 2 Flagship New Games */}
             <div className="p-3 rounded-4 border mb-1" style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #f0fdf4 100%)', borderColor: '#fde68a' }}>
