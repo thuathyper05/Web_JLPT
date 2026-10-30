@@ -389,6 +389,81 @@ const HomePage = ({ onNavigate, onSelectLesson, currentLevel = 'N5' }) => {
         </div>
       </div>
 
+      
+      {/* ── 1.2. DAILY STUDY QUEST & STREAK HERO CARD (V2 GAMIFICATION) ── */}
+      <div className="home-daily-quest-card">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          {/* Left: Streak & Rank Badge */}
+          <div className="d-flex align-items-center gap-3">
+            <div
+              className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+              style={{
+                width: '46px',
+                height: '46px',
+                background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.28) 0%, rgba(239, 68, 68, 0.35) 100%)',
+                border: '1.5px solid rgba(245, 158, 11, 0.6)',
+                boxShadow: '0 0 16px rgba(245, 158, 11, 0.3)'
+              }}
+            >
+              <Flame size={24} className="text-warning" fill="#f59e0b" />
+            </div>
+            <div>
+              <div className="d-flex align-items-center gap-2 flex-wrap">
+                <span className="fw-black text-white" style={{ fontSize: '15px' }}>
+                  Chuỗi {gamification?.current_streak || 1} Ngày Liên Tiếp
+                </span>
+                <span
+                  className="badge rounded-pill"
+                  style={{
+                    background: 'rgba(59, 130, 246, 0.25)',
+                    border: '1px solid rgba(96, 165, 250, 0.4)',
+                    color: '#93c5fd',
+                    fontSize: '10.5px'
+                  }}
+                >
+                  {gamification?.level_tier || 'Mầm non N5'}
+                </span>
+              </div>
+              <div className="small text-white text-opacity-75 mt-0.5" style={{ fontSize: '12px' }}>
+                Tổng tích lũy: <strong className="text-warning">{gamification?.total_xp || 50} XP</strong> • Cố lên, sắp lên cấp mới!
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Quick Action Buttons */}
+          <div className="d-flex align-items-center gap-2 flex-wrap">
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playFlip?.();
+                onNavigate('dashboard');
+              }}
+              className="btn btn-sm btn-outline-light rounded-pill px-3 py-1.5 fw-bold d-inline-flex align-items-center gap-1.5"
+              style={{ fontSize: '12px', borderColor: 'rgba(255, 255, 255, 0.3)' }}
+            >
+              <Award size={14} className="text-warning" />
+              <span>Kệ 6 Huy Hiệu</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playFlip?.();
+                onNavigate('lessons');
+              }}
+              className="btn btn-sm btn-primary rounded-pill px-3.5 py-1.5 fw-bold d-inline-flex align-items-center gap-1.5 border-0 shadow-sm"
+              style={{
+                fontSize: '12px',
+                background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)'
+              }}
+            >
+              <span>Tiếp tục học</span>
+              <ChevronRight size={13} />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* ── 1.5. NEW FLAGSHIP GAMES PROMO BANNER (COMPACT & SLEEK FOR ALL DEVICES) ── */}
       <div className="home-promo-section mb-4">
         <div className="d-flex align-items-center justify-content-between mb-2.5 px-0.5">

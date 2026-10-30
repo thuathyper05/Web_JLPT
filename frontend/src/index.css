@@ -4937,3 +4937,101 @@ a, button, input, select, textarea, [role="button"] {
     padding-bottom: 24px !important;
   }
 }
+
+/* ==========================================================================
+   HYPER JAPAN 2.0 — LUXURY MOBILE & CARD ELEVATION STYLES
+   ========================================================================== */
+
+/* ── 1. Kanji Card High-End Styling ── */
+.kanji-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kanji-card:hover {
+  transform: translateY(-3px);
+  border-color: #93c5fd;
+  box-shadow: 0 10px 24px -4px rgba(37, 99, 235, 0.12);
+}
+
+.kanji-card:active {
+  transform: scale(0.96);
+  background: #f8fafc;
+}
+
+/* ── 2. Daily Goal Quest & Streak Banner on Home (Mobile & Desktop) ── */
+.home-daily-quest-card {
+  background: linear-gradient(135deg, #091224 0%, #0f172a 50%, #1e3a8a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: clamp(14px, 3vw, 20px);
+  color: #ffffff;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.2);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.home-daily-quest-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.home-daily-quest-progress-bg {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.home-daily-quest-progress-fill {
+  background: linear-gradient(90deg, #f59e0b 0%, #10b981 100%);
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── 3. Touch Feedback & Card Micro-Interactions on Mobile ── */
+.app-surface-card,
+.home-promo-card-compact,
+.home-lesson-micro-card,
+.kanji-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-surface-card:active,
+.home-promo-card-compact:active,
+.home-lesson-micro-card:active {
+  transform: scale(0.98);
+}
+
+/* ── 4. Mobile Bottom Nav Luxury Polish ── */
+@media (max-width: 991.98px) {
+  .mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: 0 -8px 28px -4px rgba(15, 23, 42, 0.08);
+  }
+
+  .mobile-nav-btn.is-active .mobile-nav-icon-box {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.38) !important;
+    transform: translateY(-2px) scale(1.06);
+  }
+}

@@ -246,15 +246,30 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
             </p>
           </div>
 
-          {/* Quick Lesson Switcher Dropdown */}
-          <div className="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
-            <span className="small text-muted fw-semibold" style={{ fontSize: '12px' }}>
-              Chọn bài:
-            </span>
+          {/* Quick Lesson Switcher Dropdown (Mobile Ergonomic Prev / Select / Next) */}
+          <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-auto">
+            <button
+              type="button"
+              disabled={currentLessonNum <= 1}
+              onClick={() => {
+                sounds.playFlip?.();
+                const prevL = Math.max(1, currentLessonNum - 1);
+                setCurrentLessonNum(prevL);
+                if (onSelectLesson) onSelectLesson(prevL);
+              }}
+              className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center"
+              style={{ width: 34, height: 34 }}
+              title="Bài trước"
+              aria-label="Bài trước"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
             <Input
               type="select"
               value={currentLessonNum}
               onChange={(e) => {
+                sounds.playFlip?.();
                 const nextL = parseInt(e.target.value);
                 setCurrentLessonNum(nextL);
                 if (onSelectLesson) onSelectLesson(nextL);
@@ -262,7 +277,7 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
               className="form-select-sm rounded-pill fw-bold border py-1.5 px-3 shadow-xs"
               style={{
                 width: 'auto',
-                minWidth: '110px',
+                minWidth: '105px',
                 fontSize: '13px',
                 background: '#ffffff',
                 borderColor: '#cbd5e1'
@@ -274,6 +289,23 @@ const LessonStudyPage = ({ selectedLesson = 1, onSelectLesson, onNavigate }) => 
                 </option>
               ))}
             </Input>
+
+            <button
+              type="button"
+              disabled={currentLessonNum >= 25}
+              onClick={() => {
+                sounds.playFlip?.();
+                const nextL = Math.min(25, currentLessonNum + 1);
+                setCurrentLessonNum(nextL);
+                if (onSelectLesson) onSelectLesson(nextL);
+              }}
+              className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center"
+              style={{ width: 34, height: 34 }}
+              title="Bài tiếp theo"
+              aria-label="Bài tiếp theo"
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
 

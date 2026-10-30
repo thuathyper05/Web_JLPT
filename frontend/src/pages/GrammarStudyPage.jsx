@@ -15,6 +15,7 @@ import {
   Volume2,
   Search,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   CheckCircle2,
   Info,
@@ -104,11 +105,23 @@ export default function GrammarStudyPage({ initialLesson = 1, onNavigate }) {
             </p>
           </div>
 
-          {/* Quick Lesson Switcher */}
-          <div className="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
-            <span className="small text-muted fw-semibold" style={{ fontSize: '12px' }}>
-              Chọn bài:
-            </span>
+          {/* Quick Lesson Switcher (Mobile Ergonomic Prev / Select / Next) */}
+          <div className="d-flex align-items-center gap-1.5 flex-shrink-0 ms-auto">
+            <button
+              type="button"
+              disabled={selectedLesson <= 1}
+              onClick={() => {
+                sounds.playFlip?.();
+                setSelectedLesson(prev => Math.max(1, prev - 1));
+              }}
+              className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center"
+              style={{ width: 34, height: 34 }}
+              title="Bài trước"
+              aria-label="Bài trước"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
             <Input
               type="select"
               value={selectedLesson}
@@ -119,7 +132,7 @@ export default function GrammarStudyPage({ initialLesson = 1, onNavigate }) {
               className="form-select-sm rounded-pill fw-bold border py-1.5 px-3 shadow-xs"
               style={{
                 width: 'auto',
-                minWidth: '110px',
+                minWidth: '105px',
                 fontSize: '13px',
                 background: '#ffffff',
                 borderColor: '#cbd5e1'
@@ -131,6 +144,21 @@ export default function GrammarStudyPage({ initialLesson = 1, onNavigate }) {
                 </option>
               ))}
             </Input>
+
+            <button
+              type="button"
+              disabled={selectedLesson >= 25}
+              onClick={() => {
+                sounds.playFlip?.();
+                setSelectedLesson(prev => Math.min(25, prev + 1));
+              }}
+              className="btn btn-sm btn-light border rounded-circle p-1 d-flex align-items-center justify-content-center"
+              style={{ width: 34, height: 34 }}
+              title="Bài tiếp theo"
+              aria-label="Bài tiếp theo"
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
 
