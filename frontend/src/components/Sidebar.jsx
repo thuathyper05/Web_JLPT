@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
-  const { activeTab, setActiveTab, currentLevel, gamification, setXpModalOpen } = useApp();
+  const { activeTab, setActiveTab, currentLevel, gamification } = useApp();
 
   const navSections = [
     {
@@ -80,23 +80,22 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
         }`}
       >
-        {/* Top Logo & Branding */}
+        {/* Top Logo: Custom HYPER Logo with Transparent Background & Hover Glow */}
         <div>
-          <div className="h-18 px-5 py-4 border-b border-pink-50 flex items-center justify-between">
+          <div className="h-18 px-5 py-3.5 border-b border-pink-50 flex items-center justify-between">
             <div
               onClick={() => handleNav({ id: 'home' })}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              className="flex items-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
+              title="HYPER - Về trang chủ"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-600 via-rose-500 to-pink-400 text-white flex items-center justify-center font-black text-xl shadow-lotus group-hover:scale-105 transition-transform">
-                H
-              </div>
-              <div className="flex flex-col">
-                <span className="font-black text-lg tracking-tight bg-gradient-to-r from-pink-700 via-pink-600 to-rose-500 bg-clip-text text-transparent">
-                  Nihongo<span className="text-slate-800">Hub</span>
-                </span>
-                <span className="text-[10px] font-semibold text-pink-400 tracking-wider uppercase -mt-0.5">
-                  Web App Học N5
-                </span>
+              <div className="relative flex items-center">
+                {/* Soft Lotus Glow behind logo on hover */}
+                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <img
+                  src="/hyper_logo.png"
+                  alt="HYPER"
+                  className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                />
               </div>
             </div>
 
@@ -112,7 +111,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </div>
 
           {/* Navigation Links List */}
-          <nav className="p-3.5 space-y-4 overflow-y-auto max-h-[calc(100vh-210px)]">
+          <nav className="p-3.5 space-y-4 overflow-y-auto max-h-[calc(100vh-190px)]">
             {navSections.map((sec, idx) => (
               <div key={idx}>
                 <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
@@ -134,22 +133,29 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <Icon size={17} className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-pink-600'} />
+                          <Icon
+                            size={17}
+                            className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-pink-600'}
+                          />
                           <span>{item.label}</span>
                         </div>
 
                         {item.badge && (
-                          <span className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                            isActive ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600'
-                          }`}>
+                          <span
+                            className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                              isActive ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600'
+                            }`}
+                          >
                             {item.badge}
                           </span>
                         )}
 
                         {item.isNew && !item.badge && (
-                          <span className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                            isActive ? 'bg-white/20 text-white' : 'bg-pink-100 text-pink-600'
-                          }`}>
+                          <span
+                            className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                              isActive ? 'bg-white/20 text-white' : 'bg-pink-100 text-pink-600'
+                            }`}
+                          >
                             MỚI
                           </span>
                         )}
@@ -162,17 +168,20 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </nav>
         </div>
 
-        {/* Bottom Card: Chuỗi Ngày Học (Streak) & XP */}
+        {/* Bottom Card: Chuỗi Ngày Học (Streak) - No XP references */}
         <div className="p-3.5 border-t border-pink-50">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden shadow-lg group">
-            {/* Background Watermark */}
+          <div
+            onClick={() => handleNav({ id: 'home' })}
+            className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
+          >
+            {/* Background Japanese Watermark */}
             <div className="absolute right-2 top-1 text-slate-800 font-jp font-black text-6xl opacity-30 select-none pointer-events-none">
-              N5
+              日
             </div>
 
             <div className="relative z-10">
               <span className="text-[10px] font-bold text-pink-300 uppercase tracking-wider block mb-1">
-                Chuỗi ngày học
+                Chuỗi ngày học liên tục
               </span>
               <div className="flex items-center gap-2">
                 <Flame size={20} className="text-amber-400 animate-bounce" fill="#f59e0b" />
@@ -180,22 +189,9 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                   {gamification?.current_streak || 12} ngày
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-1 mb-2">
+              <p className="text-[11px] text-slate-400 mt-1 mb-0">
                 Hôm nay bạn đã học {gamification?.today_words_count || 0} từ
               </p>
-
-              <button
-                type="button"
-                onClick={() => {
-                  onCloseMobile();
-                  sounds.playFlip();
-                  setXpModalOpen(true);
-                }}
-                className="w-full py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 border border-white/10 transition-colors cursor-pointer"
-              >
-                <Zap size={13} className="text-amber-400" fill="#f59e0b" />
-                <span>{gamification?.total_xp?.toLocaleString() || '1.240'} XP • Đổi thưởng</span>
-              </button>
             </div>
           </div>
         </div>

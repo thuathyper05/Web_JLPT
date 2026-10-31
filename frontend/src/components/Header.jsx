@@ -36,7 +36,6 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
     logout,
     setActiveTab,
     askAi,
-    setXpModalOpen,
     userPerks
   } = useApp();
 
@@ -69,7 +68,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
     {
       id: 2,
       title: 'Vườn Zen Bonsai cần tưới nước',
-      message: 'Cây Bonsai N5 của bạn cần 1 gáo nước hôm nay để duy trì độ ẩm và nhận +15 XP.',
+      message: 'Cây Bonsai N5 của bạn cần 1 gáo nước hôm nay để duy trì độ ẩm 100% và phát triển xanh tốt.',
       time: '1 giờ trước',
       read: false,
       tab: 'garden',
@@ -454,24 +453,8 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           )}
         </div>
 
-        {/* ── RIGHT: XP POINTS, NOTIFICATIONS, USER ACCOUNT ── */}
+        {/* ── RIGHT: NOTIFICATIONS, USER ACCOUNT ── */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {/* XP Points Pill sang XpRewardsModal */}
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playFlip();
-              setXpModalOpen(true);
-            }}
-            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-50 to-amber-100/70 border border-amber-200/80 text-amber-900 shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition-all"
-            title="Nhấn để mở Trung Tâm Điểm Thưởng XP & Cấp Độ"
-          >
-            <Zap size={14} className="text-amber-500 animate-pulse" fill="#f59e0b" />
-            <span className="text-[11px] sm:text-xs font-black tracking-tight">
-              {gamification?.total_xp ? gamification.total_xp.toLocaleString() : '1.240'} XP
-            </span>
-          </button>
-
           {/* Notifications Button & Dropdown */}
           <div ref={notificationRef} className="relative">
             <button
@@ -562,7 +545,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 {/* Dropdown Footer */}
                 <div className="px-4 pt-2.5 border-t border-pink-50 text-center">
                   <span className="text-[10.5px] font-bold text-slate-400">
-                    NihongoHub AI • Hệ thống nhắc nhở thông minh
+                    HYPER AI • Hệ thống nhắc nhở thông minh
                   </span>
                 </div>
               </div>

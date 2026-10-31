@@ -8,7 +8,7 @@ export default function AiChatBubble() {
   const [messages, setMessages] = useState([
     {
       sender: 'ai',
-      text: 'Konnichiwa! (こんにちは!) Tôi là AI Sensei của NihongoHub. Bạn có câu hỏi nào về từ vựng, ngữ pháp, kanji hay bài tập N5 hôm nay không?'
+      text: 'Konnichiwa! (こんにちは!) Tôi là AI Sensei của HYPER Japanese. Bạn có câu hỏi nào về từ vựng, ngữ pháp, kanji hay bài tập hôm nay không?'
     }
   ]);
   const [input, setInput] = useState('');

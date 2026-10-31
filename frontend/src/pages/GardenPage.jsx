@@ -192,11 +192,11 @@ export default function GardenPage() {
                 isWatering ? 'ring-8 ring-pink-200 scale-105' : ''
               }`}
             >
-              {/* Floating XP Reward Indicator */}
+              {/* Floating Vitality Indicator */}
               {floatingXp && (
-                <div className="absolute top-4 bg-gradient-to-r from-pink-600 to-rose-500 text-white font-black text-xs px-3 py-1.5 rounded-full shadow-lg animate-bounce z-30 flex items-center gap-1">
-                  <Zap size={13} fill="#fbbf24" />
-                  <span>+15 XP Tưới Nước!</span>
+                <div className="absolute top-4 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-xs px-3 py-1.5 rounded-full shadow-lg animate-bounce z-30 flex items-center gap-1.5">
+                  <Sparkles size={13} />
+                  <span>+ Độ Ẩm & Sức Sống Bonsai!</span>
                 </div>
               )}
 
@@ -415,7 +415,7 @@ export default function GardenPage() {
                 className="mt-1 px-6 py-2.5 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:from-pink-500 hover:to-rose-600 text-white font-black text-xs sm:text-sm shadow-lotus flex items-center gap-2 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 <Droplets size={16} fill="white" />
-                <span>Tưới nước dinh dưỡng (+15 XP)</span>
+                <span>Tưới nước dưỡng rễ Bonsai</span>
               </button>
             </div>
           </div>

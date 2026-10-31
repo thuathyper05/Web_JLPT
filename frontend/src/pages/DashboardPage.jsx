@@ -154,7 +154,7 @@ export default function DashboardPage() {
                   Còn {Math.max(0, 10 - (gamification?.today_words_count || 0))} từ nữa để hoàn thành mục tiêu ngày.
                 </p>
                 <span className="text-[11px] font-bold text-pink-600">
-                  +30 XP thưởng chuỗi
+                  Giữ vững chuỗi ngày học
                 </span>
               </div>
             </div>

@@ -28,7 +28,7 @@ export default function SupportPage() {
 
   const faqs = [
     {
-      q: 'NihongoHub có chạy được hoàn toàn ngoại tuyến (Offline) không?',
+      q: 'HYPER Japanese có chạy được hoàn toàn ngoại tuyến (Offline) không?',
       a: 'Có! Hệ thống được xây dựng theo chuẩn Web App hiện đại, toàn bộ âm thanh phản xạ, từ vựng và thuật toán SRS đều lưu trong trình duyệt cục bộ, giúp bạn học mượt mà ngay cả khi mất mạng.'
     },
     {
@@ -36,8 +36,8 @@ export default function SupportPage() {
       a: 'Trên iPhone (Safari): Bấm vào nút Chia sẻ (biểu tượng hình vuông có mũi tên lên) và chọn "Thêm vào màn hình chính". Trên Android (Chrome): Bấm vào dấu 3 chấm góc trên bên phải và chọn "Cài đặt ứng dụng" hoặc "Thêm vào màn hình chính".'
     },
     {
-      q: 'Tiến độ học tập và XP có bị mất khi tôi tắt trình duyệt không?',
-      a: 'Không hề. Tiến độ từ vựng, chuỗi ngày học (streak) và điểm XP đều được tự động đồng bộ liên tục vào bộ nhớ thiết bị. Khi đăng ký tài khoản, dữ liệu sẽ được sao lưu an toàn trên đám mây.'
+      q: 'Tiến độ học tập và chuỗi ngày học có bị mất khi tôi tắt trình duyệt không?',
+      a: 'Không hề. Tiến độ từ vựng, chuỗi ngày học (streak) và ghi chú đều được tự động đồng bộ liên tục vào bộ nhớ thiết bị. Khi đăng ký tài khoản, dữ liệu sẽ được sao lưu an toàn trên đám mây.'
     },
     {
       q: 'Tại sao nên dùng phím tắt khi học thẻ Flashcard 3D?',
@@ -45,7 +45,7 @@ export default function SupportPage() {
     },
     {
       q: 'Phương pháp Vườn cây Bonsai SRS hoạt động như thế nào?',
-      a: 'NihongoHub áp dụng nguyên lý Spaced Repetition System (Lặp lại ngắt quãng). Từ mới học sẽ là hạt mầm, khi bạn ôn lại đúng sau 1 ngày, 3 ngày, 7 ngày, từ đó sẽ chuyển sang Bonsai niên thiếu và Cổ thụ hoàng kim trong trí nhớ dài hạn.'
+      a: 'HYPER Japanese áp dụng nguyên lý Spaced Repetition System (Lặp lại ngắt quãng). Từ mới học sẽ là hạt mầm, khi bạn ôn lại đúng sau 1 ngày, 3 ngày, 7 ngày, từ đó sẽ chuyển sang Bonsai niên thiếu và Cổ thụ hoàng kim trong trí nhớ dài hạn.'
     }
   ];
 
@@ -173,13 +173,13 @@ export default function SupportPage() {
           <span>GỬI PHẢN HỒI HOẶC BÁO LỖI</span>
         </h2>
         <p className="text-xs text-slate-500">
-          Ý kiến đóng góp của bạn giúp NihongoHub ngày càng hoàn thiện hơn mỗi ngày.
+          Ý kiến đóng góp của bạn giúp HYPER Japanese ngày càng hoàn thiện hơn mỗi ngày.
         </p>
 
         {feedbackSent ? (
           <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2">
             <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-            <span>Cảm ơn bạn! Phản hồi đã được chuyển thẳng tới đội ngũ phát triển NihongoHub.</span>
+            <span>Cảm ơn bạn! Phản hồi đã được chuyển thẳng tới đội ngũ phát triển HYPER Japanese.</span>
           </div>
         ) : (
           <form onSubmit={handleFeedbackSubmit} className="space-y-4">

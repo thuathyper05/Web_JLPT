@@ -56,7 +56,7 @@ export default function LevelComingSoonPage() {
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Đội ngũ giáo viên bản ngữ và kỹ sư AI của NihongoHub đang hoàn thiện bộ dữ liệu từ vựng, ngữ pháp và bài thi thử cho cấp độ <strong>JLPT {currentLevel}</strong> theo tiêu chuẩn mới nhất.
+            Đội ngũ giáo viên bản ngữ và kỹ sư AI của HYPER Japanese đang hoàn thiện bộ dữ liệu từ vựng, ngữ pháp và bài thi thử cho cấp độ <strong>JLPT {currentLevel}</strong> theo tiêu chuẩn mới nhất.
           </p>
         </div>
 

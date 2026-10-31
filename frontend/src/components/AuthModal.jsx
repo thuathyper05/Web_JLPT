@@ -134,7 +134,7 @@ export default function AuthModal() {
     const mockUser = {
       id: Date.now(),
       username: `Học viên ${provider}`,
-      email: `${provider.toLowerCase()}@nihongohub.vn`,
+      email: `${provider.toLowerCase()}@hyperjapan.vn`,
       role: 'student'
     };
     localStorage.setItem('nihongo_token', 'mock_social_token_jwt');
@@ -168,17 +168,18 @@ export default function AuthModal() {
 
           {/* Top Brand Logo */}
           <div className="relative z-10 space-y-2">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 flex items-center justify-center font-black text-2xl text-white shadow-lotus">
-                H
+            <div className="flex items-center">
+              <div className="bg-white/95 px-3 py-1.5 rounded-2xl shadow-lotus inline-block">
+                <img
+                  src="/hyper_logo.png"
+                  alt="HYPER"
+                  className="h-8 w-auto object-contain"
+                />
               </div>
-              <span className="font-black text-xl tracking-tight">
-                Nihongo<span className="text-pink-400">Hub</span>
-              </span>
             </div>
 
             <p className="text-xs text-pink-200/80 font-medium pt-1">
-              Hệ thống Web App học tiếng Nhật N5 thông minh hàng đầu với công nghệ AI và Spaced Repetition.
+              Hệ thống Web App học tiếng Nhật thông minh hàng đầu với công nghệ AI và Spaced Repetition.
             </p>
           </div>
 
@@ -233,7 +234,7 @@ export default function AuthModal() {
             <div className="mb-6">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2 border border-pink-100">
                 <ShieldCheck size={13} className="text-pink-600" />
-                <span>BẢO MẬT HỌC VIÊN NIHONGOHUB</span>
+                <span>BẢO MẬT HỌC VIÊN HYPER</span>
               </div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 {authMode === 'login' && 'Đăng nhập vào hệ thống'}
@@ -555,7 +556,7 @@ export default function AuthModal() {
               <a href="#support" onClick={() => setAuthModalOpen(false)} className="text-pink-600 hover:underline">
                 Điều khoản & Chính sách bảo mật
               </a>{' '}
-              của NihongoHub.
+              của HYPER Japanese.
             </p>
           </div>
         </div>
