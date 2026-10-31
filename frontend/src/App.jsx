@@ -16,6 +16,11 @@ import QuizPage from './pages/QuizPage';
 import PracticePage from './pages/PracticePage';
 import WordMatchPage from './pages/WordMatchPage';
 import GardenPage from './pages/GardenPage';
+import NotebookPage from './pages/NotebookPage';
+import DictionaryPage from './pages/DictionaryPage';
+import AiSenseiPage from './pages/AiSenseiPage';
+import SupportPage from './pages/SupportPage';
+import LevelComingSoonPage from './pages/LevelComingSoonPage';
 
 export default function App() {
   const { activeTab } = useApp();
@@ -31,6 +36,10 @@ export default function App() {
         return <KanjiPage />;
       case 'particles':
         return <ParticlesPage />;
+      case 'dictionary':
+        return <DictionaryPage />;
+      case 'notebook':
+        return <NotebookPage />;
       case 'flashcard':
         return <FlashcardPage />;
       case 'quiz':
@@ -41,6 +50,12 @@ export default function App() {
         return <WordMatchPage />;
       case 'garden':
         return <GardenPage />;
+      case 'ai_sensei':
+        return <AiSenseiPage />;
+      case 'support':
+        return <SupportPage />;
+      case 'level-coming-soon':
+        return <LevelComingSoonPage />;
       default:
         return <DashboardPage />;
     }
@@ -66,7 +81,7 @@ export default function App() {
       </div>
 
       {/* ── 3. MOBILE BOTTOM NAVIGATION ── */}
-      <MobileBottomNav />
+      <MobileBottomNav onOpenMobileMenu={() => setMobileSidebarOpen(true)} />
 
       {/* ── 4. FLOATING AI CHAT BUBBLE ── */}
       <AiChatBubble />

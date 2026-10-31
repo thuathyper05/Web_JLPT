@@ -12,11 +12,14 @@ import {
   Sprout,
   Sparkles,
   Flame,
-  X
+  X,
+  Bookmark,
+  Search,
+  LifeBuoy
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
-  const { activeTab, setActiveTab, gamification, askAi } = useApp();
+  const { activeTab, setActiveTab, gamification } = useApp();
 
   const navSections = [
     {
@@ -24,40 +27,42 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
       items: [
         { id: 'home', label: 'Trang chủ', icon: Home },
         { id: 'lessons', label: 'Bài học', icon: BookOpen },
-        { id: 'kanji', label: 'Kanji', icon: PenTool },
-        { id: 'particles', label: 'Trợ từ', icon: Compass },
+        { id: 'kanji', label: 'Chữ Hán Kanji', icon: PenTool },
+        { id: 'particles', label: 'Trợ từ N5', icon: Compass },
+        { id: 'dictionary', label: 'Tra cứu từ vựng', icon: Search, isNew: true },
       ]
     },
     {
       title: 'LUYỆN TẬP',
       items: [
-        { id: 'flashcard', label: 'Flashcard', icon: Layers },
+        { id: 'notebook', label: 'Sổ tay từ sai', icon: Bookmark, badge: 'Hot' },
+        { id: 'flashcard', label: 'Flashcard 3D', icon: Layers },
         { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
-        { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
-        { id: 'wordmatch', label: 'Nối từ', icon: Zap },
-        { id: 'garden', label: 'Vườn cây', icon: Sprout },
+        { id: 'practice', label: 'Luyện gõ Romaji', icon: Keyboard },
+        { id: 'wordmatch', label: 'Nối từ 60s', icon: Zap },
+        { id: 'garden', label: 'Vườn cây SRS', icon: Sprout },
       ]
     },
     {
-      title: 'CÔNG CỤ',
+      title: 'CÔNG CỤ & HỖ TRỢ',
       items: [
         {
-          id: 'ai_tool',
-          label: 'Trợ lý AI',
+          id: 'ai_sensei',
+          label: 'Trợ lý AI Sensei',
           icon: Sparkles,
-          isNew: true,
-          action: () => askAi('chat', { topic: 'general' }, 'Trợ Lý AI NihongoHub')
+          isNew: true
+        },
+        {
+          id: 'support',
+          label: 'Trung tâm trợ giúp',
+          icon: LifeBuoy
         }
       ]
     }
   ];
 
   const handleNav = (item) => {
-    if (item.action) {
-      item.action();
-    } else {
-      setActiveTab(item.id);
-    }
+    setActiveTab(item.id);
     onCloseMobile();
   };
 
@@ -92,7 +97,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                   Nihongo<span className="text-slate-800">Hub</span>
                 </span>
                 <span className="text-[10px] font-semibold text-pink-400 tracking-wider uppercase -mt-0.5">
-                  Học Tiếng Nhật N5
+                  Web App Học N5
                 </span>
               </div>
             </div>
@@ -101,7 +106,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               aria-label="Đóng menu"
             >
               <X size={20} />
@@ -109,13 +114,13 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </div>
 
           {/* Navigation Links List */}
-          <nav className="p-3.5 space-y-5 overflow-y-auto max-h-[calc(100vh-210px)]">
+          <nav className="p-3.5 space-y-4 overflow-y-auto max-h-[calc(100vh-210px)]">
             {navSections.map((sec, idx) => (
               <div key={idx}>
-                <div className="px-3 mb-1.5 text-[10.5px] font-bold text-slate-400 tracking-wider uppercase">
+                <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
                   {sec.title}
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {sec.items.map((item) => {
                     const Icon = item.icon;
                     const isActive = activeTab === item.id;
@@ -124,19 +129,29 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                         key={item.id}
                         type="button"
                         onClick={() => handleNav(item)}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl font-semibold text-[13.5px] transition-all ${
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl font-semibold text-[13px] transition-all cursor-pointer ${
                           isActive
-                            ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lotus'
+                            ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lotus font-bold'
                             : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-600'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <Icon size={18} className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-pink-600'} />
+                        <div className="flex items-center gap-2.5">
+                          <Icon size={17} className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-pink-600'} />
                           <span>{item.label}</span>
                         </div>
 
-                        {item.isNew && (
-                          <span className="px-1.5 py-0.5 text-[9.5px] font-bold rounded-md bg-pink-100 text-pink-600 uppercase tracking-wide">
+                        {item.badge && (
+                          <span className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                            isActive ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600'
+                          }`}>
+                            {item.badge}
+                          </span>
+                        )}
+
+                        {item.isNew && !item.badge && (
+                          <span className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                            isActive ? 'bg-white/20 text-white' : 'bg-pink-100 text-pink-600'
+                          }`}>
                             MỚI
                           </span>
                         )}
@@ -155,7 +170,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
             onClick={() => handleNav({ id: 'home' })}
             className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
           >
-            {/* Background Watermark Kanjo */}
+            {/* Background Watermark */}
             <div className="absolute right-2 top-1 text-slate-800 font-jp font-black text-6xl opacity-30 select-none pointer-events-none">
               N5
             </div>

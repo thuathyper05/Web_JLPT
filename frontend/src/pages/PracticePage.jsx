@@ -10,34 +10,52 @@ import {
   Volume2,
   CheckCircle2,
   XCircle,
-  ChevronRight,
-  Flame
+  Flame,
+  Shuffle,
+  HelpCircle,
+  ArrowRight
 } from 'lucide-react';
 
 export default function PracticePage() {
   const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
+  const [lessonChoice, setLessonChoice] = useState(selectedLesson ? String(selectedLesson) : '1');
   const [words, setWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState(null); // 'correct' | 'wrong' | null
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWords = async () => {
+      setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({ lesson: selectedLesson });
-        setWords(res.data?.data || []);
+        const params = lessonChoice === 'all' ? {} : { lesson: parseInt(lessonChoice) };
+        const res = await vocabService.getVocabularies(params);
+        let list = res.data?.data || [];
+        setWords(list);
         setCurrentIndex(0);
         setUserInput('');
         setFeedback(null);
       } catch (err) {
-        console.error(err);
+        console.error('Fetch practice words error:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchWords();
-  }, [selectedLesson]);
+  }, [lessonChoice]);
+
+  const handleShuffle = () => {
+    sounds.playFlip();
+    const shuffled = [...words].sort(() => Math.random() - 0.5);
+    setWords(shuffled);
+    setCurrentIndex(0);
+    setUserInput('');
+    setFeedback(null);
+  };
 
   const currentWord = words[currentIndex];
 
@@ -55,10 +73,13 @@ export default function PracticePage() {
     const targetKana = (currentWord.clean_kana || currentWord.kana || '').trim();
     const cleanUser = userInput.trim();
 
-    const isMatch = cleanUser === targetKana || wanakana.toHiragana(cleanUser) === wanakana.toHiragana(targetKana);
+    const isMatch =
+      cleanUser === targetKana ||
+      wanakana.toHiragana(cleanUser) === wanakana.toHiragana(targetKana);
 
     if (isMatch) {
       sounds.playCorrect();
+      speakJapanese(currentWord.kanji || currentWord.clean_kana || currentWord.kana);
       setFeedback('correct');
       setScore((prev) => prev + 1);
       setStreak((prev) => prev + 1);
@@ -97,7 +118,7 @@ export default function PracticePage() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto pb-16 animate-in fade-in duration-300">
-      {/* Header Banner */}
+      {/* ── 1. HEADER BANNER ── */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden text-center sm:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
           <Keyboard size={13} className="text-pink-600" />
@@ -114,22 +135,42 @@ export default function PracticePage() {
             </p>
           </div>
 
-          <select
-            value={selectedLesson}
-            onChange={(e) => setSelectedLesson(parseInt(e.target.value))}
-            className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800"
-          >
-            {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                Bài {n < 10 ? `0${n}` : n}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2">
+            <select
+              value={lessonChoice}
+              onChange={(e) => {
+                sounds.playFlip();
+                setLessonChoice(e.target.value);
+              }}
+              className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 cursor-pointer"
+            >
+              <option value="all">Tất cả bài học (1.512 từ)</option>
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  Bài {n < 10 ? `0${n}` : n}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={handleShuffle}
+              className="p-2 rounded-xl border border-pink-200 bg-pink-50/50 text-pink-700 hover:bg-pink-100 transition-colors cursor-pointer"
+              title="Xáo trộn thứ tự từ vựng"
+            >
+              <Shuffle size={15} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Main Practice Card */}
-      {currentWord && (
+      {/* ── 2. MAIN PRACTICE CARD ── */}
+      {loading ? (
+        <div className="py-20 text-center">
+          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-xs font-bold text-slate-400">Đang tải từ vựng...</p>
+        </div>
+      ) : currentWord ? (
         <div className="p-8 rounded-3xl bg-white border border-pink-100 shadow-lotus space-y-6 text-center">
           {/* Progress & Streak */}
           <div className="flex justify-between items-center text-xs font-bold text-slate-400">
@@ -148,7 +189,7 @@ export default function PracticePage() {
           {/* Prompt: Vietnamese Meaning */}
           <div className="space-y-2 py-4">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              Nghĩa tiếng Việt
+              Nghĩa tiếng Việt (Bài {currentWord.lesson_number})
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-pink-700">
               {currentWord.clean_vietnamese || currentWord.vietnamese}
@@ -182,8 +223,16 @@ export default function PracticePage() {
 
             {/* Feedback alert */}
             {feedback === 'wrong' && (
-              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold animate-in fade-in">
-                Chưa chính xác! Đáp án đúng là: 「{currentWord.clean_kana || currentWord.kana}」
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold animate-in fade-in flex items-center justify-between">
+                <span>Đáp án đúng là: 「{currentWord.clean_kana || currentWord.kana}」</span>
+                <button
+                  type="button"
+                  onClick={() => speakJapanese(currentWord.clean_kana || currentWord.kana)}
+                  className="p-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 transition-colors"
+                  title="Nghe phát âm"
+                >
+                  <Volume2 size={14} />
+                </button>
               </div>
             )}
 
@@ -191,7 +240,7 @@ export default function PracticePage() {
               <button
                 type="submit"
                 disabled={!userInput.trim() || feedback === 'correct'}
-                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lotus transition-transform active:scale-95 disabled:opacity-50"
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lotus transition-transform active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 Kiểm tra [Enter]
               </button>
@@ -200,7 +249,7 @@ export default function PracticePage() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm"
+                  className="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm cursor-pointer"
                 >
                   Bỏ qua
                 </button>
@@ -212,15 +261,17 @@ export default function PracticePage() {
           <div className="pt-2">
             <button
               type="button"
-              onClick={() => askAi('explain_vocab', currentWord, `AI Gợi Ý: ${currentWord.clean_vietnamese || currentWord.vietnamese}`)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-600 hover:underline"
+              onClick={() =>
+                askAi('explain_vocab', currentWord, `AI Gợi Ý: ${currentWord.clean_vietnamese || currentWord.vietnamese}`)
+              }
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-600 hover:underline cursor-pointer"
             >
               <Sparkles size={14} />
               <span>Xem mẹo ghi nhớ AI cho từ này</span>
             </button>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

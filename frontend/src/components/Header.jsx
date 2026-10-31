@@ -6,16 +6,35 @@ import {
   Bell,
   User,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Check,
+  Sparkles,
+  Lock
 } from 'lucide-react';
+import { sounds } from '../services/sounds';
 
 export default function Header({ onOpenMobileMenu = () => {} }) {
   const { currentLevel, setCurrentLevel, gamification, user, openAuth, logout } = useApp();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [levelDropdownOpen, setLevelDropdownOpen] = useState(false);
+
+  const levels = [
+    { id: 'N5', title: 'JLPT N5', status: 'ready', desc: 'Sơ cấp 1 • Hoàn chỉnh (1.512 từ)' },
+    { id: 'N4', title: 'JLPT N4', status: 'dev', desc: 'Sơ cấp 2 • Đang phát triển' },
+    { id: 'N3', title: 'JLPT N3', status: 'dev', desc: 'Trung cấp 1 • Đang phát triển' },
+    { id: 'N2', title: 'JLPT N2', status: 'dev', desc: 'Trung cấp 2 • Đang phát triển' },
+    { id: 'N1', title: 'JLPT N1', status: 'dev', desc: 'Cao cấp • Đang phát triển' },
+  ];
+
+  const handleSelectLevel = (lvlId) => {
+    sounds.playFlip();
+    setCurrentLevel(lvlId);
+    setLevelDropdownOpen(false);
+  };
 
   return (
     <header className="h-16 px-4 md:px-8 bg-white/90 backdrop-blur-md border-b border-pink-100/80 sticky top-0 z-30 flex items-center justify-between">
-      {/* Left: Mobile Toggle & Level Selector Pill */}
+      {/* Left: Mobile Toggle & Interactive Level Selector Dropdown */}
       <div className="flex items-center gap-3">
         {/* Mobile Hamburger Button */}
         <button
@@ -27,12 +46,79 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           <Menu size={22} />
         </button>
 
-        {/* Level Indicator Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-50/80 border border-pink-200/60 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-          <span className="text-xs font-bold text-pink-700 tracking-wide uppercase">
-            JLPT {currentLevel || 'N5'}
-          </span>
+        {/* Level Switcher Dropdown */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => {
+              sounds.playFlip();
+              setLevelDropdownOpen(!levelDropdownOpen);
+            }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-50 hover:bg-pink-100/80 border border-pink-200/80 shadow-sm transition-all group cursor-pointer"
+            title="Nhấn để đổi cấp độ JLPT"
+          >
+            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+            <span className="text-xs font-black text-pink-700 tracking-wide uppercase">
+              JLPT {currentLevel || 'N5'}
+            </span>
+            <ChevronDown size={14} className={`text-pink-500 transition-transform ${levelDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Level Dropdown Menu */}
+          {levelDropdownOpen && (
+            <div
+              className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-pink-100 py-2 z-50 animate-in fade-in slide-in-from-top-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="px-4 py-1.5 border-b border-pink-50 flex items-center justify-between">
+                <span className="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider">
+                  CHỌN CẤP ĐỘ JLPT
+                </span>
+                <span className="text-[10px] text-pink-600 font-bold">5 Cấp độ</span>
+              </div>
+
+              <div className="p-1 space-y-1">
+                {levels.map((lvl) => {
+                  const isCurrent = (currentLevel || 'N5') === lvl.id;
+                  return (
+                    <button
+                      key={lvl.id}
+                      type="button"
+                      onClick={() => handleSelectLevel(lvl.id)}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left transition-all ${
+                        isCurrent
+                          ? 'bg-pink-50 text-pink-700 font-bold border border-pink-200/60'
+                          : 'hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-black">{lvl.title}</span>
+                          {lvl.status === 'ready' ? (
+                            <span className="px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-700 text-[9px] font-extrabold">
+                              HOÀN CHỈNH
+                            </span>
+                          ) : (
+                            <span className="px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-700 text-[9px] font-bold flex items-center gap-0.5">
+                              <Lock size={9} />
+                              <span>SẮP RA MẮT</span>
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10.5px] text-slate-400 font-medium">
+                          {lvl.desc}
+                        </span>
+                      </div>
+
+                      {isCurrent && (
+                        <Check size={16} className="text-pink-600 shrink-0" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -52,6 +138,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
         {/* Notifications Button */}
         <button
           type="button"
+          onClick={() => sounds.playFlip()}
           className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-pink-600 hover:border-pink-200 hover:bg-pink-50/50 transition-all relative"
           title="Thông báo hệ thống"
         >
@@ -64,8 +151,11 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           <div className="relative">
             <button
               type="button"
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-pink-50 hover:bg-pink-100/70 border border-pink-200/70 transition-colors"
+              onClick={() => {
+                sounds.playFlip();
+                setProfileDropdownOpen(!profileDropdownOpen);
+              }}
+              className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-pink-50 hover:bg-pink-100/70 border border-pink-200/70 transition-colors cursor-pointer"
             >
               <div className="w-7 h-7 rounded-lg bg-pink-600 text-white font-bold text-xs flex items-center justify-center">
                 {user.username?.charAt(0).toUpperCase() || 'U'}
@@ -89,7 +179,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 <button
                   type="button"
                   onClick={logout}
-                  className="w-full px-4 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
                 >
                   <LogOut size={14} />
                   <span>Đăng xuất</span>
@@ -101,12 +191,10 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           <button
             type="button"
             onClick={() => openAuth('login')}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-xs shadow-lotus-sm hover:shadow-lotus hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white shadow-lotus text-xs font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <div className="w-5 h-5 rounded-md bg-white/20 text-white font-bold text-[10px] flex items-center justify-center">
-              K
-            </div>
-            <span>Khách (Đăng nhập)</span>
+            <User size={14} />
+            <span>Đăng nhập</span>
           </button>
         )}
       </div>

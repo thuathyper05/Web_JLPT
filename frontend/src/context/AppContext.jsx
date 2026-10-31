@@ -32,9 +32,20 @@ export const AppProvider = ({ children }) => {
     today_words_count: 0
   });
 
+  // Guest Progress: { [wordId]: { status: 'mastered' | 'needs_review', updated_at: string } }
   const [guestProgress, setGuestProgress] = useState(() => {
     try {
       const saved = localStorage.getItem('nihongo_guest_progress');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Favorites: { [wordId]: true }
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nihongo_favorites');
       return saved ? JSON.parse(saved) : {};
     } catch {
       return {};
@@ -68,6 +79,13 @@ export const AppProvider = ({ children }) => {
     } catch {}
   }, [guestProgress]);
 
+  // Save favorites
+  useEffect(() => {
+    try {
+      localStorage.setItem('nihongo_favorites', JSON.stringify(favorites));
+    } catch {}
+  }, [favorites]);
+
   // Tab switch with sound
   const navigateTo = (tab, lessonId = null) => {
     sounds.playFlip();
@@ -75,6 +93,35 @@ export const AppProvider = ({ children }) => {
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Change JLPT Level
+  const changeLevel = (level) => {
+    sounds.playFlip();
+    setCurrentLevel(level);
+    if (level === 'N5') {
+      if (activeTab === 'level-coming-soon') {
+        setActiveTab('home');
+      }
+    } else {
+      setActiveTab('level-coming-soon');
+    }
+  };
+
+  // Toggle favorite word
+  const toggleFavorite = (wordId) => {
+    sounds.playFlip();
+    setFavorites((prev) => {
+      const updated = { ...prev };
+      if (updated[wordId]) {
+        delete updated[wordId];
+      } else {
+        updated[wordId] = true;
+      }
+      return updated;
+    });
+  };
+
+  const isFavorite = (wordId) => !!favorites[wordId];
 
   // Open Auth modal
   const openAuth = (mode = 'login') => {
@@ -158,7 +205,7 @@ export const AppProvider = ({ children }) => {
         selectedLesson,
         setSelectedLesson,
         currentLevel,
-        setCurrentLevel,
+        setCurrentLevel: changeLevel,
         user,
         setUser,
         logout,
@@ -171,6 +218,9 @@ export const AppProvider = ({ children }) => {
         gamification,
         guestProgress,
         recordWordProgress,
+        favorites,
+        toggleFavorite,
+        isFavorite,
         aiModal,
         askAi,
         closeAiModal

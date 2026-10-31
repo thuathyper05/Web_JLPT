@@ -192,8 +192,11 @@ export default function DashboardPage() {
       {/* ── 3. MIDDLE ROW: 4 STATS CARDS ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1: Từ đã học */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-shadow">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+        <div
+          onClick={() => setActiveTab('lessons')}
+          className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm hover:border-pink-300 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <BookOpen size={20} />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tight">
@@ -204,8 +207,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Stat 2: Thành thạo */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-shadow">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
+        <div
+          onClick={() => setActiveTab('notebook')}
+          className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm hover:border-pink-300 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <Trophy size={20} />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tight">
@@ -218,20 +224,26 @@ export default function DashboardPage() {
         </div>
 
         {/* Stat 3: Cần ôn lại */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-shadow">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
+        <div
+          onClick={() => setActiveTab('notebook')}
+          className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm hover:border-pink-300 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <Flame size={20} fill="#f59e0b" />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tight">
             {stats.needsReview}
           </div>
           <div className="text-xs font-bold text-slate-700 mt-0.5">Cần ôn lại</div>
-          <span className="text-[11px] text-slate-400 font-medium">Ôn ngay hôm nay</span>
+          <span className="text-[11px] text-rose-500 font-bold">Ôn ngay trong Sổ tay</span>
         </div>
 
         {/* Stat 4: Kanji */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-shadow">
-          <div className="w-10 h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-3">
+        <div
+          onClick={() => setActiveTab('kanji')}
+          className="p-4 sm:p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm hover:border-pink-300 transition-all cursor-pointer group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <PenTool size={20} />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tight">

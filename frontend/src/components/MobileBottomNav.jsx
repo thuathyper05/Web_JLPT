@@ -1,15 +1,15 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Home, BookOpen, PenTool, Layers, CheckSquare } from 'lucide-react';
+import { Home, BookOpen, Bookmark, CheckSquare, Menu } from 'lucide-react';
+import { sounds } from '../services/sounds';
 
-export default function MobileBottomNav() {
+export default function MobileBottomNav({ onOpenMobileMenu = () => {} }) {
   const { activeTab, setActiveTab } = useApp();
 
   const bottomItems = [
     { id: 'home', label: 'Trang chủ', icon: Home },
     { id: 'lessons', label: 'Bài học', icon: BookOpen },
-    { id: 'kanji', label: 'Kanji', icon: PenTool },
-    { id: 'flashcard', label: 'Flashcard', icon: Layers },
+    { id: 'notebook', label: 'Sổ tay', icon: Bookmark },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
   ];
 
@@ -25,8 +25,11 @@ export default function MobileBottomNav() {
           <button
             key={item.id}
             type="button"
-            onClick={() => setActiveTab(item.id)}
-            className="flex-1 flex flex-col items-center justify-center py-1.5 transition-all outline-none"
+            onClick={() => {
+              sounds.playFlip();
+              setActiveTab(item.id);
+            }}
+            className="flex-1 flex flex-col items-center justify-center py-1.5 transition-all outline-none cursor-pointer"
             style={{ minHeight: '44px' }}
           >
             <div
@@ -39,7 +42,7 @@ export default function MobileBottomNav() {
               <Icon size={19} strokeWidth={isActive ? 2.5 : 2} />
             </div>
             <span
-              className={`text-[10.5px] mt-0.5 tracking-tight truncate max-w-[64px] font-semibold ${
+              className={`text-[10px] mt-0.5 tracking-tight truncate max-w-[64px] font-semibold ${
                 isActive ? 'text-pink-600 font-bold' : 'text-slate-500'
               }`}
             >
@@ -48,6 +51,24 @@ export default function MobileBottomNav() {
           </button>
         );
       })}
+
+      {/* 5th button: Open Full Sidebar Drawer */}
+      <button
+        type="button"
+        onClick={() => {
+          sounds.playFlip();
+          onOpenMobileMenu();
+        }}
+        className="flex-1 flex flex-col items-center justify-center py-1.5 transition-all outline-none cursor-pointer"
+        style={{ minHeight: '44px' }}
+      >
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-pink-600">
+          <Menu size={19} />
+        </div>
+        <span className="text-[10px] mt-0.5 tracking-tight truncate max-w-[64px] font-semibold text-slate-500">
+          Thêm
+        </span>
+      </button>
     </nav>
   );
 }
