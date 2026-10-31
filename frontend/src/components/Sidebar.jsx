@@ -14,7 +14,8 @@ import {
   Flame,
   X,
   Bookmark,
-  LifeBuoy
+  LifeBuoy,
+  Headphones
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
@@ -27,13 +28,14 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
         { id: 'home', label: 'Trang chủ', icon: Home },
         { id: 'lessons', label: 'Bài học', icon: BookOpen },
         { id: 'kanji', label: 'Chữ Hán Kanji', icon: PenTool },
-        { id: 'particles', label: currentLevel ? `Trợ từ ${currentLevel}` : 'Trợ từ', icon: Compass },
+        { id: 'particles', label: 'Trợ từ', icon: Compass },
       ]
     },
     {
       title: 'LUYỆN TẬP',
       items: [
         { id: 'notebook', label: 'Sổ tay từ sai', icon: Bookmark, badge: 'Hot' },
+        { id: 'listening', label: 'Luyện nghe phản xạ', icon: Headphones, isNew: true },
         { id: 'flashcard', label: 'Flashcard 3D', icon: Layers },
         { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
         { id: 'practice', label: 'Luyện gõ Romaji', icon: Keyboard },
@@ -80,17 +82,17 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
         }`}
       >
-        {/* Top Logo: Custom HYPER Logo with Transparent Background & Hover Glow */}
+        {/* Top Logo: Custom HYPER Logo Centered with Subtle Hover Glow */}
         <div>
-          <div className="h-18 px-5 py-3.5 border-b border-pink-50 flex items-center justify-between">
+          <div className="relative h-20 px-4 py-3.5 border-b border-pink-50 flex items-center justify-center">
             <div
               onClick={() => handleNav({ id: 'home' })}
-              className="flex items-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
+              className="flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
               title="HYPER - Về trang chủ"
             >
-              <div className="relative flex items-center">
+              <div className="relative flex items-center justify-center">
                 {/* Soft Lotus Glow behind logo on hover */}
-                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <img
                   src="/hyper_logo.png"
                   alt="HYPER"
@@ -99,11 +101,11 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
               </div>
             </div>
 
-            {/* Mobile Close Button */}
+            {/* Mobile Close Button (Positioned absolutely on the right for mobile drawer) */}
             <button
               type="button"
               onClick={onCloseMobile}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
               aria-label="Đóng menu"
             >
               <X size={20} />

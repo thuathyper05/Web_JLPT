@@ -13,6 +13,7 @@ import LessonsPage from './pages/LessonsPage';
 import KanjiPage from './pages/KanjiPage';
 import ParticlesPage from './pages/ParticlesPage';
 import FlashcardPage from './pages/FlashcardPage';
+import ListeningPage from './pages/ListeningPage';
 import QuizPage from './pages/QuizPage';
 import PracticePage from './pages/PracticePage';
 import WordMatchPage from './pages/WordMatchPage';
@@ -41,6 +42,8 @@ export default function App() {
         return <DictionaryPage />;
       case 'notebook':
         return <NotebookPage />;
+      case 'listening':
+        return <ListeningPage />;
       case 'flashcard':
         return <FlashcardPage />;
       case 'quiz':

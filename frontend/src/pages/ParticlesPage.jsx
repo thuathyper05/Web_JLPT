@@ -16,15 +16,14 @@ import {
 } from 'lucide-react';
 
 export default function ParticlesPage() {
-  const { currentLevel, setCurrentLevel, askAi } = useApp();
+  const { currentLevel, askAi } = useApp();
   const [particles, setParticles] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedParticle, setSelectedParticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Available levels for particles
-  const availableLevels = ['N5', 'N4', 'N3'];
-  const activeLevel = availableLevels.includes(currentLevel) ? currentLevel : 'N5';
+  // Active level follows the global webapp level selector
+  const activeLevel = currentLevel || 'N5';
 
   useEffect(() => {
     const fetchParticles = async () => {
@@ -61,31 +60,10 @@ export default function ParticlesPage() {
         </div>
 
         <div className="relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-2.5">
+          <div className="mb-2.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
               <Compass size={13} className="text-pink-600" />
               <span>JOSHI (助詞) • TRỌNG TÂM JLPT {activeLevel}</span>
-            </div>
-
-            {/* Level Quick Switcher */}
-            <div className="flex items-center gap-1.5 p-1 bg-pink-50/60 rounded-xl border border-pink-100">
-              {availableLevels.map((lvl) => (
-                <button
-                  key={lvl}
-                  type="button"
-                  onClick={() => {
-                    sounds.playFlip();
-                    setCurrentLevel(lvl);
-                  }}
-                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    activeLevel === lvl
-                      ? 'bg-pink-600 text-white shadow-sm'
-                      : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  JLPT {lvl}
-                </button>
-              ))}
             </div>
           </div>
 

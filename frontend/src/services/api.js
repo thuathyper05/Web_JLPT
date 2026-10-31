@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
 });
 
 // Native High-Quality Tokyo Japanese Speech Synthesis
-export const speakJapanese = (text) => {
+export const speakJapanese = (text, rate = 0.9) => {
   if (typeof window === 'undefined' || !window.speechSynthesis || !text) return;
 
   try {
@@ -23,7 +23,7 @@ export const speakJapanese = (text) => {
     const cleanText = text.replace(/[［\[］\]()]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'ja-JP';
-    utterance.rate = 0.9; // Slightly slower for clear learning
+    utterance.rate = rate; // Configurable speed for listening practice
     utterance.pitch = 1.05;
 
     // Pick a high quality Tokyo/Japanese voice if available

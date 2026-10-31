@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
 
   // Signature Page Transition Loader
   const [pageLoading, setPageLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState('Đang kết nối tri thức...');
+  const [loadingMessage, setLoadingMessage] = useState('Đang nạp dữ liệu...');
 
   // Auth Modal State
   const [authModalOpen, setAuthModalOpen] = useState(false);

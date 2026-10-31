@@ -15,7 +15,8 @@ import {
   Volume2,
   ChevronRight,
   Target,
-  ArrowRight
+  ArrowRight,
+  Headphones
 } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
@@ -359,41 +360,53 @@ export default function DashboardPage() {
               Luyện tập nhanh
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {/* Option 1: Flashcard 3D */}
               <div
                 onClick={() => setActiveTab('flashcard')}
-                className="p-4 rounded-2xl border border-pink-100 bg-pink-50/30 hover:bg-pink-50 hover:border-pink-300 cursor-pointer transition-all group"
+                className="p-3.5 rounded-2xl border border-pink-100 bg-pink-50/30 hover:bg-pink-50 hover:border-pink-300 cursor-pointer transition-all group"
               >
-                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                  <Layers size={20} />
+                <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                  <Layers size={18} />
                 </div>
-                <h4 className="font-bold text-xs text-slate-900 mb-1">Flashcard 3D</h4>
-                <p className="text-[11px] text-slate-500 mb-0">Lật thẻ Nhật - Việt có âm thanh tự động</p>
+                <h4 className="font-bold text-xs text-slate-900 mb-0.5">Flashcard 3D</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Lật thẻ 2 chiều có phát âm</p>
               </div>
 
               {/* Option 2: Trắc nghiệm */}
               <div
                 onClick={() => setActiveTab('quiz')}
-                className="p-4 rounded-2xl border border-emerald-100 bg-emerald-50/30 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all group"
+                className="p-3.5 rounded-2xl border border-emerald-100 bg-emerald-50/30 hover:bg-emerald-50 hover:border-emerald-300 cursor-pointer transition-all group"
               >
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                  <CheckSquare size={20} />
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                  <CheckSquare size={18} />
                 </div>
-                <h4 className="font-bold text-xs text-slate-900 mb-1">Trắc nghiệm</h4>
-                <p className="text-[11px] text-slate-500 mb-0">Đề thi 4 lựa chọn ABCD bấm giờ</p>
+                <h4 className="font-bold text-xs text-slate-900 mb-0.5">Trắc nghiệm</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Đề thi 4 lựa chọn ABCD</p>
               </div>
 
               {/* Option 3: Luyện gõ */}
               <div
                 onClick={() => setActiveTab('practice')}
-                className="p-4 rounded-2xl border border-blue-100 bg-blue-50/30 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition-all group"
+                className="p-3.5 rounded-2xl border border-blue-100 bg-blue-50/30 hover:bg-blue-50 hover:border-blue-300 cursor-pointer transition-all group"
               >
-                <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                  <Keyboard size={20} />
+                <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                  <Keyboard size={18} />
                 </div>
-                <h4 className="font-bold text-xs text-slate-900 mb-1">Luyện gõ</h4>
-                <p className="text-[11px] text-slate-500 mb-0">Gõ Romaji chuyển Hiragana nhớ sâu</p>
+                <h4 className="font-bold text-xs text-slate-900 mb-0.5">Luyện gõ</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Gõ Romaji sang Kana</p>
+              </div>
+
+              {/* Option 4: Luyện nghe Choukai */}
+              <div
+                onClick={() => setActiveTab('listening')}
+                className="p-3.5 rounded-2xl border border-rose-100 bg-rose-50/30 hover:bg-rose-50 hover:border-rose-300 cursor-pointer transition-all group"
+              >
+                <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                  <Headphones size={18} />
+                </div>
+                <h4 className="font-bold text-xs text-slate-900 mb-0.5">Luyện nghe</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Hội thoại thực tế giọng Tokyo</p>
               </div>
             </div>
           </div>
