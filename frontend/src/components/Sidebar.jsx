@@ -34,13 +34,13 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
     {
       title: 'LUYỆN TẬP',
       items: [
-        { id: 'notebook', label: 'Sổ tay từ sai', icon: Bookmark, badge: 'Hot' },
-        { id: 'listening', label: 'Luyện nghe phản xạ', icon: Headphones, isNew: true },
+        { id: 'notebook', label: 'Sổ tay', icon: Bookmark, badge: 'Hot' },
+        { id: 'listening', label: 'Luyện nghe', icon: Headphones, isNew: true },
         { id: 'flashcard', label: 'Flashcard 3D', icon: Layers },
         { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
-        { id: 'practice', label: 'Luyện gõ Romaji', icon: Keyboard },
-        { id: 'wordmatch', label: 'Nối từ 60s', icon: Zap },
-        { id: 'garden', label: 'Vườn cây SRS', icon: Sprout },
+        { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
+        { id: 'wordmatch', label: 'Nối từ', icon: Zap },
+        { id: 'garden', label: 'Vườn cây', icon: Sprout },
       ]
     },
     {

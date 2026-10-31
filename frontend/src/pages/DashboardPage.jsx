@@ -418,7 +418,7 @@ export default function DashboardPage() {
               onClick={() => setActiveTab('wordmatch')}
               className="text-pink-600 font-bold hover:underline flex items-center gap-1"
             >
-              <span>Chơi Nối từ 60s</span>
+              <span>Chơi Nối từ</span>
               <ArrowRight size={14} />
             </button>
           </div>
