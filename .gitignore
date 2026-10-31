@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+*/node_modules/
 .pnp
 .pnp.js
 
@@ -8,7 +9,9 @@ coverage/
 
 # Production Build Outputs
 dist/
+*/dist/
 build/
+*/build/
 
 # Misc
 .DS_Store

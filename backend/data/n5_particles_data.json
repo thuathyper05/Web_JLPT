@@ -1,0 +1,365 @@
+[
+  {
+    "particle": "は",
+    "romaji": "wa",
+    "category": "topic",
+    "title": "Trợ từ Chủ đề & Đối lập",
+    "badge": "Cốt Lõi",
+    "usage": "Đứng sau danh từ để xác định chủ đề chính của câu (\"về phần...\", \"thì\"). Dùng để nhấn mạnh sự tương phản hoặc so sánh.",
+    "formula": "Danh từ + は + Vị ngữ",
+    "notes": "Viết bằng chữ Hiragana \"ha\" (は) nhưng phát âm là \"wa\". Khi muốn nói về chủ đề câu đã biết, luôn dùng は.",
+    "examples": [
+      {
+        "jp": "わたしは ベトナム人です。",
+        "romaji": "Watashi wa betonamu-jin desu.",
+        "vi": "Tôi là người Việt Nam."
+      },
+      {
+        "jp": "今日はお茶を飲みますが、コーヒーは飲みません。",
+        "romaji": "Kyou wa ocha o nomimasu ga, koohii wa nomimasen.",
+        "vi": "Hôm nay tôi uống trà nhưng cà phê thì không uống."
+      }
+    ]
+  },
+  {
+    "particle": "が",
+    "romaji": "ga",
+    "category": "topic",
+    "title": "Trợ từ Chủ ngữ Khách quan & Đối tượng",
+    "badge": "Cốt Lõi",
+    "usage": "Chỉ chủ ngữ của hành động/hiện tượng tự nhiên, nghi vấn từ làm chủ ngữ (だれが, なにが), hoặc chỉ đối tượng của tính từ, sở thích (好き, 嫌い), năng lực (上手, 下手, わかります, できます).",
+    "formula": "Chủ ngữ + が + Động từ / Danh từ + が + 好き/わかります",
+    "notes": "Khác với は (nhấn mạnh vế sau), が nhấn mạnh chính CHỦ THỂ đứng trước nó.",
+    "examples": [
+      {
+        "jp": "雨が 降っています。",
+        "romaji": "Ame ga futte imasu.",
+        "vi": "Trời đang mưa (hiện tượng khách quan)."
+      },
+      {
+        "jp": "わたしは 日本料理が 好きです。",
+        "romaji": "Watashi wa nihon ryouri ga suki desu.",
+        "vi": "Tôi thích món ăn Nhật Bản."
+      }
+    ]
+  },
+  {
+    "particle": "を",
+    "romaji": "o / wo",
+    "category": "object",
+    "title": "Trợ từ Tân ngữ Trực tiếp & Điểm rời khỏi",
+    "badge": "Cốt Lõi",
+    "usage": "Chỉ tân ngữ chịu sự tác động trực tiếp của ngoại động từ (ăn cơm, uống nước). Ngoài ra còn chỉ nơi chốn rời khỏi (xuống xe, rời nhà) hoặc không gian băng qua (đi dạo công viên).",
+    "formula": "Danh từ + を + Ngoại động từ",
+    "notes": "Viết là を nhưng phát âm là \"o\". Không dùng を với tự động từ.",
+    "examples": [
+      {
+        "jp": "ごはんを 食べます。",
+        "romaji": "Gohan o tabemasu.",
+        "vi": "Ăn cơm."
+      },
+      {
+        "jp": "電車を 降ります。",
+        "romaji": "Densha o orimasu.",
+        "vi": "Bước xuống tàu điện."
+      }
+    ]
+  },
+  {
+    "particle": "に",
+    "romaji": "ni",
+    "category": "time_place",
+    "title": "Trợ từ Thời gian, Điểm đến, Nơi tồn tại & Đối tượng",
+    "badge": "Đa Năng",
+    "usage": "1. Mốc thời gian cụ thể có con số (7時に).\n2. Điểm đến của hành động (学校に行きます).\n3. Nơi tồn tại của sự vật (部屋に います/あります).\n4. Đối tượng tiếp nhận hành động (友だちに 会います).\n5. Mục đích hành động (V-bỏます + に 行きます).",
+    "formula": "Thời gian cụ thể / Nơi chốn / Người + に",
+    "notes": "Nếu thời gian không có con số (hôm nay, ngày mai, tuần sau...), KHÔNG dùng に.",
+    "examples": [
+      {
+        "jp": "毎朝 7時に 起きます。",
+        "romaji": "Maiasa shichi-ji ni okimasu.",
+        "vi": "Mỗi sáng tôi thức dậy lúc 7 giờ."
+      },
+      {
+        "jp": "机の上に 本があります。",
+        "romaji": "Tsukue no ue ni hon ga arimasu.",
+        "vi": "Trên bàn có quyển sách."
+      }
+    ]
+  },
+  {
+    "particle": "で",
+    "romaji": "de",
+    "category": "time_place",
+    "title": "Trợ từ Địa điểm hành động, Phương tiện & Công cụ",
+    "badge": "Đa Năng",
+    "usage": "1. Địa điểm nơi hành động diễn ra (thư viện đọc sách).\n2. Phương tiện đi lại (đi bằng xe buýt).\n3. Công cụ, cách thức thực hiện (viết bằng bút, ăn bằng đũa, nói bằng tiếng Nhật).",
+    "formula": "Địa điểm / Phương tiện / Công cụ + で + Hành động",
+    "notes": "Phân biệt: \"Nơi TỒN TẠI\" dùng に, \"Nơi HÀNH ĐỘNG\" dùng で. Đi bộ (歩いて) không dùng で.",
+    "examples": [
+      {
+        "jp": "図書館で 本を 読みます。",
+        "romaji": "Toshokan de hon o yomimasu.",
+        "vi": "Đọc sách ở thư viện."
+      },
+      {
+        "jp": "バスで 会社へ 行きます。",
+        "romaji": "Basu de kaisha e ikimasu.",
+        "vi": "Đi đến công ty bằng xe buýt."
+      }
+    ]
+  },
+  {
+    "particle": "へ",
+    "romaji": "e",
+    "category": "object",
+    "title": "Trợ từ Hướng di chuyển",
+    "badge": "Cốt Lõi",
+    "usage": "Đứng sau danh từ chỉ nơi chốn để biểu thị phương hướng di chuyển tới đích đến (thường đi với 行きます, 来ます, 帰ります).",
+    "formula": "Địa điểm + へ + 行きます / 来ます / 帰ります",
+    "notes": "Viết là へ nhưng phát âm là \"e\". へ nhấn mạnh PHƯƠNG HƯỚNG tiến về phía trước.",
+    "examples": [
+      {
+        "jp": "来週 日本へ 行きます。",
+        "romaji": "Raishuu nihon e ikimasu.",
+        "vi": "Tuần sau tôi sẽ đi sang Nhật Bản."
+      }
+    ]
+  },
+  {
+    "particle": "と",
+    "romaji": "to",
+    "category": "connect",
+    "title": "Trợ từ Liên kết Đầy đủ (\"Và\") & Đồng hành (\"Với\")",
+    "badge": "Cốt Lõi",
+    "usage": "1. Nối tất cả các danh từ được liệt kê đầy đủ (\"A và B\").\n2. Cùng thực hiện hành động với ai đó (\"làm cùng với...\").",
+    "formula": "Danh từ 1 + と + Danh từ 2 / Người + と + Động từ",
+    "notes": "と liệt kê trọn vẹn, khác với や (liệt kê một vài cái tiêu biểu).",
+    "examples": [
+      {
+        "jp": "パンと 卵を 買いました。",
+        "romaji": "Pan to tamago o kaimashita.",
+        "vi": "Tôi đã mua bánh mì và trứng."
+      },
+      {
+        "jp": "友だちと 映画を 見ます。",
+        "romaji": "Tomodachi to eiga o mimasu.",
+        "vi": "Xem phim cùng với bạn."
+      }
+    ]
+  },
+  {
+    "particle": "も",
+    "romaji": "mo",
+    "category": "connect",
+    "title": "Trợ từ Đồng nhất (\"Cũng\") & Phủ định hoàn toàn",
+    "badge": "Cốt Lõi",
+    "usage": "1. Biểu thị sự tương đồng (\"cũng\").\n2. Kết hợp với nghi vấn từ và đuôi phủ định để phủ định 100% (\"không... một ai/cái gì/nơi nào\").",
+    "formula": "Danh từ + も / Nghi vấn từ + も + Phủ định",
+    "notes": "Khi dùng も, nó thay thế luôn cho は, が, を.",
+    "examples": [
+      {
+        "jp": "わたしも 学生です。",
+        "romaji": "Watashi mo gakusei desu.",
+        "vi": "Tôi cũng là học sinh."
+      },
+      {
+        "jp": "きのう どこも 行きませんでした。",
+        "romaji": "Kinou doko mo ikimasendeshita.",
+        "vi": "Hôm qua tôi chẳng đi đâu cả."
+      }
+    ]
+  },
+  {
+    "particle": "から",
+    "romaji": "kara",
+    "category": "range",
+    "title": "Trợ từ Khởi đầu (\"Từ\") & Nguyên nhân (\"Vì\")",
+    "badge": "Căn Bản",
+    "usage": "1. Chỉ mốc điểm bắt đầu về thời gian hoặc địa điểm xuất phát (\"từ...\").\n2. Đứng cuối mệnh đề để chỉ nguyên nhân, lý do (\"vì... nên...\").",
+    "formula": "Thời gian / Địa điểm + から / Mệnh đề + から",
+    "notes": "Thường đi kèm với まで thành cặp \"から ～ まで\" (từ... đến...).",
+    "examples": [
+      {
+        "jp": "午前9時から 働きます。",
+        "romaji": "Gozen ku-ji kara hatarakimasu.",
+        "vi": "Tôi làm việc từ 9 giờ sáng."
+      },
+      {
+        "jp": "時間が ありませんから、タクシーで行きます。",
+        "romaji": "Jikan ga arimasen kara, takushii de ikimasu.",
+        "vi": "Vì không có thời gian nên tôi đi taxi."
+      }
+    ]
+  },
+  {
+    "particle": "まで",
+    "romaji": "made",
+    "category": "range",
+    "title": "Trợ từ Điểm kết thúc (\"Đến / Cho tới\")",
+    "badge": "Căn Bản",
+    "usage": "Chỉ giới hạn kết thúc về mặt thời gian hoặc không gian địa lý (\"cho đến...\").",
+    "formula": "Thời gian / Địa điểm + まで",
+    "notes": "Phân biệt với までに (hạn chót hoàn thành trước thời điểm đó).",
+    "examples": [
+      {
+        "jp": "午後5時まで 勉強します。",
+        "romaji": "Gogo go-ji made benkyou shimasu.",
+        "vi": "Tôi học bài đến tận 5 giờ chiều."
+      }
+    ]
+  },
+  {
+    "particle": "より",
+    "romaji": "yori",
+    "category": "range",
+    "title": "Trợ từ So sánh hơn (\"Hơn\")",
+    "badge": "So Sánh",
+    "usage": "Đứng sau đối tượng được đem ra làm mốc so sánh (\"so với... thì... hơn\").",
+    "formula": "A は B + より + Tính từ です",
+    "notes": "A là đối tượng nổi trội hơn B.",
+    "examples": [
+      {
+        "jp": "新幹線は バスより 速いです。",
+        "romaji": "Shinkansen wa basu yori hayai desu.",
+        "vi": "Tàu Shinkansen thì nhanh hơn xe buýt."
+      }
+    ]
+  },
+  {
+    "particle": "の",
+    "romaji": "no",
+    "category": "connect",
+    "title": "Trợ từ Sở hữu, Xuất xứ & Bổ nghĩa Danh từ (\"Của\")",
+    "badge": "Cốt Lõi",
+    "usage": "Nối hai danh từ: quan hệ sở hữu (sách của tôi), xuất xứ (xe của Nhật), hoặc giải thích cho danh từ chính.",
+    "formula": "Danh từ 1 + の + Danh từ 2",
+    "notes": "Danh từ bổ nghĩa đứng TRƯỚC, danh từ chính đứng SAU.",
+    "examples": [
+      {
+        "jp": "これは わたしの 本です。",
+        "romaji": "Kore wa watashi no hon desu.",
+        "vi": "Đây là cuốn sách của tôi."
+      }
+    ]
+  },
+  {
+    "particle": "や",
+    "romaji": "ya",
+    "category": "connect",
+    "title": "Trợ từ Liệt kê Tiêu biểu (\"Nào là... và...\")",
+    "badge": "Nâng Cao",
+    "usage": "Nối các danh từ mang tính chất liệt kê đại diện (còn những thứ khác nữa). Thường kết hợp với など ở cuối.",
+    "formula": "Danh từ 1 + や + Danh từ 2 (+ など)",
+    "notes": "Khác với と (liệt kê hết), や ám chỉ vẫn còn các sự vật khác chưa kể.",
+    "examples": [
+      {
+        "jp": "机の上に 本や ペンなどが あります。",
+        "romaji": "Tsukue no ue ni hon ya pen nado ga arimasu.",
+        "vi": "Trên bàn có sách, bút,... v.v."
+      }
+    ]
+  },
+  {
+    "particle": "など",
+    "romaji": "nado",
+    "category": "connect",
+    "title": "Trợ từ \"Vân vân / v.v.\"",
+    "badge": "Căn Bản",
+    "usage": "Đứng sau danh từ cuối cùng trong chuỗi liệt kê để biểu thị nghĩa \"vân vân\".",
+    "formula": "Danh từ + など",
+    "notes": "Thường bắt cặp hoàn hảo với trợ từ や.",
+    "examples": [
+      {
+        "jp": "りんごや みかんなどを 買いました。",
+        "romaji": "Ringo ya mikan nado o kaimashita.",
+        "vi": "Tôi đã mua táo, quýt,... vân vân."
+      }
+    ]
+  },
+  {
+    "particle": "だけ",
+    "romaji": "dake",
+    "category": "limit",
+    "title": "Trợ từ Giới hạn Khẳng định (\"Chỉ\")",
+    "badge": "Giới Hạn",
+    "usage": "Biểu thị sự giới hạn duy nhất trong phạm vi nêu ra (\"chỉ có thế thôi\"). Luôn đi với vế KHẲNG ĐỊNH.",
+    "formula": "Danh từ / Số từ + だけ + Khẳng định",
+    "notes": "だけ đi với khẳng định. しか đi với phủ định.",
+    "examples": [
+      {
+        "jp": "休みは 日曜日だけです。",
+        "romaji": "Yasumi wa nichiyoubi dake desu.",
+        "vi": "Ngày nghỉ chỉ có duy nhất chủ nhật."
+      }
+    ]
+  },
+  {
+    "particle": "しか",
+    "romaji": "shika",
+    "category": "limit",
+    "title": "Trợ từ Giới hạn Phủ định (\"Chỉ vỏn vẹn / Không gì ngoài\")",
+    "badge": "Giới Hạn",
+    "usage": "Nhấn mạnh sự ít ỏi mang sắc thái tiếc nuối. Luôn luôn đi kèm đuôi PHỦ ĐỊNH.",
+    "formula": "Danh từ / Số từ + しか + Động từ PHỦ ĐỊNH",
+    "notes": "Cứ thấy しか thì đuôi câu BẮT BUỘC phải là dạng phủ định (ません / ない).",
+    "examples": [
+      {
+        "jp": "財布に 100円しか ありません。",
+        "romaji": "Saifu ni hyaku-en shika arimasen.",
+        "vi": "Trong ví chỉ vỏn vẹn có 100 yên."
+      }
+    ]
+  },
+  {
+    "particle": "か",
+    "romaji": "ka",
+    "category": "sentence_end",
+    "title": "Trợ từ Nghi vấn & Lựa chọn (\"Hoặc / Phải không?\")",
+    "badge": "Căn Bản",
+    "usage": "1. Đặt ở cuối câu để tạo thành câu hỏi nghi vấn (\"... phải không?\").\n2. Nối 2 danh từ mang nghĩa lựa chọn (\"hoặc là...\").",
+    "formula": "Cuối câu + か / Danh từ A + か + Danh từ B",
+    "notes": "Đặt sau nghi vấn từ tạo thành đại từ bất định (だれか, なにか, どこか).",
+    "examples": [
+      {
+        "jp": "これはいったい 何ですか。",
+        "romaji": "Kore wa ittai nan desu ka.",
+        "vi": "Cái này rốt cuộc là cái gì vậy?"
+      }
+    ]
+  },
+  {
+    "particle": "ね",
+    "romaji": "ne",
+    "category": "sentence_end",
+    "title": "Trợ từ Cuối câu Đồng tình (\"... nhỉ / nhé\")",
+    "badge": "Cuối Câu",
+    "usage": "Đặt ở cuối câu để tìm kiếm sự đồng thuận, chia sẻ cảm xúc, hoặc xác nhận nhẹ nhàng từ người nghe.",
+    "formula": "Câu hoàn chỉnh + ね",
+    "notes": "Thể hiện sự thân thiện, gần gũi trong giao tiếp.",
+    "examples": [
+      {
+        "jp": "きょうは いい天気ですね。",
+        "romaji": "Kyou wa ii tenki desu ne.",
+        "vi": "Hôm nay trời đẹp nhỉ!"
+      }
+    ]
+  },
+  {
+    "particle": "よ",
+    "romaji": "yo",
+    "category": "sentence_end",
+    "title": "Trợ từ Cuối câu Nhấn mạnh & Cung cấp Thông tin (\"... đấy / nhé\")",
+    "badge": "Cuối Câu",
+    "usage": "Đặt ở cuối câu để nhấn mạnh điều người nói biết mà người nghe chưa biết, hoặc nhắc nhở, khẳng định.",
+    "formula": "Câu hoàn chỉnh + よ",
+    "notes": "Dùng khi muốn truyền đạt thông tin mới cho đối phương.",
+    "examples": [
+      {
+        "jp": "あの映画は とても 面白いですよ。",
+        "romaji": "Ano eiga wa totemo omoshiroi desu yo.",
+        "vi": "Bộ phim kia hay lắm đấy nhé!"
+      }
+    ]
+  }
+]

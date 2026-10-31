@@ -1,0 +1,1002 @@
+[
+  {
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "N1 は N2 です (N1 là N2)",
+    "structure": "N1 [Danh từ 1] + は + N2 [Danh từ 2] + です",
+    "meaning": "Khẳng định N1 là N2. Dùng để giới thiệu họ tên, quốc tịch, nghề nghiệp, tuổi tác.",
+    "usage_notes": "Trợ từ は phát âm là 'wa'. です đứng cuối câu thể hiện thái độ lịch sự với người nghe.",
+    "examples": [
+      {
+        "jp": "わたしはマイク・ミラーです。",
+        "kana": "わたしはマイク・ミラーです。",
+        "vi": "Tôi là Mike Miller."
+      },
+      {
+        "jp": "サントスさんはブラジル人です。",
+        "kana": "サントスさんはブラジルじんです。",
+        "vi": "Anh Santos là người Brazil."
+      },
+      {
+        "jp": "わたしは会社員です。",
+        "kana": "わたしはかいしゃいんです。",
+        "vi": "Tôi là nhân viên công ty."
+      }
+    ]
+  },
+  {
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "N1 は N2 じゃありません (N1 không phải là N2)",
+    "structure": "N1 + は + N2 + じゃありません / ではありません",
+    "meaning": "Phủ định của です: N1 không phải là N2.",
+    "usage_notes": "じゃありません thường dùng trong văn nói hàng ngày; ではありません trang trọng hơn, dùng trong văn viết hoặc bài phát biểu lịch thiệp.",
+    "examples": [
+      {
+        "jp": "サントスさんは学生じゃありません。",
+        "kana": "サントスさんはがくせいじゃありません。",
+        "vi": "Anh Santos không phải là học sinh."
+      },
+      {
+        "jp": "わたしは医者ではありません。",
+        "kana": "わたしはいしゃではありません。",
+        "vi": "Tôi không phải là bác sĩ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 1,
+    "order_num": 3,
+    "title": "N1 は N2 ですか (N1 có phải là N2 không?)",
+    "structure": "N1 + は + N2 + ですか",
+    "meaning": "Câu hỏi nghi vấn Yes/No: N1 có phải là N2 không?",
+    "usage_notes": "Cuối câu thêm trợ từ か và lên giọng. Khi trả lời: 'はい、N2 です' (Đúng) hoặc 'いいえ、N2 じゃありません' (Không).",
+    "examples": [
+      {
+        "jp": "ミラーさんはアメリカ人ですか。",
+        "kana": "ミラーさんはアメリカじんですか。",
+        "vi": "Anh Miller có phải là người Mỹ không?"
+      },
+      {
+        "jp": "はい、アメリカ人です。",
+        "kana": "はい、アメリカじんです。",
+        "vi": "Vâng, là người Mỹ."
+      },
+      {
+        "jp": "いいえ、アメリカ人じゃありません。",
+        "kana": "いいえ、アメリカじんじゃありません。",
+        "vi": "Không, không phải người Mỹ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 1,
+    "order_num": 4,
+    "title": "N も (Cũng là...)",
+    "structure": "N + も",
+    "meaning": "Trợ từ も mang nghĩa 'cũng'. Dùng để thay thế trợ từ は khi nội dung vị ngữ giống với câu phía trước.",
+    "usage_notes": "Tuyệt đối không dùng đồng thời は và も cạnh nhau (Không nói 'N はも').",
+    "examples": [
+      {
+        "jp": "ミラーさんは会社員です。グプタさんも会社員です。",
+        "kana": "ミラーさんはかいしゃいんです。グプタさんもかいしゃいんです。",
+        "vi": "Anh Miller là nhân viên công ty. Anh Gupta cũng là nhân viên công ty."
+      }
+    ]
+  },
+  {
+    "lesson_number": 1,
+    "order_num": 5,
+    "title": "N1 の N2 (N2 của N1 / N2 thuộc N1)",
+    "structure": "N1 + の + N2",
+    "meaning": "N1 bổ nghĩa cho N2: quyền sở hữu, trực thuộc tổ chức, cơ quan.",
+    "usage_notes": "Khác với tiếng Việt (vật sở hữu nói trước, chủ nhân nói sau), tiếng Nhật luôn đặt chủ thể / tổ chức N1 ở trước.",
+    "examples": [
+      {
+        "jp": "ミラーさんはIMCの社員です。",
+        "kana": "ミラーさんはIMCのしゃいんです。",
+        "vi": "Anh Miller là nhân viên của công ty IMC."
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "これ / それ / あれ (Cái này / Cái đó / Cái kia)",
+    "structure": "これ / それ / あれ + は + N + です",
+    "meaning": "Đại từ chỉ thị đồ vật: これ (vật ở gần người nói), それ (vật ở gần người nghe), あれ (vật ở xa cả hai người).",
+    "usage_notes": "これ/それ/あれ đóng vai trò làm chủ ngữ độc lập, không đi kèm trực tiếp với danh từ phía sau.",
+    "examples": [
+      {
+        "jp": "これは辞書です。",
+        "kana": "これはじしょです。",
+        "vi": "Đây là cuốn từ điển."
+      },
+      {
+        "jp": "それは傘ですか。",
+        "kana": "それはかさですか。",
+        "vi": "Đó có phải là cái ô không?"
+      },
+      {
+        "jp": "あれはコンピューターの本です。",
+        "kana": "あれはコンピューターのほんです。",
+        "vi": "Kia là cuốn sách về máy tính."
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "この N / その N / あの N (N này / N đó / N kia)",
+    "structure": "この / その / あの + Danh từ + は...",
+    "meaning": "Định từ bổ nghĩa trực tiếp cho danh từ đứng ngay sau nó.",
+    "usage_notes": "Bắt buộc phải có danh từ đi liền sau この/その/あの, không thể đứng trơ trọi làm chủ ngữ.",
+    "examples": [
+      {
+        "jp": "この本はわたしのです。",
+        "kana": "このほんはわたしのです。",
+        "vi": "Cuốn sách này là của tôi."
+      },
+      {
+        "jp": "あの人はどなたですか。",
+        "kana": "あのひとはどなたですか。",
+        "vi": "Người kia là vị nào thế ạ?"
+      }
+    ]
+  },
+  {
+    "lesson_number": 2,
+    "order_num": 3,
+    "title": "Câu 1 か、Câu 2 か (Lựa chọn Cái này hay Cái kia?)",
+    "structure": "Câu 1 + か、Câu 2 + か",
+    "meaning": "Câu hỏi lựa chọn giữa hai hoặc nhiều khả năng. Người trả lời không dùng はい / いいえ mà chọn thẳng đáp án.",
+    "usage_notes": "Không dùng はい hoặc いいえ để mở đầu câu trả lời.",
+    "examples": [
+      {
+        "jp": "これは「９」ですか、「７」ですか。…「９」です。",
+        "kana": "これは「きゅう」ですか、「なな」ですか。…「きゅう」です。",
+        "vi": "Đây là số 9 hay số 7? ...Là số 9."
+      }
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "ここ / そこ / あそこ / どこ (Chỗ này / Chỗ đó / Chỗ kia / Ở đâu)",
+    "structure": "ここ / そこ / あそこ + は + [Địa điểm] + です",
+    "meaning": "Chỉ vị trí không gian: ここ (gần người nói), そこ (gần người nghe), あそこ (xa cả hai), どこ (ở đâu).",
+    "usage_notes": "Dạng lịch sự hơn tương ứng là こちら, そちら, あちら, どちら (dùng khi hỏi phương hướng hoặc tiếp khách).",
+    "examples": [
+      {
+        "jp": "ここは教室です。",
+        "kana": "ここはきょうしつです。",
+        "vi": "Đây là phòng học."
+      },
+      {
+        "jp": "トイレはどこですか。…あそこです。",
+        "kana": "トイレはどこですか。…あそこです。",
+        "vi": "Nhà vệ sinh ở đâu ạ? ...Ở đằng kia ạ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "N は [Địa điểm] です (N ở [Địa điểm])",
+    "structure": "N [Người/Vật] + は + [Địa điểm] + です",
+    "meaning": "Chỉ nơi chốn tọa lạc của người hoặc đồ vật.",
+    "usage_notes": "Khi hỏi người đó ở đâu: 'N は どこ/どちら ですか'.",
+    "examples": [
+      {
+        "jp": "事務所はあちらです。",
+        "kana": "じむしょはあちらです。",
+        "vi": "Văn phòng ở phía đằng kia."
+      },
+      {
+        "jp": "ミラーさんは会議室です。",
+        "kana": "ミラーさんはかいぎしつです。",
+        "vi": "Anh Miller đang ở phòng họp."
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "今 ～時 ～分 です (Bây giờ là... giờ... phút)",
+    "structure": "今 + [Số giờ] 時 + [Số phút] 分 + です",
+    "meaning": "Hỏi và trả lời giờ giấc chính xác trong tiếng Nhật.",
+    "usage_notes": "Các trường hợp đặc biệt: 4 giờ (よじ), 7 giờ (しちじ), 9 giờ (くじ).",
+    "examples": [
+      {
+        "jp": "今何時ですか。…4時半です。",
+        "kana": "いまなんじですか。…よじはんです。",
+        "vi": "Bây giờ là mấy giờ? ...Là 4 giờ rưỡi."
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "order_num": 2,
+    "title": "Động từ thì Hiện tại & Quá khứ (ます / ません / ました / ませんでした)",
+    "structure": "Khẳng định: V ます / Phủ định: V ません / Quá khứ: V ました / Quá khứ phủ định: V ませんでした",
+    "meaning": "Bày tỏ hành động ở các thì thời gian và trạng thái phủ định/khẳng định một cách lịch sự.",
+    "usage_notes": "V ます diễn tả thói quen lặp lại hàng ngày hoặc hành động sẽ xảy ra trong tương lai.",
+    "examples": [
+      {
+        "jp": "毎朝6時に起きます。",
+        "kana": "まいあさろくじにおきます。",
+        "vi": "Mỗi sáng tôi thức dậy lúc 6 giờ."
+      },
+      {
+        "jp": "昨日は勉強しませんでした。",
+        "kana": "きのうはべんきょうしませんでした。",
+        "vi": "Hôm qua tôi đã không học bài."
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "order_num": 3,
+    "title": "N (Thời gian) に V (Làm gì vào lúc...)",
+    "structure": "N [Thời gian có con số cụ thể] + に + V",
+    "meaning": "Chỉ thời điểm chính xác diễn ra hành vi, động tác.",
+    "usage_notes": "Chỉ dùng trợ từ に với thời gian có số (giờ, ngày, tháng). Không dùng に với: 今日, 明日, 毎朝, いつ.",
+    "examples": [
+      {
+        "jp": "日曜日に奈良へ行きました。",
+        "kana": "にちようびに ならへ いきました。",
+        "vi": "Tôi đã đi Nara vào Chủ Nhật."
+      }
+    ]
+  },
+  {
+    "lesson_number": 4,
+    "order_num": 4,
+    "title": "N1 から N2 まで (Từ N1 đến N2)",
+    "structure": "N1 + から + N2 + まで",
+    "meaning": "Biểu thị điểm bắt đầu (から) và điểm kết thúc (まで) về thời gian hoặc địa điểm.",
+    "usage_notes": "Có thể dùng riêng lẻ 'N から' (Từ...) hoặc 'N まで' (Đến...).",
+    "examples": [
+      {
+        "jp": "銀行は9時から3時までです。",
+        "kana": "ぎんこうは くじから さんじまでです。",
+        "vi": "Ngân hàng mở cửa từ 9 giờ đến 3 giờ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "N (Địa điểm) へ 行きます / 来ます / 帰ります (Đi / Đến / Về đâu)",
+    "structure": "N [Địa điểm] + へ + 行きます / 来ます / 帰ります",
+    "meaning": "Biểu thị phương hướng hoặc đích đến của hành động di chuyển.",
+    "usage_notes": "Trợ từ へ phát âm là 'e'.",
+    "examples": [
+      {
+        "jp": "わたしは京都へ行きます。",
+        "kana": "わたしはきょうとへいきます。",
+        "vi": "Tôi đi đến Kyoto."
+      },
+      {
+        "jp": "来週日本へ来ます。",
+        "kana": "らいしゅうにほんへきます。",
+        "vi": "Tuần sau tôi đến Nhật Bản."
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "order_num": 2,
+    "title": "どこ [へ] も 行きません (Không đi đâu cả)",
+    "structure": "Từ để hỏi + も + Động từ phủ định",
+    "meaning": "Phủ định hoàn toàn: không đi bất cứ nơi đâu, không làm gì cả.",
+    "usage_notes": "Có thể lược bớt trợ từ へ thành 'どこも行きません'.",
+    "examples": [
+      {
+        "jp": "日曜日どこも行きませんでした。",
+        "kana": "にちようびどこもいきませんでした。",
+        "vi": "Chủ nhật tôi đã chẳng đi đâu cả."
+      }
+    ]
+  },
+  {
+    "lesson_number": 5,
+    "order_num": 3,
+    "title": "N (Phương tiện) で 行きます (Đi bằng phương tiện...)",
+    "structure": "N [Phương tiện giao thông] + で + Động từ di chuyển",
+    "meaning": "Chỉ phương tiện hoặc cách thức di chuyển.",
+    "usage_notes": "Đi bộ thì dùng '歩いて (あるいて)', không thêm trợ từ で.",
+    "examples": [
+      {
+        "jp": "電車で行きます。",
+        "kana": "でんしゃでいきます。",
+        "vi": "Tôi đi bằng tàu điện."
+      },
+      {
+        "jp": "駅から歩いて帰りました。",
+        "kana": "えきからあるいてかえりました。",
+        "vi": "Tôi đã đi bộ về từ nhà ga."
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "N を V (Làm cái gì - Tân ngữ trực tiếp)",
+    "structure": "N [Tân ngữ] + を + V (Ngoại động từ)",
+    "meaning": "Trợ từ を biểu thị đối tượng chịu tác động trực tiếp của hành động.",
+    "usage_notes": "Trợ từ を phát âm là 'o'.",
+    "examples": [
+      {
+        "jp": "ごはんを食べます。",
+        "kana": "ごはんをたべます。",
+        "vi": "Tôi ăn cơm."
+      },
+      {
+        "jp": "水を飲みます。",
+        "kana": "みずをのみます。",
+        "vi": "Tôi uống nước."
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "order_num": 2,
+    "title": "N (Địa điểm) で V (Làm gì tại địa điểm nào)",
+    "structure": "N [Địa điểm] + で + V",
+    "meaning": "Chỉ nơi chốn diễn ra một hành động, sự việc cụ thể.",
+    "usage_notes": "Phân biệt で (nơi diễn ra hành động) với に (nơi tồn tại của sự vật: あります/います).",
+    "examples": [
+      {
+        "jp": "図書館で本を読みます。",
+        "kana": "としょかんでほんをよみます。",
+        "vi": "Tôi đọc sách ở thư viện."
+      }
+    ]
+  },
+  {
+    "lesson_number": 6,
+    "order_num": 3,
+    "title": "V ませんか / V ましょう (Rủ rê / Đề nghị cùng làm)",
+    "structure": "V ませんか: Rủ rê lịch sự ('Cùng... không?') / V ましょう: Đề nghị dứt khoát ('Cùng... nhé!')",
+    "meaning": "Mời mọc hoặc cùng tham gia một hoạt động nào đó.",
+    "usage_notes": "V ませんか để ngỏ cho đối phương từ chối tế nhị nếu bận rộn; V ましょう dùng khi cả hai đã đồng ý hướng đi.",
+    "examples": [
+      {
+        "jp": "いっしょに京都へ行きませんか。…ええ、行きましょう。",
+        "kana": "いっしょにきょうとへいきませんか。…ええ、いきましょう。",
+        "vi": "Bạn cùng đi Kyoto với tôi không? ...Vâng, cùng đi nhé!"
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "N (Công cụ) で V (Làm gì bằng dụng cụ/ngôn ngữ gì)",
+    "structure": "N [Công cụ, phương tiện, ngôn ngữ] + で + V",
+    "meaning": "Chỉ công cụ hoặc cách thức tiến hành hành động.",
+    "usage_notes": "Bao gồm cả việc viết báo cáo bằng tiếng Nhật (日本語でレポートを書きます).",
+    "examples": [
+      {
+        "jp": "はしでご飯を食べます。",
+        "kana": "はしでごはんをたべます。",
+        "vi": "Tôi ăn cơm bằng đũa."
+      },
+      {
+        "jp": "日本語で手紙を書きました。",
+        "kana": "にほんごでてがみをかきました。",
+        "vi": "Tôi đã viết thư bằng tiếng Nhật."
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "order_num": 2,
+    "title": "N (Người) に あげます / もらいます (Tặng cho ai / Nhận từ ai)",
+    "structure": "Cho tặng: A は B に [Vật] を あげます / Nhận: B は A に [Vật] を もらいます",
+    "meaning": "Thể hiện hành vi trao đổi quà tặng, thông tin, hành động cho-nhận đồ vật.",
+    "usage_notes": "Người nhận (trong あげます) hoặc nguồn phát (trong もらいます) đều đi với trợ từ に.",
+    "examples": [
+      {
+        "jp": "わたしは木村さんに花をあげました。",
+        "kana": "わたしはきむらさんにはなをあげました。",
+        "vi": "Tôi đã tặng hoa cho chị Kimura."
+      },
+      {
+        "jp": "わたしは山田さんに本をもらいました。",
+        "kana": "わたしはやまださんにほんをもらいました。",
+        "vi": "Tôi đã nhận cuốn sách từ anh Yamada."
+      }
+    ]
+  },
+  {
+    "lesson_number": 7,
+    "order_num": 3,
+    "title": "もう V ました (Đã làm... rồi)",
+    "structure": "もう + V ました",
+    "meaning": "Biểu thị hành động đã hoàn tất ở thời điểm hiện tại.",
+    "usage_notes": "Khi trả lời phủ định: 'いいえ、まだです' (Chưa, chưa làm), tuyệt đối không dùng 'V ませんでした'.",
+    "examples": [
+      {
+        "jp": "もう昼ごはんを食べましたか。…いいえ、まだです。",
+        "kana": "もうひるごはんをたべましたか。…いいえ、まだです。",
+        "vi": "Bạn đã ăn trưa chưa? ...Chưa, tôi chưa ăn."
+      }
+    ]
+  },
+  {
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "Tính từ đuôi い và Tính từ đuôi な (Cách chia & Vị ngữ)",
+    "structure": "Khẳng định: A い です / A [bỏ な] です || Phủ định: A [bỏ い] くないです / A [bỏ な] じゃありません",
+    "meaning": "Miêu tả tính chất, đặc điểm, trạng thái của người và sự vật.",
+    "usage_notes": "Lưu ý tính từ đặc biệt: いい (Tốt) phủ định là 'よくないです', quá khứ là 'よかったです'.",
+    "examples": [
+      {
+        "jp": "富士山は高いです。",
+        "kana": "ふじさんはたかいです。",
+        "vi": "Núi Phú Sĩ thì cao."
+      },
+      {
+        "jp": "この町は静かじゃありません。",
+        "kana": "このまちはしずかじゃありません。",
+        "vi": "Thành phố này không yên tĩnh."
+      }
+    ]
+  },
+  {
+    "lesson_number": 8,
+    "order_num": 2,
+    "title": "A な N / A い N (Tính từ bổ nghĩa cho Danh từ)",
+    "structure": "Tính từ đuôi い + Danh từ || Tính từ đuôi な + な + Danh từ",
+    "meaning": "Đặt trực tiếp trước danh từ để bổ nghĩa chi tiết cho danh từ đó.",
+    "usage_notes": "Tính từ đuôi な bắt buộc phải có chữ な khi đứng trước danh từ (e.g. きれいな花, 静かな町).",
+    "examples": [
+      {
+        "jp": "桜はきれいな花です。",
+        "kana": "さくらはきれいなはなです。",
+        "vi": "Hoa anh đào là một loài hoa đẹp."
+      },
+      {
+        "jp": "これは新しいパソコンです。",
+        "kana": "これはあたらしいパソコンです。",
+        "vi": "Đây là chiếc máy vi tính mới."
+      }
+    ]
+  },
+  {
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "N が あります / わかります (Có / Hiểu cái gì)",
+    "structure": "N + が + あります / わかります",
+    "meaning": "Biểu thị sự sở hữu vật vô tri (có xe hơi, có tiền, có thời gian) hoặc sự thấu hiểu năng lực.",
+    "usage_notes": "Đối tượng của あります và わかります đi với trợ từ が, không đi với を.",
+    "examples": [
+      {
+        "jp": "わたしは日本語がわかります。",
+        "kana": "わたしはにほんごがわかります。",
+        "vi": "Tôi hiểu tiếng Nhật."
+      },
+      {
+        "jp": "車があります。",
+        "kana": "くるまがあります。",
+        "vi": "Tôi có xe ô tô."
+      }
+    ]
+  },
+  {
+    "lesson_number": 9,
+    "order_num": 2,
+    "title": "N が 好きです / 嫌いです / 上手です / 下手です (Thích / Ghét / Giỏi / Kém)",
+    "structure": "N + が + 好き / 嫌い / 上手 / 下手 + です",
+    "meaning": "Bày tỏ cảm xúc yêu thích, ghét bỏ hoặc đánh giá trình độ năng khiếu với một đối tượng.",
+    "usage_notes": "Đối tượng luôn đi với trợ từ が. Không dùng 上手です để tự khen bản thân.",
+    "examples": [
+      {
+        "jp": "わたしはイタリア料理が好きです。",
+        "kana": "わたしはイタリアりょうりがすきです。",
+        "vi": "Tôi thích món ăn Ý."
+      },
+      {
+        "jp": "サントスさんはサッカーが上手です。",
+        "kana": "サントスさんはサッカーがじょうずです。",
+        "vi": "Anh Santos đá bóng rất giỏi."
+      }
+    ]
+  },
+  {
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "N が あります / います (Có người / đồ vật ở đâu)",
+    "structure": "Vật vô tri / Thực vật: N + が + あります || Người / Động vật: N + が + います",
+    "meaning": "Biểu thị sự hiện hữu, tồn tại của sự vật hoặc sinh vật sống.",
+    "usage_notes": "あります dùng cho đồ vật, cây cối, xe cộ; います dùng cho người và động vật chuyển động có ý thức.",
+    "examples": [
+      {
+        "jp": "教室にテレビがあります。",
+        "kana": "きょうしつにテレビがあります。",
+        "vi": "Trong lớp học có một chiếc TV."
+      },
+      {
+        "jp": "あそこに男の人がいます。",
+        "kana": "あそこに おとこのひとが います。",
+        "vi": "Ở đằng kia có một người đàn ông."
+      }
+    ]
+  },
+  {
+    "lesson_number": 11,
+    "order_num": 1,
+    "title": "Lượng từ (Số đếm) trong câu",
+    "structure": "Danh từ + を + [Số đếm] + V",
+    "meaning": "Biểu thị số lượng vật phẩm hoặc người tham gia hành vi.",
+    "usage_notes": "Số lượng từ thường đặt ngay trước động từ và sau trợ từ を.",
+    "examples": [
+      {
+        "jp": "りんごを4つ買いました。",
+        "kana": "りんごをよっつかいました。",
+        "vi": "Tôi đã mua 4 quả táo."
+      },
+      {
+        "jp": "外国人の学生が2人います。",
+        "kana": "がいこくじんのがくせいがふたりいます。",
+        "vi": "Có 2 bạn học sinh người nước ngoài."
+      }
+    ]
+  },
+  {
+    "lesson_number": 12,
+    "order_num": 1,
+    "title": "So sánh hơn: N1 は N2 より A です (N1 thì A hơn N2)",
+    "structure": "N1 + は + N2 + より + Tính từ + です",
+    "meaning": "So sánh tính chất giữa hai đối tượng: N1 vượt trội hơn N2 về mặt tính từ A.",
+    "usage_notes": "Khi hỏi: 'N1 と N2 と どちらが A ですか' (Giữa N1 và N2 thì cái nào A hơn?).",
+    "examples": [
+      {
+        "jp": "新幹線は飛行機より安いです。",
+        "kana": "しんかんせんはひこうきよりやすいです。",
+        "vi": "Tàu Shinkansen thì rẻ hơn máy bay."
+      },
+      {
+        "jp": "日本料理と中華料理とどちらが好きですか。…日本料理のほうが好きです。",
+        "kana": "にほんりょうりとちゅうかりょうりとどちらがすきですか。…にほんりょうりのほうがすきです。",
+        "vi": "Giữa món Nhật và món Trung bạn thích món nào hơn? ...Tôi thích món Nhật hơn."
+      }
+    ]
+  },
+  {
+    "lesson_number": 12,
+    "order_num": 2,
+    "title": "So sánh nhất: [Phạm vi] の中で [Đối tượng] が いちばん A です",
+    "structure": "N [Phạm vi] + の中で + [Đối tượng] + が + いちばん + Tính từ + です",
+    "meaning": "Khẳng định một đối tượng đứng vị trí số 1 trong một tập hợp.",
+    "usage_notes": "Từ để hỏi thay đổi theo phạm vi: 何 (vật), だれ (người), どこ (nơi chốn), いつ (thời gian).",
+    "examples": [
+      {
+        "jp": "スポーツの中でサッカーがいちばんおもしろいです。",
+        "kana": "スポーツのなかでサッカーがいちばんおもしろいです。",
+        "vi": "Trong các môn thể thao thì bóng đá thú vị nhất."
+      }
+    ]
+  },
+  {
+    "lesson_number": 13,
+    "order_num": 1,
+    "title": "N が 欲しいです (Tôi muốn có N)",
+    "structure": "N + が + 欲しいです (ほ ribbon / ほしいです)",
+    "meaning": "Bày tỏ mong muốn sở hữu một đồ vật hoặc thứ gì đó của bản thân.",
+    "usage_notes": "Chỉ dùng cho mong muốn của người nói (ngôi thứ nhất). Không dùng trực tiếp hỏi người trên tuổi.",
+    "examples": [
+      {
+        "jp": "わたしは新しいパソコンが欲しいです。",
+        "kana": "わたしはあたらしいパソコンがほしいです。",
+        "vi": "Tôi muốn có một chiếc máy tính mới."
+      }
+    ]
+  },
+  {
+    "lesson_number": 13,
+    "order_num": 2,
+    "title": "V たいです (Tôi muốn làm V)",
+    "structure": "Động từ thể ます (bỏ ます) + たいです",
+    "meaning": "Bày tỏ ý muốn thực hiện một hành động của bản thân.",
+    "usage_notes": "Tân ngữ có thể đi với を hoặc が (e.g. 水を飲みたい / 水が飲みたい). Phủ định là 'たくないです'.",
+    "examples": [
+      {
+        "jp": "日本へ行きたいです。",
+        "kana": "にほんへいきたいです。",
+        "vi": "Tôi muốn đi Nhật Bản."
+      },
+      {
+        "jp": "お酒を飲みたくないです。",
+        "kana": "おさけをのみたくないです。",
+        "vi": "Tôi không muốn uống rượu."
+      }
+    ]
+  },
+  {
+    "lesson_number": 13,
+    "order_num": 3,
+    "title": "N (Địa điểm) へ V(bỏ ます) に 行きます (Đi đâu để làm gì)",
+    "structure": "N [Địa điểm] + へ + V (bỏ ます) / N + に + 行きます / 来ます / 帰ります",
+    "meaning": "Chỉ mục đích của hành vi di chuyển.",
+    "usage_notes": "Trợ từ に sau động từ bỏ ます đóng vai trò đánh dấu mục đích.",
+    "examples": [
+      {
+        "jp": "デパートへ買い物に行きます。",
+        "kana": "デパートへかいものにいきます。",
+        "vi": "Tôi đến bách hóa để mua sắm."
+      },
+      {
+        "jp": "日本へ勉強に来ました。",
+        "kana": "にほんへべんきょうにきました。",
+        "vi": "Tôi đã đến Nhật Bản để học tập."
+      }
+    ]
+  },
+  {
+    "lesson_number": 14,
+    "order_num": 1,
+    "title": "Thể て (Te) & V て ください (Xin hãy làm V)",
+    "structure": "Động từ thể て + ください",
+    "meaning": "Lời nhờ vả, yêu cầu, sai khiến một cách lịch sự.",
+    "usage_notes": "Phân chia 3 nhóm động từ: Nhóm 1 (い・ち・り sang って; み・び・に sang んで; き sang いて; ぎ sang いで; し sang して), Nhóm 2 (bỏ ます thêm て), Nhóm 3 (して, きて).",
+    "examples": [
+      {
+        "jp": "ちょっと待ってください。",
+        "kana": "ちょっとまってください。",
+        "vi": "Xin hãy đợi một chút."
+      },
+      {
+        "jp": "ここに名前を書いてください。",
+        "kana": "ここになまえをかいてください。",
+        "vi": "Xin vui lòng viết tên vào đây."
+      }
+    ]
+  },
+  {
+    "lesson_number": 14,
+    "order_num": 2,
+    "title": "V て います (Đang làm gì - Hành động tiếp diễn)",
+    "structure": "Động từ thể て + います",
+    "meaning": "Biểu thị hành động đang diễn ra tại thời điểm nói.",
+    "usage_notes": "Tương đương với thì hiện tại tiếp diễn 'be + V-ing' trong tiếng Anh.",
+    "examples": [
+      {
+        "jp": "今雨が降っています。",
+        "kana": "いまあめがふっています。",
+        "vi": "Bây giờ trời đang mưa."
+      },
+      {
+        "jp": "ミラーさんは電話をかけています。",
+        "kana": "ミラーさんはでんわをかけています。",
+        "vi": "Anh Miller đang gọi điện thoại."
+      }
+    ]
+  },
+  {
+    "lesson_number": 15,
+    "order_num": 1,
+    "title": "V ても いいですか (Làm... có được không? - Xin phép)",
+    "structure": "Động từ thể て + も + いいですか",
+    "meaning": "Dùng để xin phép đối phương làm một hành động nào đó.",
+    "usage_notes": "Trả lời đồng ý: 'ええ、いいですよ' (Vâng, được chứ). Từ chối tế nhị: 'すみません、ちょっと…'.",
+    "examples": [
+      {
+        "jp": "ここで写真を撮ってもいいですか。",
+        "kana": "ここでしゃしんをとってもいいですか。",
+        "vi": "Tôi chụp ảnh ở đây có được không?"
+      }
+    ]
+  },
+  {
+    "lesson_number": 15,
+    "order_num": 2,
+    "title": "V ては いけません (Không được làm... - Cấm đoán)",
+    "structure": "Động từ thể て + は + いけません",
+    "meaning": "Biểu thị sự cấm đoán, quy định hoặc cảnh báo không được phép thực hiện hành vi.",
+    "usage_notes": "Trợ từ は phát âm là 'wa'. Mang sắc thái mệnh lệnh pháp quy nghiêm khắc.",
+    "examples": [
+      {
+        "jp": "ここでタバコを吸ってはいけません。",
+        "kana": "ここでタバコをすってはいけません。",
+        "vi": "Không được hút thuốc ở đây."
+      }
+    ]
+  },
+  {
+    "lesson_number": 16,
+    "order_num": 1,
+    "title": "V1 て、V2 て、V3 ます (Trình tự chuỗi hành động)",
+    "structure": "V1 て + V2 て + V3 ます",
+    "meaning": "Nối các hành động liên tiếp diễn ra theo thứ tự thời gian.",
+    "usage_notes": "Thì của cả câu được quyết định bởi động từ cuối cùng.",
+    "examples": [
+      {
+        "jp": "朝起きて、シャワーを浴びて、会社へ行きます。",
+        "kana": "あさおきて、シャワーをあびて、かいしゃへいきます。",
+        "vi": "Sáng thức dậy, tắm vòi sen, rồi đi làm."
+      }
+    ]
+  },
+  {
+    "lesson_number": 16,
+    "order_num": 2,
+    "title": "V1 てから、V2 (Sau khi làm V1 thì làm V2)",
+    "structure": "Động từ 1 thể て + から + Động từ 2",
+    "meaning": "Nhấn mạnh hành động 1 phải kết thúc hoàn toàn thì hành động 2 mới được bắt đầu.",
+    "usage_notes": "Thì của câu do động từ cuối cùng V2 chi phối.",
+    "examples": [
+      {
+        "jp": "仕事が終わってから、飲みに行きます。",
+        "kana": "しごとがおわってから、のみにいきます。",
+        "vi": "Sau khi công việc kết thúc, tôi đi uống."
+      }
+    ]
+  },
+  {
+    "lesson_number": 17,
+    "order_num": 1,
+    "title": "V ないで ください (Xin đừng làm V)",
+    "structure": "Động từ thể ない + で + ください",
+    "meaning": "Yêu cầu hoặc khuyên nhủ ai đó lịch sự đừng làm điều gì đó.",
+    "usage_notes": "Cách chia thể ない: Nhóm 1 đổi hàng い sang あ + ない (Lưu ý: い sang わ); Nhóm 2 bỏ ます + ない; Nhóm 3 (しない, こない).",
+    "examples": [
+      {
+        "jp": "ここでタバコを吸わないでください。",
+        "kana": "ここでタバコをすわないでください。",
+        "vi": "Xin đừng hút thuốc ở đây."
+      }
+    ]
+  },
+  {
+    "lesson_number": 17,
+    "order_num": 2,
+    "title": "V なければ なりません (Phải làm V)",
+    "structure": "Động từ thể ない (bỏ い) + ければ + なりません",
+    "meaning": "Biểu thị nghĩa vụ, bổn phận tất yếu phải thực hiện một hành động.",
+    "usage_notes": "Đây là cấu trúc 'phủ định của phủ định', nghĩa là nếu không làm thì không được.",
+    "examples": [
+      {
+        "jp": "毎日薬を飲まなければなりません。",
+        "kana": "まいにちくすりをのまなければなりません。",
+        "vi": "Mỗi ngày tôi phải uống thuốc."
+      }
+    ]
+  },
+  {
+    "lesson_number": 18,
+    "order_num": 1,
+    "title": "V ることが できます (Có thể làm V - Năng lực / Khả năng)",
+    "structure": "Động từ thể từ điển (Jishokei) + ことが できます",
+    "meaning": "Biểu thị năng lực làm được việc gì hoặc sự cho phép trong hoàn cảnh cụ thể.",
+    "usage_notes": "Biến động từ thành danh từ nhờ thêm 'こと'.",
+    "examples": [
+      {
+        "jp": "わたしは漢字を読むことができます。",
+        "kana": "わたしはかんじをよむことができます。",
+        "vi": "Tôi có thể đọc được chữ Hán."
+      }
+    ]
+  },
+  {
+    "lesson_number": 18,
+    "order_num": 2,
+    "title": "V1 る前に、V2 (Trước khi làm V1 thì làm V2)",
+    "structure": "V thể từ điển / N の + 前に (まえに) + V2",
+    "meaning": "Xác định trình tự: hành động V2 xảy ra trước khi hành động V1 bắt đầu.",
+    "usage_notes": "Động từ đứng trước 前に luôn ở thể nguyên mẫu từ điển (V る), không chia quá khứ.",
+    "examples": [
+      {
+        "jp": "寝る前に、日記を書きます。",
+        "kana": "ねるまえに、にっきをかきます。",
+        "vi": "Trước khi đi ngủ, tôi viết nhật ký."
+      }
+    ]
+  },
+  {
+    "lesson_number": 19,
+    "order_num": 1,
+    "title": "V た ことが あります (Đã từng trải qua kinh nghiệm V)",
+    "structure": "Động từ thể た + ことが あります",
+    "meaning": "Nói về trải nghiệm, kinh nghiệm từng có trong quá khứ.",
+    "usage_notes": "Cách chia thể た hoàn toàn tương tự thể て nhưng thay て/で bằng た/だ.",
+    "examples": [
+      {
+        "jp": "富士山に登ったことがあります。",
+        "kana": "ふじさんにのぼったことがあります。",
+        "vi": "Tôi đã từng leo núi Phú Sĩ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 19,
+    "order_num": 2,
+    "title": "V1 たり、V2 たり します (Lúc thì làm V1, lúc thì làm V2 - Liệt kê hành động)",
+    "structure": "V1 た + り、V2 た + り + します",
+    "meaning": "Liệt kê tượng trưng một vài hành động tiêu biểu không cần theo thứ tự thời gian.",
+    "usage_notes": "Động từ cuối cùng luôn là します (hoặc しました nếu ở quá khứ).",
+    "examples": [
+      {
+        "jp": "休みの日は買い物をしたり、映画を見たりします。",
+        "kana": "やすみのひはかいものをしたり、えいがをみたりします。",
+        "vi": "Ngày nghỉ tôi lúc thì đi mua sắm, lúc thì xem phim."
+      }
+    ]
+  },
+  {
+    "lesson_number": 20,
+    "order_num": 1,
+    "title": "Thể thông thường (Futsuukei / 普通形)",
+    "structure": "Thay thế các dạng lịch sự です/ます bằng thể ngắn (Từ điển, ない, た, だ)",
+    "meaning": "Dùng để giao tiếp thân mật với bạn bè, người thân, hoặc làm thành phần trong câu phức.",
+    "usage_notes": "Quy tắc cơ bản: V ます sang V る; V ません sang V ない; V ました sang V た; Danh từ/Tính từ đuôi な です sang だ.",
+    "examples": [
+      {
+        "jp": "明日東京へ行く？…うん、行く。",
+        "kana": "あしたとうきょうへいく？…うん、いく。",
+        "vi": "Ngày mai đi Tokyo không? ...Ừ, có đi."
+      },
+      {
+        "jp": "今忙しい？…ううん、忙しくない。",
+        "kana": "いまいそがしい？…ううん、いそがしくない。",
+        "vi": "Giờ rảnh không? ...Không, không rảnh."
+      }
+    ]
+  },
+  {
+    "lesson_number": 21,
+    "order_num": 1,
+    "title": "[Thể thông thường] と 思います (Tôi nghĩ rằng...)",
+    "structure": "Mệnh đề (Thể thông thường) + と 思います (とおもいます)",
+    "meaning": "Bày tỏ quan điểm, phỏng đoán hoặc suy nghĩ cá nhân của người nói.",
+    "usage_notes": "Khác với câu chắc chắn, cấu trúc này thể hiện sự khiêm tốn hoặc ý kiến chủ quan.",
+    "examples": [
+      {
+        "jp": "明日は雨が降ると思います。",
+        "kana": "あしたはあめがふるとおもいます。",
+        "vi": "Tôi nghĩ ngày mai trời sẽ mưa."
+      },
+      {
+        "jp": "日本は物価が高いと思います。",
+        "kana": "にほんはぶっかがたかいとおもいます。",
+        "vi": "Tôi nghĩ giá cả ở Nhật Bản đắt đỏ."
+      }
+    ]
+  },
+  {
+    "lesson_number": 21,
+    "order_num": 2,
+    "title": "[Câu / Thể thông thường] と 言いました (Ai đó đã nói rằng...)",
+    "structure": "Lời trích dẫn + と 言いました (といいました)",
+    "meaning": "Trích dẫn lời nói trực tiếp (đặt trong ngoặc vuông 「」) hoặc trích dẫn gián tiếp (thể thông thường).",
+    "usage_notes": "Trợ từ と dùng làm mấu chốt nối trích dẫn.",
+    "examples": [
+      {
+        "jp": "田中さんは「明日休みます」と言いました。",
+        "kana": "たなかさんは「あしたやすみます」といいました。",
+        "vi": "Anh Tanaka đã nói: 'Ngày mai tôi nghỉ'."
+      }
+    ]
+  },
+  {
+    "lesson_number": 22,
+    "order_num": 1,
+    "title": "Mệnh đề bổ nghĩa cho danh từ (Bổ ngữ định ngữ)",
+    "structure": "[Động từ / Tính từ / Danh từ ở thể thông thường] + Danh từ",
+    "meaning": "Dùng cả một cụm câu để miêu tả đặc điểm chi tiết cho một danh từ đứng sau.",
+    "usage_notes": "Chủ ngữ trong mệnh đề phụ bổ nghĩa bắt buộc chuyển từ は thành trợ từ が.",
+    "examples": [
+      {
+        "jp": "これはミラーさんが作ったケーキです。",
+        "kana": "これはミラーさんがつくったケーキです。",
+        "vi": "Đây là chiếc bánh kem mà anh Miller đã làm."
+      },
+      {
+        "jp": "あそこで本を読んでいる人は誰ですか。",
+        "kana": "あそこでほんをよんでいるひとはだれですか。",
+        "vi": "Người đang đọc sách ở đằng kia là ai thế?"
+      }
+    ]
+  },
+  {
+    "lesson_number": 23,
+    "order_num": 1,
+    "title": "V る / V ない / A / N の + とき、... (Khi...)",
+    "structure": "Thể thông thường / N の + とき (時)、[Vế câu chính]",
+    "meaning": "Xác định thời điểm diễn ra hành động hoặc trạng thái ở vế chính.",
+    "usage_notes": "V る とき: Khi chưa hoàn thành / V た とき: Sau khi đã hoàn tất xong.",
+    "examples": [
+      {
+        "jp": "図書館で本を借りるとき、カードが必要です。",
+        "kana": "としょかんでほんをかりるとき、カードがひつようです。",
+        "vi": "Khi mượn sách ở thư viện thì cần có thẻ."
+      },
+      {
+        "jp": "暇なとき、ゲームをします。",
+        "kana": "ひまなとき、ゲームをします。",
+        "vi": "Khi rảnh rỗi, tôi chơi game."
+      }
+    ]
+  },
+  {
+    "lesson_number": 23,
+    "order_num": 2,
+    "title": "V る + と、... (Hễ mà... thì...)",
+    "structure": "Động từ thể từ điển + と、[Vế kết quả tất yếu]",
+    "meaning": "Diễn tả quy luật tự nhiên, vận hành máy móc hoặc chỉ đường: hễ làm A thì tất yếu B sẽ xảy ra.",
+    "usage_notes": "Vế sau không dùng câu mệnh lệnh, xin phép hay rủ rê.",
+    "examples": [
+      {
+        "jp": "このボタンを押すと、お釣りが出ます。",
+        "kana": "このボタンをおすと、おつりがでます。",
+        "vi": "Hễ ấn nút này thì tiền thừa sẽ chạy ra."
+      },
+      {
+        "jp": "右へ曲がると、郵便局があります。",
+        "kana": "みぎへまがると、ゆうびんきょくがあります。",
+        "vi": "Hễ rẽ phải thì sẽ thấy bưu điện."
+      }
+    ]
+  },
+  {
+    "lesson_number": 24,
+    "order_num": 1,
+    "title": "Kính ngữ cho - nhận hành động (V て あげます / もらいます / くれます)",
+    "structure": "Cho ai: V て あげます || Nhận từ ai: V て もらいます || Ai làm cho mình: V て くれます",
+    "meaning": "Bày tỏ lòng biết ơn khi có sự giúp đỡ, ban ơn bằng hành động giữa người với người.",
+    "usage_notes": "くれます dùng đặc biệt khi người khác làm điều gì có lợi cho bản thân tôi hoặc người thân của tôi.",
+    "examples": [
+      {
+        "jp": "佐藤さんはわたしにお金を貸してくれました。",
+        "kana": "さとうさんはわたしにおかねをかしてくれました。",
+        "vi": "Chị Sato đã cho tôi vay tiền."
+      },
+      {
+        "jp": "わたしは山田さんに傘を貸してあげました。",
+        "kana": "わたしはやまださんにかさをかしてあげました。",
+        "vi": "Tôi đã cho anh Yamada mượn ô."
+      }
+    ]
+  },
+  {
+    "lesson_number": 25,
+    "order_num": 1,
+    "title": "Câu điều kiện giả định: V たら、... (Nếu / Sau khi... thì...)",
+    "structure": "Động từ thể た + ら、[Vế câu chính]",
+    "meaning": "Biểu thị giả thiết 'Nếu' xảy ra điều kiện A, hoặc 'Sau khi' điều kiện A hoàn thành thì làm B.",
+    "usage_notes": "たら là cấu trúc điều kiện thông dụng và linh hoạt nhất trong tiếng Nhật, vế sau có thể dùng ý chí, mệnh lệnh, rủ rê.",
+    "examples": [
+      {
+        "jp": "お金があったら、旅行に行きます。",
+        "kana": "おかねがあったら、りょこうにいきます。",
+        "vi": "Nếu có tiền, tôi sẽ đi du lịch."
+      },
+      {
+        "jp": "10時になったら、出かけましょう。",
+        "kana": "じゅうじになったら、でかけましょう。",
+        "vi": "Đến 10 giờ thì chúng ta xuất phát nhé."
+      }
+    ]
+  },
+  {
+    "lesson_number": 25,
+    "order_num": 2,
+    "title": "V ても、... (Dù... thì vẫn...)",
+    "structure": "Động từ thể て + も || Tính từ い sang くても || Tính từ な/Danh từ sang でも",
+    "meaning": "Biểu thị quan hệ nhượng bộ ngược: dẫu có A thì kết quả B vẫn không đổi.",
+    "usage_notes": "Ngược lại hoàn toàn với たら.",
+    "examples": [
+      {
+        "jp": "雨が降っても、サッカーをします。",
+        "kana": "あめがふっても、サッカーをします。",
+        "vi": "Dù trời có mưa, tôi vẫn đá bóng."
+      },
+      {
+        "jp": "高くても、このパソコンを買いたいです。",
+        "kana": "たかくても、このパソコンをかいたいです。",
+        "vi": "Dù có đắt, tôi vẫn muốn mua chiếc máy tính này."
+      }
+    ]
+  }
+]

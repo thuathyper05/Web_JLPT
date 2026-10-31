@@ -1,0 +1,17 @@
+{
+  "name": "nihongohub-platform",
+  "version": "3.0.0",
+  "description": "NihongoHub — Nền tảng Web App học tiếng Nhật N5 thông minh với AI, gamification và giao diện chuẩn quốc tế",
+  "scripts": {
+    "dev": "concurrently -n \"API,WEB\" -c \"magenta.bold,pink.bold\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "concurrently -n \"API,WEB\" -c \"magenta.bold,pink.bold\" \"npm run start:backend\" \"npm run start:frontend\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
