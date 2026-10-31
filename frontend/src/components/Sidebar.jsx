@@ -14,7 +14,6 @@ import {
   Flame,
   X,
   Bookmark,
-  Search,
   LifeBuoy
 } from 'lucide-react';
 
@@ -29,7 +28,6 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
         { id: 'lessons', label: 'Bài học', icon: BookOpen },
         { id: 'kanji', label: 'Chữ Hán Kanji', icon: PenTool },
         { id: 'particles', label: 'Trợ từ N5', icon: Compass },
-        { id: 'dictionary', label: 'Tra cứu từ vựng', icon: Search, isNew: true },
       ]
     },
     {
