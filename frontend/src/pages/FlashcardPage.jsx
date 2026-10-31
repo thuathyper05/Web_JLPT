@@ -59,8 +59,8 @@ export default function FlashcardPage() {
     setIsFlipped((prev) => {
       const nextState = !prev;
       if (nextState && currentCard) {
-        // Automatically pronounce vocabulary when flipping over
-        speakJapanese(currentCard.kanji || currentCard.kana);
+        // Automatically pronounce vocabulary when flipping over with authentic Tokyo Kana phonetics
+        speakJapanese(currentCard.kanji, currentCard.kana || currentCard.clean_kana);
       }
       return nextState;
     });
@@ -86,7 +86,7 @@ export default function FlashcardPage() {
       if (autoAudio && direction === 'jp_to_vi') {
         setTimeout(() => {
           const nextWord = cards[currentIndex + 1];
-          if (nextWord) speakJapanese(nextWord.kanji || nextWord.kana);
+          if (nextWord) speakJapanese(nextWord.kanji, nextWord.kana || nextWord.clean_kana);
         }, 300);
       }
     } else {
@@ -181,7 +181,14 @@ export default function FlashcardPage() {
                 onChange={(e) => setSelectedLesson(parseInt(e.target.value))}
                 className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                {(currentLevel === 'N4'
+                  ? Array.from({ length: 25 }, (_, i) => i + 26)
+                  : currentLevel === 'N3'
+                  ? Array.from({ length: 20 }, (_, i) => i + 1)
+                  : currentLevel === 'N2' || currentLevel === 'N1'
+                  ? Array.from({ length: 15 }, (_, i) => i + 1)
+                  : Array.from({ length: 25 }, (_, i) => i + 1)
+                ).map((n) => (
                   <option key={n} value={n}>
                     Bài {n < 10 ? `0${n}` : n}
                   </option>
@@ -340,7 +347,7 @@ export default function FlashcardPage() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      speakJapanese(currentCard.kanji || currentCard.kana);
+                      speakJapanese(currentCard.kanji, currentCard.kana || currentCard.clean_kana);
                     }}
                     className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
                     title="Nghe lại phát âm"

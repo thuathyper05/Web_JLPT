@@ -601,5 +601,113 @@
         "vi": "Tùy vào mỗi người mà cách suy nghĩ sẽ khác nhau."
       }
     ]
+  },
+  {
+    "particle": "において",
+    "romaji": "ni oite",
+    "category": "context",
+    "level": "N2",
+    "title": "Trợ từ Bối cảnh, Địa điểm & Lĩnh vực (\"Tại / Ở / Trong...\")",
+    "badge": "Trọng Tâm N2",
+    "usage": "Diễn tả sự kiện diễn ra ở một địa điểm, thời đại, hoặc trong lĩnh vực cụ thể nào đó (trang trọng hơn で).",
+    "formula": "Danh từ + において / における + Danh từ",
+    "notes": "Rất phổ biến trong văn bản pháp luật, diễn văn và tin tức báo chí.",
+    "examples": [
+      {
+        "jp": "現代社会において、情報の共有は 不可欠です。",
+        "romaji": "Gendai shakai ni oite, jouhou no kyouyuu wa fukaketsu desu.",
+        "vi": "Trong xã hội hiện đại, việc chia sẻ thông tin là điều không thể thiếu."
+      }
+    ]
+  },
+  {
+    "particle": "に基づいて",
+    "romaji": "ni motozuite",
+    "category": "basis",
+    "level": "N2",
+    "title": "Trợ từ Căn cứ & Tiêu chuẩn (\"Dựa trên / Căn cứ vào...\")",
+    "badge": "Trọng Tâm N2",
+    "usage": "Lấy một sự thật, dữ liệu, nguyên tắc hoặc luật pháp làm cơ sở để hành động hoặc phán đoán.",
+    "formula": "Danh từ + に基づいて / に基づく + Danh từ",
+    "notes": "Thường đi kèm các từ: 調査, データ, 法律, 経験.",
+    "examples": [
+      {
+        "jp": "実験データに基づいて、仮説を 検証します。",
+        "romaji": "Jikken deeta ni motozuite, kasetsu o kenshou shimasu.",
+        "vi": "Căn cứ vào số liệu thực nghiệm, chúng tôi sẽ kiểm chứng giả thuyết."
+      }
+    ]
+  },
+  {
+    "particle": "をめぐって",
+    "romaji": "o megutte",
+    "category": "dispute",
+    "level": "N2",
+    "title": "Trợ từ Trung tâm Tranh chấp (\"Xoay quanh vấn đề...\")",
+    "badge": "Trọng Tâm N2",
+    "usage": "Chỉ chủ đề là trung tâm của các ý kiến đối lập, tranh luận, kiện tụng hay xung đột gay gắt.",
+    "formula": "Danh từ + をめぐって / をめぐる + Danh từ",
+    "notes": "Vế sau luôn là hành động có sự tham gia của nhiều người (đối lập ý kiến).",
+    "examples": [
+      {
+        "jp": "新法案をめぐって、国会で 激しい議論が 行われました。",
+        "romaji": "Shin-houan o megutte, kokkai de hageshii giron ga okonawaremashita.",
+        "vi": "Xoay quanh dự luật mới, quốc hội đã diễn ra cuộc tranh luận kịch liệt."
+      }
+    ]
+  },
+  {
+    "particle": "たりとも",
+    "romaji": "taritomo",
+    "category": "extreme_limit",
+    "level": "N1",
+    "title": "Trợ từ Giới hạn Tuyệt đối (\"Dù chỉ là một...\")",
+    "badge": "Trọng Tâm N1",
+    "usage": "Đi sau số từ '1' (1 giây, 1 giọt, 1 xu) để nhấn mạnh sự tối thiểu: Dù chỉ là một chút cũng quyết không...",
+    "formula": "Số từ 1 (1日 / 1秒 / 1円) + たりとも + Vế phủ định",
+    "notes": "Tuyệt đối không đi kèm số từ lớn hơn 1.",
+    "examples": [
+      {
+        "jp": "試験中は 1秒たりとも 無駄に できません。",
+        "romaji": "Shiken-chuu wa ichibyou taritomo muda ni dekimasen.",
+        "vi": "Trong lúc làm bài thi, dù chỉ một giây cũng không thể lãng phí."
+      }
+    ]
+  },
+  {
+    "particle": "すら",
+    "romaji": "sura",
+    "category": "emphasis",
+    "level": "N1",
+    "title": "Trợ từ Nhấn mạnh Cực đoan (\"Đến cả / Ngay cả...\")",
+    "badge": "Trọng Tâm N1",
+    "usage": "Đưa ra một ví dụ cực đoan, hiển nhiên để ám chỉ những điều khác còn hiển nhiên hơn (trang trọng hơn さえ).",
+    "formula": "Danh từ + (trợ từ) + すら",
+    "notes": "Thường dùng trong văn viết mang ngữ khí chê trách hoặc ngỡ ngàng.",
+    "examples": [
+      {
+        "jp": "忙しすぎて、昼ご飯を 食べる時間すら ありません。",
+        "romaji": "Isogashisugite, hirugohan o taberu jikan sura arimasen.",
+        "vi": "Bận rộn tới mức ngay cả thời gian ăn trưa cũng không hề có."
+      }
+    ]
+  },
+  {
+    "particle": "をもって",
+    "romaji": "o motte",
+    "category": "milestone",
+    "level": "N1",
+    "title": "Trợ từ Mốc thời gian Trang trọng (\"Kể từ / Tại thời điểm này...\")",
+    "badge": "Trọng Tâm N1",
+    "usage": "Tuyên bố chính thức sự kết thúc hoặc bắt đầu của một sự kiện tại thời điểm được nêu.",
+    "formula": "Danh từ (thời gian, thời khắc) + をもって",
+    "notes": "Dùng trong các thông báo nghi lễ, sự kiện lớn.",
+    "examples": [
+      {
+        "jp": "本日をもちまして、今年度の 営業を 終了いたします。",
+        "romaji": "Honjitsu o mochimashite, konnendo no eigyou o shuuryou itashimasu.",
+        "vi": "Hết ngày hôm nay, chúng tôi xin phép kết thúc kỳ kinh doanh của năm nay."
+      }
+    ]
   }
 ]

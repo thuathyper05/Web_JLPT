@@ -63,7 +63,7 @@ export default function ParticlesPage() {
           <div className="mb-2.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
               <Compass size={13} className="text-pink-600" />
-              <span>JOSHI (助詞) - TRỌNG TÂM JLPT {activeLevel}</span>
+              <span>TRỢ TỪ CỐT LÕI - CẤP ĐỘ {activeLevel}</span>
             </div>
           </div>
 
@@ -71,7 +71,7 @@ export default function ParticlesPage() {
             Bảng Trợ Từ Tiếng Nhật {activeLevel}
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-5">
-            Tổng hợp các trợ từ cốt lõi trong kỳ thi năng lực tiếng Nhật {activeLevel} kèm bản chất ngữ pháp, công thức và ví dụ thực tế.
+            Tổng hợp các trợ từ trọng tâm theo chuẩn giáo trình cấp độ {activeLevel} kèm bản chất ngữ pháp, công thức và ví dụ giao tiếp thực tế.
           </p>
 
           {/* Search Row */}
@@ -115,19 +115,27 @@ export default function ParticlesPage() {
             >
               <div>
                 {/* Header: Particle Char & Title */}
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center font-jp font-black text-2xl shadow-lotus">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div
+                      className={`min-w-[48px] px-2.5 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center font-jp font-black shadow-lotus shrink-0 whitespace-nowrap leading-none ${
+                        item.particle.length > 2
+                          ? 'text-sm sm:text-base'
+                          : item.particle.length > 1
+                          ? 'text-lg sm:text-xl'
+                          : 'text-2xl'
+                      }`}
+                    >
                       {item.particle}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-jp font-bold text-slate-400">{item.romaji}</span>
                         <span className="px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[10px] border border-pink-100">
                           {item.badge || activeLevel}
                         </span>
                       </div>
-                      <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight mt-0.5">
+                      <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight mt-0.5 break-words">
                         {item.title}
                       </h3>
                     </div>
@@ -136,7 +144,7 @@ export default function ParticlesPage() {
                   <button
                     type="button"
                     onClick={() => speakJapanese(item.particle)}
-                    className="p-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer"
+                    className="p-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer shrink-0"
                     title="Nghe phát âm"
                   >
                     <Volume2 size={16} />
@@ -180,16 +188,16 @@ export default function ParticlesPage() {
               </div>
 
               {/* Bottom Action: AI Breakdown */}
-              <div className="pt-3 border-t border-pink-50 flex justify-between items-center">
-                <span className="text-[11px] text-slate-400 font-medium">
-                  {item.notes ? item.notes.slice(0, 38) + '...' : `Trọng tâm kỳ thi JLPT ${activeLevel}`}
+              <div className="pt-3 border-t border-pink-50 flex flex-wrap sm:flex-nowrap justify-between items-center gap-2">
+                <span className="text-[11px] text-slate-400 font-medium truncate max-w-[220px]">
+                  {item.notes ? item.notes : `Trọng tâm kỳ thi ${activeLevel}`}
                 </span>
                 <button
                   type="button"
                   onClick={() =>
                     askAi('explain_particle', item, `AI Phân Tích: Trợ Từ 「${item.particle}」 (${activeLevel})`)
                   }
-                  className="px-3 py-1.5 rounded-xl border border-pink-200 text-pink-700 hover:bg-pink-50 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl border border-pink-200 text-pink-700 hover:bg-pink-50 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                 >
                   <Sparkles size={14} className="text-pink-600" />
                   <span>AI gỡ rối</span>

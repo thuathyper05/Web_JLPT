@@ -103,11 +103,11 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const levels = [
-    { id: 'N5', title: 'JLPT N5', status: 'ready', desc: 'Sơ cấp 1 - Hoàn chỉnh (1.512 từ)' },
-    { id: 'N4', title: 'JLPT N4', status: 'ready', desc: 'Sơ cấp 2 - Dữ liệu Trợ từ & Cấu trúc' },
-    { id: 'N3', title: 'JLPT N3', status: 'ready', desc: 'Trung cấp 1 - Dữ liệu Trợ từ & Cấu trúc' },
-    { id: 'N2', title: 'JLPT N2', status: 'dev', desc: 'Trung cấp 2 - Đang phát triển' },
-    { id: 'N1', title: 'JLPT N1', status: 'dev', desc: 'Cao cấp - Đang phát triển' },
+    { id: 'N5', title: 'Cấp độ N5', badge: 'Căn bản', status: 'ready', desc: 'Minna no Nihongo I (Bài 1 - 25)' },
+    { id: 'N4', title: 'Cấp độ N4', badge: 'Sơ cấp', status: 'ready', desc: 'Minna no Nihongo II (Bài 26 - 50)' },
+    { id: 'N3', title: 'Cấp độ N3', badge: 'Trung cấp', status: 'ready', desc: 'Soumatome & Shinkanzen Master' },
+    { id: 'N2', title: 'Cấp độ N2', badge: 'Cao cấp', status: 'ready', desc: 'Báo chí & Hội thoại thương mại' },
+    { id: 'N1', title: 'Cấp độ N1', badge: 'Thượng cấp', status: 'ready', desc: 'Học thuật & Đỉnh cao tiếng Nhật' },
   ];
 
   // AI Smart search topics chips
@@ -217,28 +217,33 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 sounds.playFlip();
                 setLevelDropdownOpen(!levelDropdownOpen);
               }}
-              className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-pink-50 hover:bg-pink-100/80 border border-pink-200/80 shadow-sm transition-all group cursor-pointer"
-              title="Nhấn để đổi cấp độ JLPT"
+              className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-50 via-rose-50/70 to-purple-50/50 hover:from-pink-100 hover:to-purple-100/70 border border-pink-200/90 shadow-sm transition-all group cursor-pointer"
+              title="Nhấn để đổi trình độ học tập"
             >
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              <span className="text-[11px] sm:text-xs font-black text-pink-700 tracking-wide uppercase">
-                JLPT {currentLevel || 'N5'}
-              </span>
+              <span className="w-2 h-2 rounded-full bg-pink-600 animate-pulse shadow-[0_0_8px_rgba(236,72,153,0.6)]" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] sm:text-xs font-black text-slate-800 tracking-wide">
+                  Cấp độ {currentLevel || 'N5'}
+                </span>
+                <span className="hidden sm:inline-block px-1.5 py-0.2 rounded-md bg-pink-100/90 text-pink-700 text-[9px] font-black uppercase tracking-wider">
+                  {levels.find(l => l.id === (currentLevel || 'N5'))?.badge || 'Căn bản'}
+                </span>
+              </div>
               <ChevronDown
                 size={13}
-                className={`text-pink-500 transition-transform ${levelDropdownOpen ? 'rotate-180' : ''}`}
+                className={`text-pink-600 transition-transform duration-200 ${levelDropdownOpen ? 'rotate-180' : ''}`}
               />
             </button>
 
             {/* Level Dropdown Menu */}
             {levelDropdownOpen && (
               <div
-                className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-pink-100 py-2 z-50 animate-in fade-in slide-in-from-top-2"
+                className="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-pink-100 py-2 z-50 animate-in fade-in slide-in-from-top-2"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="px-4 py-1.5 border-b border-pink-50 flex items-center justify-between">
                   <span className="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider">
-                    CHỌN CẤP ĐỘ JLPT
+                    CHỌN TRÌNH ĐỘ HỌC
                   </span>
                   <span className="text-[10px] text-pink-600 font-bold">5 Cấp độ</span>
                 </div>
@@ -260,18 +265,16 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                         <div className="flex flex-col">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs font-black">{lvl.title}</span>
-                            {lvl.status === 'ready' ? (
+                            <span className="px-1.5 py-0.2 rounded-md bg-pink-100 text-pink-700 text-[9px] font-extrabold">
+                              {lvl.badge}
+                            </span>
+                            {lvl.status === 'ready' && (
                               <span className="px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-700 text-[9px] font-extrabold">
                                 SẴN SÀNG
                               </span>
-                            ) : (
-                              <span className="px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-700 text-[9px] font-bold flex items-center gap-0.5">
-                                <Lock size={9} />
-                                <span>SẮP RA MẮT</span>
-                              </span>
                             )}
                           </div>
-                          <span className="text-[10.5px] text-slate-400 font-medium">
+                          <span className="text-[10.5px] text-slate-400 font-medium mt-0.5">
                             {lvl.desc}
                           </span>
                         </div>
@@ -415,7 +418,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                           <div className="flex items-center gap-1 shrink-0">
                             <button
                               type="button"
-                              onClick={() => speakJapanese(word.kanji || word.clean_kana || word.kana)}
+                              onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
                               className="p-1.5 rounded-lg bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer"
                               title="Nghe phát âm"
                             >
@@ -722,7 +725,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         type="button"
-                        onClick={() => speakJapanese(word.kanji || word.clean_kana || word.kana)}
+                        onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
                         className="p-2.5 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 cursor-pointer"
                         title="Nghe phát âm"
                       >

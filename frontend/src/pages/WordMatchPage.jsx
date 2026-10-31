@@ -323,8 +323,15 @@ export default function WordMatchPage() {
               onChange={(e) => setLessonFilter(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
-              <option value="all">Tất cả bài học (1.512 từ)</option>
-              {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+              <option value="all">Tất cả bài học (Cấp độ {currentLevel || 'N5'})</option>
+              {(currentLevel === 'N4'
+                ? Array.from({ length: 25 }, (_, i) => i + 26)
+                : currentLevel === 'N3'
+                ? Array.from({ length: 20 }, (_, i) => i + 1)
+                : currentLevel === 'N2' || currentLevel === 'N1'
+                ? Array.from({ length: 15 }, (_, i) => i + 1)
+                : Array.from({ length: 25 }, (_, i) => i + 1)
+              ).map((n) => (
                 <option key={n} value={n}>
                   Bài {n < 10 ? `0${n}` : n}
                 </option>

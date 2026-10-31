@@ -1078,10 +1078,17 @@ export default function ListeningPage() {
                 }}
                 className="px-3.5 py-2 rounded-xl border border-pink-200 bg-white text-xs font-bold text-slate-800 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
-                <option value="all">Tất cả bài học (Trọn bộ 25 bài)</option>
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                <option value="all">Tất cả bài học (Cấp độ {activeLevel})</option>
+                {(activeLevel === 'N4'
+                  ? Array.from({ length: 25 }, (_, i) => i + 26)
+                  : activeLevel === 'N3'
+                  ? Array.from({ length: 20 }, (_, i) => i + 1)
+                  : activeLevel === 'N2' || activeLevel === 'N1'
+                  ? Array.from({ length: 15 }, (_, i) => i + 1)
+                  : Array.from({ length: 25 }, (_, i) => i + 1)
+                ).map((n) => (
                   <option key={n} value={String(n)}>
-                    Bài {n < 10 ? `0${n}` : n} - Minna no Nihongo
+                    Bài {n < 10 ? `0${n}` : n} - Giáo trình {activeLevel}
                   </option>
                 ))}
               </select>

@@ -113,7 +113,7 @@ export default function PracticePage() {
 
     if (isMatch) {
       sounds.playCorrect();
-      speakJapanese(currentWord.kanji || currentWord.clean_kana || currentWord.kana);
+      speakJapanese(currentWord.kanji, currentWord.clean_kana || currentWord.kana);
       setFeedback('correct');
       setScore((prev) => prev + 1);
       const newStreak = streak + 1;
@@ -221,8 +221,15 @@ export default function PracticePage() {
                 }}
                 className="px-3.5 py-2 rounded-xl border border-pink-200 bg-white text-xs font-bold text-slate-800 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
-                <option value="all">Tất cả bài học (1.512 từ)</option>
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                <option value="all">Tất cả bài học (Cấp độ {currentLevel || 'N5'})</option>
+                {(currentLevel === 'N4'
+                  ? Array.from({ length: 25 }, (_, i) => i + 26)
+                  : currentLevel === 'N3'
+                  ? Array.from({ length: 20 }, (_, i) => i + 1)
+                  : currentLevel === 'N2' || currentLevel === 'N1'
+                  ? Array.from({ length: 15 }, (_, i) => i + 1)
+                  : Array.from({ length: 25 }, (_, i) => i + 1)
+                ).map((n) => (
                   <option key={n} value={n}>
                     Bài {n < 10 ? `0${n}` : n}
                   </option>

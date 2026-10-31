@@ -14,23 +14,41 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Native High-Quality Tokyo Japanese Speech Synthesis
-export const speakJapanese = (text, rate = 0.9) => {
-  if (typeof window === 'undefined' || !window.speechSynthesis || !text) return;
+// Native High-Quality Tokyo Japanese Speech Synthesis Engine
+// Prioritizes clean phonetic Kana reading first to eliminate Kanji mispronunciation
+export const speakJapanese = (text, kanaAlternative = null, rate = 0.88) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
+  // Use pure Hiragana/Katakana phonetic reading first for 100% accurate Tokyo pronunciation
+  const toSpeak = (kanaAlternative || text || '')
+    .toString()
+    .replace(/[［\[］\]()（）／/・·\-\*]/g, '')
+    .trim();
+
+  if (!toSpeak) return;
 
   try {
     window.speechSynthesis.cancel(); // Stop any pending speech
-    const cleanText = text.replace(/[［\[］\]()]/g, '').trim();
-    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const utterance = new SpeechSynthesisUtterance(toSpeak);
     utterance.lang = 'ja-JP';
-    utterance.rate = rate; // Configurable speed for listening practice
-    utterance.pitch = 1.05;
+    utterance.rate = rate; // Clear, natural listening pace
+    utterance.pitch = 1.0;
 
-    // Pick a high quality Tokyo/Japanese voice if available
+    // Pick top-tier standard Tokyo Japanese voice if available
     const voices = window.speechSynthesis.getVoices();
-    const jaVoice = voices.find(v => v.lang.startsWith('ja') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Kyoko') || v.name.includes('Otoya')));
-    if (jaVoice) {
-      utterance.voice = jaVoice;
+    const jaVoices = voices.filter(v => v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja'));
+    const preferredVoice = jaVoices.find(v => 
+      v.name.includes('Natural') || 
+      v.name.includes('Google') || 
+      v.name.includes('Nanami') || 
+      v.name.includes('Kyoko') || 
+      v.name.includes('Ayumi') ||
+      v.name.includes('Haruka') ||
+      v.name.includes('Otoya')
+    ) || jaVoices[0];
+
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
     }
 
     window.speechSynthesis.speak(utterance);

@@ -269,7 +269,7 @@ export default function NotebookPage() {
                 <div className="flex items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => speakJapanese(word.kanji || word.clean_kana || word.kana)}
+                    onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
                     className="p-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer"
                     title="Nghe phát âm Tokyo"
                   >

@@ -40,6 +40,9 @@ function sanitizeAiText(raw) {
   // Remove bullet dots
   cleaned = cleaned.replace(/[•●▪]/g, '-');
 
+  // Clean font encoding glitches and artifacts
+  cleaned = cleaned.replace(/\uFFFD/g, '');
+
   // Format Japanese example line breaks if needed
   cleaned = cleaned.replace(/Câu tiếng Nhật:\s*/gi, '\nCâu tiếng Nhật: ');
   cleaned = cleaned.replace(/Cách đọc:\s*/gi, '\nCách đọc: ');

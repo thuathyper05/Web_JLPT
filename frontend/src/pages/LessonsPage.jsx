@@ -135,7 +135,14 @@ export default function LessonsPage() {
                 }}
                 className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
               >
-                {Array.from({ length: 25 }, (_, i) => i + 1).map((num) => (
+                {(currentLevel === 'N4'
+                  ? Array.from({ length: 25 }, (_, i) => i + 26)
+                  : currentLevel === 'N3'
+                  ? Array.from({ length: 20 }, (_, i) => i + 1)
+                  : currentLevel === 'N2' || currentLevel === 'N1'
+                  ? Array.from({ length: 15 }, (_, i) => i + 1)
+                  : Array.from({ length: 25 }, (_, i) => i + 1)
+                ).map((num) => (
                   <option key={num} value={num}>
                     Bài {num < 10 ? `0${num}` : num}
                   </option>
@@ -256,7 +263,7 @@ export default function LessonsPage() {
               <div className="flex items-center justify-center gap-2 pt-1">
                 <button
                   type="button"
-                  onClick={() => speakJapanese(currentWord.kanji || currentWord.kana)}
+                  onClick={() => speakJapanese(currentWord.kanji, currentWord.kana || currentWord.clean_kana)}
                   className="px-3.5 py-1 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center gap-1.5 transition-colors cursor-pointer text-xs font-bold"
                   title="Nghe phát âm Tokyo"
                 >
@@ -368,7 +375,7 @@ export default function LessonsPage() {
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => speakJapanese(item.kanji || item.kana)}
+                    onClick={() => speakJapanese(item.kanji, item.kana || item.clean_kana)}
                     className="p-2 rounded-lg text-pink-600 hover:bg-pink-100/70"
                     title="Nghe phát âm"
                   >

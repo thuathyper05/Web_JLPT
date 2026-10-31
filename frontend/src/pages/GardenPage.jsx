@@ -493,7 +493,7 @@ export default function GardenPage() {
                   <div className="flex items-center gap-1.5">
                     <button
                       type="button"
-                      onClick={() => speakJapanese(word.kanji || word.kana)}
+                      onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
                       className="p-1.5 rounded-lg text-slate-400 hover:text-pink-600 hover:bg-pink-50 transition-colors cursor-pointer"
                       title="Phát âm"
                     >

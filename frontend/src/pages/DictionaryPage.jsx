@@ -270,7 +270,7 @@ export default function DictionaryPage() {
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
-                      onClick={() => speakJapanese(word.kanji || word.clean_kana || word.kana)}
+                      onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
                       className="p-1.5 rounded-lg bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer"
                       title="Nghe phát âm"
                     >
