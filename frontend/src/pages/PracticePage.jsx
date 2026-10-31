@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import * as wanakana from 'wanakana';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Keyboard,
   RotateCcw,
@@ -333,8 +334,13 @@ export default function PracticePage() {
                   {currentWord.clean_vietnamese || currentWord.vietnamese}
                 </h2>
                 {currentWord.kanji && (
-                  <div className="font-jp text-slate-500 text-sm font-semibold pt-1">
-                    Chữ Hán gợi ý: <strong className="text-slate-800 text-base">「{currentWord.kanji}」</strong>
+                  <div className="font-jp text-slate-500 text-sm font-semibold pt-1 flex items-center justify-center gap-1.5">
+                    <span>Chữ Hán:</span>
+                    <FuriganaWord
+                      kanji={currentWord.kanji}
+                      kana={currentWord.clean_kana || currentWord.kana}
+                      size="lg"
+                    />
                   </div>
                 )}
               </>
@@ -406,11 +412,13 @@ export default function PracticePage() {
             {/* Wrong Answer Alert */}
             {feedback === 'wrong' && (
               <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold animate-in fade-in flex items-center justify-between">
-                <div>
+                <div className="flex items-center gap-2">
                   <span>Chưa chính xác! Đáp án đúng là: </span>
-                  <strong className="text-sm font-jp underline ml-1">
-                    {currentWord.clean_kana || currentWord.kana}
-                  </strong>
+                  <FuriganaWord
+                    kanji={currentWord.kanji}
+                    kana={currentWord.clean_kana || currentWord.kana}
+                    size="base"
+                  />
                 </div>
                 <button
                   type="button"

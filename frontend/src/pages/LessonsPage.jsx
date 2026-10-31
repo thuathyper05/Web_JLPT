@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   BookOpen,
   Volume2,
@@ -242,23 +243,25 @@ export default function LessonsPage() {
               </div>
             </div>
 
-            {/* Kanji and Kana Area */}
+            {/* Kanji and Kana Area with Furigana */}
             <div className="py-4 space-y-2">
-              <h2 className="text-5xl sm:text-6xl font-black font-jp text-slate-900 tracking-wider">
-                {currentWord.kanji || currentWord.kana}
-              </h2>
+              <div className="flex justify-center items-center">
+                <FuriganaWord
+                  kanji={currentWord.kanji}
+                  kana={currentWord.clean_kana || currentWord.kana}
+                  size="5xl"
+                />
+              </div>
 
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-lg font-bold font-jp text-pink-600">
-                  {currentWord.clean_kana || currentWord.kana}
-                </span>
+              <div className="flex items-center justify-center gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => speakJapanese(currentWord.kanji || currentWord.kana)}
-                  className="w-8 h-8 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center justify-center transition-colors"
+                  className="px-3.5 py-1 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center gap-1.5 transition-colors cursor-pointer text-xs font-bold"
                   title="Nghe phát âm Tokyo"
                 >
-                  <Volume2 size={16} />
+                  <Volume2 size={15} />
+                  <span>Nghe phát âm Tokyo</span>
                 </button>
               </div>
             </div>
@@ -350,14 +353,11 @@ export default function LessonsPage() {
                   <span className="text-xs font-bold text-slate-400 w-6">#{idx + 1}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-jp font-bold text-base text-slate-900">
-                        {item.kanji || item.kana}
-                      </span>
-                      {item.kanji && (
-                        <span className="font-jp text-xs text-pink-600 font-semibold">
-                          ({item.clean_kana || item.kana})
-                        </span>
-                      )}
+                      <FuriganaWord
+                        kanji={item.kanji}
+                        kana={item.clean_kana || item.kana}
+                        size="base"
+                      />
                     </div>
                     <div className="text-xs text-slate-600 mt-0.5">
                       {item.clean_vietnamese || item.vietnamese}

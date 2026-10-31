@@ -5,15 +5,32 @@ import { sounds } from '../services/sounds';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTabState] = useState('home');
   const [selectedLesson, setSelectedLesson] = useState(1);
   const [currentLevel, setCurrentLevel] = useState('N5');
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
+  // Signature Page Transition Loader
+  const [pageLoading, setPageLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState('Đang kết nối tri thức...');
+
   // Auth Modal State
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register' | 'forgot'
+
+  // XP Rewards Modal State
+  const [xpModalOpen, setXpModalOpen] = useState(false);
+
+  // User Perks & Purchased Items
+  const [userPerks, setUserPerks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nihongo_user_perks');
+      return saved ? JSON.parse(saved) : { streak_freeze: 1 };
+    } catch {
+      return { streak_freeze: 1 };
+    }
+  });
 
   // AI Explanation Modal State
   const [aiModal, setAiModal] = useState({
@@ -24,12 +41,27 @@ export const AppProvider = ({ children }) => {
   });
 
   // Gamification & Progress State
-  const [gamification, setGamification] = useState({
-    total_xp: 1240,
-    current_streak: 12,
-    longest_streak: 15,
-    level_tier: 'Chiến Binh N5',
-    today_words_count: 0
+  const [gamification, setGamification] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nihongo_gamification');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            total_xp: 1240,
+            current_streak: 12,
+            longest_streak: 15,
+            level_tier: 'Cao Thủ Kanji N5',
+            today_words_count: 0
+          };
+    } catch {
+      return {
+        total_xp: 1240,
+        current_streak: 12,
+        longest_streak: 15,
+        level_tier: 'Cao Thủ Kanji N5',
+        today_words_count: 0
+      };
+    }
   });
 
   // Guest Progress: { [wordId]: { status: 'mastered' | 'needs_review', updated_at: string } }
@@ -52,6 +84,14 @@ export const AppProvider = ({ children }) => {
     }
   });
 
+  // Initial App Load Spinner (Beside auth check)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageLoading(false);
+    }, 550);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Check current auth status on mount
   useEffect(() => {
     const initAuth = async () => {
@@ -72,26 +112,61 @@ export const AppProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  // Save guest progress
+  // Persist guest progress
   useEffect(() => {
     try {
       localStorage.setItem('nihongo_guest_progress', JSON.stringify(guestProgress));
     } catch {}
   }, [guestProgress]);
 
-  // Save favorites
+  // Persist favorites
   useEffect(() => {
     try {
       localStorage.setItem('nihongo_favorites', JSON.stringify(favorites));
     } catch {}
   }, [favorites]);
 
-  // Tab switch with sound
+  // Persist gamification
+  useEffect(() => {
+    try {
+      localStorage.setItem('nihongo_gamification', JSON.stringify(gamification));
+    } catch {}
+  }, [gamification]);
+
+  // Persist user perks
+  useEffect(() => {
+    try {
+      localStorage.setItem('nihongo_user_perks', JSON.stringify(userPerks));
+    } catch {}
+  }, [userPerks]);
+
+  // Tab switch with sound and signature smooth transition loader
   const navigateTo = (tab, lessonId = null) => {
     sounds.playFlip();
     if (lessonId) setSelectedLesson(lessonId);
-    setActiveTab(tab);
+
+    // Trigger brief, fluid transition spinner
+    setLoadingMessage(
+      tab === 'lessons'
+        ? 'Đang chuẩn bị giáo trình Minna...'
+        : tab === 'kanji'
+        ? 'Đang tải bảng chữ Hán Kanji...'
+        : tab === 'particles'
+        ? 'Đang nạp dữ liệu trợ từ...'
+        : tab === 'garden'
+        ? 'Đang chăm sóc vườn Bonsai...'
+        : tab === 'practice'
+        ? 'Đang nạp trường đấu gõ Kana...'
+        : 'Đang chuyển trang...'
+    );
+    setPageLoading(true);
+
+    setActiveTabState(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 280);
   };
 
   // Change JLPT Level
@@ -100,10 +175,10 @@ export const AppProvider = ({ children }) => {
     setCurrentLevel(level);
     if (level === 'N5') {
       if (activeTab === 'level-coming-soon') {
-        setActiveTab('home');
+        navigateTo('home');
       }
     } else {
-      setActiveTab('level-coming-soon');
+      navigateTo('level-coming-soon');
     }
   };
 
@@ -121,7 +196,7 @@ export const AppProvider = ({ children }) => {
     });
   };
 
-  const isFavorite = (wordId) => !!favorites[wordId];
+  const isFavorite = (wordId) => !favorites[wordId];
 
   // Open Auth modal
   const openAuth = (mode = 'login') => {
@@ -158,6 +233,26 @@ export const AppProvider = ({ children }) => {
     progressService.recordTick({ vocabId: wordId, status, xp: xpGained }).catch(() => {});
   };
 
+  // Spend XP on Rewards Shop
+  const spendXp = (cost, itemId) => {
+    if (gamification.total_xp < cost) return false;
+
+    setGamification((prev) => ({
+      ...prev,
+      total_xp: prev.total_xp - cost
+    }));
+
+    setUserPerks((prev) => {
+      const currentCount = prev[itemId] || 0;
+      return {
+        ...prev,
+        [itemId]: typeof currentCount === 'number' ? currentCount + 1 : true
+      };
+    });
+
+    return true;
+  };
+
   // AI Assistant trigger from any screen
   const askAi = async (action, context, defaultTitle = 'Trợ Lý AI Phân Tích') => {
     sounds.playFlip();
@@ -180,13 +275,15 @@ export const AppProvider = ({ children }) => {
       } else {
         throw new Error('API return unsuccessful');
       }
-    } catch (e) {
+    } catch {
       setAiModal({
         isOpen: true,
         title: defaultTitle,
         data: {
-          nuance: 'Trợ lý AI đang cập nhật dữ liệu. Hãy tham khảo phần phát âm chuẩn và các câu ví dụ thực tế của bài học nhé!',
-          golden_rule: 'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng (SRS) và luyện phát âm thành tiếng!'
+          nuance:
+            'Trợ lý AI đang sẵn sàng hỗ trợ. Bạn có thể luyện nghe phát âm chuẩn Tokyo hoặc xem mẹo nhớ tượng hình để khắc sâu vào tiềm thức nhé!',
+          golden_rule:
+            'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng (SRS) và luyện phát âm thành tiếng!'
         },
         loading: false
       });
@@ -223,7 +320,14 @@ export const AppProvider = ({ children }) => {
         isFavorite,
         aiModal,
         askAi,
-        closeAiModal
+        closeAiModal,
+        pageLoading,
+        setPageLoading,
+        loadingMessage,
+        xpModalOpen,
+        setXpModalOpen,
+        userPerks,
+        spendXp
       }}
     >
       {children}

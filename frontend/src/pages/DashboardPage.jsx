@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { lessonService, vocabService, speakJapanese } from '../services/api';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Play,
   Sparkles,
@@ -327,13 +328,16 @@ export default function DashboardPage() {
               </button>
             </div>
 
-            <h3 className="font-jp font-black text-3xl sm:text-4xl text-white mb-1 tracking-wide">
-              {wordOfTheDay.kanji}
-            </h3>
-            <div className="font-jp text-pink-100 text-sm font-semibold mb-2">
-              {wordOfTheDay.kana}
+            <div className="my-2">
+              <FuriganaWord
+                kanji={wordOfTheDay.kanji}
+                kana={wordOfTheDay.kana}
+                size="4xl"
+                kanjiClassName="text-white"
+                furiganaClassName="text-pink-200"
+              />
             </div>
-            <p className="text-xs text-white/90 font-medium bg-black/15 p-2 rounded-xl backdrop-blur-sm">
+            <p className="text-xs text-white/90 font-medium bg-black/15 p-2 rounded-xl backdrop-blur-sm mt-2">
               Ý nghĩa: <strong>{wordOfTheDay.meaning}</strong>
             </p>
           </div>

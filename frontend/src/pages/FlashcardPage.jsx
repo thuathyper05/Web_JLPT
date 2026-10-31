@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Layers,
   Volume2,
@@ -293,16 +294,19 @@ export default function FlashcardPage() {
                   </button>
                 </div>
 
-                {/* Center Word */}
+                {/* Center Word with Furigana */}
                 <div className="py-6 space-y-3">
-                  <div className="text-5xl sm:text-6xl font-black font-jp text-slate-900 tracking-wider">
-                    {direction === 'jp_to_vi'
-                      ? (currentCard.kanji || currentCard.kana)
-                      : (currentCard.clean_vietnamese || currentCard.vietnamese)}
-                  </div>
-                  {direction === 'jp_to_vi' && (
-                    <div className="text-lg font-bold font-jp text-pink-600">
-                      {currentCard.clean_kana || currentCard.kana}
+                  {direction === 'jp_to_vi' ? (
+                    <div className="flex justify-center items-center">
+                      <FuriganaWord
+                        kanji={currentCard.kanji}
+                        kana={currentCard.clean_kana || currentCard.kana}
+                        size="5xl"
+                      />
+                    </div>
+                  ) : (
+                    <div className="text-3xl sm:text-4xl font-black text-slate-900">
+                      {currentCard.clean_vietnamese || currentCard.vietnamese}
                     </div>
                   )}
                 </div>
@@ -326,7 +330,7 @@ export default function FlashcardPage() {
                       e.stopPropagation();
                       speakJapanese(currentCard.kanji || currentCard.kana);
                     }}
-                    className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors"
+                    className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
                     title="Nghe lại phát âm"
                   >
                     <Volume2 size={16} />
@@ -335,15 +339,29 @@ export default function FlashcardPage() {
 
                 {/* Center Translation & Details */}
                 <div className="py-4 space-y-3">
-                  <div className="text-3xl sm:text-4xl font-extrabold text-pink-700">
+                  <div className="text-2xl sm:text-3xl font-extrabold text-pink-700">
                     {direction === 'jp_to_vi'
                       ? (currentCard.clean_vietnamese || currentCard.vietnamese)
-                      : (currentCard.kanji || currentCard.kana)}
+                      : (
+                        <div className="flex justify-center">
+                          <FuriganaWord
+                            kanji={currentCard.kanji}
+                            kana={currentCard.clean_kana || currentCard.kana}
+                            size="4xl"
+                          />
+                        </div>
+                      )}
                   </div>
 
-                  <div className="text-sm font-jp font-bold text-slate-700">
-                    {currentCard.kanji && `${currentCard.kanji} (${currentCard.clean_kana || currentCard.kana})`}
-                  </div>
+                  {direction === 'jp_to_vi' && currentCard.kanji && (
+                    <div className="flex justify-center">
+                      <FuriganaWord
+                        kanji={currentCard.kanji}
+                        kana={currentCard.clean_kana || currentCard.kana}
+                        size="xl"
+                      />
+                    </div>
+                  )}
 
                   {currentCard.usage_note && (
                     <p className="text-xs text-slate-500 bg-white/80 p-2.5 rounded-xl border border-pink-100 max-w-sm mx-auto">

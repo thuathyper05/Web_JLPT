@@ -6,6 +6,8 @@ import MobileBottomNav from './components/MobileBottomNav';
 import AuthModal from './components/AuthModal';
 import AiExplainModal from './components/AiExplainModal';
 import AiChatBubble from './components/AiChatBubble';
+import SignatureLoader from './components/SignatureLoader';
+import XpRewardsModal from './components/XpRewardsModal';
 
 import DashboardPage from './pages/DashboardPage';
 import LessonsPage from './pages/LessonsPage';
@@ -23,7 +25,7 @@ import SupportPage from './pages/SupportPage';
 import LevelComingSoonPage from './pages/LevelComingSoonPage';
 
 export default function App() {
-  const { activeTab } = useApp();
+  const { activeTab, pageLoading, loadingMessage } = useApp();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const renderContent = () => {
@@ -62,7 +64,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-appbg text-slate-800 flex">
+    <div className="min-h-screen bg-appbg text-slate-800 flex relative">
+      {/* ── BESPOKE TRANSITION / PAGE LOADER ── */}
+      {pageLoading && <SignatureLoader message={loadingMessage} />}
+
       {/* ── 1. SIDEBAR (DESKTOP & MOBILE DRAWER) ── */}
       <Sidebar
         mobileOpen={mobileSidebarOpen}
@@ -91,6 +96,9 @@ export default function App() {
 
       {/* ── 6. AUTHENTICATION MODAL ── */}
       <AuthModal />
+
+      {/* ── 7. XP REWARDS & LEVEL MODAL ── */}
+      <XpRewardsModal />
     </div>
   );
 }

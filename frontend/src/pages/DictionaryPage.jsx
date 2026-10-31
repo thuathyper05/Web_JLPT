@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Search,
   BookOpen,
@@ -291,13 +292,19 @@ export default function DictionaryPage() {
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-black font-jp text-slate-900 leading-tight">
-                  {word.kanji || word.clean_kana || word.kana}
-                </h3>
-                <div className="text-xs font-jp font-semibold text-pink-600 mt-0.5">
-                  {word.clean_kana || word.kana} {word.romaji ? `• ${word.romaji}` : ''}
+                <div className="flex items-start my-1">
+                  <FuriganaWord
+                    kanji={word.kanji}
+                    kana={word.clean_kana || word.kana}
+                    size="xl"
+                  />
                 </div>
-                <p className="text-xs font-bold text-slate-700 mt-2 line-clamp-2">
+                {word.romaji && (
+                  <div className="text-[11px] font-bold text-slate-400 mt-1">
+                    Romaji: {word.romaji}
+                  </div>
+                )}
+                <p className="text-xs font-bold text-slate-700 mt-1.5 line-clamp-2">
                   {word.clean_vietnamese || word.vietnamese}
                 </p>
               </div>

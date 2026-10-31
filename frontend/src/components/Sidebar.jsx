@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
-  const { activeTab, setActiveTab, currentLevel, gamification } = useApp();
+  const { activeTab, setActiveTab, currentLevel, gamification, setXpModalOpen } = useApp();
 
   const navSections = [
     {
@@ -162,12 +162,9 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </nav>
         </div>
 
-        {/* Bottom Card: Chuỗi Ngày Học (Streak) */}
+        {/* Bottom Card: Chuỗi Ngày Học (Streak) & XP */}
         <div className="p-3.5 border-t border-pink-50">
-          <div
-            onClick={() => handleNav({ id: 'home' })}
-            className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
-          >
+          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden shadow-lg group">
             {/* Background Watermark */}
             <div className="absolute right-2 top-1 text-slate-800 font-jp font-black text-6xl opacity-30 select-none pointer-events-none">
               N5
@@ -183,9 +180,22 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                   {gamification?.current_streak || 12} ngày
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-1 mb-0">
+              <p className="text-[11px] text-slate-400 mt-1 mb-2">
                 Hôm nay bạn đã học {gamification?.today_words_count || 0} từ
               </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onCloseMobile();
+                  sounds.playFlip();
+                  setXpModalOpen(true);
+                }}
+                className="w-full py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 border border-white/10 transition-colors cursor-pointer"
+              >
+                <Zap size={13} className="text-amber-400" fill="#f59e0b" />
+                <span>{gamification?.total_xp?.toLocaleString() || '1.240'} XP • Đổi thưởng</span>
+              </button>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Sprout,
   Droplets,
@@ -607,13 +608,12 @@ export default function GardenPage() {
                   className="p-3.5 rounded-2xl bg-pink-50/20 hover:bg-pink-50/60 border border-pink-100 transition-colors flex items-center justify-between gap-2"
                 >
                   <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-jp font-black text-sm text-slate-900">
-                        {word.kanji || word.clean_kana || word.kana}
-                      </span>
-                      <span className="font-jp text-[11px] text-pink-600 font-bold">
-                        {word.clean_kana || word.kana}
-                      </span>
+                    <div className="flex items-center gap-1.5 my-0.5">
+                      <FuriganaWord
+                        kanji={word.kanji}
+                        kana={word.clean_kana || word.kana}
+                        size="sm"
+                      />
                     </div>
                     <p className="text-xs text-slate-600 truncate mt-0.5 mb-0 font-medium">
                       {word.clean_vietnamese || word.vietnamese}

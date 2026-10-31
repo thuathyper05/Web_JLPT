@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import FuriganaWord from '../components/FuriganaWord';
 import {
   Zap,
   Clock,
@@ -320,17 +321,17 @@ export default function WordMatchPage() {
                     {tile.type === 'jp' ? 'Tiếng Nhật' : 'Nghĩa Việt'}
                   </span>
 
-                  <span className={`font-bold leading-snug line-clamp-2 ${
-                    tile.type === 'jp' ? 'font-jp text-base sm:text-lg' : 'text-xs sm:text-sm'
-                  }`}>
-                    {tile.text}
-                  </span>
-
-                  {tile.subtext && (
-                    <span className={`text-[10px] font-jp font-semibold mt-0.5 ${
-                      isSelected ? 'text-pink-100' : 'text-slate-400'
-                    }`}>
-                      {tile.subtext}
+                  {tile.type === 'jp' ? (
+                    <FuriganaWord
+                      kanji={tile.fullWord?.kanji}
+                      kana={tile.fullWord?.clean_kana || tile.fullWord?.kana}
+                      size="base"
+                      kanjiClassName={isSelected ? 'text-white' : 'text-slate-900'}
+                      furiganaClassName={isSelected ? 'text-pink-100' : 'text-pink-600'}
+                    />
+                  ) : (
+                    <span className="text-xs sm:text-sm font-bold leading-snug line-clamp-2">
+                      {tile.text}
                     </span>
                   )}
                 </button>
