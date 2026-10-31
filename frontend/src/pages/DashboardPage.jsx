@@ -15,8 +15,8 @@ import {
   Volume2,
   ChevronRight,
   Target,
-  ArrowRight,
-  Headphones
+  Headphones,
+  Newspaper
 } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
@@ -413,14 +413,24 @@ export default function DashboardPage() {
 
           <div className="pt-4 border-t border-pink-50 mt-4 flex justify-between items-center text-xs text-slate-500">
             <span>Muốn ôn tập trợ từ hoặc mini-game nối từ?</span>
-            <button
-              type="button"
-              onClick={() => setActiveTab('wordmatch')}
-              className="text-pink-600 font-bold hover:underline flex items-center gap-1"
-            >
-              <span>Chơi Nối từ</span>
-              <ArrowRight size={14} />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setActiveTab('forum')}
+                className="text-slate-500 font-bold hover:text-pink-600 hover:underline flex items-center gap-1"
+              >
+                <Newspaper size={13} />
+                <span>Diễn đàn & Tin tức</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('wordmatch')}
+                className="text-pink-600 font-bold hover:underline flex items-center gap-1"
+              >
+                <span>Chơi Nối từ</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
         </div>
       </div>

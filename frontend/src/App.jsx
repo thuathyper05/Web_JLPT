@@ -22,6 +22,7 @@ import NotebookPage from './pages/NotebookPage';
 import DictionaryPage from './pages/DictionaryPage';
 import AiSenseiPage from './pages/AiSenseiPage';
 import SupportPage from './pages/SupportPage';
+import ForumPage from './pages/ForumPage';
 import LevelComingSoonPage from './pages/LevelComingSoonPage';
 
 export default function App() {
@@ -58,6 +59,8 @@ export default function App() {
         return <AiSenseiPage />;
       case 'support':
         return <SupportPage />;
+      case 'forum':
+        return <ForumPage />;
       case 'level-coming-soon':
         return <LevelComingSoonPage />;
       default:

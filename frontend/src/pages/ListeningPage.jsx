@@ -28,7 +28,7 @@ export default function ListeningPage() {
 
   const [lessonChoice, setLessonChoice] = useState('1');
 
-  // Curated authentic Minna no Nihongo JLPT Choukai listening curriculum
+  // Trọn bộ 25 bài nghe hội thoại Minna no Nihongo chuẩn format đề thi JLPT N5 Choukai
   const allTracks = [
     {
       id: 1,
@@ -124,7 +124,7 @@ export default function ListeningPage() {
       lesson: 3,
       topic: 'Bài 03: Vị trí, Địa điểm & Nơi chốn',
       situation: 'Một vị khách bước vào toà nhà công ty và hỏi nhân viên lễ tân đường đến văn phòng và cầu thang máy.',
-      audioText: 'いらっしゃいませ。すみません、事務室はどこですか。事務室はあちらですよ。エレベーターは何階ですか。エレベーターは2階の隣にあります。どうもありがとうございます。',
+      audioText: 'いらっしゃいませ。すみません、事務室はどこですか。事務室はあちらですよ。エレベーターは階段の隣です。どうもありがとうございます。',
       dialogue: [
         {
           speaker: 'Lễ tân',
@@ -143,23 +143,9 @@ export default function ListeningPage() {
         {
           speaker: 'Lễ tân',
           role: 'A',
-          kanji: '事務室はあちらですよ。',
-          kana: 'じむしつはあちらですよ。',
-          vi: 'Văn phòng ở đằng kia nhé ạ.'
-        },
-        {
-          speaker: 'Khách',
-          role: 'B',
-          kanji: 'エレベーターはどこにありますか。',
-          kana: 'えれべーたーはどこにありますか。',
-          vi: 'Thế thang máy ở đâu ạ?'
-        },
-        {
-          speaker: 'Lễ tân',
-          role: 'A',
-          kanji: 'エレベーターは階段の隣ですよ。',
-          kana: 'えれべーたーはかいだんのとなりですよ。',
-          vi: 'Thang máy ở ngay bên cạnh cầu thang bộ nhé.'
+          kanji: '事務室はあちらですよ。エレベーターは階段の隣です。',
+          kana: 'じむしつはあちらですよ。えれべーたーはかいだんのとなりです。',
+          vi: 'Văn phòng ở đằng kia nhé ạ. Còn thang máy ở ngay cạnh cầu thang bộ.'
         }
       ],
       question: 'Thang máy nằm ở vị trí nào theo lời nhân viên lễ tân?',
@@ -170,7 +156,7 @@ export default function ListeningPage() {
         { id: 'D', text: 'Ở bên ngoài cổng toà nhà' }
       ],
       correctAnswer: 'B',
-      explanation: 'Lễ tân hướng dẫn: 「階段の隣ですよ」(Ngay cạnh cầu thang bộ). Đáp án là B.',
+      explanation: 'Lễ tân hướng dẫn: 「階段の隣です」(Ngay cạnh cầu thang bộ). Đáp án là B.',
       keyword: '階段の隣 (かいだんのとなり)',
       tip: 'Chú ý từ chỉ vị trí tương đối: 「隣」(bên cạnh), 「前」(phía trước), 「後ろ」(phía sau).'
     },
@@ -191,23 +177,9 @@ export default function ListeningPage() {
         {
           speaker: 'Nhân viên ngân hàng',
           role: 'B',
-          kanji: '午前9時から午後3時までです。',
-          kana: 'ごぜんくじからごごさんじまでです。',
-          vi: 'Dạ mở cửa từ 9 giờ sáng đến 3 giờ chiều ạ.'
-        },
-        {
-          speaker: 'Khách hàng',
-          role: 'A',
-          kanji: '土曜日は休みですか。',
-          kana: 'どようびはやすみですか。',
-          vi: 'Thế thứ 7 có nghỉ không?'
-        },
-        {
-          speaker: 'Nhân viên ngân hàng',
-          role: 'B',
-          kanji: 'はい、土曜日と日曜日は休みです。',
-          kana: 'はい、どようびとにちようびはやすみです。',
-          vi: 'Vâng, thứ 7 và chủ nhật bên em nghỉ ạ.'
+          kanji: '午前9時から午後3時までです。土曜日と日曜日は休みです。',
+          kana: 'ごぜんくじからごごさんじまでです。どようびとにちようびはやすみです。',
+          vi: 'Dạ mở cửa từ 9 giờ sáng đến 3 giờ chiều ạ. Thứ 7 và chủ nhật bên em nghỉ ạ.'
         }
       ],
       question: 'Ngân hàng đóng cửa (nghỉ làm việc) vào những ngày nào?',
@@ -218,7 +190,7 @@ export default function ListeningPage() {
         { id: 'D', text: 'Nghỉ sau 5 giờ chiều' }
       ],
       correctAnswer: 'B',
-      explanation: 'Nhân viên trả lời: 「はい、土曜日と日曜日は休みです」(Vâng, thứ 7 và chủ nhật nghỉ). Đáp án là B.',
+      explanation: 'Nhân viên trả lời: 「土曜日と日曜日は休みです」(Thứ 7 và chủ nhật nghỉ). Đáp án là B.',
       keyword: '土曜日と日曜日 (Thứ 7 và Chủ nhật)',
       tip: 'Mẫu câu thời gian 「〜から〜まで」 và danh sách ngày nghỉ với trợ từ 「と」.'
     },
@@ -227,35 +199,21 @@ export default function ListeningPage() {
       lesson: 5,
       topic: 'Bài 05: Phương tiện & Đi lại',
       situation: 'Hai người bạn đang trao đổi về kế hoạch đi du lịch Kyoto vào kỳ nghỉ cuối tuần.',
-      audioText: '週末、どこへ行きますか。京都へ行きます。一人で行きますか。いいえ、友達と行きます。新幹線で行きますか。はい、新幹線で行きます。とても速いですよ。',
+      audioText: '週末、どこへ行きますか。京都へ行きます。一人で行きますか。いいえ、友達と行きます。新幹線で行きます。とても速いですよ。',
       dialogue: [
         {
           speaker: 'Bạn A',
           role: 'A',
-          kanji: '週末、どこへ行きますか。',
-          kana: 'しゅうまつ、どこへいきますか。',
-          vi: 'Cuối tuần này bạn đi đâu thế?'
+          kanji: '週末、どこへ行きますか。一人で行きますか。',
+          kana: 'しゅうまつ、どこへいきますか。ひとりでおこないますか。',
+          vi: 'Cuối tuần này bạn đi đâu thế? Bạn đi một mình à?'
         },
         {
           speaker: 'Bạn B',
           role: 'B',
-          kanji: '京都へ行きます。',
-          kana: 'きょうとへいきます。',
-          vi: 'Mình đi Kyoto.'
-        },
-        {
-          speaker: 'Bạn A',
-          role: 'A',
-          kanji: '一人で行きますか。',
-          kana: 'ひとりでおこないますか。',
-          vi: 'Bạn đi một mình à?'
-        },
-        {
-          speaker: 'Bạn B',
-          role: 'B',
-          kanji: 'いいえ、友達と行きます。新幹線で行きます。',
-          kana: 'いいえ、ともだちといきます。しんかんせんでいきます。',
-          vi: 'Không, mình đi cùng bạn bè. Bọn mình đi bằng tàu siêu tốc Shinkansen.'
+          kanji: '京都へ行きます。いいえ、友達と新幹線で行きます。',
+          kana: 'きょうとへいきます。いいえ、ともだちとしんかんせんでいきます。',
+          vi: 'Mình đi Kyoto. Không, mình đi cùng bạn bè bằng tàu siêu tốc Shinkansen.'
         }
       ],
       question: 'Bạn B đi Kyoto bằng phương tiện gì và đi cùng ai?',
@@ -266,7 +224,7 @@ export default function ListeningPage() {
         { id: 'D', text: 'Đi xe đạp một mình' }
       ],
       correctAnswer: 'B',
-      explanation: 'Bạn B xác nhận: 「友達と行きます。新幹線で行きます」(Đi cùng bạn, đi bằng tàu Shinkansen). Đáp án đúng là B.',
+      explanation: 'Bạn B xác nhận: 「友達と新幹線で行きます」(Đi cùng bạn, đi bằng tàu Shinkansen). Đáp án đúng là B.',
       keyword: '友達と (Cùng bạn) & 新幹線で (Bằng Shinkansen)',
       tip: 'Trợ từ 「と」 chỉ đối tượng cùng hành động, trợ từ 「で」 chỉ phương tiện di chuyển.'
     },
@@ -275,7 +233,7 @@ export default function ListeningPage() {
       lesson: 6,
       topic: 'Bài 06: Mua sắm, Ẩm thực & Địa điểm ăn uống',
       situation: 'Vào giờ nghỉ trưa, hai đồng nghiệp công ty rủ nhau đi ăn trưa và hỏi địa điểm ăn uống.',
-      audioText: '田中さん、昼ごはんを一緒に食べませんか。ええ、食べましょう。どこで食べますか。駅前のレストランで食べましょう。魚とお肉、どちらがいいですか。魚料理にします。',
+      audioText: '田中さん、昼ごはんを一緒に食べませんか。ええ、食べましょう。どこで食べますか。駅前のレストランで食べましょう。魚料理にします。',
       dialogue: [
         {
           speaker: 'Đồng nghiệp A',
@@ -287,16 +245,9 @@ export default function ListeningPage() {
         {
           speaker: 'Tanaka',
           role: 'B',
-          kanji: 'ええ、食べましょう。どこで食べますか。',
-          kana: 'ええ、たべましょう。どこでたべますか。',
-          vi: 'Vâng, đi ăn thôi. Chúng ta ăn ở đâu nhỉ?'
-        },
-        {
-          speaker: 'Đồng nghiệp A',
-          role: 'A',
-          kanji: '駅前のレストランで食べましょう。魚料理にします。',
-          kana: 'えきまえのれすとらんでたべましょう。さかなりょうりにします。',
-          vi: 'Hãy ăn ở nhà hàng trước ga nhé. Tôi sẽ chọn món cá.'
+          kanji: 'ええ、食べましょう。駅前のレストランで魚料理にしましょう。',
+          kana: 'ええ、たべましょう。えきまえのれすとらんでさかなりょうりにしましょう。',
+          vi: 'Vâng, đi ăn thôi. Hãy ghé nhà hàng trước ga ăn món cá nhé.'
         }
       ],
       question: 'Hai đồng nghiệp quyết định sẽ ăn trưa ở đâu?',
@@ -316,7 +267,7 @@ export default function ListeningPage() {
       lesson: 7,
       topic: 'Bài 07: Tặng quà, Dụng cụ & Công cụ',
       situation: 'Yamada tặng quà sinh nhật cho đồng nghiệp và nói về cách ăn một món bánh đặc biệt.',
-      audioText: '木村さん、お誕生日おめでとうございます。このプレゼントをどうぞ。わあ、素敵なスプーンですね。ありがとうございます。何で食べますか。そのスプーンでアイスクリームを食べます。',
+      audioText: '木村さん、お誕生日おめでとうございます。このプレゼントをどうぞ。わあ、素敵なスプーンですね。ありがとうございます。このスプーンでアイスクリームを食べます。',
       dialogue: [
         {
           speaker: 'Yamada',
@@ -328,16 +279,9 @@ export default function ListeningPage() {
         {
           speaker: 'Kimura',
           role: 'B',
-          kanji: 'わあ、素敵なスプーンですね。ありがとうございます。',
-          kana: 'わあ、すてきなすぷーんですね。ありがとうございます。',
-          vi: 'Oa, một chiếc thìa thật đẹp. Tôi xin cảm ơn.'
-        },
-        {
-          speaker: 'Kimura',
-          role: 'B',
-          kanji: 'このスプーンでアイスクリームを食べます。',
-          kana: 'このすぷーんであいすくりーむをたべます。',
-          vi: 'Tôi sẽ dùng chiếc thìa này để ăn kem.'
+          kanji: 'わあ、素敵なスプーンですね。このスプーンでアイスクリームを食べます。',
+          kana: 'わあ、すてきなすぷーんですね。このすぷーんであいすくりーむをたべます。',
+          vi: 'Oa, một chiếc thìa thật đẹp. Tôi sẽ dùng chiếc thìa này để ăn kem.'
         }
       ],
       question: 'Chị Kimura nhận được món quà gì nhân dịp sinh nhật?',
@@ -357,25 +301,18 @@ export default function ListeningPage() {
       lesson: 8,
       topic: 'Bài 08: Tính từ miêu tả phong cảnh & Trải nghiệm',
       situation: 'Trò chuyện về chuyến đi du lịch núi Phú Sĩ và cảm nhận về cuộc sống tại Tokyo.',
-      audioText: '先週、富士山へ行きました。富士山はどうでしたか。とても高くて、綺麗でした。日本の生活は楽しいですか。はい、忙しいですが、とても面白いです。',
+      audioText: '先週、富士山へ行きました。富士山はどうでしたか。とても高くて、綺麗でした。日本の生活もとても面白いです。',
       dialogue: [
         {
           speaker: 'Bạn A',
           role: 'A',
-          kanji: '先週、富士山へ行きました。',
-          kana: 'せんしゅう、ふじさんへいきました。',
-          vi: 'Tuần trước mình đã đi núi Phú Sĩ.'
+          kanji: '先週、富士山へ行きました。富士山はどうでしたか。',
+          kana: 'せんしゅう、ふじさんへいきました。ふじさんはどうでしたか。',
+          vi: 'Tuần trước mình đã đi núi Phú Sĩ. Núi Phú Sĩ thế nào?'
         },
         {
           speaker: 'Bạn B',
           role: 'B',
-          kanji: '富士山はどうでしたか。',
-          kana: 'ふじさんはどうでしたか。',
-          vi: 'Núi Phú Sĩ thế nào?'
-        },
-        {
-          speaker: 'Bạn A',
-          role: 'A',
           kanji: 'とても高くて、綺麗でした。日本の生活もとても面白いです。',
           kana: 'とてもたかくて、きれいでした。にほんのせいかつもとてもおもしろいです。',
           vi: 'Núi rất cao và đẹp. Cuộc sống ở Nhật Bản cũng rất thú vị.'
@@ -392,6 +329,584 @@ export default function ListeningPage() {
       explanation: 'Người nói miêu tả rõ: 「とても高くて、綺麗でした」(Rất cao và đẹp). Đáp án là B.',
       keyword: '高くて、綺麗でした (Cao và đẹp)',
       tip: 'Mẫu câu hỏi cảm nhận trong quá khứ 「〜はどうでしたか」.'
+    },
+    {
+      id: 9,
+      lesson: 9,
+      topic: 'Bài 09: Sở thích, Năng lực & Mức độ hiểu biết',
+      situation: 'Trao đổi về khả năng chơi thể thao và sở thích nghe nhạc Nhật Bản.',
+      audioText: 'マイクさん、スポーツが好きですか。はい、サッカーが大好きです。ピアノも弾くことができますか。いいえ、ピアノは全然できません。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: 'マイクさん、スポーツが好きですか。ピアノも弾けますか。',
+          kana: 'まいくさん、すぽーつがすきですか。ぴあのもひけますか。',
+          vi: 'Anh Mike, anh có thích thể thao không? Anh có chơi được piano không?'
+        },
+        {
+          speaker: 'Mike',
+          role: 'B',
+          kanji: 'サッカーが大好きです。でも、ピアノは全然できません。',
+          kana: 'さっかーがだいすきです。でも、ぴあのはぜんぜんできません。',
+          vi: 'Tôi rất thích đá bóng. Nhưng piano thì tôi hoàn toàn không biết chơi.'
+        }
+      ],
+      question: 'Anh Mike có khả năng và sở thích gì?',
+      options: [
+        { id: 'A', text: 'Chơi đàn piano rất giỏi' },
+        { id: 'B', text: 'Rất thích đá bóng, không biết chơi piano' },
+        { id: 'C', text: 'Không thích thể thao' },
+        { id: 'D', text: 'Chơi giỏi cả bóng đá và piano' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Mike trả lời: 「サッカーが大好きです。でも、ピアノは全然できません」(Rất thích bóng đá, hoàn toàn không biết chơi piano). Đáp án là B.',
+      keyword: 'サッカーが大好き & 全然できません',
+      tip: 'Từ phủ định triệt để 「全然〜ません」(hoàn toàn không).'
+    },
+    {
+      id: 10,
+      lesson: 10,
+      topic: 'Bài 10: Tồn tại Người & Đồ vật (Arimasu / Imasu)',
+      situation: 'Tìm đồ dùng học tập và hỏi thăm vị trí của đồng nghiệp trong văn phòng.',
+      audioText: 'すみません、私のハサミはどこですか。机の上にペンとノートがあります。ハサミはその箱の中にありますよ。佐藤さんは会議室にいます。',
+      dialogue: [
+        {
+          speaker: 'Nhân viên A',
+          role: 'A',
+          kanji: 'すみません、私のハサミはどこですか。',
+          kana: 'すみません、わたしのはさみはどこですか。',
+          vi: 'Xin lỗi, chiếc kéo của tôi ở đâu vậy?'
+        },
+        {
+          speaker: 'Nhân viên B',
+          role: 'B',
+          kanji: 'ハサミはその青い箱の中にありますよ。',
+          kana: 'はさみはそのあおいはこのなかにありますよ。',
+          vi: 'Cây kéo nằm ở bên trong chiếc hộp màu xanh kia kìa.'
+        }
+      ],
+      question: 'Cây kéo (ハサミ) đang ở vị trí nào?',
+      options: [
+        { id: 'A', text: 'Ở trên mặt bàn' },
+        { id: 'B', text: 'Ở trong chiếc hộp màu xanh' },
+        { id: 'C', text: 'Ở phòng họp' },
+        { id: 'D', text: 'Ở trong ngăn kéo' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Nhân viên B chỉ rõ: 「箱の中にあります」(Ở trong hộp). Đáp án là B.',
+      keyword: '箱の中にあります (Trong hộp)',
+      tip: 'Phân biệt: Đồ vật dùng 「あります」, người và động vật dùng 「います」.'
+    },
+    {
+      id: 11,
+      lesson: 11,
+      topic: 'Bài 11: Số lượng, Thời lượng & Giá cả',
+      situation: 'Mua hoa quả tại siêu thị và hỏi thời gian di chuyển bằng xe buýt.',
+      audioText: 'いらっしゃいませ。りんごを3つと、みかんを5つください。全部で800円です。駅までバスでどのくらいかかりますか。20分くらいかかりますよ。',
+      dialogue: [
+        {
+          speaker: 'Khách',
+          role: 'A',
+          kanji: 'りんごを3つと、みかんを5つください。',
+          kana: 'りんごをみっつと、みかんをいつつください。',
+          vi: 'Cho tôi 3 quả táo và 5 quả quýt.'
+        },
+        {
+          speaker: 'Thu ngân',
+          role: 'B',
+          kanji: '全部で800円です。駅まではバスで20分かかります。',
+          kana: 'ぜんぶではっぴゃくえんです。えきまではばすでにじっぷんかかります。',
+          vi: 'Tổng cộng là 800 yên. Đến nhà ga thì đi xe buýt mất khoảng 20 phút.'
+        }
+      ],
+      question: 'Khách hàng đã mua tổng cộng bao nhiêu quả táo và quýt?',
+      options: [
+        { id: 'A', text: '3 quả táo và 5 quả quýt' },
+        { id: 'B', text: '5 quả táo và 3 quả quýt' },
+        { id: 'C', text: '8 quả táo' },
+        { id: 'D', text: '2 quả quýt' }
+      ],
+      correctAnswer: 'A',
+      explanation: 'Khách gọi: 「りんごを3つ (3 quả táo)」 và 「みかんを5つ (5 quả quýt)」. Đáp án đúng là A.',
+      keyword: 'りんごを3つ & みかんを5つ',
+      tip: 'Học kỹ cách đếm đồ vật thuần Nhật: ひとつ, ふたつ, みっつ, よっつ, いつつ.'
+    },
+    {
+      id: 12,
+      lesson: 12,
+      topic: 'Bài 12: So sánh hơn & So sánh nhất',
+      situation: 'So sánh thời tiết và các mùa trong năm tại Nhật Bản.',
+      audioText: '日本は夏と冬と、どちらが寒いですか。冬のほうがずっと寒いです。1年の中でいつが一番好きですか。春が一番好きです。桜が綺麗ですから。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '1年の中で、どの季節が一番好きですか。',
+          kana: 'いちねんのなかで、どのきせつがいちばんすきですか。',
+          vi: 'Trong 1 năm, bạn thích nhất mùa nào?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: '春が一番好きです。桜がとても綺麗ですから。',
+          kana: 'はるがいちばんすきです。さくらがとてもきれいですから。',
+          vi: 'Mình thích mùa xuân nhất. Vì hoa anh đào rất đẹp.'
+        }
+      ],
+      question: 'Bạn B thích nhất mùa nào trong năm và vì lý do gì?',
+      options: [
+        { id: 'A', text: 'Mùa đông vì có tuyết rơi' },
+        { id: 'B', text: 'Mùa xuân vì hoa anh đào đẹp' },
+        { id: 'C', text: 'Mùa hè vì được đi biển' },
+        { id: 'D', text: 'Mùa thu vì lá đỏ' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Bạn B nói: 「春が一番好きです。桜がとても綺麗ですから」(Thích mùa xuân nhất vì hoa anh đào đẹp). Đáp án là B.',
+      keyword: '春が一番好き (Thích mùa xuân nhất)',
+      tip: 'Mẫu câu so sánh nhất: 「〜の中で〜が一番好きです」.'
+    },
+    {
+      id: 13,
+      lesson: 13,
+      topic: 'Bài 13: Mong muốn (Tai / Hoshii) & Mục đích di chuyển',
+      situation: 'Trời mùa hè nóng bức, hai người rủ nhau đi mua đồ uống giải khát.',
+      audioText: 'ああ、暑いですね。冷たいお茶が飲みたいです。駅の近くのカフェへアイスコーヒーを飲みに行きませんか。いいですね、行きましょう。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: 'ああ、暑いですね。冷たいジュースが飲みたいです。',
+          kana: 'ああ、あついですね。つめたいじゅーすがのみたいです。',
+          vi: 'A, nóng quá nhỉ. Tôi muốn uống nước hoa quả lạnh.'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: '近くのカフェへ冷たいものを飲みに行きませんか。',
+          kana: 'ちかくのかふぇへつめたいものをのみにいきませんか。',
+          vi: 'Chúng ta cùng đến quán cà phê gần đây uống đồ lạnh nhé?'
+        }
+      ],
+      question: 'Hai bạn chuẩn bị đi đến quán cà phê để làm gì?',
+      options: [
+        { id: 'A', text: 'Đi ăn bánh mì' },
+        { id: 'B', text: 'Đi uống đồ uống lạnh giải khát' },
+        { id: 'C', text: 'Đi gặp khách hàng' },
+        { id: 'D', text: 'Đi đọc sách' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Mục đích là: 「飲みに行きます」(Đi để uống đồ lạnh). Đáp án là B.',
+      keyword: '飲みたい (Muốn uống) & 飲みに行きます (Đi để uống)',
+      tip: 'Mẫu ngữ pháp mục đích di chuyển: Động từ thể Masu bỏ Masu + 「に行きます」.'
+    },
+    {
+      id: 14,
+      lesson: 14,
+      topic: 'Bài 14: Thể Te - Nhờ vả & Đề nghị giúp đỡ',
+      situation: 'Trong phòng học, trời mưa to và gió thổi mạnh.',
+      audioText: '雨が降ってきましたね。すみませんが、窓を閉めてください。はい、分かりました。荷物を持ちましょうか。ありがとうございます。助かります。',
+      dialogue: [
+        {
+          speaker: 'Chị Mai',
+          role: 'A',
+          kanji: '雨が降ってきましたね。すみませんが、窓を閉めてください。',
+          kana: 'あめがふってきましたね。すみませんが、まどをしめてください。',
+          vi: 'Trời đổ mưa rồi nhỉ. Làm ơn đóng cửa sổ giúp tôi với.'
+        },
+        {
+          speaker: 'Anh Nam',
+          role: 'B',
+          kanji: 'はい、閉めます。荷物を持ちましょうか。',
+          kana: 'はい、しめます。にもつをもちましょうか。',
+          vi: 'Vâng, tôi đóng ngay. Để tôi xách hành lý giúp bạn nhé?'
+        }
+      ],
+      question: 'Chị Mai đã nhờ anh Nam làm hành động gì?',
+      options: [
+        { id: 'A', text: 'Mở cửa phòng' },
+        { id: 'B', text: 'Đóng cửa sổ' },
+        { id: 'C', text: 'Mua ô che mưa' },
+        { id: 'D', text: 'Gọi xe taxi' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Chị Mai nhờ: 「窓を閉めてください」(Hãy đóng cửa sổ giúp tôi). Đáp án là B.',
+      keyword: '窓を閉めてください (Hãy đóng cửa sổ)',
+      tip: 'Mẫu câu thể Te nhờ vả lịch sự: 「〜てください」.'
+    },
+    {
+      id: 15,
+      lesson: 15,
+      topic: 'Bài 15: Thể Te - Xin phép (Te mo ii desu) & Cấm đoán',
+      situation: 'Vị khách tham quan bảo tàng mỹ thuật hỏi về quy định chụp ảnh.',
+      audioText: 'すみません、ここで写真を撮ってもいいですか。いいえ、写真を撮ってはいけません。美術館の中ですから。分かりました。気をつけます。',
+      dialogue: [
+        {
+          speaker: 'Khách',
+          role: 'A',
+          kanji: 'すみません、ここで写真を撮ってもいいですか。',
+          kana: 'すみません、ここでしゃしんをとってもいいですか。',
+          vi: 'Xin lỗi, tôi có thể chụp ảnh ở đây được không?'
+        },
+        {
+          speaker: 'Bảo vệ',
+          role: 'B',
+          kanji: 'いいえ、ここでは写真を撮ってはいけません。',
+          kana: 'いいえ、ここではしゃしんをとってはいけません。',
+          vi: 'Không được, ở đây cấm chụp ảnh nhé quý khách.'
+        }
+      ],
+      question: 'Khách tham quan có được phép chụp ảnh không?',
+      options: [
+        { id: 'A', text: 'Được chụp ảnh thoải mái' },
+        { id: 'B', text: 'Tuyệt đối cấm chụp ảnh' },
+        { id: 'C', text: 'Được chụp nếu trả thêm phí' },
+        { id: 'D', text: 'Chỉ được chụp bên ngoài' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Bảo vệ thông báo cấm đoán: 「写真を撮ってはいけません」(Cấm chụp ảnh). Đáp án là B.',
+      keyword: '撮ってはいけません (Cấm chụp ảnh)',
+      tip: 'Mẫu cấm đoán: 「〜てはいけません」 (Không được phép làm gì).'
+    },
+    {
+      id: 16,
+      lesson: 16,
+      topic: 'Bài 16: Thể Te - Nối hành động tuần tự (Te kara)',
+      situation: 'Hỏi về thói quen sinh hoạt buổi sáng trước khi đi làm.',
+      audioText: '毎朝、起きてから何をしますか。ジョギングをして、シャワーを浴びて、それから朝ごはんを食べます。忙しいですね。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '毎朝、起きてから何をしますか。',
+          kana: 'まいあさ、おきてからなにをしますか。',
+          vi: 'Mỗi sáng, sau khi thức dậy bạn làm gì?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: 'ジョギングをして、シャワーを浴びて、朝ごはんを食べます。',
+          kana: 'じょぎんぐをして、しゃわーをあびて、あさごはんをたべます。',
+          vi: 'Tôi chạy bộ, tắm vòi sen, rồi sau đó ăn sáng.'
+        }
+      ],
+      question: 'Hành động đầu tiên bạn B làm sau khi thức dậy là gì?',
+      options: [
+        { id: 'A', text: 'Ăn bữa sáng' },
+        { id: 'B', text: 'Chạy bộ thể dục (Jogging)' },
+        { id: 'C', text: 'Đọc báo' },
+        { id: 'D', text: 'Uống cà phê' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Thứ tự hành động: 「ジョギングをして」(Chạy bộ trước tiên). Đáp án đúng là B.',
+      keyword: 'ジョギングをして (Chạy bộ)',
+      tip: 'Mẫu nối chuỗi hành động theo trình tự thời gian bằng thể Te: V1-te, V2-te, V3-masu.'
+    },
+    {
+      id: 17,
+      lesson: 17,
+      topic: 'Bài 17: Thể Nai - Yêu cầu không làm gì (Naide kudasai)',
+      situation: 'Bác sĩ căn dặn bệnh nhân bị cảm sốt tại phòng khám Tokyo.',
+      audioText: '熱がありますね。今日はお風呂に入らないでください。薬を飲んで、早く寝てください。お酒も飲んではいけませんよ。はい、分かりました。',
+      dialogue: [
+        {
+          speaker: 'Bác sĩ',
+          role: 'A',
+          kanji: '熱がありますね。今日はお風呂に入らないでください。',
+          kana: 'ねつがありますね。きょうはおふろにはいらないでください。',
+          vi: 'Bạn đang bị sốt đấy. Hôm nay xin đừng tắm bồn nhé.'
+        },
+        {
+          speaker: 'Bác sĩ',
+          role: 'A',
+          kanji: '薬を飲んで、早く寝てください。',
+          kana: 'くすりをのんで、はやくねてください。',
+          vi: 'Hãy uống thuốc và đi ngủ sớm.'
+        }
+      ],
+      question: 'Bác sĩ đã khuyên bệnh nhân hôm nay KHÔNG NÊN làm việc gì?',
+      options: [
+        { id: 'A', text: 'Không được uống thuốc' },
+        { id: 'B', text: 'Không được tắm bồn' },
+        { id: 'C', text: 'Không được ngủ sớm' },
+        { id: 'D', text: 'Không được ăn cháo' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Bác sĩ yêu cầu: 「お風呂に入らないでください」(Xin đừng tắm bồn). Đáp án là B.',
+      keyword: '入らないでください (Xin đừng tắm)',
+      tip: 'Mẫu phủ định lịch sự: Động từ thể Nai + 「でください」.'
+    },
+    {
+      id: 18,
+      lesson: 18,
+      topic: 'Bài 18: Thể Từ điển - Năng lực & Sở thích (Koto ga dekimasu)',
+      situation: 'Phỏng vấn tuyển dụng hỏi về khả năng ngoại ngữ và lái xe.',
+      audioText: '車の運転ができますか。はい、運転することができます。英語を話すこともできます。パソコンの操作はどうですか。得意ですよ。',
+      dialogue: [
+        {
+          speaker: 'Người phỏng vấn',
+          role: 'A',
+          kanji: '車の運転ができますか。',
+          kana: 'くるまのうんてんができますか。',
+          vi: 'Bạn có biết lái xe ô tô không?'
+        },
+        {
+          speaker: 'Ứng viên',
+          role: 'B',
+          kanji: 'はい、運転することができます。英語も話せます。',
+          kana: 'はい、うんてんすることができます。えいごもはなせます。',
+          vi: 'Vâng, tôi có thể lái xe ô tô. Tôi cũng nói được tiếng Anh.'
+        }
+      ],
+      question: 'Ứng viên có những kỹ năng nào sau đây?',
+      options: [
+        { id: 'A', text: 'Không biết lái xe ô tô' },
+        { id: 'B', text: 'Lái được xe ô tô và nói được tiếng Anh' },
+        { id: 'C', text: 'Chỉ biết nấu ăn' },
+        { id: 'D', text: 'Không biết dùng máy tính' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Ứng viên khẳng định: 「運転することができます。英語も話せます」. Đáp án đúng là B.',
+      keyword: '運転することができます (Có thể lái xe)',
+      tip: 'Mẫu biểu thị năng lực: Động từ thể Từ điển (Jishokei) + 「ことができます」.'
+    },
+    {
+      id: 19,
+      lesson: 19,
+      topic: 'Bài 19: Thể Ta - Trải nghiệm quá khứ (Koto ga arimasu)',
+      situation: 'Hai người bạn trò chuyện về các trải nghiệm du lịch tại Nhật.',
+      audioText: '日本で温泉に入ったことがありますか。はい、一度だけ入ったことがあります。とても気持ちが良かったですよ。富士山にも登りましたか。いいえ、まだです。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '日本で温泉に入ったことがありますか。',
+          kana: 'にほんでおんせんにはいったことがありますか。',
+          vi: 'Bạn đã từng tắm suối nước nóng (Onsen) ở Nhật chưa?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: 'はい、一度だけ入ったことがあります。とても良かったです。',
+          kana: 'はい、いちどだけはいったことがあります。とてもよかったです。',
+          vi: 'Vâng, tôi đã từng tắm một lần rồi. Rất là sảng khoái.'
+        }
+      ],
+      question: 'Bạn B đã từng có trải nghiệm nào trong quá khứ?',
+      options: [
+        { id: 'A', text: 'Chưa từng tắm Onsen bao giờ' },
+        { id: 'B', text: 'Đã từng tắm suối nước nóng Onsen một lần' },
+        { id: 'C', text: 'Đã leo lên đỉnh núi Phú Sĩ 2 lần' },
+        { id: 'D', text: 'Tắm Onsen mỗi tuần' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Bạn B xác nhận: 「一度だけ入ったことがあります」(Từng tắm một lần). Đáp án là B.',
+      keyword: '入ったことがあります (Đã từng tắm)',
+      tip: 'Mẫu trải nghiệm trong đời: Động từ thể Ta + 「ことがあります」.'
+    },
+    {
+      id: 20,
+      lesson: 20,
+      topic: 'Bài 20: Thể Thông thường - Giao tiếp thân mật (Futsuukei)',
+      situation: 'Hai người bạn thân cùng trường đại học trò chuyện thân mật rủ nhau đi chơi.',
+      audioText: '明日、暇？うん、暇だよ。どこかへ行く？映画を見に行かない？いいね、何時に会う？10時はどう？分かった、じゃ10時に駅でね！',
+      dialogue: [
+        {
+          speaker: 'Ken',
+          role: 'A',
+          kanji: '明日、暇？映画を見に行かない？',
+          kana: 'あした、ひま？えいがをみにいかない？',
+          vi: 'Mai rảnh không? Đi xem phim không?'
+        },
+        {
+          speaker: 'Yuki',
+          role: 'B',
+          kanji: 'うん、いいね！10時に駅で会おう。',
+          kana: 'うん、いいね！じゅうじにえきであおう。',
+          vi: 'Ừ, được đó! Hẹn gặp lúc 10 giờ ở ga nhé.'
+        }
+      ],
+      question: 'Hai bạn đã thống nhất hẹn nhau ở đâu và lúc mấy giờ?',
+      options: [
+        { id: 'A', text: '9 giờ ở rạp chiếu phim' },
+        { id: 'B', text: '10 giờ ở nhà ga' },
+        { id: 'C', text: '11 giờ ở quán cà phê' },
+        { id: 'D', text: 'Không hẹn gặp' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Chốt hẹn: 「10時に駅で」(10 giờ ở nhà ga). Đáp án đúng là B.',
+      keyword: '10時に駅で (10 giờ ở ga)',
+      tip: 'Thể thân mật Futsuukei lược bỏ Desu/Masu, chuyển câu hỏi sang lên giọng ở cuối câu.'
+    },
+    {
+      id: 21,
+      lesson: 21,
+      topic: 'Bài 21: Bày tỏ ý kiến & Phỏng đoán (To omoimasu)',
+      situation: 'Thảo luận về giá cả sinh hoạt tại thủ đô Tokyo.',
+      audioText: '東京の物価についてどう思いますか。私は少し高すぎると思います。特に家賃が高いですね。でも、とても便利だとも思います。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '東京の物価についてどう思いますか。',
+          kana: 'とうきょうのぶっかについてどうおもいますか。',
+          vi: 'Bạn nghĩ thế nào về vật giá ở Tokyo?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: '私は高すぎると思います。特に家賃が高いです。',
+          kana: 'わたしはたかすぎるとおもいます。とくにやちんがたかいです。',
+          vi: 'Tôi nghĩ là quá đắt đỏ. Đặc biệt là tiền thuê nhà rất cao.'
+        }
+      ],
+      question: 'Người nói có quan điểm như thế nào về chi phí tại Tokyo?',
+      options: [
+        { id: 'A', text: 'Vật giá rất rẻ' },
+        { id: 'B', text: 'Vật giá quá đắt, nhất là tiền thuê nhà' },
+        { id: 'C', text: 'Không quan tâm đến giá cả' },
+        { id: 'D', text: 'Tiền thuê nhà rẻ hơn nông thôn' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Người nói nêu ý kiến: 「高すぎると思います。特に家賃が高い」(Nghĩ là quá đắt, nhất là tiền thuê nhà). Đáp án là B.',
+      keyword: '高すぎると思います (Nghĩ là quá đắt)',
+      tip: 'Mẫu nêu ý kiến cá nhân: Thể thông thường + 「と思います」.'
+    },
+    {
+      id: 22,
+      lesson: 22,
+      topic: 'Bài 22: Mệnh đề bổ nghĩa cho danh từ',
+      situation: 'Xác định đồng nghiệp trong bức ảnh chụp chung toàn công ty.',
+      audioText: 'あの眼鏡をかけている人は誰ですか。あの方は田中さんですよ。あそこで本を読んでいる人は誰ですか。ミラーさんです。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: 'あの眼鏡をかけている人は誰ですか。',
+          kana: 'あのごめがねをかけているひとはだれですか。',
+          vi: 'Người đang đeo kính đằng kia là ai vậy?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: 'あの方は田中さんですよ。',
+          kana: 'あのかたはたなかさんですよ。',
+          vi: 'Người đó là anh Tanaka đấy.'
+        }
+      ],
+      question: 'Anh Tanaka có đặc điểm nhận dạng nào?',
+      options: [
+        { id: 'A', text: 'Đang đọc sách' },
+        { id: 'B', text: 'Đang đeo kính (眼鏡をかけている)' },
+        { id: 'C', text: 'Đang uống cà phê' },
+        { id: 'D', text: 'Đang mặc áo khoác đỏ' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Đặc điểm: 「眼鏡をかけている人」(Người đang đeo kính). Đáp án là B.',
+      keyword: '眼鏡をかけている人 (Người đeo kính)',
+      tip: 'Mệnh đề bổ nghĩa đứng ngay trước danh từ, động từ chuyển sang thể thông thường.'
+    },
+    {
+      id: 23,
+      lesson: 23,
+      topic: 'Bài 23: Cấu trúc Khi nào (Toki) & Hướng dẫn đường đi',
+      situation: 'Hỏi đường đến bưu điện gần ga xe lửa.',
+      audioText: 'すみません、郵便局へ行きたいんですが。この道を真っ直ぐ行くと、右側にありますよ。信号を渡った時、看板が見えます。ありがとうございます。',
+      dialogue: [
+        {
+          speaker: 'Người đi đường',
+          role: 'A',
+          kanji: 'すみません、郵便局はどこですか。',
+          kana: 'すみません、ゆうびんきょくはどこですか。',
+          vi: 'Xin lỗi, bưu điện ở đâu vậy ạ?'
+        },
+        {
+          speaker: 'Cảnh sát',
+          role: 'B',
+          kanji: 'この道を真っ直ぐ行くと、右側にありますよ。',
+          kana: 'このみちをまっすぐいくと、みぎがわにありますよ。',
+          vi: 'Đi thẳng con đường này, bưu điện nằm ở phía bên tay phải nhé.'
+        }
+      ],
+      question: 'Theo lời chỉ dẫn, bưu điện nằm ở đâu?',
+      options: [
+        { id: 'A', text: 'Phía bên tay trái sau khi rẽ' },
+        { id: 'B', text: 'Đi thẳng con đường, nằm ở phía bên tay phải' },
+        { id: 'C', text: 'Ở trong toà nhà nhà ga' },
+        { id: 'D', text: 'Đã đóng cửa chuyển đi nơi khác' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Chỉ đường: 「真っ直ぐ行くと、右側にあります」(Đi thẳng, nằm ở bên phải). Đáp án đúng là B.',
+      keyword: '右側にあります (Ở bên phải)',
+      tip: 'Mẫu chỉ đường tất yếu: Động từ thể Từ điển + 「と」 (Cứ làm hành động này thì kết quả sẽ xảy ra).'
+    },
+    {
+      id: 24,
+      lesson: 24,
+      topic: 'Bài 24: Cho tặng hành động (Kuremasu / Agemasu)',
+      situation: 'Kể về sự giúp đỡ của đồng nghiệp khi bị quên tài liệu quan trọng.',
+      audioText: '昨日、傘を忘れましたが、佐藤さんが傘を貸してくれました。とても親切ですね。私は佐藤さんに美味しいお菓子をあげました。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '昨日、傘を忘れましたが、佐藤さんが傘を貸してくれました。',
+          kana: 'きのう、かさをわすれましたが、さとうさんがかさをかしてくれました。',
+          vi: 'Hôm qua tôi quên ô, nhưng chị Sato đã cho tôi mượn ô.'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: '佐藤さんは本当に優しいですね。',
+          kana: 'さとうさんはほんとうにやさしいですね。',
+          vi: 'Chị Sato thật là tốt bụng nhỉ.'
+        }
+      ],
+      question: 'Ai là người đã cho mượn ô?',
+      options: [
+        { id: 'A', text: 'Bạn A cho chị Sato mượn ô' },
+        { id: 'B', text: 'Chị Sato cho bạn A mượn ô (貸してくれました)' },
+        { id: 'C', text: 'Bảo vệ nhà ga' },
+        { id: 'D', text: 'Không ai cho mượn' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Chị Sato làm ơn cho người nói mượn: 「佐藤さんが貸してくれました」. Đáp án đúng là B.',
+      keyword: '貸してくれました (Làm ơn cho tôi mượn)',
+      tip: 'Cấu trúc 「〜てくれました」 dùng khi người khác làm một việc tốt cho chính bản thân mình.'
+    },
+    {
+      id: 25,
+      lesson: 25,
+      topic: 'Bài 25: Cấu trúc điều kiện Nếu (Tara) & Giả định (Temo)',
+      situation: 'Thảo luận về kế hoạch đi dã ngoại cuối tuần nếu trời đổ mưa.',
+      audioText: '明日、雨が降ったら、どうしますか。雨が降ったら、出かけません。家で本を読みます。天気が良かったら、公園へ行きましょう。',
+      dialogue: [
+        {
+          speaker: 'Bạn A',
+          role: 'A',
+          kanji: '明日、もし雨が降ったらどうしますか。',
+          kana: 'あした、もしあめがふったらどうしますか。',
+          vi: 'Ngày mai nếu trời đổ mưa thì bạn làm thế nào?'
+        },
+        {
+          speaker: 'Bạn B',
+          role: 'B',
+          kanji: '雨が降ったら出かけません。家でゆっくり本を読みます。',
+          kana: 'あめがふったらでかけません。いえでゆっくりほんをよみます。',
+          vi: 'Nếu trời mưa thì mình không ra ngoài. Mình sẽ ở nhà thong thả đọc sách.'
+        }
+      ],
+      question: 'Nếu ngày mai trời mưa, bạn B sẽ làm gì?',
+      options: [
+        { id: 'A', text: 'Vẫn đi công viên ngắm cảnh' },
+        { id: 'B', text: 'Ở nhà thong thả đọc sách, không đi ra ngoài' },
+        { id: 'C', text: 'Đi bơi cùng bạn bè' },
+        { id: 'D', text: 'Đi làm việc ở công ty' }
+      ],
+      correctAnswer: 'B',
+      explanation: 'Bạn B chọn: 「出かけません。家で本を読みます」(Không đi ra ngoài, ở nhà đọc sách). Đáp án đúng là B.',
+      keyword: '出かけません。家で本を読みます',
+      tip: 'Mẫu câu điều kiện giả định phổ biến nhất JLPT N5: Động từ thể Ta + 「ら」 (Nếu... thì...).'
     }
   ];
 
@@ -490,6 +1005,7 @@ export default function ListeningPage() {
     if (currentIndex < currentTracks.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
+      // Loop or go to next lesson
       setCurrentIndex(0);
     }
   };
@@ -533,26 +1049,26 @@ export default function ListeningPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
               <Headphones size={13} className="text-pink-600" />
-              <span>CHOUKAI (聴解) - LUYỆN NGHE PHẢN XẠ MINNA NO NIHONGO</span>
+              <span>CHOUKAI (聴解) - TRỌN BỘ 25 BÀI MINNA NO NIHONGO {activeLevel}</span>
             </div>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold">
               <Award size={14} className="text-amber-500" />
-              <span>Kết quả: <strong>{score}</strong>/{currentTracks.length}</span>
+              <span>Đã hoàn thành: <strong>{score}</strong>/{currentTracks.length}</span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
-                Luyện Nghe Hội Thoại Chuẩn Giọng Tokyo
+                Luyện Nghe Hội Thoại Chuẩn Giọng Tokyo (25 Bài N5)
               </h1>
               <p className="text-xs text-slate-500 max-w-2xl mt-0.5 mb-0">
-                Luyện nghe chuẩn xác bám sát từng bài Minna no Nihongo. Hỗ trợ tùy chỉnh tốc độ, hội thoại từng vai và AI phân tích bẫy nghe.
+                Toàn bộ 25 bài nghe Choukai bám sát giáo trình Minna no Nihongo. Hỗ trợ tốc độ linh hoạt, hội thoại từng vai và AI Sensei phân tích bẫy nghe.
               </p>
             </div>
 
-            {/* Lesson Selector */}
+            {/* Complete 25 Lessons Selector */}
             <div className="flex items-center gap-2 shrink-0">
               <select
                 value={lessonChoice}
@@ -562,10 +1078,10 @@ export default function ListeningPage() {
                 }}
                 className="px-3.5 py-2 rounded-xl border border-pink-200 bg-white text-xs font-bold text-slate-800 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
-                <option value="all">Tất cả bài học (Bài 1 - 8)</option>
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                <option value="all">Tất cả bài học (Trọn bộ 25 bài)</option>
+                {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={String(n)}>
-                    Bài 0{n} - Minna
+                    Bài {n < 10 ? `0${n}` : n} - Minna no Nihongo
                   </option>
                 ))}
               </select>
@@ -589,7 +1105,7 @@ export default function ListeningPage() {
                     : 'bg-slate-100 hover:bg-pink-50 text-slate-600'
                 }`}
               >
-                Bài {t.lesson}: {t.topic.split(':')[1] || t.topic}
+                Bài {t.lesson < 10 ? `0${t.lesson}` : t.lesson}: {t.topic.split(':')[1] || t.topic}
               </button>
             ))}
           </div>
@@ -847,7 +1363,7 @@ export default function ListeningPage() {
           </div>
         </div>
 
-        {/* ── 4. ELEGANT FEEDBACK & AI SENSEI CALLOUT ── */}
+        {/* ── 4. ELEGANT FEEDBACK & REAL AI SENSEI CALLOUT ── */}
         {isAnswered && (
           <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200 space-y-3.5 animate-in fade-in duration-200">
             <div className="flex flex-wrap items-center justify-between gap-3 pb-2.5 border-b border-slate-200/70">
@@ -870,10 +1386,12 @@ export default function ListeningPage() {
                 type="button"
                 onClick={() =>
                   askAi(
-                    'explain_vocab',
+                    'explain_listening',
                     {
-                      word: track.audioText,
-                      lesson_title: track.topic
+                      question: track.question,
+                      correctAnswer: track.correctAnswer,
+                      audioText: track.audioText,
+                      title: track.topic
                     },
                     `AI Phân Tích Choukai: ${track.topic}`
                   )

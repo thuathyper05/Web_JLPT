@@ -17,7 +17,8 @@ import {
   LifeBuoy,
   Headphones,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Newspaper
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
@@ -49,6 +50,17 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
         { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
         { id: 'wordmatch', label: 'Nối từ', icon: Zap },
         { id: 'garden', label: 'Vườn cây', icon: Sprout },
+      ]
+    },
+    {
+      title: 'CỘNG ĐỒNG & TIN TỨC',
+      items: [
+        {
+          id: 'forum',
+          label: 'Diễn đàn & Tin tức',
+          icon: Newspaper,
+          badge: 'Mới'
+        }
       ]
     },
     {
@@ -90,44 +102,70 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           sidebarCollapsed ? 'lg:w-20 w-64' : 'w-64'
         } ${mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}
       >
-        {/* Top Header: Logo & Collapse Button */}
+        {/* Top Header: Centered Logo & Aligned Collapse/Expand Button */}
         <div>
           <div
-            className={`relative h-20 px-3 py-3.5 border-b border-pink-50 flex items-center ${
-              sidebarCollapsed ? 'justify-center' : 'justify-between'
+            className={`relative h-20 px-3 border-b border-pink-50 flex items-center ${
+              sidebarCollapsed ? 'justify-center flex-col py-2 gap-1' : 'justify-between'
             }`}
           >
-            {/* Centered Logo (scales down if collapsed) */}
-            <div
-              onClick={() => handleNav({ id: 'home' })}
-              className={`flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none ${
-                sidebarCollapsed ? 'mx-auto' : 'pl-2'
-              }`}
-              title="HYPER - Về trang chủ"
-            >
-              <div className="relative flex items-center justify-center">
-                <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <img
-                  src="/hyper_logo.png"
-                  alt="HYPER"
-                  className={`w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105 ${
-                    sidebarCollapsed ? 'h-7 sm:h-8' : 'h-10 sm:h-11'
-                  }`}
-                />
+            {sidebarCollapsed ? (
+              // Collapsed Header: Mini Logo Centered + Expand Button right below in the header
+              <div className="flex flex-col items-center justify-center gap-1 w-full animate-in fade-in">
+                <div
+                  onClick={() => handleNav({ id: 'home' })}
+                  className="cursor-pointer group hover:scale-105 transition-transform"
+                  title="HYPER - Về trang chủ"
+                >
+                  <img
+                    src="/hyper_logo.png"
+                    alt="HYPER"
+                    className="h-7 w-auto object-contain drop-shadow-sm"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={toggleSidebarCollapse}
+                  className="hidden lg:flex p-1 rounded-lg text-slate-400 hover:text-pink-600 hover:bg-pink-50 transition-colors cursor-pointer"
+                  title="Mở rộng menu"
+                  aria-label="Mở rộng menu"
+                >
+                  <PanelLeftOpen size={16} />
+                </button>
               </div>
-            </div>
+            ) : (
+              // Expanded Header: Centered Logo with balance spacer + Top-right Collapse Button
+              <>
+                {/* Balance Spacer on Left */}
+                <div className="w-8 hidden lg:block shrink-0" />
 
-            {/* Desktop Collapse / Expand Button */}
-            {!sidebarCollapsed && (
-              <button
-                type="button"
-                onClick={toggleSidebarCollapse}
-                className="hidden lg:flex p-1.5 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50/70 transition-colors cursor-pointer mr-1"
-                title="Thu gọn thanh menu"
-                aria-label="Thu gọn thanh menu"
-              >
-                <PanelLeftClose size={18} />
-              </button>
+                {/* Centered Logo */}
+                <div
+                  onClick={() => handleNav({ id: 'home' })}
+                  className="flex-1 flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
+                  title="HYPER - Về trang chủ"
+                >
+                  <div className="relative flex items-center justify-center">
+                    <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <img
+                      src="/hyper_logo.png"
+                      alt="HYPER"
+                      className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                    />
+                  </div>
+                </div>
+
+                {/* Desktop Collapse Button on Top Right */}
+                <button
+                  type="button"
+                  onClick={toggleSidebarCollapse}
+                  className="hidden lg:flex p-1.5 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50/70 transition-colors cursor-pointer shrink-0"
+                  title="Thu gọn thanh menu"
+                  aria-label="Thu gọn thanh menu"
+                >
+                  <PanelLeftClose size={18} />
+                </button>
+              </>
             )}
 
             {/* Mobile Close Button */}
@@ -179,22 +217,19 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                             : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-600'
                         }`}
                       >
-                        <div
-                          className={`flex items-center ${
-                            sidebarCollapsed ? 'justify-center' : 'gap-2.5'
-                          }`}
-                        >
+                        <div className="flex items-center gap-3">
                           <Icon
-                            size={sidebarCollapsed ? 20 : 17}
-                            className={
-                              isActive
-                                ? 'text-white'
-                                : 'text-slate-400 group-hover:text-pink-600'
-                            }
+                            size={18}
+                            className={`shrink-0 ${
+                              isActive ? 'text-white' : 'text-slate-500 group-hover:text-pink-600'
+                            }`}
                           />
-                          {!sidebarCollapsed && <span>{item.label}</span>}
+                          {!sidebarCollapsed && (
+                            <span className="truncate">{item.label}</span>
+                          )}
                         </div>
 
+                        {/* Badges */}
                         {!sidebarCollapsed && item.badge && (
                           <span
                             className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
@@ -227,10 +262,10 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </nav>
         </div>
 
-        {/* Bottom Area: Streak Card & Expand toggle when collapsed */}
+        {/* Bottom Area: Streak Card */}
         <div className={`border-t border-pink-50 ${sidebarCollapsed ? 'p-2' : 'p-3.5'}`}>
           {sidebarCollapsed ? (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center">
               <div
                 onClick={() => handleNav({ id: 'home' })}
                 className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white flex flex-col items-center justify-center cursor-pointer shadow-sm hover:scale-105 transition-transform"
@@ -239,17 +274,6 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                 <Flame size={18} className="text-amber-400 animate-bounce" fill="#f59e0b" />
                 <span className="text-[10px] font-black">{gamification?.current_streak || 12}d</span>
               </div>
-
-              {/* Expand button when collapsed */}
-              <button
-                type="button"
-                onClick={toggleSidebarCollapse}
-                className="w-full p-2 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50 flex items-center justify-center transition-colors cursor-pointer"
-                title="Mở rộng thanh menu"
-                aria-label="Mở rộng thanh menu"
-              >
-                <PanelLeftOpen size={18} />
-              </button>
             </div>
           ) : (
             <div

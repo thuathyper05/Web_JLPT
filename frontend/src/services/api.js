@@ -80,4 +80,12 @@ export const aiService = {
   query: (data) => api.post('/ai/query', data),
 };
 
+export const forumService = {
+  getArticles: (params) => api.get('/forum/articles', { params }),
+  getArticle: (id) => api.get(`/forum/articles/${id}`),
+  addComment: (id, data) => api.post(`/forum/articles/${id}/comments`, data),
+  getReviews: () => api.get('/forum/reviews'),
+  addReview: (data) => api.post('/forum/reviews', data),
+};
+
 export default api;
