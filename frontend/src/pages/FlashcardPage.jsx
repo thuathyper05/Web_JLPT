@@ -56,8 +56,15 @@ export default function FlashcardPage() {
 
   const handleFlip = useCallback(() => {
     sounds.playFlip();
-    setIsFlipped((prev) => !prev);
-  }, []);
+    setIsFlipped((prev) => {
+      const nextState = !prev;
+      if (nextState && currentCard) {
+        // Automatically pronounce vocabulary when flipping over
+        speakJapanese(currentCard.kanji || currentCard.kana);
+      }
+      return nextState;
+    });
+  }, [currentCard]);
 
   const handleAnswer = useCallback((status) => {
     if (!currentCard) return;
@@ -129,7 +136,7 @@ export default function FlashcardPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <Layers size={13} className="text-pink-600" />
-            <span>THẺ NHỚ 3D • MINNA NO NIHONGO</span>
+            <span>THẺ NHỚ 3D - MINNA NO NIHONGO</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
@@ -279,7 +286,7 @@ export default function FlashcardPage() {
                 {/* Top Badge */}
                 <div className="flex justify-between items-center">
                   <span className="px-2.5 py-1 rounded-lg bg-pink-100 text-pink-700 font-extrabold text-[11px]">
-                    Bài {selectedLesson} • #{currentIndex + 1}
+                    Bài {selectedLesson} - #{currentIndex + 1}
                   </span>
                   <button
                     type="button"
@@ -294,15 +301,20 @@ export default function FlashcardPage() {
                   </button>
                 </div>
 
-                {/* Center Word with Furigana */}
+                {/* Center Word with Furigana & Romaji */}
                 <div className="py-6 space-y-3">
                   {direction === 'jp_to_vi' ? (
-                    <div className="flex justify-center items-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
                       <FuriganaWord
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
                         size="5xl"
                       />
+                      {currentCard.romaji && (
+                        <span className="text-xs font-semibold text-slate-400 font-mono tracking-wider">
+                          {currentCard.romaji}
+                        </span>
+                      )}
                     </div>
                   ) : (
                     <div className="text-3xl sm:text-4xl font-black text-slate-900">
@@ -312,8 +324,8 @@ export default function FlashcardPage() {
                 </div>
 
                 {/* Hint Footer */}
-                <div className="text-xs text-slate-400 font-semibold">
-                  Chạm thẻ hoặc nhấn <span className="font-bold text-pink-600">Space</span> để lật xem nghĩa
+                <div className="text-[10px] text-slate-400 font-medium">
+                  Chạm thẻ hoặc nhấn <span className="font-bold text-pink-600">Space</span> để lật
                 </div>
               </div>
 
@@ -343,35 +355,46 @@ export default function FlashcardPage() {
                     {direction === 'jp_to_vi'
                       ? (currentCard.clean_vietnamese || currentCard.vietnamese)
                       : (
-                        <div className="flex justify-center">
+                        <div className="flex flex-col items-center justify-center gap-1">
                           <FuriganaWord
                             kanji={currentCard.kanji}
                             kana={currentCard.clean_kana || currentCard.kana}
                             size="4xl"
                           />
+                          {currentCard.romaji && (
+                            <span className="text-xs font-semibold text-slate-400 font-mono tracking-wider">
+                              {currentCard.romaji}
+                            </span>
+                          )}
                         </div>
                       )}
                   </div>
 
                   {direction === 'jp_to_vi' && currentCard.kanji && (
-                    <div className="flex justify-center">
+                    <div className="flex flex-col items-center justify-center gap-1">
                       <FuriganaWord
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
                         size="xl"
                       />
+                      {currentCard.romaji && (
+                        <span className="text-xs font-semibold text-pink-500 font-mono tracking-wider">
+                          {currentCard.romaji}
+                        </span>
+                      )}
                     </div>
                   )}
 
                   {currentCard.usage_note && (
-                    <p className="text-xs text-slate-500 bg-white/80 p-2.5 rounded-xl border border-pink-100 max-w-sm mx-auto">
-                      💡 {currentCard.usage_note}
+                    <p className="text-xs text-slate-500 bg-white/80 p-2.5 rounded-xl border border-pink-100 max-w-sm mx-auto flex items-center justify-center gap-1.5">
+                      <Sparkles size={13} className="text-pink-600 shrink-0" />
+                      <span>{currentCard.usage_note}</span>
                     </p>
                   )}
                 </div>
 
                 {/* Hint Footer */}
-                <div className="text-xs text-slate-400 font-semibold">
+                <div className="text-[10px] text-slate-400 font-medium">
                   Đánh giá ghi nhớ bằng 2 nút bên dưới hoặc phím 1 và 2
                 </div>
               </div>

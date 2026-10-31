@@ -124,7 +124,7 @@ export default function DictionaryPage() {
         <div className="relative z-10 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
             <Search size={13} className="text-pink-600" />
-            <span>TRA CỨU TOÀN DIỆN • 1.512 TỪ VỰNG N5</span>
+            <span>TRA CỨU TOÀN DIỆN - 1.512 TỪ VỰNG N5</span>
           </div>
 
           <div>

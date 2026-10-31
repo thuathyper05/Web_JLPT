@@ -103,11 +103,11 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const levels = [
-    { id: 'N5', title: 'JLPT N5', status: 'ready', desc: 'Sơ cấp 1 • Hoàn chỉnh (1.512 từ)' },
-    { id: 'N4', title: 'JLPT N4', status: 'ready', desc: 'Sơ cấp 2 • Dữ liệu Trợ từ & Cấu trúc' },
-    { id: 'N3', title: 'JLPT N3', status: 'ready', desc: 'Trung cấp 1 • Dữ liệu Trợ từ & Cấu trúc' },
-    { id: 'N2', title: 'JLPT N2', status: 'dev', desc: 'Trung cấp 2 • Đang phát triển' },
-    { id: 'N1', title: 'JLPT N1', status: 'dev', desc: 'Cao cấp • Đang phát triển' },
+    { id: 'N5', title: 'JLPT N5', status: 'ready', desc: 'Sơ cấp 1 - Hoàn chỉnh (1.512 từ)' },
+    { id: 'N4', title: 'JLPT N4', status: 'ready', desc: 'Sơ cấp 2 - Dữ liệu Trợ từ & Cấu trúc' },
+    { id: 'N3', title: 'JLPT N3', status: 'ready', desc: 'Trung cấp 1 - Dữ liệu Trợ từ & Cấu trúc' },
+    { id: 'N2', title: 'JLPT N2', status: 'dev', desc: 'Trung cấp 2 - Đang phát triển' },
+    { id: 'N1', title: 'JLPT N1', status: 'dev', desc: 'Cao cấp - Đang phát triển' },
   ];
 
   // AI Smart search topics chips
@@ -545,7 +545,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 {/* Dropdown Footer */}
                 <div className="px-4 pt-2.5 border-t border-pink-50 text-center">
                   <span className="text-[10.5px] font-bold text-slate-400">
-                    HYPER AI • Hệ thống nhắc nhở thông minh
+                    HYPER AI - Hệ thống nhắc nhở thông minh
                   </span>
                 </div>
               </div>

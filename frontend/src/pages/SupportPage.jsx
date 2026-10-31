@@ -73,7 +73,7 @@ export default function SupportPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <LifeBuoy size={13} className="text-pink-600" />
-            <span>TRUNG TÂM TRỢ GIÚP • HỖ TRỢ HỌC VIÊN</span>
+            <span>TRUNG TÂM TRỢ GIÚP - HỖ TRỢ HỌC VIÊN</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">

@@ -112,7 +112,7 @@ export default function LessonsPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <BookOpen size={13} className="text-pink-600" />
-            <span>MINNA NO NIHONGO • BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}</span>
+            <span>MINNA NO NIHONGO - BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
@@ -215,7 +215,7 @@ export default function LessonsPage() {
             {/* Top Toolbar in Card */}
             <div className="flex justify-between items-center">
               <span className="px-2.5 py-1 rounded-lg bg-pink-600 text-white font-extrabold text-[11px]">
-                Bài {selectedLesson} • #{currentIndex + 1}
+                Bài {selectedLesson} - #{currentIndex + 1}
               </span>
 
               <div className="flex items-center gap-2">

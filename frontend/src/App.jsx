@@ -25,7 +25,7 @@ import SupportPage from './pages/SupportPage';
 import LevelComingSoonPage from './pages/LevelComingSoonPage';
 
 export default function App() {
-  const { activeTab, pageLoading, loadingMessage } = useApp();
+  const { activeTab, pageLoading, loadingMessage, sidebarCollapsed } = useApp();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const renderContent = () => {
@@ -77,7 +77,7 @@ export default function App() {
       />
 
       {/* ── 2. MAIN CONTENT WRAPPER ── */}
-      <div className="flex-1 flex flex-col min-w-0 lg:pl-64 transition-all">
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
         {/* Sticky Top Header */}
         <Header onOpenMobileMenu={() => setMobileSidebarOpen(true)} />
 

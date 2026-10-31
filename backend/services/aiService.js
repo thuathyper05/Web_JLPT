@@ -1,166 +1,196 @@
 /**
- * AI Assistant Service for NihongoHub V3
- * Generates pedagogically accurate, friendly, and structured Japanese explanations
+ * AI Assistant Service for HYPER Japanese Learning WebApp
+ * Powered by Google Gemini 3.8 Flash API
+ * Provides personalized, dynamic learning analysis based on individual student progress
  */
 
-function generateAiResponse({ action, prompt, context }) {
+const https = require('https');
+
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+require('dotenv').config();
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+const PRIMARY_MODEL = 'gemini-3.8-flash';
+const FALLBACK_MODEL = 'gemini-3.5-flash-lite';
+
+/**
+ * Calls Gemini REST API
+ */
+function callGemini(promptText, modelName = PRIMARY_MODEL) {
+  return new Promise((resolve, reject) => {
+    const postData = JSON.stringify({
+      contents: [
+        {
+          parts: [{ text: promptText }]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.6,
+        maxOutputTokens: 1024
+      }
+    });
+
+    const options = {
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(postData)
+      },
+      timeout: 15000
+    };
+
+    const req = https.request(options, (res) => {
+      let body = '';
+      res.on('data', (chunk) => (body += chunk));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+              return resolve(text.trim());
+            }
+          }
+
+          // If primary model fails, try fallback
+          if (modelName === PRIMARY_MODEL) {
+            console.warn(`Gemini ${PRIMARY_MODEL} returned ${res.statusCode}, trying ${FALLBACK_MODEL}...`);
+            return callGemini(promptText, FALLBACK_MODEL).then(resolve).catch(reject);
+          }
+
+          reject(new Error(parsed?.error?.message || `HTTP ${res.statusCode}: ${body}`));
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Gemini API request timed out'));
+    });
+
+    req.on('error', (err) => {
+      if (modelName === PRIMARY_MODEL) {
+        return callGemini(promptText, FALLBACK_MODEL).then(resolve).catch(reject);
+      }
+      reject(err);
+    });
+
+    req.write(postData);
+    req.end();
+  });
+}
+
+/**
+ * Builds system prompt and context for Gemini based on action and user progress
+ */
+async function generateAiResponse({ action, prompt, context, userProgress, username }) {
   const normalizedAction = action || 'chat';
 
-  // 1. Phân tích từ vựng & mẹo nhớ
-  if (normalizedAction === 'explain_vocab') {
-    const word = context?.word || context?.clean_kana || context?.kana || prompt;
-    const meaning = context?.clean_vietnamese || context?.vietnamese || '';
-    const kanji = context?.kanji || '';
+  // Base Teacher Persona Instruction
+  const baseInstruction = `Bạn là AI Sensei - giáo viên tiếng Nhật thông minh, ân cần của hệ thống HYPER Japanese.
+Quy tắc trả lời:
+- Giải thích bằng tiếng Việt dễ hiểu, sư phạm, chuẩn xác ngữ pháp tiếng Nhật Tokyo.
+- Đi thẳng vào trọng tâm, đủ ý, súc tích, không lan man dài dòng dư thừa.
+- Tuyệt đối không dùng ký tự mũi tên trong câu trả lời.
+- Thêm ví dụ câu thực tế khi cần.`;
 
-    return {
-      success: true,
-      data: {
-        title: `Phân Tích AI: Từ Vựng 「${kanji || word}」`,
-        word: kanji || word,
-        reading: word,
-        meaning: meaning,
-        nuance: `Từ 「${kanji || word}」 là từ vựng rất phổ biến trong giao tiếp sơ cấp N5. Mang sắc thái tự nhiên và chuẩn mực trong giao tiếp lịch sự (Desu/Masu).`,
-        mnemonic: kanji 
-          ? `Mẹo nhớ Hán tự: Nhìn vào các nét của 「${kanji}」, liên tưởng đến hình ảnh thực tế giúp bạn nhớ mặt chữ nhanh hơn gấp 3 lần.`
-          : `Mẹo nhớ âm: Đọc to 3 lần kết hợp cử chỉ tay để tạo phản xạ phát âm chuẩn Tokyo Pitch Accent.`,
-        collocations: [
-          `Cụm thường gặp: 「${kanji || word}」 đi cùng trợ từ tự nhiên.`,
-          `Thường xuất hiện trong bài thi JLPT N5 phần Kiến thức ngôn ngữ (Moji/Goi).`
-        ],
-        example: {
-          jp: `これは ${kanji || word} です。`,
-          vi: `Đây là ${meaning || 'nó'}.`,
-          tip: `Hãy chú ý vị trí đặt trợ từ đứng trước hoặc sau từ vựng.`
-        }
-      }
-    };
-  }
+  let userPrompt = '';
 
-  // 2. Phân tích Chữ Hán
-  if (normalizedAction === 'explain_kanji') {
+  if (normalizedAction === 'user_diagnosis') {
+    // Personalized AI analysis of THIS user's specific learning progress
+    const masteredCount = userProgress?.masteredCount || 0;
+    const reviewWords = userProgress?.reviewWords || [];
+    const streak = userProgress?.streak || 0;
+    const activeLesson = userProgress?.activeLesson || 1;
+
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Hãy phân tích tiến độ học tập thực tế của học viên "${username || 'Học viên'}":
+- Bài học hiện tại: Bài ${activeLesson} Minna no Nihongo.
+- Chuỗi ngày học liên tục: ${streak} ngày.
+- Số từ vựng đã thành thạo: ${masteredCount} từ.
+- Các từ vựng học viên đang gặp khó khăn hoặc cần ôn lại: ${reviewWords.length > 0 ? reviewWords.slice(0, 8).join(', ') : 'Chưa có từ nào bị đánh dấu sai'}.
+
+Hãy đưa ra:
+1. Đánh giá ngắn gọn (1-2 câu) về phản xạ và phong độ học tập hiện tại.
+2. Gợi ý trọng tâm cần ôn tập cụ thể cho các từ hoặc ngữ pháp đang gặp khó khăn trên.
+3. Kế hoạch hành động 15 phút hôm nay để củng cố trí nhớ dài hạn.`;
+  } else if (normalizedAction === 'explain_vocab') {
+    const word = context?.kanji || context?.word || context?.clean_kana || prompt;
+    const kana = context?.clean_kana || context?.kana || '';
+    const meaning = context?.clean_vietnamese || context?.vietnamese || context?.meaning || '';
+
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Phân tích nhanh từ vựng tiếng Nhật 「${word}」 (Đọc là: ${kana}, nghĩa: ${meaning}):
+1. Âm điệu & Sắc thái sử dụng trong đời sống Nhật.
+2. Mẹo ghi nhớ nhanh (hình ảnh liên tưởng hoặc mẹo ghép chữ Hán nếu có).
+3. 1 câu ví dụ thực tế kèm dịch nghĩa tiếng Việt.`;
+  } else if (normalizedAction === 'explain_kanji') {
     const kanji = context?.kanji || prompt;
     const hanViet = context?.han_viet || '';
     const meaning = context?.meaning || '';
-    const stroke = context?.stroke || context?.stroke_count || '';
 
-    return {
-      success: true,
-      data: {
-        title: `Mẹo Nhớ AI: Chữ Hán 「${kanji}」 (${hanViet})`,
-        kanji: kanji,
-        han_viet: hanViet,
-        meaning: meaning,
-        stroke_count: stroke,
-        radical_breakdown: `Chữ 「${kanji}」 gồm ${stroke} nét vẽ cân đối. Được ghép từ các nét cơ bản tạo nên cấu trúc vững chắc trong thư pháp truyền thống.`,
-        mnemonic_story: `Câu chuyện ghi nhớ tượng hình: Tưởng tượng hình dáng của 「${kanji}」 giống như một hình ảnh quen thuộc trong đời sống tượng trưng cho ý nghĩa "${meaning}". Khi viết, hãy giữ thứ tự: từ trên xuống dưới, từ trái qua phải.`,
-        common_traps: `Lưu ý: Đừng nhầm lẫn cách đọc On (âm Hán dùng trong từ ghép) và Kun (âm thuần Nhật dùng khi đứng một mình kèm Okurigana).`
-      }
-    };
-  }
-
-  // 3. Phân tích Trợ từ
-  if (normalizedAction === 'explain_particle') {
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Phân tích chữ Hán 「${kanji}」 (Âm Hán Việt: ${hanViet}, Nghĩa: ${meaning}):
+1. Câu chuyện tượng hình ghi nhớ mặt chữ dễ thuộc nhất.
+2. Cách đọc thông dụng (On/Kun) kèm 1 từ ghép điển hình.
+3. Lưu ý tránh nhầm lẫn với các Hán tự có nét tương tự.`;
+  } else if (normalizedAction === 'explain_particle') {
     const particle = context?.particle || prompt;
     const title = context?.title || `Trợ từ 「${particle}」`;
 
-    return {
-      success: true,
-      data: {
-        title: `Gỡ Rối AI: ${title}`,
-        particle: particle,
-        core_concept: `Bản chất của trợ từ 「${particle}」 là chiếc "nam châm ngữ pháp" kết nối danh từ với động từ hoặc vị ngữ phía sau.`,
-        common_mistake: `Lỗi người học hay mắc: Rất nhiều bạn học viên nhầm lẫn giữa trợ từ này và trợ từ tương đương do thói quen dịch từ ngữ nghĩa tiếng Việt sang tiếng Nhật theo kiểu từng chữ.`,
-        golden_rule: `Quy tắc vàng: Luôn nhìn vào ĐỘNG TỪ hoặc TÍNH TỪ ở cuối câu để quyết định trợ từ chính xác!`
-      }
-    };
-  }
-
-  // 4. Giải thích câu trắc nghiệm
-  if (normalizedAction === 'explain_quiz') {
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Gỡ rối bản chất trợ từ ${title}:
+1. Bản chất cốt lõi trợ từ này dùng để làm gì.
+2. Bẫy hay nhầm lẫn nhất của người Việt khi dùng trợ từ này.
+3. 2 câu ví dụ so sánh minh họa rõ ràng.`;
+  } else if (normalizedAction === 'explain_quiz' || normalizedAction === 'explain_listening') {
     const question = context?.question || prompt;
-    const correctAnswer = context?.correct_answer || '';
-    const explanation = context?.explanation || '';
+    const correctAnswer = context?.correct_answer || context?.correctAnswer || '';
+    const dialogue = context?.audioText || context?.dialogue || '';
 
-    return {
-      success: true,
-      data: {
-        title: 'Giải Thích Chi Tiết Đáp Án',
-        question: question,
-        correct_answer: correctAnswer,
-        why_correct: explanation || `Đáp án 「${correctAnswer}」 là phương án chính xác nhất cả về ngữ nghĩa, ngữ pháp và ngữ cảnh giao tiếp tự nhiên chuẩn N5.`,
-        elimination_tip: 'Bí kíp làm bài: Loại trừ ngay các phương án có cách đọc sai âm ngắt (促音) hoặc trường âm (長音) để chọn ra đáp án tự tin trong vòng 10 giây.'
-      }
-    };
-  }
-
-  // 5. Phân tích ngữ pháp câu bất kỳ
-  if (normalizedAction === 'analyze_sentence') {
-    const sentence = prompt || context?.sentence || 'わたしは がくせいです。';
-    return {
-      success: true,
-      data: {
-        title: `AI Phân Tích Cấu Trúc Câu`,
-        original: sentence,
-        breakdown: [
-          { part: 'Chủ ngữ', text: 'Thành phần đứng trước trợ từ chủ đề', note: 'Xác định đối tượng đang được nhắc đến' },
-          { part: 'Trợ từ', text: 'Liên kết ngữ pháp trong câu', note: 'Chỉ định quan hệ giữa các thành phần' },
-          { part: 'Vị ngữ / Động từ', text: 'Thành phần kết thúc câu', note: 'Quyết định thì (hiện tại/quá khứ) và sắc thái lịch sự' }
-        ],
-        translation: 'Ý nghĩa tự nhiên: Câu biểu thị thông tin chuẩn mực trong giao tiếp hàng ngày sơ cấp N5.',
-        advice: 'Mẹo ngữ pháp: Luôn đọc câu tiếng Nhật từ cuối ngược lên đầu để nắm bắt nhanh hành động chính trước khi phân tích chủ thể.'
-      }
-    };
-  }
-
-  // 6. Lộ trình học cá nhân hóa
-  if (normalizedAction === 'study_roadmap') {
-    const days = context?.days || 30;
-    const hours = context?.hours || 0.5;
-    return {
-      success: true,
-      data: {
-        title: `Lộ Trình Tinh Gọn N5 (${days} Ngày)`,
-        target: `Cam kết ${hours} giờ mỗi ngày để đạt N5 chuẩn điểm cao`,
-        phases: [
-          { phase: 'Giai đoạn 1 (Tuần 1-2)', focus: 'Minna Bài 1 đến Bài 10', goal: 'Nắm vững 500 từ vựng và bảng chữ cái Hiragana/Katakana' },
-          { phase: 'Giai đoạn 2 (Tuần 3-4)', focus: 'Minna Bài 11 đến Bài 20', goal: 'Làm quen các thể động từ Te, Nai, Ta và 50 chữ Hán đầu tiên' },
-          { phase: 'Giai đoạn 3 (Tuần 5-6)', focus: 'Minna Bài 21 đến Bài 25 + Luyện đề', goal: 'Hoàn thành toàn bộ cấu trúc N5, luyện trắc nghiệm bấm giờ' }
-        ],
-        daily_routine: '15 phút Flashcard lặp lại ngắt quãng + 10 phút luyện gõ phản xạ + 5 phút làm trắc nghiệm kiểm tra.'
-      }
-    };
-  }
-
-  // 7. Hội thoại tổng quát với AI Sensei
-  const lowerPrompt = (prompt || '').toLowerCase();
-  let aiReply = '';
-
-  if (lowerPrompt.includes('chào') || lowerPrompt.includes('xin chào') || lowerPrompt.includes('hello') || lowerPrompt.includes('konnichiwa')) {
-    aiReply = 'Konnichiwa! (こんにちは!) Tôi là AI Sensei của NihongoHub. Hôm nay bạn muốn luyện từ vựng, giải đáp ngữ pháp Minna, hay mẹo nhớ chữ Hán Kanji nào nè?';
-  } else if (lowerPrompt.includes('n5') || lowerPrompt.includes('lộ trình') || lowerPrompt.includes('học thế nào')) {
-    aiReply = 'Lộ trình N5 chuẩn quốc tế gồm 25 bài Minna no Nihongo (khoảng 1.500 từ vựng và 80-100 chữ Hán). Mỗi ngày bạn chỉ cần học đều đặn 10-15 từ vựng, kết hợp lật Flashcard 3D và làm 1 bài trắc nghiệm là sẽ nắm chắc N5 sau 2-3 tháng!';
-  } else if (lowerPrompt.includes('kanji') || lowerPrompt.includes('chữ hán')) {
-    aiReply = 'Bí quyết nhớ Kanji N5 là: 1) Nhớ âm Hán-Việt; 2) Tách bộ thủ tượng hình; 3) Học theo từ ghép thực tế (Jukugo) thay vì học vẹt từng chữ riêng lẻ. Bạn bấm vào mục "Kanji" trên thanh điều hướng để xem trọn bộ 80+ Hán tự có số nét nhé!';
-  } else if (lowerPrompt.includes('trợ từ') || lowerPrompt.includes('wa') || lowerPrompt.includes('ga')) {
-    aiReply = 'Sự khác biệt kinh điển giữa は (wa) và が (ga): 「は」 dùng để nêu CHỦ ĐỀ cả câu (nhấn mạnh vế vị ngữ phía sau), còn 「が」 dùng để chỉ CHỦ THỂ hành động khách quan hoặc đối tượng của cảm xúc, sở thích (nhấn mạnh chính danh từ đứng trước nó)!';
-  } else if (lowerPrompt.includes('thể te') || lowerPrompt.includes('chia động từ')) {
-    aiReply = 'Cách nhớ thể て (Te) nhóm 1 bằng bài hát: い・ち・り sang って, み・び・に sang んで, き sang いて, ぎ sang いで, し sang して! Nhóm 2 chỉ cần bỏ ます thêm て. Nhóm 3 là して và きて!';
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Phân tích bài tập:
+Câu hỏi: ${question}
+Đáp án đúng: ${correctAnswer}
+${dialogue ? `Đoạn thoại: ${dialogue}` : ''}
+Hãy giải thích ngắn gọn vì sao đáp án này đúng và chỉ ra từ khóa then chốt giúp bắt được đáp án trong 5 giây.`;
   } else {
-    aiReply = `Cảm ơn bạn đã hỏi về "${prompt}". Trong tiếng Nhật N5, việc kết hợp đa giác quan (nghe phát âm chuẩn Tokyo, nhìn mặt chữ Hán và tự tay gõ lại bằng Romaji) sẽ giúp não bộ ghi nhớ sâu hơn 300%. Bạn có muốn tôi giải thích chi tiết hơn về phần này không?`;
+    // General chat with Sensei
+    userPrompt = `${baseInstruction}
+Học viên hỏi: "${prompt}"
+Hãy trả lời thân thiện, hỗ trợ tối đa việc học tiếng Nhật của bạn ấy.`;
   }
 
-  return {
-    success: true,
-    data: {
-      reply: aiReply,
-      suggestions: [
-        'Phân biệt trợ từ に và で thế nào?',
-        'Cách nhớ bảng chữ cái Katakana siêu tốc',
-        'Cấu trúc ngữ pháp Bài 1 Minna',
-        'Mẹo làm bài thi trắc nghiệm JLPT N5'
-      ]
-    }
-  };
+  try {
+    const rawAiText = await callGemini(userPrompt);
+
+    return {
+      success: true,
+      data: {
+        title: `AI Sensei: ${context?.word || context?.kanji || 'Phân Tích & Hướng Dẫn'}`,
+        explanation: rawAiText,
+        nuance: rawAiText,
+        aiGenerated: true,
+        model: PRIMARY_MODEL
+      }
+    };
+  } catch (error) {
+    console.error('Gemini API execution error:', error.message);
+    // Graceful pedagogical fallback if network to Gemini fails
+    return {
+      success: true,
+      data: {
+        title: `AI Sensei: ${context?.word || 'Hỗ Trợ Học Tập'}`,
+        explanation: `Sensei khuyên bạn: Khi học 「${context?.kanji || context?.word || prompt}」, hãy chú ý đọc to thành tiếng theo ngữ điệu Tokyo và ghép vào một câu giao tiếp cụ thể mỗi ngày để tạo phản xạ tự nhiên.`,
+        nuance: `Từ vựng được dùng nhiều trong giao tiếp N5 hàng ngày.`,
+        aiGenerated: false
+      }
+    };
+  }
 }
 
 module.exports = {

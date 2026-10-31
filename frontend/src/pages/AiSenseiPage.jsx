@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function AiSenseiPage() {
-  const { currentLevel, askAi } = useApp();
+  const { currentLevel, askAi, user, guestProgress, gamification, selectedLesson } = useApp();
 
   const [activeMode, setActiveMode] = useState('chat'); // 'chat' | 'sentence' | 'roadmap'
   
@@ -27,7 +27,7 @@ export default function AiSenseiPage() {
   const [messages, setMessages] = useState([
     {
       sender: 'ai',
-      text: 'Konnichiwa! (こんにちは!) Tôi là AI Sensei chuyên gia tiếng Nhật N5 của bạn. Bạn muốn luyện đối thoại giao tiếp, giải đáp ngữ pháp Minna, hay nhờ phân tích câu nào hôm nay?'
+      text: 'Konnichiwa! (こんにちは!) Tôi là AI Sensei chuyên gia tiếng Nhật của bạn. Bạn muốn luyện đối thoại giao tiếp, giải đáp ngữ pháp, hay nhờ phân tích câu nào hôm nay?'
     }
   ]);
   const [chatInput, setChatInput] = useState('');
@@ -38,13 +38,13 @@ export default function AiSenseiPage() {
   const [sentenceResult, setSentenceResult] = useState(null);
   const [sentenceLoading, setSentenceLoading] = useState(false);
 
-  // Roadmap state
+  // Roadmap & User Diagnosis state
   const [targetDays, setTargetDays] = useState(30);
   const [targetHours, setTargetHours] = useState(0.5);
   const [roadmapResult, setRoadmapResult] = useState(null);
   const [roadmapLoading, setRoadmapLoading] = useState(false);
 
-  // Send Chat message
+  // Send Chat message with real Gemini AI and personalized context
   const handleSendChat = async (e) => {
     e?.preventDefault();
     if (!chatInput.trim() || chatLoading) return;
@@ -56,14 +56,28 @@ export default function AiSenseiPage() {
     sounds.playFlip();
 
     try {
-      const res = await aiService.query({ action: 'chat', prompt: userText });
+      const masteredCount = Object.values(guestProgress || {}).filter((p) => p.status === 'mastered').length;
+      const reviewWords = Object.keys(guestProgress || {}).filter((k) => guestProgress[k]?.status === 'needs_review');
+
+      const res = await aiService.query({
+        action: 'chat',
+        prompt: userText,
+        userProgress: {
+          masteredCount,
+          reviewWords,
+          streak: gamification?.current_streak || 1,
+          activeLesson: selectedLesson || 1
+        },
+        username: user?.username || 'Học viên'
+      });
       if (res.data?.success) {
         sounds.playCorrect();
+        const replyText = res.data.data?.explanation || res.data.data?.reply || res.data.data?.nuance || 'Tôi đã hiểu câu hỏi của bạn!';
         setMessages((prev) => [
           ...prev,
           {
             sender: 'ai',
-            text: res.data.data?.reply || 'Tôi đã hiểu câu hỏi của bạn!',
+            text: replyText,
             suggestions: res.data.data?.suggestions || []
           }
         ]);
@@ -101,18 +115,31 @@ export default function AiSenseiPage() {
     }
   };
 
-  // Generate Roadmap
+  // Generate Personalized User Diagnosis & Roadmap
   const handleGenerateRoadmap = async () => {
     sounds.playFlip();
     setRoadmapLoading(true);
     try {
+      const masteredCount = Object.values(guestProgress || {}).filter((p) => p.status === 'mastered').length;
+      const reviewWords = Object.keys(guestProgress || {}).filter((k) => guestProgress[k]?.status === 'needs_review');
+
       const res = await aiService.query({
-        action: 'study_roadmap',
-        context: { days: targetDays, hours: targetHours }
+        action: 'user_diagnosis',
+        prompt: `Phân tích tiến độ học tập thực tế và đề xuất lộ trình ${targetDays} ngày (mỗi ngày học ${targetHours} giờ)`,
+        userProgress: {
+          masteredCount,
+          reviewWords,
+          streak: gamification?.current_streak || 1,
+          activeLesson: selectedLesson || 1
+        },
+        username: user?.username || 'Học viên'
       });
       if (res.data?.success) {
         sounds.playLevelUp();
-        setRoadmapResult(res.data.data);
+        setRoadmapResult({
+          aiAdvice: res.data.data?.explanation || res.data.data?.nuance,
+          ...res.data.data
+        });
       }
     } catch {
       sounds.playWrong();
@@ -139,7 +166,7 @@ export default function AiSenseiPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <Sparkles size={13} className="text-pink-600" />
-            <span>TRỢ LÝ THÔNG MINH • AI SENSEI</span>
+            <span>TRỢ LÝ THÔNG MINH - AI SENSEI</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">

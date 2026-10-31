@@ -64,7 +64,7 @@ export default function KanjiPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <PenTool size={13} className="text-pink-600" />
-            <span>CHỮ HÁN KANJI • JLPT {currentLevel || 'N5'}</span>
+            <span>CHỮ HÁN KANJI - JLPT {currentLevel || 'N5'}</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
@@ -165,7 +165,7 @@ export default function KanjiPage() {
             {/* Top Char */}
             <div className="text-center pt-2">
               <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-xs">
-                Kanji N5 • {selectedKanji.stroke || selectedKanji.stroke_count || 1} nét
+                Kanji N5 - {selectedKanji.stroke || selectedKanji.stroke_count || 1} nét
               </span>
               <h2 className="text-7xl font-black font-jp text-slate-900 my-2">
                 {selectedKanji.kanji}

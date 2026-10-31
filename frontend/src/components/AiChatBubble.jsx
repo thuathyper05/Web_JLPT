@@ -37,14 +37,15 @@ export default function AiChatBubble() {
 
     try {
       const res = await aiService.query({ action: 'chat', prompt: q });
-      if (res.data?.success && res.data.data?.reply) {
+      const aiReply = res.data?.data?.explanation || res.data?.data?.reply || res.data?.data?.nuance;
+      if (res.data?.success && aiReply) {
         sounds.playCorrect();
         setMessages((prev) => [
           ...prev,
           {
             sender: 'ai',
-            text: res.data.data.reply,
-            suggestions: res.data.data.suggestions
+            text: aiReply,
+            suggestions: res.data.data?.suggestions
           }
         ]);
       } else {

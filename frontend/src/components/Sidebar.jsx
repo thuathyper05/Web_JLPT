@@ -15,11 +15,19 @@ import {
   X,
   Bookmark,
   LifeBuoy,
-  Headphones
+  Headphones,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
-  const { activeTab, setActiveTab, currentLevel, gamification } = useApp();
+  const {
+    activeTab,
+    setActiveTab,
+    gamification,
+    sidebarCollapsed,
+    toggleSidebarCollapse
+  } = useApp();
 
   const navSections = [
     {
@@ -76,32 +84,53 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Sidebar Container: w-64 when expanded, w-20 when collapsed on desktop */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-pink-100 flex flex-col justify-between transition-transform duration-300 ease-out lg:translate-x-0 ${
-          mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 bottom-0 left-0 z-50 bg-white border-r border-pink-100 flex flex-col justify-between transition-all duration-300 ease-out lg:translate-x-0 ${
+          sidebarCollapsed ? 'lg:w-20 w-64' : 'w-64'
+        } ${mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}
       >
-        {/* Top Logo: Custom HYPER Logo Centered with Subtle Hover Glow */}
+        {/* Top Header: Logo & Collapse Button */}
         <div>
-          <div className="relative h-20 px-4 py-3.5 border-b border-pink-50 flex items-center justify-center">
+          <div
+            className={`relative h-20 px-3 py-3.5 border-b border-pink-50 flex items-center ${
+              sidebarCollapsed ? 'justify-center' : 'justify-between'
+            }`}
+          >
+            {/* Centered Logo (scales down if collapsed) */}
             <div
               onClick={() => handleNav({ id: 'home' })}
-              className="flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
+              className={`flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none ${
+                sidebarCollapsed ? 'mx-auto' : 'pl-2'
+              }`}
               title="HYPER - Về trang chủ"
             >
               <div className="relative flex items-center justify-center">
-                {/* Soft Lotus Glow behind logo on hover */}
                 <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <img
                   src="/hyper_logo.png"
                   alt="HYPER"
-                  className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                  className={`w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105 ${
+                    sidebarCollapsed ? 'h-7 sm:h-8' : 'h-10 sm:h-11'
+                  }`}
                 />
               </div>
             </div>
 
-            {/* Mobile Close Button (Positioned absolutely on the right for mobile drawer) */}
+            {/* Desktop Collapse / Expand Button */}
+            {!sidebarCollapsed && (
+              <button
+                type="button"
+                onClick={toggleSidebarCollapse}
+                className="hidden lg:flex p-1.5 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50/70 transition-colors cursor-pointer mr-1"
+                title="Thu gọn thanh menu"
+                aria-label="Thu gọn thanh menu"
+              >
+                <PanelLeftClose size={18} />
+              </button>
+            )}
+
+            {/* Mobile Close Button */}
             <button
               type="button"
               onClick={onCloseMobile}
@@ -113,12 +142,23 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </div>
 
           {/* Navigation Links List */}
-          <nav className="p-3.5 space-y-4 overflow-y-auto max-h-[calc(100vh-190px)]">
+          <nav
+            className={`space-y-4 overflow-y-auto max-h-[calc(100vh-190px)] ${
+              sidebarCollapsed ? 'p-2' : 'p-3.5'
+            }`}
+          >
             {navSections.map((sec, idx) => (
               <div key={idx}>
-                <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
-                  {sec.title}
-                </div>
+                {/* Section title (only shown when expanded) */}
+                {!sidebarCollapsed && (
+                  <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
+                    {sec.title}
+                  </div>
+                )}
+                {sidebarCollapsed && idx > 0 && (
+                  <div className="my-2 border-t border-slate-100" />
+                )}
+
                 <div className="space-y-0.5">
                   {sec.items.map((item) => {
                     const Icon = item.icon;
@@ -128,34 +168,51 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                         key={item.id}
                         type="button"
                         onClick={() => handleNav(item)}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl font-semibold text-[13px] transition-all cursor-pointer ${
+                        title={item.label}
+                        className={`w-full flex items-center rounded-xl font-semibold text-[13px] transition-all cursor-pointer ${
+                          sidebarCollapsed
+                            ? 'justify-center p-2.5'
+                            : 'justify-between px-3 py-2'
+                        } ${
                           isActive
                             ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lotus font-bold'
                             : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-600'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
+                        <div
+                          className={`flex items-center ${
+                            sidebarCollapsed ? 'justify-center' : 'gap-2.5'
+                          }`}
+                        >
                           <Icon
-                            size={17}
-                            className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-pink-600'}
+                            size={sidebarCollapsed ? 20 : 17}
+                            className={
+                              isActive
+                                ? 'text-white'
+                                : 'text-slate-400 group-hover:text-pink-600'
+                            }
                           />
-                          <span>{item.label}</span>
+                          {!sidebarCollapsed && <span>{item.label}</span>}
                         </div>
 
-                        {item.badge && (
+                        {!sidebarCollapsed && item.badge && (
                           <span
                             className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                              isActive ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-600'
+                              isActive
+                                ? 'bg-white/20 text-white'
+                                : 'bg-rose-100 text-rose-600'
                             }`}
                           >
                             {item.badge}
                           </span>
                         )}
 
-                        {item.isNew && !item.badge && (
+                        {!sidebarCollapsed && item.isNew && !item.badge && (
                           <span
                             className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                              isActive ? 'bg-white/20 text-white' : 'bg-pink-100 text-pink-600'
+                              isActive
+                                ? 'bg-white/20 text-white'
+                                : 'bg-pink-100 text-pink-600'
                             }`}
                           >
                             MỚI
@@ -170,32 +227,56 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </nav>
         </div>
 
-        {/* Bottom Card: Chuỗi Ngày Học (Streak) - No XP references */}
-        <div className="p-3.5 border-t border-pink-50">
-          <div
-            onClick={() => handleNav({ id: 'home' })}
-            className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
-          >
-            {/* Background Japanese Watermark */}
-            <div className="absolute right-2 top-1 text-slate-800 font-jp font-black text-6xl opacity-30 select-none pointer-events-none">
-              日
-            </div>
-
-            <div className="relative z-10">
-              <span className="text-[10px] font-bold text-pink-300 uppercase tracking-wider block mb-1">
-                Chuỗi ngày học liên tục
-              </span>
-              <div className="flex items-center gap-2">
-                <Flame size={20} className="text-amber-400 animate-bounce" fill="#f59e0b" />
-                <span className="font-black text-lg tracking-tight text-white">
-                  {gamification?.current_streak || 12} ngày
-                </span>
+        {/* Bottom Area: Streak Card & Expand toggle when collapsed */}
+        <div className={`border-t border-pink-50 ${sidebarCollapsed ? 'p-2' : 'p-3.5'}`}>
+          {sidebarCollapsed ? (
+            <div className="flex flex-col items-center gap-2">
+              <div
+                onClick={() => handleNav({ id: 'home' })}
+                className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white flex flex-col items-center justify-center cursor-pointer shadow-sm hover:scale-105 transition-transform"
+                title={`Chuỗi ${gamification?.current_streak || 12} ngày học liên tục`}
+              >
+                <Flame size={18} className="text-amber-400 animate-bounce" fill="#f59e0b" />
+                <span className="text-[10px] font-black">{gamification?.current_streak || 12}d</span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-1 mb-0">
-                Hôm nay bạn đã học {gamification?.today_words_count || 0} từ
-              </p>
+
+              {/* Expand button when collapsed */}
+              <button
+                type="button"
+                onClick={toggleSidebarCollapse}
+                className="w-full p-2 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50 flex items-center justify-center transition-colors cursor-pointer"
+                title="Mở rộng thanh menu"
+                aria-label="Mở rộng thanh menu"
+              >
+                <PanelLeftOpen size={18} />
+              </button>
             </div>
-          </div>
+          ) : (
+            <div
+              onClick={() => handleNav({ id: 'home' })}
+              className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
+            >
+              {/* Background Japanese Watermark */}
+              <div className="absolute right-2 top-1 text-slate-800 font-jp font-black text-6xl opacity-30 select-none pointer-events-none">
+                日
+              </div>
+
+              <div className="relative z-10">
+                <span className="text-[10px] font-bold text-pink-300 uppercase tracking-wider block mb-1">
+                  Chuỗi ngày học liên tục
+                </span>
+                <div className="flex items-center gap-2">
+                  <Flame size={20} className="text-amber-400 animate-bounce" fill="#f59e0b" />
+                  <span className="font-black text-lg tracking-tight text-white">
+                    {gamification?.current_streak || 12} ngày
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-400 mt-1 mb-0">
+                  Hôm nay bạn đã học {gamification?.today_words_count || 0} từ
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </aside>
     </>

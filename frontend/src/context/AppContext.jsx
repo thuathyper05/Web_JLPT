@@ -22,6 +22,25 @@ export const AppProvider = ({ children }) => {
   // XP Rewards Modal State
   const [xpModalOpen, setXpModalOpen] = useState(false);
 
+  // Desktop Sidebar Collapse State
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('hyper_sidebar_collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleSidebarCollapse = () => {
+    setSidebarCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('hyper_sidebar_collapsed', String(next));
+      } catch {}
+      return next;
+    });
+  };
+
   // User Perks & Purchased Items
   const [userPerks, setUserPerks] = useState(() => {
     try {
@@ -253,7 +272,7 @@ export const AppProvider = ({ children }) => {
     return true;
   };
 
-  // AI Assistant trigger from any screen
+  // AI Assistant trigger from any screen with personalized user progress
   const askAi = async (action, context, defaultTitle = 'Trợ Lý AI Phân Tích') => {
     sounds.playFlip();
     setAiModal({
@@ -264,7 +283,21 @@ export const AppProvider = ({ children }) => {
     });
 
     try {
-      const res = await aiService.query({ action, context });
+      const masteredCount = Object.values(guestProgress).filter((p) => p.status === 'mastered').length;
+      const reviewWords = Object.keys(guestProgress).filter((k) => guestProgress[k].status === 'needs_review');
+      const userProgress = {
+        masteredCount,
+        reviewWords,
+        streak: gamification?.current_streak || 1,
+        activeLesson: selectedLesson || 1
+      };
+
+      const res = await aiService.query({
+        action,
+        context,
+        userProgress,
+        username: user?.username || 'Học viên'
+      });
       if (res.data?.success) {
         setAiModal({
           isOpen: true,
@@ -324,6 +357,9 @@ export const AppProvider = ({ children }) => {
         pageLoading,
         setPageLoading,
         loadingMessage,
+        sidebarCollapsed,
+        setSidebarCollapsed,
+        toggleSidebarCollapse,
         xpModalOpen,
         setXpModalOpen,
         userPerks,

@@ -63,7 +63,7 @@ export default function ParticlesPage() {
           <div className="mb-2.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
               <Compass size={13} className="text-pink-600" />
-              <span>JOSHI (助詞) • TRỌNG TÂM JLPT {activeLevel}</span>
+              <span>JOSHI (助詞) - TRỌNG TÂM JLPT {activeLevel}</span>
             </div>
           </div>
 

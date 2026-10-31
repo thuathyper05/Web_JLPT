@@ -80,7 +80,7 @@ export default function DashboardPage() {
             {/* Lesson Tag Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-xs font-bold mb-4 backdrop-blur-md">
               <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
-              <span>BÀI 02 • Đồ vật quanh ta</span>
+              <span>BÀI 02 - Đồ vật quanh ta</span>
             </div>
 
             {/* Title */}
@@ -142,12 +142,12 @@ export default function DashboardPage() {
 
             {/* Circular Progress & Text */}
             <div className="flex items-center gap-4 my-2">
-              <div className="w-18 h-18 rounded-full border-4 border-pink-100 border-t-pink-600 flex items-center justify-center shrink-0">
-                <div className="text-center">
-                  <span className="text-lg font-black text-slate-900 block leading-tight">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-pink-100 border-t-pink-600 flex items-center justify-center shrink-0">
+                <div className="flex items-baseline justify-center">
+                  <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
                     {gamification?.today_words_count || 0}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-bold block">/10</span>
+                  <span className="text-xs font-bold text-slate-400 ml-0.5">/10</span>
                 </div>
               </div>
               <div>

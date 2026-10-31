@@ -175,7 +175,7 @@ export default function GardenPage() {
           <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
               <Sprout size={13} className="text-pink-600" />
-              <span>SPACED REPETITION SYSTEM • VƯỜN CÂY TRI THỨC</span>
+              <span>SPACED REPETITION SYSTEM - VƯỜN CÂY TRI THỨC</span>
             </div>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold">
@@ -286,7 +286,7 @@ export default function GardenPage() {
           <div className="lg:col-span-7 space-y-4">
             <div>
               <span className="text-[10.5px] font-black text-pink-600 uppercase tracking-wider block mb-1">
-                TÌNH TRẠNG SINH TRƯỞNG • GIAI ĐOẠN {bonsaiTier}
+                TÌNH TRẠNG SINH TRƯỞNG - GIAI ĐOẠN {bonsaiTier}
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mb-1.5">
                 {bonsaiName}
@@ -454,7 +454,7 @@ export default function GardenPage() {
           <div className="flex items-center justify-between pb-3 border-b border-pink-50">
             <div className="flex items-center gap-2">
               <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
-                DANH SÁCH TỪ VỰNG TRONG KHAY • {stagesMeta[selectedStageTab - 1]?.title}
+                DANH SÁCH TỪ VỰNG TRONG KHAY - {stagesMeta[selectedStageTab - 1]?.title}
               </span>
               <span className="text-xs font-bold text-pink-600 bg-pink-50 px-2 py-0.5 rounded-md">
                 {activeWords.length} từ

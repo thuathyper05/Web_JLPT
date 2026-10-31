@@ -12,9 +12,11 @@ import {
   CheckCircle2,
   Sparkles,
   Volume2,
-  ArrowRight,
   HelpCircle,
-  Play
+  Play,
+  Heart,
+  Coffee,
+  ShieldCheck
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -22,8 +24,10 @@ export default function WordMatchPage() {
   const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [lessonFilter, setLessonFilter] = useState(selectedLesson ? String(selectedLesson) : '1');
+  const [gameMode, setGameMode] = useState('speed_60s'); // 'speed_60s' | 'survival' | 'zen'
   const [gameState, setGameState] = useState('setup'); // 'setup' | 'playing' | 'result'
   const [timeLeft, setTimeLeft] = useState(60);
+  const [lives, setLives] = useState(3);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
   const [maxCombo, setMaxCombo] = useState(0);
@@ -92,6 +96,7 @@ export default function WordMatchPage() {
       setRoundsCompleted(0);
       setMissedWords([]);
       setTimeLeft(60);
+      setLives(3);
       loadRound(allWords);
       setGameState('playing');
     } catch (err) {
@@ -99,9 +104,9 @@ export default function WordMatchPage() {
     }
   };
 
-  // Timer countdown
+  // Timer countdown for speed_60s
   useEffect(() => {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing' || gameMode !== 'speed_60s') return;
 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
@@ -117,7 +122,7 @@ export default function WordMatchPage() {
     }, 1000);
 
     return () => clearInterval(timerRef.current);
-  }, [gameState]);
+  }, [gameState, gameMode]);
 
   // Tile click handler
   const handleTileClick = (tile) => {
@@ -152,6 +157,7 @@ export default function WordMatchPage() {
     if (selectedTile.wordId === tile.wordId) {
       // MATCH!
       sounds.playCorrect();
+      speakJapanese(tile.audio);
       const newMatched = new Set([...matchedIds, selectedTile.uid, tile.uid]);
       setMatchedIds(newMatched);
       setSelectedTile(null);
@@ -167,7 +173,9 @@ export default function WordMatchPage() {
       // Check if all 12 tiles in this round are matched (6 pairs = 12 tiles)
       if (newMatched.size >= 12) {
         sounds.playLevelUp();
-        setTimeLeft((prev) => prev + 6); // +6s bonus time!
+        if (gameMode === 'speed_60s') {
+          setTimeLeft((prev) => prev + 6); // +6s bonus time!
+        }
         setRoundsCompleted((r) => r + 1);
         setTimeout(() => {
           loadRound(poolWords);
@@ -186,6 +194,21 @@ export default function WordMatchPage() {
         return exists ? prev : [...prev, tile.fullWord];
       });
 
+      // Handle Survival Mode Lives
+      if (gameMode === 'survival') {
+        setLives((prev) => {
+          const nextLives = prev - 1;
+          if (nextLives <= 0) {
+            setTimeout(() => {
+              setGameState('result');
+              sounds.playLevelUp();
+              confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+            }, 500);
+          }
+          return Math.max(0, nextLives);
+        });
+      }
+
       // Clear selection after shake
       setTimeout(() => {
         setWrongTileIds([]);
@@ -202,13 +225,13 @@ export default function WordMatchPage() {
           結
         </div>
 
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
+        <div className="relative z-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
             <Zap size={13} className="text-pink-600" />
-            <span>PHẢN XẠ NHANH • GHÉP TỪ 60S</span>
+            <span>PHẢN XẠ NHANH - ĐẤU TRƯỜNG NỐI TỪ NHẬT VIỆT</span>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
             Đấu Trường Nối Từ Tiếng Nhật
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-0">
@@ -225,20 +248,78 @@ export default function WordMatchPage() {
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-black text-slate-900">Luật chơi Lưới Ô Chữ 60s</h2>
+            <h2 className="text-2xl font-black text-slate-900">Chọn Chế Độ Chơi</h2>
             <p className="text-xs text-slate-500 leading-relaxed max-w-md mx-auto">
-              Chạm vào 1 ô tiếng Nhật và 1 ô nghĩa tiếng Việt khớp nhau. Mỗi chuỗi nối đúng liên tiếp sẽ tăng bội số Combo. Dọn sạch 6 cặp sẽ tự động nạp thêm màn chơi mới và thưởng <strong>+6 giây</strong>!
+              Chạm vào 1 ô tiếng Nhật và 1 ô nghĩa tiếng Việt khớp nhau. Mỗi chuỗi nối đúng liên tiếp sẽ kích hoạt Combo điểm số!
             </p>
           </div>
 
+          {/* Mode Selector */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-w-md mx-auto text-left">
+            <button
+              type="button"
+              onClick={() => { sounds.playFlip(); setGameMode('speed_60s'); }}
+              className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                gameMode === 'speed_60s'
+                  ? 'bg-pink-50 border-pink-500 ring-2 ring-pink-200'
+                  : 'bg-white border-slate-200 hover:border-pink-200'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 text-pink-600 font-bold text-xs mb-1">
+                <Clock size={14} />
+                <span>Phản xạ 60s</span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-tight">
+                Chạy đua cùng đồng hồ, thưởng +6s mỗi khi dọn sạch bàn.
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { sounds.playFlip(); setGameMode('survival'); }}
+              className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                gameMode === 'survival'
+                  ? 'bg-pink-50 border-pink-500 ring-2 ring-pink-200'
+                  : 'bg-white border-slate-200 hover:border-pink-200'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 text-rose-600 font-bold text-xs mb-1">
+                <Heart size={14} />
+                <span>Sinh tồn 3 tim</span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-tight">
+                Không giới hạn giờ, nhưng sai quá 3 lần là kết thúc.
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { sounds.playFlip(); setGameMode('zen'); }}
+              className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                gameMode === 'zen'
+                  ? 'bg-pink-50 border-pink-500 ring-2 ring-pink-200'
+                  : 'bg-white border-slate-200 hover:border-pink-200'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 text-emerald-600 font-bold text-xs mb-1">
+                <Coffee size={14} />
+                <span>Luyện tự do</span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-tight">
+                Thư giãn nối từ không tính giờ, học sâu nhớ lâu.
+              </p>
+            </button>
+          </div>
+
+          {/* Scope Selector */}
           <div className="max-w-xs mx-auto text-left">
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
-              Phạm vi từ vựng ôn tập:
+              Phạm vi bài học:
             </label>
             <select
               value={lessonFilter}
               onChange={(e) => setLessonFilter(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
               <option value="all">Tất cả bài học (1.512 từ)</option>
               {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
@@ -265,11 +346,33 @@ export default function WordMatchPage() {
         <div className="space-y-4">
           {/* Top HUD Status Bar */}
           <div className="p-4 rounded-2xl bg-white border border-pink-100 shadow-sm flex items-center justify-between">
-            {/* Timer */}
-            <div className={`flex items-center gap-2 font-black text-sm ${timeLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-slate-800'}`}>
-              <Clock size={18} className={timeLeft <= 10 ? 'text-rose-600' : 'text-pink-600'} />
-              <span>{timeLeft}s còn lại</span>
-            </div>
+            {/* Mode-specific status */}
+            {gameMode === 'speed_60s' && (
+              <div className={`flex items-center gap-2 font-black text-sm ${timeLeft <= 10 ? 'text-rose-600 animate-pulse' : 'text-slate-800'}`}>
+                <Clock size={18} className={timeLeft <= 10 ? 'text-rose-600' : 'text-pink-600'} />
+                <span>{timeLeft}s còn lại</span>
+              </div>
+            )}
+
+            {gameMode === 'survival' && (
+              <div className="flex items-center gap-1.5 font-black text-sm text-rose-600">
+                <span className="text-xs font-bold text-slate-500 mr-1">Mạng sống:</span>
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Heart
+                    key={i}
+                    size={16}
+                    className={i < lives ? 'text-rose-500 fill-rose-500' : 'text-slate-200 fill-slate-200'}
+                  />
+                ))}
+              </div>
+            )}
+
+            {gameMode === 'zen' && (
+              <div className="flex items-center gap-1.5 font-bold text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl">
+                <Coffee size={14} />
+                <span>Chế độ tự do</span>
+              </div>
+            )}
 
             {/* Middle: Combo flame */}
             {combo >= 2 && (
@@ -322,13 +425,20 @@ export default function WordMatchPage() {
                   </span>
 
                   {tile.type === 'jp' ? (
-                    <FuriganaWord
-                      kanji={tile.fullWord?.kanji}
-                      kana={tile.fullWord?.clean_kana || tile.fullWord?.kana}
-                      size="base"
-                      kanjiClassName={isSelected ? 'text-white' : 'text-slate-900'}
-                      furiganaClassName={isSelected ? 'text-pink-100' : 'text-pink-600'}
-                    />
+                    <div className="flex flex-col items-center">
+                      <FuriganaWord
+                        kanji={tile.fullWord?.kanji}
+                        kana={tile.fullWord?.clean_kana || tile.fullWord?.kana}
+                        size="base"
+                        kanjiClassName={isSelected ? 'text-white' : 'text-slate-900'}
+                        furiganaClassName={isSelected ? 'text-pink-100' : 'text-pink-600'}
+                      />
+                      {tile.fullWord?.romaji && (
+                        <span className={`text-[10px] font-mono mt-0.5 ${isSelected ? 'text-pink-100' : 'text-slate-400'}`}>
+                          {tile.fullWord.romaji}
+                        </span>
+                      )}
+                    </div>
                   ) : (
                     <span className="text-xs sm:text-sm font-bold leading-snug line-clamp-2">
                       {tile.text}
@@ -340,7 +450,7 @@ export default function WordMatchPage() {
           </div>
 
           <p className="text-center text-[11px] text-slate-400 font-medium pt-2">
-            Đã nối thành công: <strong className="text-pink-600 font-bold">{pairsCleared} cặp từ</strong> • Vòng chơi thứ {roundsCompleted + 1}
+            Đã nối thành công: <strong className="text-pink-600 font-bold">{pairsCleared} cặp từ</strong> - Vòng chơi thứ {roundsCompleted + 1}
           </p>
         </div>
       )}

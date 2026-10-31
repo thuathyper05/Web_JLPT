@@ -356,10 +356,21 @@ app.post('/api/progress/tick', (req, res) => {
 });
 
 // ── 8. AI ASSISTANT ENDPOINT ──
-app.post('/api/ai/query', (req, res) => {
-  const { action, prompt, context } = req.body;
-  const response = generateAiResponse({ action, prompt, context });
-  res.json(response);
+app.post('/api/ai/query', async (req, res) => {
+  try {
+    const { action, prompt, context, userProgress, username } = req.body;
+    const response = await generateAiResponse({
+      action,
+      prompt,
+      context,
+      userProgress,
+      username: req.user?.username || username || 'Học viên'
+    });
+    res.json(response);
+  } catch (err) {
+    console.error('AI query route error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xử lý AI' });
+  }
 });
 
 // Health check
