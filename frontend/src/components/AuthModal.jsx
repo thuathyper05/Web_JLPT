@@ -15,7 +15,6 @@ import {
   ShieldCheck,
   Zap,
   BookOpen,
-  ArrowRight,
   KeyRound,
   Check
 } from 'lucide-react';
@@ -29,11 +28,12 @@ export default function AuthModal() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
-  // Forgot Password flow steps: 'request' | 'otp' | 'reset' | 'done'
+  // Forgot Password flow steps: 'request' | 'otp' | 'done'
   const [forgotStep, setForgotStep] = useState('request');
-  const [otpCode, setOtpCode] = useState(['', '', '', '']);
+  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -50,13 +50,15 @@ export default function AuthModal() {
   if (hasNumOrUpper) strengthScore++;
   if (hasSpecial && password.length >= 8) strengthScore++;
 
+  const isPasswordMatch = password && confirmPassword && password === confirmPassword;
+
   const handleOtpInput = (index, value) => {
     if (value.length > 1) value = value.slice(-1);
     const updated = [...otpCode];
     updated[index] = value;
     setOtpCode(updated);
 
-    if (value && index < 3) {
+    if (value && index < 5) {
       const nextInput = document.getElementById(`auth-otp-${index + 1}`);
       nextInput?.focus();
     }
@@ -85,40 +87,73 @@ export default function AuthModal() {
           setLoading(false);
           return;
         }
-        const res = await authService.register({ username, email, password });
+        if (password !== confirmPassword) {
+          setError('Mật khẩu xác nhận không trùng khớp với mật khẩu đã nhập.');
+          setLoading(false);
+          return;
+        }
+
+        const res = await authService.register({ username, email, password, confirmPassword });
         if (res.data?.success) {
           sounds.playLevelUp();
           localStorage.setItem('nihongo_token', res.data.token);
           setUser(res.data.user);
           setAuthModalOpen(false);
         } else {
-          setError(res.data?.message || 'Đăng ký không thành công.');
+          setError(res.data?.message || 'Đăng ký tài khoản không thành công.');
         }
       } else if (authMode === 'forgot') {
         if (forgotStep === 'request') {
-          await authService.forgotPassword({ email });
-          sounds.playCorrect();
-          setForgotStep('otp');
-          setSuccessMsg('Mã OTP 4 số đã được gửi tới email của bạn (Mã thử nghiệm: 1234)');
+          if (!email.trim()) {
+            setError('Vui lòng nhập địa chỉ email đã đăng ký.');
+            setLoading(false);
+            return;
+          }
+          const res = await authService.sendOtp({ email });
+          if (res.data?.success) {
+            sounds.playCorrect();
+            setForgotStep('otp');
+            setSuccessMsg(res.data.message || 'Mã OTP đã được gửi đến email của bạn.');
+          } else {
+            setError(res.data?.message || 'Không tìm thấy tài khoản với email này.');
+          }
         } else if (forgotStep === 'otp') {
           const code = otpCode.join('');
-          if (code.length < 4) {
-            setError('Vui lòng nhập đủ 4 chữ số mã OTP.');
+          if (code.length < 6) {
+            setError('Vui lòng nhập đủ 6 chữ số mã OTP xác thực.');
             setLoading(false);
             return;
           }
-          sounds.playCorrect();
-          setForgotStep('reset');
-          setSuccessMsg('Xác thực OTP thành công! Vui lòng nhập mật khẩu mới.');
-        } else if (forgotStep === 'reset') {
+          if (password.length < 6) {
+            setError('Mật khẩu mới phải có ít nhất 6 ký tự.');
+            setLoading(false);
+            return;
+          }
           if (password !== confirmPassword) {
-            setError('Mật khẩu nhập lại không trùng khớp.');
+            setError('Mật khẩu xác nhận không trùng khớp.');
             setLoading(false);
             return;
           }
-          sounds.playLevelUp();
-          setForgotStep('done');
-          setSuccessMsg('Đã cập nhật mật khẩu mới thành công! Mời bạn đăng nhập lại.');
+
+          const res = await authService.resetPasswordOtp({
+            email,
+            otp: code,
+            newPassword: password,
+            confirmPassword
+          });
+
+          if (res.data?.success) {
+            sounds.playLevelUp();
+            setForgotStep('done');
+            setSuccessMsg(res.data.message || 'Cấp mật khẩu mới thành công! Mời bạn đăng nhập lại.');
+            setTimeout(() => {
+              setAuthMode('login');
+              setForgotStep('request');
+              setError('');
+            }, 1800);
+          } else {
+            setError(res.data?.message || 'Mã OTP không hợp lệ hoặc đã hết hạn.');
+          }
         }
       }
     } catch (err) {
@@ -129,17 +164,42 @@ export default function AuthModal() {
     }
   };
 
-  const handleSocialQuickLogin = (provider) => {
+  const handleSocialQuickLogin = async (provider) => {
     sounds.playCorrect();
-    const mockUser = {
-      id: Date.now(),
-      username: `Học viên ${provider}`,
-      email: `${provider.toLowerCase()}@hyperjapan.vn`,
-      role: 'student'
-    };
-    localStorage.setItem('nihongo_token', 'mock_social_token_jwt');
-    setUser(mockUser);
-    setAuthModalOpen(false);
+    setError('');
+    setLoading(true);
+
+    try {
+      const mockSocialPayload = {
+        provider,
+        email: provider === 'Google' ? 'hocvien.google@gmail.com' : 'hocvien.facebook@gmail.com',
+        name: `Học viên ${provider}`,
+        avatar: ''
+      };
+
+      const res = await authService.socialLogin(mockSocialPayload);
+      if (res.data?.success) {
+        sounds.playLevelUp();
+        localStorage.setItem('nihongo_token', res.data.token);
+        setUser(res.data.user);
+        setAuthModalOpen(false);
+      } else {
+        setError(res.data?.message || `Đăng nhập qua ${provider} không thành công.`);
+      }
+    } catch {
+      // Fallback offline session
+      const fallbackUser = {
+        id: Date.now(),
+        username: `Học viên ${provider}`,
+        email: `${provider.toLowerCase()}@hyperjapan.vn`,
+        role: 'user'
+      };
+      localStorage.setItem('nihongo_token', 'mock_social_token_jwt');
+      setUser(fallbackUser);
+      setAuthModalOpen(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -158,7 +218,7 @@ export default function AuthModal() {
           <X size={20} />
         </button>
 
-        {/* ── LEFT COLUMN: BRANDING & INSPIRATION (DESKTOP) ── */}
+        {/* ── LEFT COLUMN: BRANDING & SYSTEM IDENTITY ── */}
         <div className="hidden md:flex md:w-5/12 bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white p-8 flex-col justify-between relative overflow-hidden">
           {/* Decorative Japanese Calligraphy Background */}
           <div className="absolute right-2 top-10 text-white/5 font-jp font-black text-9xl pointer-events-none select-none">
@@ -179,7 +239,7 @@ export default function AuthModal() {
             </div>
 
             <p className="text-xs text-pink-200/80 font-medium pt-1">
-              Hệ thống Web App học tiếng Nhật thông minh hàng đầu với công nghệ AI và Spaced Repetition.
+              Hệ thống Web App học tiếng Nhật thông minh với công nghệ AI và cơ sở dữ liệu PostgreSQL chuẩn mực.
             </p>
           </div>
 
@@ -190,8 +250,8 @@ export default function AuthModal() {
                 <BookOpen size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">1.512 Từ Vựng Minna Chuẩn</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Tích hợp phát âm chuẩn Tokyo Pitch Accent.</p>
+                <h4 className="font-bold text-xs text-white">Giáo trình chuẩn Minna no Nihongo</h4>
+                <p className="text-[11px] text-slate-400 mb-0">Hơn 1.500 từ vựng N5 và bộ đề phát triển N4 tới N1.</p>
               </div>
             </div>
 
@@ -200,8 +260,8 @@ export default function AuthModal() {
                 <Sparkles size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">AI Sensei Hỗ Trợ 24/7</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Phân tích mẹo nhớ tượng hình và cấu trúc ngữ pháp.</p>
+                <h4 className="font-bold text-xs text-white">Trợ lý AI Sensei thông minh</h4>
+                <p className="text-[11px] text-slate-400 mb-0">Tự động phân tích điểm yếu cá nhân và đề xuất bài tập tối ưu.</p>
               </div>
             </div>
 
@@ -210,8 +270,8 @@ export default function AuthModal() {
                 <Zap size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">Đồng Bộ Tiến Độ Đa Thiết Bị</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Học trên điện thoại, máy tính bảng hay laptop liền mạch.</p>
+                <h4 className="font-bold text-xs text-white">Đồng bộ tiến độ tức thời</h4>
+                <p className="text-[11px] text-slate-400 mb-0">Lưu dữ liệu học tập an toàn trên đám mây PostgreSQL.</p>
               </div>
             </div>
           </div>
@@ -219,10 +279,10 @@ export default function AuthModal() {
           {/* Bottom Quote */}
           <div className="relative z-10 pt-4 border-t border-white/10">
             <p className="text-[11.5px] italic text-pink-200/90 leading-relaxed mb-1">
-              "初志貫徹 (Shoshi Kantetsu) — Giữ vững ý chí ban đầu để đi đến ngày hái quả ngọt."
+              "初志貫徹 (Shoshi Kantetsu) - Giữ vững ý chí ban đầu để đi đến ngày hái quả ngọt."
             </p>
             <span className="text-[10px] text-slate-400 uppercase tracking-wider block">
-              12.000+ Học viên đang rèn luyện mỗi ngày
+              Cộng đồng hơn 12.000 học viên tin cậy
             </span>
           </div>
         </div>
@@ -239,12 +299,12 @@ export default function AuthModal() {
               <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 {authMode === 'login' && 'Đăng nhập vào hệ thống'}
                 {authMode === 'register' && 'Tạo tài khoản học viên mới'}
-                {authMode === 'forgot' && 'Khôi phục mật khẩu tài khoản'}
+                {authMode === 'forgot' && 'Cấp lại mật khẩu tài khoản'}
               </h2>
               <p className="text-xs text-slate-500 mt-1 mb-0">
-                {authMode === 'login' && 'Chào mừng bạn trở lại! Tiếp tục hành trình chinh phục N5 nào.'}
-                {authMode === 'register' && 'Chỉ mất 30 giây để bắt đầu đồng bộ tiến độ học tập trên đám mây.'}
-                {authMode === 'forgot' && 'Nhập email đã đăng ký để nhận mã OTP xác thực bảo mật.'}
+                {authMode === 'login' && 'Chào mừng bạn trở lại! Tiếp tục hành trình chinh phục tiếng Nhật.'}
+                {authMode === 'register' && 'Điền thông tin bên dưới để khởi tạo tài khoản và đồng bộ tiến độ.'}
+                {authMode === 'forgot' && 'Nhập email đã đăng ký để nhận mã OTP xác thực và thiết lập mật khẩu mới.'}
               </p>
             </div>
 
@@ -335,12 +395,16 @@ export default function AuthModal() {
 
               {/* Forgot Step: OTP Boxes */}
               {authMode === 'forgot' && forgotStep === 'otp' && (
-                <div className="space-y-3 text-center py-2">
-                  <label className="block text-xs font-bold text-slate-700">
-                    Nhập mã 4 chữ số OTP gửi đến {email}:
-                  </label>
-                  <div className="flex justify-center gap-3">
-                    {[0, 1, 2, 3].map((idx) => (
+                <div className="space-y-3 py-1">
+                  <div className="text-center">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Nhập mã 6 chữ số OTP đã gửi tới email:
+                    </label>
+                    <span className="text-xs font-semibold text-pink-600">{email}</span>
+                  </div>
+
+                  <div className="flex justify-center gap-2 sm:gap-2.5">
+                    {[0, 1, 2, 3, 4, 5].map((idx) => (
                       <input
                         key={idx}
                         id={`auth-otp-${idx}`}
@@ -348,25 +412,25 @@ export default function AuthModal() {
                         maxLength={1}
                         value={otpCode[idx]}
                         onChange={(e) => handleOtpInput(idx, e.target.value)}
-                        className="w-12 h-14 text-center text-xl font-black rounded-2xl border-2 border-pink-300 focus:border-pink-600 focus:outline-none bg-pink-50/30 focus:bg-white transition-all shadow-inner"
+                        className="w-10 sm:w-12 h-12 sm:h-14 text-center text-lg sm:text-xl font-black rounded-xl sm:rounded-2xl border-2 border-pink-300 focus:border-pink-600 focus:outline-none bg-pink-50/30 focus:bg-white transition-all shadow-inner"
                       />
                     ))}
                   </div>
-                  <p className="text-[11px] text-slate-400">
-                    Chưa nhận được mã?{' '}
+
+                  <div className="text-center">
                     <button
                       type="button"
                       onClick={() => setForgotStep('request')}
-                      className="text-pink-600 font-bold hover:underline cursor-pointer"
+                      className="text-[11px] text-pink-600 font-bold hover:underline cursor-pointer"
                     >
-                      Gửi lại mã OTP
+                      Gửi lại mã OTP qua email
                     </button>
-                  </p>
+                  </div>
                 </div>
               )}
 
-              {/* Password Input */}
-              {(authMode !== 'forgot' || forgotStep === 'reset') && (
+              {/* Password Input (Login, Register, or Forgot Step OTP) */}
+              {(authMode !== 'forgot' || forgotStep === 'otp') && (
                 <div>
                   <div className="flex justify-between items-center mb-1.5">
                     <label className="text-xs font-bold text-slate-700">
@@ -393,7 +457,7 @@ export default function AuthModal() {
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
-                      placeholder="Nhập mật khẩu"
+                      placeholder={authMode === 'forgot' ? 'Nhập mật khẩu mới' : 'Nhập mật khẩu'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-500/30 focus:border-pink-500 transition-all bg-white"
@@ -407,8 +471,8 @@ export default function AuthModal() {
                     </button>
                   </div>
 
-                  {/* Register Password Strength Visualizer */}
-                  {authMode === 'register' && password && (
+                  {/* Password Strength Visualizer for Register & Forgot OTP */}
+                  {(authMode === 'register' || (authMode === 'forgot' && forgotStep === 'otp')) && password && (
                     <div className="mt-2 p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5">
                       <div className="flex justify-between text-[10.5px] font-bold">
                         <span className="text-slate-500">Độ mạnh mật khẩu:</span>
@@ -426,7 +490,7 @@ export default function AuthModal() {
                           <Check size={10} /> Ít nhất 6 ký tự
                         </span>
                         <span className={`flex items-center gap-1 ${hasNumOrUpper ? 'text-emerald-600 font-bold' : ''}`}>
-                          <Check size={10} /> Chữ hoa hoặc số
+                          <Check size={10} /> Có chữ hoa hoặc số
                         </span>
                       </div>
                     </div>
@@ -434,23 +498,50 @@ export default function AuthModal() {
                 </div>
               )}
 
-              {/* Confirm Password (Reset Step) */}
-              {authMode === 'forgot' && forgotStep === 'reset' && (
+              {/* Confirm Password (REQUIRED in Register & Forgot OTP Mode) */}
+              {(authMode === 'register' || (authMode === 'forgot' && forgotStep === 'otp')) && (
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                    Nhập lại mật khẩu mới
+                    Xác nhận lại mật khẩu
                   </label>
                   <div className="relative">
-                    <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <KeyRound size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? 'text' : 'password'}
                       required
-                      placeholder="Nhập lại mật khẩu"
+                      placeholder="Nhập lại mật khẩu để xác nhận"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-500/30 focus:border-pink-500 transition-all bg-white"
+                      className={`w-full pl-10 pr-10 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 transition-all bg-white ${
+                        confirmPassword && !isPasswordMatch
+                          ? 'border-rose-300 focus:ring-rose-500/30 focus:border-rose-500'
+                          : confirmPassword && isPasswordMatch
+                          ? 'border-emerald-300 focus:ring-emerald-500/30 focus:border-emerald-500'
+                          : 'border-slate-200 focus:ring-pink-500/30 focus:border-pink-500'
+                      }`}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer"
+                    >
+                      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
                   </div>
+
+                  {confirmPassword && (
+                    <div className="mt-1 text-[11px] font-semibold flex items-center gap-1">
+                      {isPasswordMatch ? (
+                        <span className="text-emerald-600 flex items-center gap-1">
+                          <Check size={12} /> Mật khẩu xác nhận trùng khớp
+                        </span>
+                      ) : (
+                        <span className="text-rose-500 flex items-center gap-1">
+                          <AlertCircle size={12} /> Mật khẩu xác nhận chưa khớp
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -473,22 +564,18 @@ export default function AuthModal() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-black text-sm shadow-lotus hover:shadow-lotus-lg hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-black text-xs sm:text-sm shadow-lotus hover:shadow-lotus-lg hover:scale-[1.01] active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  'Đang xử lý...'
+                  <span>Đang xử lý dữ liệu...</span>
                 ) : authMode === 'login' ? (
-                  'Đăng nhập tài khoản'
+                  <span>Đăng nhập tài khoản</span>
                 ) : authMode === 'register' ? (
-                  'Hoàn tất tạo tài khoản'
+                  <span>Đăng ký tài khoản</span>
                 ) : forgotStep === 'request' ? (
-                  'Gửi mã xác thực OTP'
-                ) : forgotStep === 'otp' ? (
-                  'Tiếp tục đặt mật khẩu'
-                ) : forgotStep === 'reset' ? (
-                  'Lưu mật khẩu mới'
+                  <span>Gửi mã OTP xác thực</span>
                 ) : (
-                  'Quay lại đăng nhập'
+                  <span>Cấp mật khẩu mới</span>
                 )}
               </button>
 
@@ -502,6 +589,7 @@ export default function AuthModal() {
                       setAuthMode('login');
                       setForgotStep('request');
                       setError('');
+                      setSuccessMsg('');
                     }}
                     className="inline-flex items-center gap-1 text-xs font-bold text-pink-600 hover:underline cursor-pointer"
                   >
@@ -511,7 +599,7 @@ export default function AuthModal() {
                 </div>
               )}
 
-              {/* SSO Social Logins */}
+              {/* SSO Fast Social Logins (Google, Facebook) */}
               {authMode !== 'forgot' && (
                 <>
                   <div className="relative my-4">
@@ -526,22 +614,31 @@ export default function AuthModal() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
+                    {/* Google Button */}
                     <button
                       type="button"
                       onClick={() => handleSocialQuickLogin('Google')}
-                      className="py-2.5 px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/30 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                      className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
-                      <span className="font-black text-rose-500 text-sm">G</span>
+                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                      </svg>
                       <span>Google</span>
                     </button>
 
+                    {/* Facebook Button */}
                     <button
                       type="button"
-                      onClick={() => handleSocialQuickLogin('GitHub')}
-                      className="py-2.5 px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/30 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                      onClick={() => handleSocialQuickLogin('Facebook')}
+                      className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
-                      <span className="font-black text-slate-900 text-sm">Git</span>
-                      <span>GitHub</span>
+                      <svg className="w-4 h-4 shrink-0" fill="#1877F2" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                      </svg>
+                      <span>Facebook</span>
                     </button>
                   </div>
                 </>

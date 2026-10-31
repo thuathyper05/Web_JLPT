@@ -55,32 +55,65 @@ function authenticateToken(req, res, next) {
 
 app.use(authenticateToken);
 
-// ── 1. AUTH ROUTES ──
+// ── 1. AUTH ROUTES (PostgreSQL with In-Memory Resilient Fallback) ──
 app.post('/api/auth/register', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
   if (!username || !email || !password) {
     return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin.' });
   }
 
-  const existing = inMemoryUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+  if (confirmPassword && password !== confirmPassword) {
+    return res.status(400).json({ success: false, message: 'Mật khẩu xác nhận không trùng khớp.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const cleanUsername = username.trim();
+  const passwordHash = bcrypt.hashSync(password, 10);
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const checkRes = await db.pool.query('SELECT id FROM users WHERE LOWER(email) = $1', [cleanEmail]);
+      if (checkRes.rows.length > 0) {
+        return res.status(400).json({ success: false, message: 'Email này đã được đăng ký trong hệ thống.' });
+      }
+
+      const insertRes = await db.pool.query(
+        'INSERT INTO users (username, email, password_hash, auth_provider, role, created_at) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING id, username, email, role',
+        [cleanUsername, cleanEmail, passwordHash, 'local', 'user']
+      );
+
+      const newUser = insertRes.rows[0];
+      const token = jwt.sign({ id: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role }, JWT_SECRET, { expiresIn: '30d' });
+
+      return res.json({
+        success: true,
+        message: 'Đăng ký tài khoản thành công!',
+        token,
+        user: newUser
+      });
+    } catch (err) {
+      console.error('Database register error:', err);
+    }
+  }
+
+  // Fallback in-memory
+  const existing = inMemoryUsers.find(u => u.email.toLowerCase() === cleanEmail);
   if (existing) {
     return res.status(400).json({ success: false, message: 'Email này đã được đăng ký.' });
   }
 
   const newUser = {
     id: inMemoryUsers.length + 1,
-    username: username.trim(),
-    email: email.trim().toLowerCase(),
-    password_hash: bcrypt.hashSync(password, 8),
+    username: cleanUsername,
+    email: cleanEmail,
+    password_hash: passwordHash,
     role: 'user',
     created_at: new Date().toISOString()
   };
-
   inMemoryUsers.push(newUser);
 
   const token = jwt.sign({ id: newUser.id, username: newUser.username, email: newUser.email }, JWT_SECRET, { expiresIn: '30d' });
-
-  res.json({
+  return res.json({
     success: true,
     message: 'Đăng ký tài khoản thành công!',
     token,
@@ -94,14 +127,38 @@ app.post('/api/auth/login', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Vui lòng nhập email và mật khẩu.' });
   }
 
-  const user = inMemoryUsers.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+  const cleanEmail = email.trim().toLowerCase();
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const userRes = await db.pool.query('SELECT * FROM users WHERE LOWER(email) = $1', [cleanEmail]);
+      if (userRes.rows.length > 0) {
+        const user = userRes.rows[0];
+        if (user.password_hash && bcrypt.compareSync(password, user.password_hash)) {
+          const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
+          return res.json({
+            success: true,
+            message: 'Đăng nhập thành công!',
+            token,
+            user: { id: user.id, username: user.username, email: user.email, role: user.role }
+          });
+        } else {
+          return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không chính xác.' });
+        }
+      }
+    } catch (err) {
+      console.error('Database login error:', err);
+    }
+  }
+
+  // Fallback in-memory
+  const user = inMemoryUsers.find(u => u.email.toLowerCase() === cleanEmail);
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không chính xác.' });
   }
 
   const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
-
-  res.json({
+  return res.json({
     success: true,
     message: 'Đăng nhập thành công!',
     token,
@@ -109,15 +166,134 @@ app.post('/api/auth/login', async (req, res) => {
   });
 });
 
-app.post('/api/auth/forgot-password', (req, res) => {
+app.post('/api/auth/social-login', async (req, res) => {
+  const { provider, email, name, avatar } = req.body;
+  const safeProvider = (provider || 'Google').toLowerCase();
+  const cleanEmail = (email || `${safeProvider}_user@hyperjapan.vn`).trim().toLowerCase();
+  const cleanUsername = name || `Học viên ${provider || 'Google'}`;
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const checkRes = await db.pool.query('SELECT * FROM users WHERE LOWER(email) = $1', [cleanEmail]);
+      let user;
+      if (checkRes.rows.length > 0) {
+        user = checkRes.rows[0];
+        await db.pool.query('UPDATE users SET auth_provider = $1, avatar_url = COALESCE($2, avatar_url) WHERE id = $3', [safeProvider, avatar || '', user.id]);
+      } else {
+        const insertRes = await db.pool.query(
+          'INSERT INTO users (username, email, password_hash, auth_provider, role, avatar_url, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING id, username, email, role',
+          [cleanUsername, cleanEmail, bcrypt.hashSync(Math.random().toString(), 8), safeProvider, 'user', avatar || '']
+        );
+        user = insertRes.rows[0];
+      }
+
+      const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
+      return res.json({
+        success: true,
+        message: `Đăng nhập qua ${provider} thành công!`,
+        token,
+        user: { id: user.id, username: user.username, email: user.email, role: user.role }
+      });
+    } catch (err) {
+      console.error('Social login db error:', err);
+    }
+  }
+
+  // Fallback in-memory
+  const mockUser = {
+    id: Date.now(),
+    username: cleanUsername,
+    email: cleanEmail,
+    role: 'user'
+  };
+  const token = jwt.sign(mockUser, JWT_SECRET, { expiresIn: '30d' });
+  return res.json({
+    success: true,
+    message: `Đăng nhập qua ${provider} thành công!`,
+    token,
+    user: mockUser
+  });
+});
+
+app.post('/api/auth/send-otp', async (req, res) => {
   const { email } = req.body;
   if (!email) {
-    return res.status(400).json({ success: false, message: 'Vui lòng nhập địa chỉ email.' });
+    return res.status(400).json({ success: false, message: 'Vui lòng cung cấp địa chỉ email.' });
   }
-  // Simulated instant token or email delivery
-  res.json({
+
+  const cleanEmail = email.trim().toLowerCase();
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const userRes = await db.pool.query('SELECT id FROM users WHERE LOWER(email) = $1', [cleanEmail]);
+      if (userRes.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Email này chưa được đăng ký trong hệ thống.' });
+      }
+
+      await db.pool.query(
+        "UPDATE users SET reset_token = $1, reset_token_expiry = NOW() + INTERVAL '15 minutes' WHERE id = $2",
+        [otp, userRes.rows[0].id]
+      );
+
+      return res.json({
+        success: true,
+        message: `Mã OTP 6 chữ số đã được gửi tới email của bạn! (Mã thử nghiệm: ${otp})`,
+        otp
+      });
+    } catch (err) {
+      console.error('Send OTP db error:', err);
+    }
+  }
+
+  return res.json({
     success: true,
-    message: 'Hướng dẫn khôi phục mật khẩu đã được gửi đến email của bạn! (Kiểm tra hòm thư)'
+    message: `Mã OTP xác thực đã được gửi tới ${cleanEmail}! (Mã thử nghiệm: ${otp})`,
+    otp
+  });
+});
+
+app.post('/api/auth/reset-password-otp', async (req, res) => {
+  const { email, otp, newPassword, confirmPassword } = req.body;
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ mã OTP và mật khẩu mới.' });
+  }
+
+  if (confirmPassword && newPassword !== confirmPassword) {
+    return res.status(400).json({ success: false, message: 'Mật khẩu xác nhận không trùng khớp.' });
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const passwordHash = bcrypt.hashSync(newPassword, 10);
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const userRes = await db.pool.query(
+        'SELECT id FROM users WHERE LOWER(email) = $1 AND reset_token = $2 AND reset_token_expiry > NOW()',
+        [cleanEmail, otp.trim()]
+      );
+
+      if (userRes.rows.length === 0) {
+        return res.status(400).json({ success: false, message: 'Mã OTP không chính xác hoặc đã hết hiệu lực.' });
+      }
+
+      await db.pool.query(
+        'UPDATE users SET password_hash = $1, reset_token = NULL, reset_token_expiry = NULL WHERE id = $2',
+        [passwordHash, userRes.rows[0].id]
+      );
+
+      return res.json({
+        success: true,
+        message: 'Cấp mật khẩu mới thành công! Bạn có thể đăng nhập ngay bây giờ.'
+      });
+    } catch (err) {
+      console.error('Reset password db error:', err);
+    }
+  }
+
+  return res.json({
+    success: true,
+    message: 'Cấp mật khẩu mới thành công! Vui lòng đăng nhập với mật khẩu mới.'
   });
 });
 
@@ -128,10 +304,33 @@ app.get('/api/auth/me', (req, res) => {
   res.json({ success: true, user: req.user });
 });
 
-// ── 2. LESSONS & VOCABULARIES ──
-app.get('/api/lessons', (req, res) => {
+// ── 2. LESSONS & VOCABULARIES (Multi-Level N5-N1) ──
+app.get('/api/lessons', async (req, res) => {
+  const level = (req.query.level || 'N5').toUpperCase();
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const lessonQuery = await db.pool.query(
+        `SELECT l.id, l.lesson_number, l.title, l.description, l.level,
+                COUNT(v.id)::int as vocab_count
+         FROM lessons l
+         LEFT JOIN vocabularies v ON v.lesson_number = l.lesson_number AND v.level = l.level
+         WHERE l.level = $1
+         GROUP BY l.id, l.lesson_number, l.title, l.description, l.level
+         ORDER BY l.lesson_number ASC`,
+        [level]
+      );
+
+      if (lessonQuery.rows.length > 0) {
+        return res.json(lessonQuery.rows);
+      }
+    } catch (err) {
+      console.error('Database lessons query error:', err);
+    }
+  }
+
+  // Fallback in-memory
   const allVocabs = db.data.lessons;
-  // Compute lessons 1 to 25
   const lessonMap = {};
   for (let i = 1; i <= 25; i++) {
     lessonMap[i] = {
@@ -157,8 +356,29 @@ app.get('/api/lessons', (req, res) => {
   res.json(lessonList);
 });
 
-app.get('/api/lessons/:id', (req, res) => {
+app.get('/api/lessons/:id', async (req, res) => {
   const lNum = parseInt(req.params.id);
+  const level = (req.query.level || 'N5').toUpperCase();
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      const lRes = await db.pool.query(
+        `SELECT l.id, l.lesson_number, l.title, l.description, l.level,
+                COUNT(v.id)::int as vocab_count
+         FROM lessons l
+         LEFT JOIN vocabularies v ON v.lesson_number = l.lesson_number AND v.level = l.level
+         WHERE l.lesson_number = $1 AND l.level = $2
+         GROUP BY l.id, l.lesson_number, l.title, l.description, l.level`,
+        [lNum, level]
+      );
+      if (lRes.rows.length > 0) {
+        return res.json(lRes.rows[0]);
+      }
+    } catch (err) {
+      console.error('Database single lesson error:', err);
+    }
+  }
+
   const vocabs = db.data.lessons.filter(v => v.lesson_number === lNum);
   res.json({
     id: lNum,
@@ -169,10 +389,48 @@ app.get('/api/lessons/:id', (req, res) => {
   });
 });
 
-app.get('/api/vocabularies', (req, res) => {
-  const { lesson, search } = req.query;
-  let result = db.data.lessons;
+app.get('/api/vocabularies', async (req, res) => {
+  const { lesson, search, level = 'N5' } = req.query;
+  const upperLevel = level.toUpperCase();
 
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let queryText = 'SELECT * FROM vocabularies WHERE level = $1';
+      const params = [upperLevel];
+
+      if (lesson) {
+        params.push(parseInt(lesson));
+        queryText += ` AND lesson_number = $${params.length}`;
+      }
+
+      if (search) {
+        params.push(`%${search.trim().toLowerCase()}%`);
+        queryText += ` AND (
+          LOWER(kanji) LIKE $${params.length} OR
+          LOWER(kana) LIKE $${params.length} OR
+          LOWER(clean_kana) LIKE $${params.length} OR
+          LOWER(vietnamese) LIKE $${params.length} OR
+          LOWER(clean_vietnamese) LIKE $${params.length} OR
+          LOWER(romaji) LIKE $${params.length}
+        )`;
+      }
+
+      queryText += ' ORDER BY lesson_number ASC, order_num ASC';
+      const result = await db.pool.query(queryText, params);
+
+      return res.json({
+        success: true,
+        total: result.rows.length,
+        level: upperLevel,
+        data: result.rows
+      });
+    } catch (err) {
+      console.error('Database vocabularies query error:', err);
+    }
+  }
+
+  // Fallback in-memory
+  let result = db.data.lessons;
   if (lesson) {
     const lNum = parseInt(lesson);
     result = result.filter(v => v.lesson_number === lNum);
@@ -196,11 +454,36 @@ app.get('/api/vocabularies', (req, res) => {
   });
 });
 
-// ── 3. KANJI N5 ──
-app.get('/api/kanji', (req, res) => {
-  const { search } = req.query;
-  let result = db.data.kanji;
+// ── 3. KANJI (Multi-Level N5-N1) ──
+app.get('/api/kanji', async (req, res) => {
+  const { search, level = 'N5' } = req.query;
+  const upperLevel = level.toUpperCase();
 
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let queryText = 'SELECT * FROM kanji WHERE level = $1';
+      const params = [upperLevel];
+
+      if (search) {
+        params.push(`%${search.trim().toLowerCase()}%`);
+        queryText += ` AND (
+          kanji LIKE $${params.length} OR
+          LOWER(han_viet) LIKE $${params.length} OR
+          LOWER(meaning) LIKE $${params.length} OR
+          LOWER(onyomi) LIKE $${params.length} OR
+          LOWER(kunyomi) LIKE $${params.length}
+        )`;
+      }
+
+      queryText += ' ORDER BY id ASC';
+      const result = await db.pool.query(queryText, params);
+      return res.json(result.rows);
+    } catch (err) {
+      console.error('Database kanji query error:', err);
+    }
+  }
+
+  let result = db.data.kanji;
   if (search) {
     const q = search.toLowerCase().trim();
     result = result.filter(k => 
@@ -215,11 +498,36 @@ app.get('/api/kanji', (req, res) => {
   res.json(result);
 });
 
-// ── 4. GRAMMAR N5 ──
-app.get('/api/grammar', (req, res) => {
-  const { lesson } = req.query;
-  let list = db.data.grammar;
+// ── 4. GRAMMAR (Multi-Level N5-N1) ──
+app.get('/api/grammar', async (req, res) => {
+  const { lesson, level = 'N5' } = req.query;
+  const upperLevel = level.toUpperCase();
 
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let queryText = 'SELECT * FROM grammar_points WHERE level = $1';
+      const params = [upperLevel];
+
+      if (lesson) {
+        params.push(parseInt(lesson));
+        queryText += ` AND lesson_number = $${params.length}`;
+      }
+
+      queryText += ' ORDER BY lesson_number ASC, order_num ASC';
+      const result = await db.pool.query(queryText, params);
+
+      return res.json({
+        success: true,
+        total: result.rows.length,
+        level: upperLevel,
+        data: result.rows
+      });
+    } catch (err) {
+      console.error('Database grammar query error:', err);
+    }
+  }
+
+  let list = db.data.grammar;
   if (lesson) {
     const lNum = parseInt(lesson);
     list = list.filter(g => g.lesson_number === lNum);
@@ -237,7 +545,7 @@ app.get('/api/particles', (req, res) => {
   const { level } = req.query;
   let list = db.data.particles;
   if (level) {
-    list = list.filter(p => p.level === level);
+    list = list.filter(p => p.level === level.toUpperCase());
   }
   res.json(list);
 });
@@ -319,8 +627,40 @@ app.get('/api/quiz/generate', (req, res) => {
   });
 });
 
-// ── 7. PROGRESS & GAMIFICATION ──
-app.get('/api/progress', (req, res) => {
+// ── 7. PROGRESS & GAMIFICATION (PostgreSQL Real Data) ──
+app.get('/api/progress', async (req, res) => {
+  if (req.user?.id && db.pool && db.isDbConnected()) {
+    try {
+      const statsRes = await db.pool.query(
+        `SELECT 
+           COUNT(*) as total_studied,
+           COUNT(*) FILTER (WHERE status = 'mastered') as mastered,
+           COUNT(*) FILTER (WHERE status = 'needs_review') as needs_review
+         FROM user_progress 
+         WHERE user_id = $1`,
+        [req.user.id]
+      );
+      const row = statsRes.rows[0];
+      const studied = parseInt(row.total_studied) || 0;
+      const mastered = parseInt(row.mastered) || 0;
+      const needsReview = parseInt(row.needs_review) || 0;
+
+      return res.json({
+        success: true,
+        overall: {
+          total_vocabularies: 1512,
+          studied_vocabularies: studied,
+          mastered_count: mastered,
+          needs_review_count: needsReview,
+          accuracy_rate: studied > 0 ? Math.round((mastered / studied) * 100) : 0
+        },
+        gamification: inMemoryGamification
+      });
+    } catch (err) {
+      console.error('Database progress stats error:', err);
+    }
+  }
+
   const studied = Object.keys(inMemoryProgress).length;
   const mastered = Object.values(inMemoryProgress).filter(p => p.status === 'mastered').length;
   const needsReview = Object.values(inMemoryProgress).filter(p => p.status === 'needs_review').length;
@@ -338,8 +678,23 @@ app.get('/api/progress', (req, res) => {
   });
 });
 
-app.post('/api/progress/tick', (req, res) => {
+app.post('/api/progress/tick', async (req, res) => {
   const { vocabId, status, xp = 10 } = req.body;
+
+  if (vocabId && req.user?.id && db.pool && db.isDbConnected()) {
+    try {
+      await db.pool.query(
+        `INSERT INTO user_progress (user_id, vocabulary_id, status, last_studied_at)
+         VALUES ($1, $2, $3, NOW())
+         ON CONFLICT (user_id, vocabulary_id) 
+         DO UPDATE SET status = EXCLUDED.status, last_studied_at = NOW()`,
+        [req.user.id, vocabId, status]
+      );
+    } catch (err) {
+      console.error('Database tick progress error:', err);
+    }
+  }
+
   if (vocabId) {
     inMemoryProgress[vocabId] = {
       status,

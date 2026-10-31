@@ -42,13 +42,16 @@ export const speakJapanese = (text, rate = 0.9) => {
 export const authService = {
   login: (data) => api.post('/auth/login', data),
   register: (data) => api.post('/auth/register', data),
-  forgotPassword: (data) => api.post('/auth/forgot-password', data),
+  socialLogin: (data) => api.post('/auth/social-login', data),
+  sendOtp: (data) => api.post('/auth/send-otp', data),
+  resetPasswordOtp: (data) => api.post('/auth/reset-password-otp', data),
+  forgotPassword: (data) => api.post('/auth/send-otp', data),
   getMe: () => api.get('/auth/me'),
 };
 
 export const lessonService = {
-  getLessons: () => api.get('/lessons'),
-  getLesson: (id) => api.get(`/lessons/${id}`),
+  getLessons: (params) => api.get('/lessons', { params }),
+  getLesson: (id, params) => api.get(`/lessons/${id}`, { params }),
 };
 
 export const vocabService = {

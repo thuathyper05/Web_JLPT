@@ -188,16 +188,19 @@ export const AppProvider = ({ children }) => {
     }, 280);
   };
 
-  // Change JLPT Level
+  // Change JLPT Level (Seamlessly loads real PostgreSQL data for N5 to N1)
   const changeLevel = (level) => {
-    sounds.playFlip();
+    sounds.playLevelUp();
     setCurrentLevel(level);
-    if (level === 'N5') {
-      if (activeTab === 'level-coming-soon') {
-        navigateTo('home');
-      }
+    if (level === 'N4') {
+      setSelectedLesson(26);
     } else {
-      navigateTo('level-coming-soon');
+      setSelectedLesson(1);
+    }
+    if (activeTab === 'level-coming-soon') {
+      navigateTo('home');
+    } else {
+      navigateTo(activeTab);
     }
   };
 

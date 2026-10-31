@@ -23,7 +23,7 @@ export default function KanjiPage() {
     const fetchKanji = async () => {
       setLoading(true);
       try {
-        const res = await kanjiService.getKanji();
+        const res = await kanjiService.getKanji({ level: currentLevel || 'N5' });
         setKanjiList(res.data || []);
       } catch (err) {
         console.error('Fetch kanji error:', err);

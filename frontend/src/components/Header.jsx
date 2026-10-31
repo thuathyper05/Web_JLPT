@@ -118,18 +118,18 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
     { label: 'Từ vựng nghề nghiệp & xưng hô', query: 'ginkouin' }
   ];
 
-  // Pre-load vocabs for instant header search
+  // Pre-load vocabs for instant header search (Responsive to currentLevel)
   useEffect(() => {
     const loadVocabs = async () => {
       try {
-        const res = await vocabService.getVocabularies({});
+        const res = await vocabService.getVocabularies({ level: currentLevel || 'N5' });
         setAllVocabs(res.data?.data || []);
       } catch (err) {
         console.error('Header search prefetch error:', err);
       }
     };
     loadVocabs();
-  }, []);
+  }, [currentLevel]);
 
   // Filter search results in realtime
   useEffect(() => {

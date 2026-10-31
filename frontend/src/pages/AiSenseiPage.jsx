@@ -240,7 +240,7 @@ export default function AiSenseiPage() {
 
                   <div className="max-w-[80%] space-y-2">
                     <div
-                      className={`p-4 rounded-2xl text-xs leading-relaxed ${
+                      className={`p-4 rounded-2xl text-xs leading-relaxed whitespace-pre-line ${
                         m.sender === 'user'
                           ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white font-medium rounded-tr-none shadow-sm'
                           : 'bg-white border border-pink-100 text-slate-800 rounded-tl-none shadow-sm'

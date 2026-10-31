@@ -23,7 +23,7 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function GardenPage() {
-  const { guestProgress, setActiveTab, setSelectedLesson, askAi } = useApp();
+  const { currentLevel, guestProgress, setActiveTab, setSelectedLesson, askAi } = useApp();
 
   const [allWords, setAllWords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ export default function GardenPage() {
     const fetchVocabs = async () => {
       setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({});
+        const res = await vocabService.getVocabularies({ level: currentLevel || 'N5' });
         setAllWords(res.data?.data || []);
       } catch (err) {
         console.error('Garden fetch error:', err);
@@ -45,7 +45,7 @@ export default function GardenPage() {
       }
     };
     fetchVocabs();
-  }, []);
+  }, [currentLevel]);
 
   const totalWords = 1512;
   const masteredCount = Object.values(guestProgress).filter((p) => p.status === 'mastered').length;

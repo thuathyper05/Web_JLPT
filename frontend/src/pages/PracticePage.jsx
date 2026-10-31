@@ -26,7 +26,7 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function PracticePage() {
-  const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [lessonChoice, setLessonChoice] = useState(selectedLesson ? String(selectedLesson) : '1');
   const [viewType, setViewType] = useState('single'); // 'single' (từng từ) | 'sheet' (toàn bài)
@@ -51,7 +51,9 @@ export default function PracticePage() {
     const fetchWords = async () => {
       setLoading(true);
       try {
-        const params = lessonChoice === 'all' ? {} : { lesson: parseInt(lessonChoice) };
+        const params = lessonChoice === 'all' 
+          ? { level: currentLevel || 'N5' } 
+          : { lesson: parseInt(lessonChoice), level: currentLevel || 'N5' };
         const res = await vocabService.getVocabularies(params);
         let list = res.data?.data || [];
         setWords(list);
@@ -68,7 +70,7 @@ export default function PracticePage() {
       }
     };
     fetchWords();
-  }, [lessonChoice]);
+  }, [lessonChoice, currentLevel]);
 
   const currentWord = words[currentIndex];
 

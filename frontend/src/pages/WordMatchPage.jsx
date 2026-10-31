@@ -21,7 +21,7 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function WordMatchPage() {
-  const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [lessonFilter, setLessonFilter] = useState(selectedLesson ? String(selectedLesson) : '1');
   const [gameMode, setGameMode] = useState('speed_60s'); // 'speed_60s' | 'survival' | 'zen'
@@ -83,7 +83,9 @@ export default function WordMatchPage() {
   const startGame = async () => {
     sounds.playFlip();
     try {
-      const params = lessonFilter === 'all' ? {} : { lesson: parseInt(lessonFilter) };
+      const params = lessonFilter === 'all' 
+        ? { level: currentLevel || 'N5' } 
+        : { lesson: parseInt(lessonFilter), level: currentLevel || 'N5' };
       const res = await vocabService.getVocabularies(params);
       const allWords = res.data?.data || [];
       if (allWords.length < 6) return;

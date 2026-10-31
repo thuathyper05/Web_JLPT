@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // Load fallback JSON datasets
 const lessonsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/n5_full_lessons.json'), 'utf8'));

@@ -20,6 +20,7 @@ import {
 
 export default function NotebookPage() {
   const {
+    currentLevel,
     guestProgress,
     favorites,
     toggleFavorite,
@@ -40,7 +41,7 @@ export default function NotebookPage() {
     const fetchAll = async () => {
       setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({});
+        const res = await vocabService.getVocabularies({ level: currentLevel || 'N5' });
         setAllWords(res.data?.data || []);
       } catch (err) {
         console.error('Fetch vocab error:', err);
@@ -49,7 +50,7 @@ export default function NotebookPage() {
       }
     };
     fetchAll();
-  }, []);
+  }, [currentLevel]);
 
   // Compute lists
   const reviewWords = allWords.filter((w) => guestProgress[w.id]?.status === 'needs_review');

@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function DictionaryPage() {
-  const { favorites, toggleFavorite, askAi, setSelectedLesson, setActiveTab } = useApp();
+  const { currentLevel, favorites, toggleFavorite, askAi, setSelectedLesson, setActiveTab } = useApp();
 
   const [allWords, setAllWords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ export default function DictionaryPage() {
     const fetchVocabs = async () => {
       setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({});
+        const res = await vocabService.getVocabularies({ level: currentLevel || 'N5' });
         setAllWords(res.data?.data || []);
       } catch (err) {
         console.error('Fetch vocab error:', err);
@@ -51,7 +51,7 @@ export default function DictionaryPage() {
       }
     };
     fetchVocabs();
-  }, []);
+  }, [currentLevel]);
 
   const handleSelectAiTopic = (topic) => {
     sounds.playFlip();

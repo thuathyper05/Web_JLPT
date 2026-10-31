@@ -17,6 +17,41 @@ const PRIMARY_MODEL = 'gemini-3.5-flash-lite';
 const FALLBACK_MODEL = 'gemini-3.8-flash';
 
 /**
+ * Sanitizes and formats AI output:
+ * - Strips all markdown asterisks (*, **, ***)
+ * - Converts any arrows to words ("sang")
+ * - Removes bullet symbols
+ * - Enforces clean paragraph and example breaks
+ */
+function sanitizeAiText(raw) {
+  if (!raw || typeof raw !== 'string') return '';
+  let cleaned = raw;
+
+  // Remove markdown headers
+  cleaned = cleaned.replace(/^#{1,6}\s+/gm, '');
+
+  // Strip excessive asterisks (***bold italic***, **bold**, *italic*)
+  cleaned = cleaned.replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1');
+  cleaned = cleaned.replace(/\*/g, '');
+
+  // Replace arrow symbols with Vietnamese transition words
+  cleaned = cleaned.replace(new RegExp('->|\\u2192|\\u2794', 'g'), ' sang ');
+
+  // Remove bullet dots
+  cleaned = cleaned.replace(/[•●▪]/g, '-');
+
+  // Format Japanese example line breaks if needed
+  cleaned = cleaned.replace(/Câu tiếng Nhật:\s*/gi, '\nCâu tiếng Nhật: ');
+  cleaned = cleaned.replace(/Cách đọc:\s*/gi, '\nCách đọc: ');
+  cleaned = cleaned.replace(/Dịch nghĩa:\s*/gi, '\nDịch nghĩa: ');
+
+  // Clean excessive blank lines
+  cleaned = cleaned.replace(/\n{3,}/g, '\n\n').trim();
+
+  return cleaned;
+}
+
+/**
  * Calls Gemini REST API
  */
 function callGemini(promptText, modelName = PRIMARY_MODEL) {
@@ -32,7 +67,7 @@ function callGemini(promptText, modelName = PRIMARY_MODEL) {
         }
       ],
       generationConfig: {
-        temperature: 0.6,
+        temperature: 0.5,
         maxOutputTokens: 1024
       }
     });
@@ -57,7 +92,7 @@ function callGemini(promptText, modelName = PRIMARY_MODEL) {
           if (res.statusCode >= 200 && res.statusCode < 300) {
             const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
             if (text) {
-              return resolve({ text: text.trim(), modelUsed: modelName });
+              return resolve({ text: sanitizeAiText(text), modelUsed: modelName });
             }
           }
 
@@ -102,12 +137,16 @@ async function generateAiResponse({ action, prompt, context, userProgress, usern
   const normalizedAction = action || 'chat';
 
   // Base Teacher Persona Instruction
-  const baseInstruction = `Bạn là AI Sensei - giáo viên tiếng Nhật thông minh, ân cần của hệ thống HYPER Japanese.
-Quy tắc trả lời:
-- Tự phân tích nội dung thực tế một cách sư phạm, chuẩn mực theo tiếng Nhật Tokyo.
-- Đi thẳng vào trọng tâm, giải thích đủ ý, súc tích, dễ hiểu cho người học N5, tuyệt đối không dài dòng dư thừa.
-- Tuyệt đối không dùng ký tự mũi tên trong câu trả lời.
-- Sử dụng gạch đầu dòng rõ ràng để người học dễ tiếp thu.`;
+  const baseInstruction = `Bạn là AI Sensei - chuyên gia sư phạm tiếng Nhật hàng đầu của hệ thống HYPER Japanese.
+QUY TẮC TRẢ LỜI BẮT BUỘC:
+1. ĐÚNG CHUẨN XÁC: Kiến thức ngữ pháp, từ vựng, phát âm theo chuẩn Tokyo và giáo trình chuẩn JLPT.
+2. DỄ HIỂU & NGẮN GỌN: Đi thẳng vào trọng tâm, giải thích mạch lạc, súc tích, dễ hiểu cho người mới học. Mỗi ý tối đa 1-2 câu, tuyệt đối không viết văn hoa dài dòng dư thừa.
+3. TUYỆT ĐỐI KHÔNG DÙNG DẤU HOA THỊ (*) VÀ KHÔNG DÙNG DẤU MŨI TÊN. Dùng các con số 1, 2, 3 hoặc gạch ngang (-) cho các ý.
+4. KHI ĐƯA RA VÍ DỤ BẮT BUỘC TRÌNH BÀY XUỐNG DÒNG RIÊNG BIỆT:
+   Câu tiếng Nhật: [Câu Kanji và Kana]
+   Cách đọc: [Romaji hoặc Hiragana]
+   Dịch nghĩa: [Tiếng Việt]
+5. KHÔNG VIẾT KHỐI VĂN NÉN: Tách các ý bằng dòng trắng rõ ràng để người học dễ đọc.`;
 
   let userPrompt = '';
 
@@ -126,7 +165,7 @@ Nhiệm vụ: Bạn hãy phân tích dữ liệu học tập thực tế của h
 - Danh sách từ vựng đang bị sai hoặc cần ôn lại: ${reviewWords.length > 0 ? reviewWords.slice(0, 8).join(', ') : 'Chưa có từ nào bị đánh dấu sai'}.
 
 Hãy tự phân tích và phản hồi ngắn gọn:
-1. Nhận xét chân thực về phong độ phản xạ hiện tại.
+1. Nhận xét chân thực về phong độ phản xạ hiện tại (1-2 câu).
 2. Lời khuyên cụ thể để khắc phục các từ hay quên ở trên.
 3. Bài tập phản xạ 10 phút phù hợp cho hôm nay.`;
   } else if (normalizedAction === 'explain_vocab') {
@@ -136,9 +175,9 @@ Hãy tự phân tích và phản hồi ngắn gọn:
 
     userPrompt = `${baseInstruction}
 Nhiệm vụ: Phân tích từ vựng 「${word}」 (Đọc là: ${kana}, nghĩa: ${meaning}):
-1. Ý nghĩa cốt lõi và sắc thái giao tiếp thực tế của người Nhật.
-2. Mẹo ghi nhớ độc đáo (tượng hình Hán tự hoặc liên tưởng âm).
-3. 1 câu ví dụ giao tiếp thực tế kèm dịch nghĩa tiếng Việt.`;
+1. Ý nghĩa cốt lõi và sắc thái giao tiếp chuẩn của người Nhật (1 câu).
+2. Mẹo ghi nhớ siêu tốc (tượng hình Hán tự hoặc liên tưởng âm).
+3. 1 câu ví dụ thực tế (trình bày xuống dòng đúng 3 dòng: Câu tiếng Nhật, Cách đọc, Dịch nghĩa).`;
   } else if (normalizedAction === 'explain_kanji') {
     const kanji = context?.kanji || prompt;
     const hanViet = context?.han_viet || '';
@@ -147,30 +186,30 @@ Nhiệm vụ: Phân tích từ vựng 「${word}」 (Đọc là: ${kana}, nghĩa
     userPrompt = `${baseInstruction}
 Nhiệm vụ: Phân tích Hán tự 「${kanji}」 (Âm Hán Việt: ${hanViet}, Nghĩa: ${meaning}):
 1. Câu chuyện hình ảnh tượng hình giúp nhớ mặt chữ ngay lập tức.
-2. Âm On và Kun thông dụng kèm 1 từ vựng ghép phổ biến nhất.
-3. Lưu ý tránh viết sai hoặc nhầm nét.`;
+2. Âm On và Kun thông dụng kèm 1 từ ghép thông dụng nhất.
+3. 1 câu ví dụ thực tế (trình bày xuống dòng đúng 3 dòng: Câu tiếng Nhật, Cách đọc, Dịch nghĩa).`;
   } else if (normalizedAction === 'explain_particle') {
     const particle = context?.particle || prompt;
     const title = context?.title || `Trợ từ 「${particle}」`;
 
     userPrompt = `${baseInstruction}
 Nhiệm vụ: Phân tích bản chất trợ từ ${title}:
-1. Công dụng chính và điểm mấu chốt để không dùng sai.
-2. Bẫy nhầm lẫn điển hình trong bài thi JLPT.
-3. 2 ví dụ tương phản thực tế minh họa cách dùng.`;
+1. Công dụng chính và điểm mấu chốt để không dùng sai (1-2 câu).
+2. Bẫy nhầm lẫn điển hình trong đề thi JLPT.
+3. 2 câu ví dụ ngắn (mỗi ví dụ trình bày xuống dòng đúng 3 dòng: Câu tiếng Nhật, Cách đọc, Dịch nghĩa).`;
   } else if (normalizedAction === 'explain_quiz' || normalizedAction === 'explain_listening') {
     const question = context?.question || prompt;
     const correctAnswer = context?.correct_answer || context?.correctAnswer || '';
     const dialogue = context?.audioText || context?.dialogue || '';
 
     userPrompt = `${baseInstruction}
-Nhiệm vụ: Phân tích câu hỏi:
+Nhiệm vụ: Phân tích câu hỏi kiểm tra:
 Câu hỏi: "${question}"
 Đáp án đúng: "${correctAnswer}"
 ${dialogue ? `Nội dung hội thoại: "${dialogue}"` : ''}
 
 Hãy giải thích:
-1. Tại sao đáp án trên là đáp án chính xác.
+1. Tại sao đáp án trên là đáp án chính xác (giải thích ngắn gọn).
 2. Từ khóa mấu chốt (Keyword) trong bài nghe hoặc câu hỏi giúp chọn nhanh trong 5 giây.
 3. Bẫy thường gặp của câu này để tránh mất điểm.`;
   } else if (normalizedAction === 'summarize_article') {
@@ -184,36 +223,38 @@ Nội dung: "${content}"
 
 Hãy trình bày súc tích:
 1. 3 điểm mấu chốt quan trọng nhất người đọc cần ghi nhớ.
-2. Trích xuất 4-5 từ vựng hoặc thuật ngữ tiếng Nhật tiêu biểu liên quan (kèm Kanji, Furigana, và nghĩa tiếng Việt).
+2. Trích xuất 4 từ vựng tiếng Nhật tiêu biểu liên quan (kèm Kanji, Furigana, và nghĩa tiếng Việt).
 3. Lời khuyên định hướng của Sensei dành cho người học tiếng Nhật.`;
   } else {
     // General chat
     userPrompt = `${baseInstruction}
 Học viên hỏi: "${prompt}"
-Hãy tự suy nghĩ và giải đáp cụ thể, thân thiện, súc tích, mang lại giá trị học tập thực chất.`;
+Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản chất, trình bày ví dụ xuống dòng rõ ràng nếu có.`;
   }
 
   try {
     const { text: rawAiText, modelUsed } = await callGemini(userPrompt);
+    const sanitizedText = sanitizeAiText(rawAiText);
 
     return {
       success: true,
       data: {
         title: `AI Sensei: ${context?.word || context?.kanji || context?.title || 'Phân Tích Chuyên Sâu'}`,
-        explanation: rawAiText,
-        nuance: rawAiText,
+        explanation: sanitizedText,
+        nuance: sanitizedText,
         aiGenerated: true,
         model: modelUsed
       }
     };
   } catch (error) {
     console.error('Gemini API call failed:', error.message);
+    const wordKey = context?.kanji || context?.word || prompt;
     return {
       success: true,
       data: {
-        title: `AI Sensei: ${context?.word || 'Hỗ Trợ Học Tập'}`,
-        explanation: `AI Sensei phân tích: Khi học 「${context?.kanji || context?.word || prompt}」, điều quan trọng nhất là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào một ngữ cảnh giao tiếp thực tế mỗi ngày.`,
-        nuance: `Từ vựng được sử dụng phổ biến trong kỳ thi JLPT N5.`,
+        title: `AI Sensei: ${wordKey || 'Hỗ Trợ Học Tập'}`,
+        explanation: `AI Sensei hướng dẫn:\nKhi học từ vựng 「${wordKey}」, bí quyết ghi nhớ bền vững là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào câu hoàn chỉnh mỗi ngày.\n\nCâu tiếng Nhật: 「${wordKey}」を毎日使います。\nCách đọc: Mainichi tsukaimasu.\nDịch nghĩa: Tôi sử dụng hàng ngày.`,
+        nuance: `Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.`,
         aiGenerated: false,
         error: error.message
       }
@@ -222,5 +263,6 @@ Hãy tự suy nghĩ và giải đáp cụ thể, thân thiện, súc tích, mang
 }
 
 module.exports = {
-  generateAiResponse
+  generateAiResponse,
+  sanitizeAiText
 };

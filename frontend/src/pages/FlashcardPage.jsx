@@ -19,7 +19,7 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function FlashcardPage() {
-  const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,7 +35,7 @@ export default function FlashcardPage() {
     const fetchCards = async () => {
       setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({ lesson: selectedLesson });
+        const res = await vocabService.getVocabularies({ lesson: selectedLesson, level: currentLevel || 'N5' });
         const list = res.data?.data || [];
         setCards(list);
         setCurrentIndex(0);
@@ -50,7 +50,7 @@ export default function FlashcardPage() {
       }
     };
     fetchCards();
-  }, [selectedLesson]);
+  }, [selectedLesson, currentLevel]);
 
   const currentCard = cards[currentIndex];
 

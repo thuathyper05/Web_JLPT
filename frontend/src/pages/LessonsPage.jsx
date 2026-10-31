@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function LessonsPage() {
-  const { selectedLesson, setSelectedLesson, setActiveTab, guestProgress, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, setActiveTab, guestProgress, recordWordProgress, askAi } = useApp();
 
   const [lessonInfo, setLessonInfo] = useState(null);
   const [vocabularies, setVocabularies] = useState([]);
@@ -35,8 +35,8 @@ export default function LessonsPage() {
       setLoading(true);
       try {
         const [lRes, vRes] = await Promise.all([
-          lessonService.getLesson(selectedLesson),
-          vocabService.getVocabularies({ lesson: selectedLesson })
+          lessonService.getLesson(selectedLesson, { level: currentLevel || 'N5' }),
+          vocabService.getVocabularies({ lesson: selectedLesson, level: currentLevel || 'N5' })
         ]);
         setLessonInfo(lRes.data);
         setVocabularies(vRes.data?.data || []);
@@ -49,7 +49,7 @@ export default function LessonsPage() {
     };
 
     fetchData();
-  }, [selectedLesson]);
+  }, [selectedLesson, currentLevel]);
 
   const currentWord = vocabularies[currentIndex];
 

@@ -188,7 +188,7 @@ export default function AiExplainModal() {
                     <BookOpen size={15} />
                     <span>Bản chất ngữ nghĩa & Ngữ cảnh chuẩn Nhật</span>
                   </div>
-                  <p className="text-xs text-slate-700 leading-relaxed mb-0">
+                  <p className="text-xs text-slate-700 leading-relaxed mb-0 whitespace-pre-line">
                     {data.nuance || data.core_concept || data.why_correct}
                   </p>
                 </div>
@@ -201,7 +201,7 @@ export default function AiExplainModal() {
                     <Lightbulb size={15} className="text-amber-600" />
                     <span>Mẹo nhớ tượng hình siêu tốc (Mnemonic)</span>
                   </div>
-                  <p className="text-xs text-amber-900 leading-relaxed mb-0">
+                  <p className="text-xs text-amber-900 leading-relaxed mb-0 whitespace-pre-line">
                     {data.mnemonic || data.mnemonic_story || data.radical_breakdown}
                   </p>
                 </div>
@@ -214,7 +214,7 @@ export default function AiExplainModal() {
                     <AlertTriangle size={15} className="text-rose-600" />
                     <span>Lưu ý bẫy đề thi & Lỗi người Việt hay gặp</span>
                   </div>
-                  <p className="text-xs text-rose-900 leading-relaxed mb-0">
+                  <p className="text-xs text-rose-900 leading-relaxed mb-0 whitespace-pre-line">
                     {data.common_traps || data.common_mistake || data.elimination_tip}
                   </p>
                 </div>
@@ -244,8 +244,9 @@ export default function AiExplainModal() {
                   <div className="text-xs text-slate-600">{data.example.vi}</div>
 
                   {data.example.tip && (
-                    <div className="text-[11px] text-pink-600 font-semibold bg-pink-50/60 p-2 rounded-xl">
-                      💡 {data.example.tip}
+                    <div className="text-[11px] text-pink-600 font-semibold bg-pink-50/60 p-2 rounded-xl flex items-center gap-1.5">
+                      <Sparkles size={12} className="shrink-0" />
+                      <span>Gợi ý: {data.example.tip}</span>
                     </div>
                   )}
                 </div>
@@ -279,7 +280,7 @@ export default function AiExplainModal() {
                       className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`p-3 rounded-2xl text-xs max-w-[85%] leading-relaxed ${
+                        className={`p-3 rounded-2xl text-xs max-w-[85%] leading-relaxed whitespace-pre-line ${
                           msg.role === 'user'
                             ? 'bg-pink-600 text-white font-medium rounded-br-sm'
                             : 'bg-slate-100 text-slate-800 font-normal rounded-bl-sm border border-slate-200'
