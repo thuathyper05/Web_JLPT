@@ -19,7 +19,8 @@
         "romaji": "Kyou wa ocha o nomimasu ga, koohii wa nomimasen.",
         "vi": "Hôm nay tôi uống trà nhưng cà phê thì không uống."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "が",
@@ -41,7 +42,8 @@
         "romaji": "Watashi wa nihon ryouri ga suki desu.",
         "vi": "Tôi thích món ăn Nhật Bản."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "を",
@@ -63,7 +65,8 @@
         "romaji": "Densha o orimasu.",
         "vi": "Bước xuống tàu điện."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "に",
@@ -85,7 +88,8 @@
         "romaji": "Tsukue no ue ni hon ga arimasu.",
         "vi": "Trên bàn có quyển sách."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "で",
@@ -107,7 +111,8 @@
         "romaji": "Basu de kaisha e ikimasu.",
         "vi": "Đi đến công ty bằng xe buýt."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "へ",
@@ -124,7 +129,8 @@
         "romaji": "Raishuu nihon e ikimasu.",
         "vi": "Tuần sau tôi sẽ đi sang Nhật Bản."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "と",
@@ -146,7 +152,8 @@
         "romaji": "Tomodachi to eiga o mimasu.",
         "vi": "Xem phim cùng với bạn."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "も",
@@ -168,7 +175,8 @@
         "romaji": "Kinou doko mo ikimasendeshita.",
         "vi": "Hôm qua tôi chẳng đi đâu cả."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "から",
@@ -190,7 +198,8 @@
         "romaji": "Jikan ga arimasen kara, takushii de ikimasu.",
         "vi": "Vì không có thời gian nên tôi đi taxi."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "まで",
@@ -207,7 +216,8 @@
         "romaji": "Gogo go-ji made benkyou shimasu.",
         "vi": "Tôi học bài đến tận 5 giờ chiều."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "より",
@@ -224,7 +234,8 @@
         "romaji": "Shinkansen wa basu yori hayai desu.",
         "vi": "Tàu Shinkansen thì nhanh hơn xe buýt."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "の",
@@ -241,7 +252,8 @@
         "romaji": "Kore wa watashi no hon desu.",
         "vi": "Đây là cuốn sách của tôi."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "や",
@@ -258,7 +270,8 @@
         "romaji": "Tsukue no ue ni hon ya pen nado ga arimasu.",
         "vi": "Trên bàn có sách, bút,... v.v."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "など",
@@ -275,7 +288,8 @@
         "romaji": "Ringo ya mikan nado o kaimashita.",
         "vi": "Tôi đã mua táo, quýt,... vân vân."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "だけ",
@@ -292,7 +306,8 @@
         "romaji": "Yasumi wa nichiyoubi dake desu.",
         "vi": "Ngày nghỉ chỉ có duy nhất chủ nhật."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "しか",
@@ -309,7 +324,8 @@
         "romaji": "Saifu ni hyaku-en shika arimasen.",
         "vi": "Trong ví chỉ vỏn vẹn có 100 yên."
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "か",
@@ -326,7 +342,8 @@
         "romaji": "Kore wa ittai nan desu ka.",
         "vi": "Cái này rốt cuộc là cái gì vậy?"
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "ね",
@@ -343,7 +360,8 @@
         "romaji": "Kyou wa ii tenki desu ne.",
         "vi": "Hôm nay trời đẹp nhỉ!"
       }
-    ]
+    ],
+    "level": "N5"
   },
   {
     "particle": "よ",
@@ -359,6 +377,228 @@
         "jp": "あの映画は とても 面白いですよ。",
         "romaji": "Ano eiga wa totemo omoshiroi desu yo.",
         "vi": "Bộ phim kia hay lắm đấy nhé!"
+      }
+    ],
+    "level": "N5"
+  },
+  {
+    "particle": "のに",
+    "romaji": "noni",
+    "category": "conjunction",
+    "level": "N4",
+    "title": "Trợ từ Liên kết Đối lập Ngoài Dự Tính (\"Mặc dù... thế mà\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Dùng khi kết quả xảy ra trái ngược với kỳ vọng thông thường, thường mang sắc thái bất ngờ, tiếc nuối hoặc bất mãn.",
+    "formula": "Thể thông thường (Na-adj/Danh từ + な) + のに",
+    "notes": "Vế sau không dùng câu mệnh lệnh, nhờ vả hay ý chí.",
+    "examples": [
+      {
+        "jp": "薬を 飲んだのに、熱が 下がりません。",
+        "romaji": "Kusuri o nonda noni, netsu ga sagarimasen.",
+        "vi": "Mặc dù đã uống thuốc thế mà cơn sốt vẫn không hạ."
+      }
+    ]
+  },
+  {
+    "particle": "ので",
+    "romaji": "node",
+    "category": "cause",
+    "level": "N4",
+    "title": "Trợ từ Nguyên nhân Khách quan Lịch sự (\"Vì... nên\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Chỉ lý do, nguyên nhân mang tính khách quan, tự nhiên. Thường dùng khi xin phép, giải thích trang trọng hơn から.",
+    "formula": "Thể thông thường (Na-adj/Danh từ + な) + ので",
+    "notes": "Tạo cảm giác nhẹ nhàng, không áp đặt người nghe.",
+    "examples": [
+      {
+        "jp": "気分が 悪いので、早く 帰っても いいですか。",
+        "romaji": "Kibun ga warui node, hayaku kaette mo ii desu ka.",
+        "vi": "Vì trong người không khỏe, em xin phép về sớm được không ạ?"
+      }
+    ]
+  },
+  {
+    "particle": "ばかり",
+    "romaji": "bakari",
+    "category": "limitation",
+    "level": "N4",
+    "title": "Trợ từ Giới hạn & Vừa mới Xong (\"Toàn là... / Vừa mới\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "1. Danh từ + ばかり: Toàn làm việc gì đó lặp đi lặp lại. 2. V-ta + ばかり: Hành động vừa mới diễn ra trong nhận thức của người nói.",
+    "formula": "Danh từ + ばかり / V-た + ばかり",
+    "notes": "Phân biệt V-ta bakari (mới xảy ra theo cảm nhận cá nhân) và V-ta tokoro (vừa xong tích tắc).",
+    "examples": [
+      {
+        "jp": "ゲームばかり してはいけません。",
+        "romaji": "Geemu bakari shite wa ikemasen.",
+        "vi": "Không được suốt ngày chỉ toàn chơi game như vậy."
+      },
+      {
+        "jp": "日本に 来たばかりです。",
+        "romaji": "Nihon ni kita bakari desu.",
+        "vi": "Tôi vừa mới đến Nhật Bản thôi."
+      }
+    ]
+  },
+  {
+    "particle": "なら",
+    "romaji": "nara",
+    "category": "condition",
+    "level": "N4",
+    "title": "Trợ từ Điều kiện Giả định theo Ngữ cảnh (\"Nếu là...\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Tiếp nhận chủ đề từ đối phương đưa ra và đưa ra lời khuyên, đề xuất hoặc giới hạn trong phạm vi đó.",
+    "formula": "Danh từ / Thể thông thường + なら",
+    "notes": "Không cần thêm だ sau Danh từ hoặc Tính từ đuôi な.",
+    "examples": [
+      {
+        "jp": "日本料理なら、寿司が 一番 好きです。",
+        "romaji": "Nihon ryouri nara, sushi ga ichiban suki desu.",
+        "vi": "Nếu là món ăn Nhật Bản thì tôi thích sushi nhất."
+      }
+    ]
+  },
+  {
+    "particle": "ても",
+    "romaji": "temo",
+    "category": "condition",
+    "level": "N4",
+    "title": "Trợ từ Nhượng bộ Giả định (\"Dù cho... thì vẫn...\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Dù điều kiện ở vế trước có xảy ra thế nào, kết quả ở vế sau vẫn diễn ra hoặc không đổi.",
+    "formula": "V-ても / Tính từ い sang くても / Tính từ な/Danh từ + でも",
+    "notes": "Phân biệt với のに (đã xảy ra), ても dùng cho cả giả định tương lai.",
+    "examples": [
+      {
+        "jp": "雨が 降っても、サッカーを します。",
+        "romaji": "Ame ga futte mo, sakkaa o shimasu.",
+        "vi": "Dù trời có mưa thì chúng tôi vẫn sẽ đá bóng."
+      }
+    ]
+  },
+  {
+    "particle": "ように",
+    "romaji": "you ni",
+    "category": "purpose",
+    "level": "N4",
+    "title": "Trợ từ Mục đích Không Ý Chí (\"Để mà... / Cầu mong...\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Đi với động từ khả năng hoặc động từ vô ý chí (V-ru / V-nai) để chỉ mục đích đạt được trạng thái mong muốn.",
+    "formula": "V-る / V-ない + ように + Mệnh đề ý chí",
+    "notes": "Phân biệt với ために (đi với động từ có ý chí).",
+    "examples": [
+      {
+        "jp": "よく 聞こえるように、前の方に 座りました。",
+        "romaji": "Yoku kikoeru you ni, mae no hou ni suwarimashita.",
+        "vi": "Để có thể nghe rõ, tôi đã ngồi lên phía trước."
+      }
+    ]
+  },
+  {
+    "particle": "ために",
+    "romaji": "tame ni",
+    "category": "purpose",
+    "level": "N4",
+    "title": "Trợ từ Mục đích Có Ý Chí (\"Để... / Vì lợi ích...\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Đi với động từ có ý chí hoặc Danh từ + の để biểu thị mục tiêu chủ động hướng tới.",
+    "formula": "V-る / Danh từ + の + ために",
+    "notes": "Chủ ngữ hai vế phải đồng nhất khi chỉ mục đích.",
+    "examples": [
+      {
+        "jp": "家を 買うために、貯金しています。",
+        "romaji": "Ie o kau tame ni, chokin shite imasu.",
+        "vi": "Tôi đang tiết kiệm tiền để mua nhà."
+      }
+    ]
+  },
+  {
+    "particle": "し",
+    "romaji": "shi",
+    "category": "conjunction",
+    "level": "N4",
+    "title": "Trợ từ Liệt kê Lý do & Tính chất (\"Vừa... lại vừa...\")",
+    "badge": "Trọng Tâm N4",
+    "usage": "Nối nhiều mệnh đề biểu thị nguyên nhân hoặc liệt kê các thuộc tính cùng chiều.",
+    "formula": "Thể thông thường + し, ... + し",
+    "notes": "Vế kết có thể là kết luận hoặc cảm thán.",
+    "examples": [
+      {
+        "jp": "この店は 安いし、おいしいし、いつも 人が 多いです。",
+        "romaji": "Kono mise wa yasui shi, oishii shi, itsumo hito ga ooi desu.",
+        "vi": "Quán này vừa rẻ lại vừa ngon nên lúc nào cũng đông khách."
+      }
+    ]
+  },
+  {
+    "particle": "につれて",
+    "romaji": "ni tsurete",
+    "category": "proportion",
+    "level": "N3",
+    "title": "Trợ từ Tỷ lệ Thuận Biến đổi (\"Cùng với sự biến đổi...\")",
+    "badge": "Trọng Tâm N3",
+    "usage": "A thay đổi kéo theo B tự nhiên biến đổi theo tỷ lệ thuận.",
+    "formula": "V-る / Danh từ + につれて",
+    "notes": "Cả hai vế phải chứa các từ chỉ sự biến đổi (tăng, giảm, chuyển biến).",
+    "examples": [
+      {
+        "jp": "年を 取るにつれて、物忘れが 多くなりました。",
+        "romaji": "Toshi o toru ni tsurete, mono-wasure ga ooku narimashita.",
+        "vi": "Cùng với tuổi tác càng cao, tôi càng hay quên nhiều hơn."
+      }
+    ]
+  },
+  {
+    "particle": "にかんして",
+    "romaji": "ni kanshite",
+    "category": "topic",
+    "level": "N3",
+    "title": "Trợ từ Về Vấn đề / Liên quan đến (\"Về...\")",
+    "badge": "Trọng Tâm N3",
+    "usage": "Cách nói trang trọng hơn của について, thường dùng trong văn viết, báo chí, thuyết trình.",
+    "formula": "Danh từ + に関して / に関する + Danh từ",
+    "notes": "Chỉ đối tượng, chủ đề nghiên cứu hoặc thảo luận.",
+    "examples": [
+      {
+        "jp": "この問題に 関して、ご意見は ありますか。",
+        "romaji": "Kono mondai ni kanshite, go-iken wa arimasu ka.",
+        "vi": "Liên quan đến vấn đề này, quý vị có ý kiến gì không ạ?"
+      }
+    ]
+  },
+  {
+    "particle": "にとって",
+    "romaji": "ni totte",
+    "category": "perspective",
+    "level": "N3",
+    "title": "Trợ từ Lập trường Đánh giá (\"Đối với bản thân...\")",
+    "badge": "Trọng Tâm N3",
+    "usage": "Đứng trên lập trường hoặc góc nhìn của đối tượng đó để đưa ra phán đoán, đánh giá.",
+    "formula": "Danh từ (chỉ người/tổ chức) + にとって",
+    "notes": "Vế sau thường là tính từ biểu thị sự quan trọng, khó khăn, thuận lợi.",
+    "examples": [
+      {
+        "jp": "健康は 人間にとって 最も 大切な ものです。",
+        "romaji": "Kenkou wa ningen ni totte mottomo taisetsu na mono desu.",
+        "vi": "Sức khỏe là điều quan trọng nhất đối với con người."
+      }
+    ]
+  },
+  {
+    "particle": "によって",
+    "romaji": "ni yotte",
+    "category": "method",
+    "level": "N3",
+    "title": "Trợ từ Phương thức, Nguyên nhân & Tùy thuộc (\"Bằng cách / Tùy vào...\")",
+    "badge": "Trọng Tâm N3",
+    "usage": "1. Chỉ phương thức, biện pháp. 2. Chỉ nguyên nhân. 3. Chỉ sự khác biệt tùy vào đối tượng.",
+    "formula": "Danh từ + によって",
+    "notes": "Một trong những cấu trúc đa nghĩa xuất hiện nhiều nhất trong JLPT N3.",
+    "examples": [
+      {
+        "jp": "人によって 考え方が 違います。",
+        "romaji": "Hito ni yotte kangaekata ga chigaimasu.",
+        "vi": "Tùy vào mỗi người mà cách suy nghĩ sẽ khác nhau."
       }
     ]
   }

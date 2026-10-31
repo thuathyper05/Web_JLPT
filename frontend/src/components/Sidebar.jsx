@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }) {
-  const { activeTab, setActiveTab, gamification } = useApp();
+  const { activeTab, setActiveTab, currentLevel, gamification } = useApp();
 
   const navSections = [
     {
@@ -27,7 +27,7 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
         { id: 'home', label: 'Trang chủ', icon: Home },
         { id: 'lessons', label: 'Bài học', icon: BookOpen },
         { id: 'kanji', label: 'Chữ Hán Kanji', icon: PenTool },
-        { id: 'particles', label: 'Trợ từ N5', icon: Compass },
+        { id: 'particles', label: currentLevel ? `Trợ từ ${currentLevel}` : 'Trợ từ', icon: Compass },
       ]
     },
     {

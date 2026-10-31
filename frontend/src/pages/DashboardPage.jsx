@@ -189,6 +189,56 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* ── AI SENSEI LEARNING COACH WIDGET ── */}
+      <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-pink-50 via-rose-50/70 to-pink-50/40 border border-pink-200/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center shrink-0 shadow-lotus">
+            <Sparkles size={24} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="px-2 py-0.2 rounded-md bg-pink-100 text-pink-700 font-extrabold text-[10px] tracking-wider uppercase">
+                AI SENSEI COACH
+              </span>
+              <span className="text-xs font-bold text-slate-800">
+                Chẩn đoán học tập hôm nay
+              </span>
+            </div>
+            <p className="text-xs text-slate-600 mb-0 max-w-2xl leading-relaxed">
+              {stats.needsReview > 0
+                ? `Sensei phát hiện bạn có ${stats.needsReview} từ vựng cần củng cố trong Sổ tay lỗi sai. Hãy dành 3 phút lướt flashcard để củng cố vùng nhớ dài hạn!`
+                : `Tuyệt vời! Bạn đang duy trì phong độ xuất sắc với ${stats.mastered} từ thành thạo. Hãy thử sức ngay với Luyện gõ Romaji hoặc Chơi nối từ 60s.`}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={() => setActiveTab(stats.needsReview > 0 ? 'notebook' : 'practice')}
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold shadow-lotus transition-all active:scale-95 cursor-pointer"
+          >
+            {stats.needsReview > 0 ? 'Ôn từ sai ngay' : 'Luyện gõ thử thách'}
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              askAi(
+                'free_question',
+                {
+                  stats,
+                  message: `Tôi hiện đã học ${stats.studied} từ, thành thạo ${stats.mastered} từ, cần ôn ${stats.needsReview} từ. Hãy cho tôi lộ trình ôn thi JLPT N5 tối ưu nhất.`
+                },
+                'AI Sensei: Lộ Trình Ôn Thi JLPT N5 Cá Nhân Hóa'
+              )
+            }
+            className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-700 text-xs font-bold transition-all cursor-pointer"
+          >
+            Nhờ AI tư vấn
+          </button>
+        </div>
+      </div>
+
       {/* ── 3. MIDDLE ROW: 4 STATS CARDS ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1: Từ đã học */}

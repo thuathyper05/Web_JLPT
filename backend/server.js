@@ -232,9 +232,14 @@ app.get('/api/grammar', (req, res) => {
   });
 });
 
-// ── 5. PARTICLES N5 ──
+// ── 5. PARTICLES ──
 app.get('/api/particles', (req, res) => {
-  res.json(db.data.particles);
+  const { level } = req.query;
+  let list = db.data.particles;
+  if (level) {
+    list = list.filter(p => p.level === level);
+  }
+  res.json(list);
 });
 
 // ── 6. QUIZ GENERATOR ──

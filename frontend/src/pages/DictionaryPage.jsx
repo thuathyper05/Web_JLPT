@@ -12,7 +12,10 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Layers
+  Layers,
+  HelpCircle,
+  Zap,
+  Info
 } from 'lucide-react';
 
 export default function DictionaryPage() {
@@ -23,8 +26,16 @@ export default function DictionaryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [lessonFilter, setLessonFilter] = useState('all');
   const [charTypeFilter, setCharTypeFilter] = useState('all'); // 'all' | 'kanji' | 'kana_only' | 'katakana'
+  const [activeAiTopic, setActiveAiTopic] = useState(null);
   const [page, setPage] = useState(1);
   const pageSize = 24;
+
+  const aiSmartTopics = [
+    { id: 'verbs', title: 'Động từ hành động thường ngày', query: 'ます' },
+    { id: 'adjectives', title: 'Tính từ miêu tả & cảm xúc', query: 'い' },
+    { id: 'places', title: 'Địa điểm & phương tiện', query: 'ở' },
+    { id: 'traps', title: 'Từ hay bẫy trong kỳ thi N5', query: 'người' },
+  ];
 
   useEffect(() => {
     const fetchVocabs = async () => {
@@ -40,6 +51,17 @@ export default function DictionaryPage() {
     };
     fetchVocabs();
   }, []);
+
+  const handleSelectAiTopic = (topic) => {
+    sounds.playFlip();
+    if (activeAiTopic?.id === topic.id) {
+      setActiveAiTopic(null);
+      setSearchTerm('');
+    } else {
+      setActiveAiTopic(topic);
+      setSearchTerm(topic.query);
+    }
+  };
 
   const filteredWords = useMemo(() => {
     return allWords.filter((w) => {
@@ -76,7 +98,7 @@ export default function DictionaryPage() {
     });
   }, [allWords, lessonFilter, charTypeFilter, searchTerm]);
 
-  // Reset page when filters change
+  // Reset page on filter change
   useEffect(() => {
     setPage(1);
   }, [lessonFilter, charTypeFilter, searchTerm]);
@@ -98,26 +120,55 @@ export default function DictionaryPage() {
           辞
         </div>
 
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
+        <div className="relative z-10 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
             <Search size={13} className="text-pink-600" />
             <span>TRA CỨU TOÀN DIỆN • 1.512 TỪ VỰNG N5</span>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Từ Điển & Tra Cứu Từ Vựng N5
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-4">
-            Tìm kiếm từ vựng theo chữ Hán Kanji, Hiragana, Katakana, Romaji hoặc nghĩa tiếng Việt nhanh chóng với phát âm chuẩn Tokyo.
-          </p>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1">
+              Từ Điển & Tra Cứu Từ Vựng N5
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-0">
+              Tra cứu nhanh theo chữ Hán, Hiragana, Romaji hoặc nghĩa tiếng Việt. Tích hợp phân tích sắc thái ngữ cảnh và mẹo nhớ từ AI Sensei.
+            </p>
+          </div>
 
-          {/* Search Bar */}
+          {/* AI Smart Topics Suggestion Chips */}
+          <div className="pt-2">
+            <span className="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider block mb-2">
+              ✦ GỢI Ý CHỦ ĐỀ THÔNG MINH TỪ AI:
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {aiSmartTopics.map((topic) => {
+                const isActive = activeAiTopic?.id === topic.id;
+                return (
+                  <button
+                    key={topic.id}
+                    type="button"
+                    onClick={() => handleSelectAiTopic(topic)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      isActive
+                        ? 'bg-pink-600 text-white shadow-lotus ring-2 ring-pink-300'
+                        : 'bg-pink-50/70 border border-pink-200 text-pink-700 hover:bg-pink-100'
+                    }`}
+                  >
+                    <Sparkles size={13} className={isActive ? 'text-white' : 'text-pink-600'} />
+                    <span>{topic.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Search Controls Bar */}
           <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-pink-50">
             <div className="relative flex-1 min-w-[240px]">
               <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Nhập từ cần tìm: ví dụ 私, watashi, tôi, sensei..."
+                placeholder="Nhập từ cần tìm: ví dụ 私, watashi, tôi, 先生..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-pink-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 bg-pink-50/20 focus:bg-white transition-all"
@@ -203,7 +254,7 @@ export default function DictionaryPage() {
           {paginatedWords.map((word) => (
             <div
               key={word.id}
-              className="p-5 rounded-2xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-all flex flex-col justify-between space-y-3"
+              className="p-5 rounded-3xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-all flex flex-col justify-between space-y-3"
             >
               <div>
                 <div className="flex justify-between items-start mb-2">
@@ -254,11 +305,11 @@ export default function DictionaryPage() {
               <div className="pt-2 border-t border-pink-50 flex items-center justify-between">
                 <button
                   type="button"
-                  onClick={() => askAi('explain_vocab', word, `AI: Phân Tích 「${word.kanji || word.kana}」`)}
-                  className="text-[11px] font-bold text-pink-600 hover:text-pink-800 flex items-center gap-1 cursor-pointer"
+                  onClick={() => askAi('explain_vocab', word, `AI Phân Tích: 「${word.kanji || word.kana}」`)}
+                  className="text-xs font-bold text-pink-600 hover:text-pink-800 flex items-center gap-1 cursor-pointer"
                 >
                   <Sparkles size={13} />
-                  <span>AI phân tích ngữ cảnh</span>
+                  <span>AI phân tích ngữ cảnh & mẹo nhớ</span>
                 </button>
               </div>
             </div>
