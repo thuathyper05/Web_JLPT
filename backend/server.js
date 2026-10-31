@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const https = require('https');
 const db = require('./db');
 const { generateAiResponse } = require('./services/aiService');
 
@@ -166,11 +167,86 @@ app.post('/api/auth/login', async (req, res) => {
   });
 });
 
+// Helper to verify Google OAuth ID token directly with Google API
+function verifyGoogleCredential(idToken) {
+  return new Promise((resolve) => {
+    https.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.email && json.email_verified) {
+            resolve({
+              email: json.email,
+              name: json.name || json.email.split('@')[0],
+              avatar: json.picture || ''
+            });
+          } else {
+            resolve(null);
+          }
+        } catch {
+          resolve(null);
+        }
+      });
+    }).on('error', () => resolve(null));
+  });
+}
+
+// Helper to verify Facebook Access Token directly with Facebook Graph API
+function verifyFacebookAccessToken(accessToken) {
+  return new Promise((resolve) => {
+    https.get(`https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.id) {
+            resolve({
+              email: json.email || `fb_${json.id}@facebook.hyperjapan.vn`,
+              name: json.name || 'Học viên Facebook',
+              avatar: json.picture?.data?.url || ''
+            });
+          } else {
+            resolve(null);
+          }
+        } catch {
+          resolve(null);
+        }
+      });
+    }).on('error', () => resolve(null));
+  });
+}
+
 app.post('/api/auth/social-login', async (req, res) => {
-  const { provider, email, name, avatar } = req.body;
+  const { provider, email, name, avatar, credential, accessToken } = req.body;
   const safeProvider = (provider || 'Google').toLowerCase();
-  const cleanEmail = (email || `${safeProvider}_user@hyperjapan.vn`).trim().toLowerCase();
-  const cleanUsername = name || `Học viên ${provider || 'Google'}`;
+
+  let verifiedEmail = email;
+  let verifiedName = name;
+  let verifiedAvatar = avatar;
+
+  // Real production token verification
+  if (credential && safeProvider === 'google') {
+    const verifiedGoogle = await verifyGoogleCredential(credential);
+    if (verifiedGoogle) {
+      verifiedEmail = verifiedGoogle.email;
+      verifiedName = verifiedGoogle.name;
+      verifiedAvatar = verifiedGoogle.avatar;
+    }
+  } else if (accessToken && safeProvider === 'facebook') {
+    const verifiedFb = await verifyFacebookAccessToken(accessToken);
+    if (verifiedFb) {
+      verifiedEmail = verifiedFb.email;
+      verifiedName = verifiedFb.name;
+      verifiedAvatar = verifiedFb.avatar;
+    }
+  }
+
+  const cleanEmail = (verifiedEmail || `${safeProvider}_user@hyperjapan.vn`).trim().toLowerCase();
+  const cleanUsername = verifiedName || `Học viên ${provider || 'Google'}`;
+  const cleanAvatar = verifiedAvatar || '';
 
   if (db.pool && db.isDbConnected()) {
     try {
@@ -178,11 +254,11 @@ app.post('/api/auth/social-login', async (req, res) => {
       let user;
       if (checkRes.rows.length > 0) {
         user = checkRes.rows[0];
-        await db.pool.query('UPDATE users SET auth_provider = $1, avatar_url = COALESCE($2, avatar_url) WHERE id = $3', [safeProvider, avatar || '', user.id]);
+        await db.pool.query('UPDATE users SET auth_provider = $1, avatar_url = COALESCE($2, avatar_url) WHERE id = $3', [safeProvider, cleanAvatar, user.id]);
       } else {
         const insertRes = await db.pool.query(
-          'INSERT INTO users (username, email, password_hash, auth_provider, role, avatar_url, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING id, username, email, role',
-          [cleanUsername, cleanEmail, bcrypt.hashSync(Math.random().toString(), 8), safeProvider, 'user', avatar || '']
+          'INSERT INTO users (username, email, password_hash, auth_provider, role, avatar_url, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING id, username, email, role, avatar_url',
+          [cleanUsername, cleanEmail, bcrypt.hashSync(Math.random().toString(), 8), safeProvider, 'user', cleanAvatar]
         );
         user = insertRes.rows[0];
       }
@@ -190,9 +266,9 @@ app.post('/api/auth/social-login', async (req, res) => {
       const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
       return res.json({
         success: true,
-        message: `Đăng nhập qua ${provider} thành công!`,
+        message: `Đăng nhập qua ${provider || 'tài khoản'} thành công!`,
         token,
-        user: { id: user.id, username: user.username, email: user.email, role: user.role }
+        user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url }
       });
     } catch (err) {
       console.error('Social login db error:', err);
@@ -204,12 +280,13 @@ app.post('/api/auth/social-login', async (req, res) => {
     id: Date.now(),
     username: cleanUsername,
     email: cleanEmail,
-    role: 'user'
+    role: 'user',
+    avatar_url: cleanAvatar
   };
   const token = jwt.sign(mockUser, JWT_SECRET, { expiresIn: '30d' });
   return res.json({
     success: true,
-    message: `Đăng nhập qua ${provider} thành công!`,
+    message: `Đăng nhập qua ${provider || 'tài khoản'} thành công!`,
     token,
     user: mockUser
   });

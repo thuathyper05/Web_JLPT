@@ -1,7 +1,8 @@
 /**
  * AI Assistant Service for HYPER Japanese Learning WebApp
- * Powered by Google Gemini 3.5 Flash Lite & 3.8 Flash API
- * Provides 100% REAL dynamic AI analysis based on individual student progress
+ * Powered by Google Gemini 3.5 Flash Lite and 3.8 Flash API
+ * Multi-Key Auto Failover Pool (3 Keys Round-Robin and Token Exhaustion Protection)
+ * Provides 100% REAL dynamic pedagogical AI analysis based on individual student progress
  */
 
 const https = require('https');
@@ -11,15 +12,79 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 require('dotenv').config();
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-// gemini-3.5-flash-lite provides sub-2s latency and 100% active availability for current keys
+// Primary and fallback models
 const PRIMARY_MODEL = 'gemini-3.5-flash-lite';
 const FALLBACK_MODEL = 'gemini-3.8-flash';
 
 /**
+ * Extracts and initializes the multi-key pool
+ */
+function initializeKeysPool() {
+  const rawList = [];
+  if (process.env.GEMINI_API_KEYS) {
+    rawList.push(...process.env.GEMINI_API_KEYS.split(',').map((k) => k.trim()).filter(Boolean));
+  }
+  if (process.env.GEMINI_API_KEY_1) rawList.push(process.env.GEMINI_API_KEY_1.trim());
+  if (process.env.GEMINI_API_KEY_2) rawList.push(process.env.GEMINI_API_KEY_2.trim());
+  if (process.env.GEMINI_API_KEY_3) rawList.push(process.env.GEMINI_API_KEY_3.trim());
+  if (process.env.GEMINI_API_KEY) rawList.push(process.env.GEMINI_API_KEY.trim());
+
+  // Deduplicate while preserving order
+  const uniqueKeys = [...new Set(rawList)].filter(Boolean);
+
+  if (uniqueKeys.length === 0) {
+    console.warn('[AI Pool Warning] Không tìm thấy API key trong file .env');
+  } else {
+    console.log(`[AI Pool] Đã nạp thành công ${uniqueKeys.length} API keys Gemini vào hệ thống luân phiên.`);
+  }
+
+  return uniqueKeys.map((key, idx) => ({
+    id: idx + 1,
+    key,
+    keyMask: key.slice(0, 10) + '...',
+    cooldownUntil: 0,
+    failures: 0,
+    successes: 0
+  }));
+}
+
+// Pool state
+const keyEntries = initializeKeysPool();
+let currentPointer = 0;
+
+/**
+ * Gets the next available key using round-robin and cooldown checks
+ */
+function getNextAvailableKey() {
+  if (keyEntries.length === 0) return null;
+
+  const now = Date.now();
+  // Try to find a healthy key starting from current pointer
+  for (let i = 0; i < keyEntries.length; i++) {
+    const candidateIndex = (currentPointer + i) % keyEntries.length;
+    const entry = keyEntries[candidateIndex];
+    if (entry.cooldownUntil <= now) {
+      currentPointer = (candidateIndex + 1) % keyEntries.length;
+      return entry;
+    }
+  }
+
+  // If all keys are in cooldown, select the one that expires soonest
+  let bestEntry = keyEntries[0];
+  let earliest = keyEntries[0].cooldownUntil;
+  for (let i = 1; i < keyEntries.length; i++) {
+    if (keyEntries[i].cooldownUntil < earliest) {
+      earliest = keyEntries[i].cooldownUntil;
+      bestEntry = keyEntries[i];
+    }
+  }
+  return bestEntry;
+}
+
+/**
  * Sanitizes and formats AI output:
  * - Strips all markdown asterisks (*, **, ***)
- * - Converts any arrows to words ("sang")
+ * - Converts any arrows to words ('sang')
  * - Removes bullet symbols
  * - Enforces clean paragraph and example breaks
  */
@@ -35,10 +100,10 @@ function sanitizeAiText(raw) {
   cleaned = cleaned.replace(/\*/g, '');
 
   // Replace arrow symbols with Vietnamese transition words
-  cleaned = cleaned.replace(new RegExp('->|\\u2192|\\u2794', 'g'), ' sang ');
+  cleaned = cleaned.replace(/[\u2192\u2794]|-\x3E/g, ' sang ');
 
   // Remove bullet dots
-  cleaned = cleaned.replace(/[•●▪]/g, '-');
+  cleaned = cleaned.replace(/[\u2022\u25CF\u25AA]/g, '-');
 
   // Clean font encoding glitches and artifacts
   cleaned = cleaned.replace(/\uFFFD/g, '');
@@ -55,14 +120,10 @@ function sanitizeAiText(raw) {
 }
 
 /**
- * Calls Gemini REST API
+ * Low-level HTTP call to Gemini API for a single key attempt
  */
-function callGemini(promptText, modelName = PRIMARY_MODEL) {
+function executeGeminiRequest(apiKey, promptText, modelName) {
   return new Promise((resolve, reject) => {
-    if (!GEMINI_API_KEY) {
-      return reject(new Error('Chưa cấu hình GEMINI_API_KEY trong .env'));
-    }
-
     const postData = JSON.stringify({
       contents: [
         {
@@ -77,13 +138,13 @@ function callGemini(promptText, modelName = PRIMARY_MODEL) {
 
     const options = {
       hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`,
+      path: `/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(postData)
       },
-      timeout: 25000
+      timeout: 20000
     };
 
     const req = https.request(options, (res) => {
@@ -98,39 +159,73 @@ function callGemini(promptText, modelName = PRIMARY_MODEL) {
               return resolve({ text: sanitizeAiText(text), modelUsed: modelName });
             }
           }
-
-          // If primary model fails, try fallback
-          if (modelName === PRIMARY_MODEL) {
-            console.warn(`Gemini ${PRIMARY_MODEL} returned ${res.statusCode}, falling back to ${FALLBACK_MODEL}...`);
-            return callGemini(promptText, FALLBACK_MODEL).then(resolve).catch(reject);
-          }
-
-          reject(new Error(parsed?.error?.message || `HTTP ${res.statusCode}: ${body}`));
+          const errMsg = parsed?.error?.message || `HTTP ${res.statusCode}: ${body}`;
+          const isQuota = res.statusCode === 429 || res.statusCode === 403 || /quota|exhausted|rate/i.test(errMsg);
+          reject({ statusCode: res.statusCode, message: errMsg, isQuota });
         } catch (e) {
-          reject(e);
+          reject({ statusCode: res.statusCode || 500, message: e.message, isQuota: false });
         }
       });
     });
 
     req.on('timeout', () => {
       req.destroy();
-      if (modelName === PRIMARY_MODEL) {
-        console.warn(`Gemini ${PRIMARY_MODEL} timed out, trying ${FALLBACK_MODEL}...`);
-        return callGemini(promptText, FALLBACK_MODEL).then(resolve).catch(reject);
-      }
-      reject(new Error('Gemini API request timed out'));
+      reject({ statusCode: 408, message: 'Request timed out (20s)', isQuota: false });
     });
 
     req.on('error', (err) => {
-      if (modelName === PRIMARY_MODEL) {
-        return callGemini(promptText, FALLBACK_MODEL).then(resolve).catch(reject);
-      }
-      reject(err);
+      reject({ statusCode: 500, message: err.message, isQuota: false });
     });
 
     req.write(postData);
     req.end();
   });
+}
+
+/**
+ * Multi-Key Round-Robin & Auto-Failover Execution Engine
+ * Tries current active key. If quota exhausted or error, rotates immediately to backup key.
+ */
+async function callGemini(promptText, modelName = PRIMARY_MODEL) {
+  if (keyEntries.length === 0) {
+    throw new Error('Chưa cấu hình GEMINI_API_KEY trong .env');
+  }
+
+  const maxAttempts = Math.min(keyEntries.length, 3);
+  let lastError = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const entry = getNextAvailableKey();
+    if (!entry) break;
+
+    try {
+      const result = await executeGeminiRequest(entry.key, promptText, modelName);
+      entry.successes += 1;
+      return {
+        ...result,
+        keyIndex: entry.id
+      };
+    } catch (err) {
+      entry.failures += 1;
+      lastError = err;
+
+      // If quota or rate limit, put key on cooldown for 60 seconds
+      if (err.isQuota || err.statusCode === 429 || err.statusCode === 403) {
+        entry.cooldownUntil = Date.now() + 60000;
+        console.warn(`[AI Pool] Key #${entry.id} (${entry.keyMask}) chạm giới hạn token hoặc quota (HTTP ${err.statusCode}). Tự động chuyển luân phiên sang Key backup tiếp theo...`);
+      } else {
+        console.warn(`[AI Pool] Key #${entry.id} gặp sự cố (${err.message}). Đang chuyển sang Key kế tiếp...`);
+      }
+    }
+  }
+
+  // If primary model failed across keys, try fallback model once
+  if (modelName === PRIMARY_MODEL) {
+    console.warn(`[AI Pool] Toàn bộ keys trên model ${PRIMARY_MODEL} gặp sự cố, thử nghiệm fallback sang ${FALLBACK_MODEL}...`);
+    return callGemini(promptText, FALLBACK_MODEL);
+  }
+
+  throw new Error(lastError ? lastError.message : 'Tất cả API keys đều tạm thời hết hạn mức quota.');
 }
 
 /**
@@ -143,7 +238,7 @@ async function generateAiResponse({ action, prompt, context, userProgress, usern
   const baseInstruction = `Bạn là AI Sensei - chuyên gia sư phạm tiếng Nhật hàng đầu của hệ thống HYPER Japanese.
 QUY TẮC TRẢ LỜI BẮT BUỘC:
 1. ĐÚNG CHUẨN XÁC: Kiến thức ngữ pháp, từ vựng, phát âm theo chuẩn Tokyo và giáo trình chuẩn JLPT.
-2. DỄ HIỂU & NGẮN GỌN: Đi thẳng vào trọng tâm, giải thích mạch lạc, súc tích, dễ hiểu cho người mới học. Mỗi ý tối đa 1-2 câu, tuyệt đối không viết văn hoa dài dòng dư thừa.
+2. DỄ HIỂU VÀ NGẮN GỌN: Đi thẳng vào trọng tâm, giải thích mạch lạc, súc tích, dễ hiểu cho người mới học. Mỗi ý tối đa 1-2 câu, tuyệt đối không viết văn hoa dài dòng dư thừa.
 3. TUYỆT ĐỐI KHÔNG DÙNG DẤU HOA THỊ (*) VÀ KHÔNG DÙNG DẤU MŨI TÊN. Dùng các con số 1, 2, 3 hoặc gạch ngang (-) cho các ý.
 4. KHI ĐƯA RA VÍ DỤ BẮT BUỘC TRÌNH BÀY XUỐNG DÒNG RIÊNG BIỆT:
    Câu tiếng Nhật: [Câu Kanji và Kana]
@@ -236,7 +331,7 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
   }
 
   try {
-    const { text: rawAiText, modelUsed } = await callGemini(userPrompt);
+    const { text: rawAiText, modelUsed, keyIndex } = await callGemini(userPrompt);
     const sanitizedText = sanitizeAiText(rawAiText);
 
     return {
@@ -246,18 +341,19 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
         explanation: sanitizedText,
         nuance: sanitizedText,
         aiGenerated: true,
-        model: modelUsed
+        model: modelUsed,
+        keyIndex
       }
     };
   } catch (error) {
-    console.error('Gemini API call failed:', error.message);
+    console.error('Gemini API pool call failed:', error.message);
     const wordKey = context?.kanji || context?.word || prompt;
     return {
       success: true,
       data: {
         title: `AI Sensei: ${wordKey || 'Hỗ Trợ Học Tập'}`,
         explanation: `AI Sensei hướng dẫn:\nKhi học từ vựng 「${wordKey}」, bí quyết ghi nhớ bền vững là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào câu hoàn chỉnh mỗi ngày.\n\nCâu tiếng Nhật: 「${wordKey}」を毎日使います。\nCách đọc: Mainichi tsukaimasu.\nDịch nghĩa: Tôi sử dụng hàng ngày.`,
-        nuance: `Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.`,
+        nuance: 'Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.',
         aiGenerated: false,
         error: error.message
       }
@@ -267,5 +363,6 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
 
 module.exports = {
   generateAiResponse,
-  sanitizeAiText
+  sanitizeAiText,
+  callGemini
 };

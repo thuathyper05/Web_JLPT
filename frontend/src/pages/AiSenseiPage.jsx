@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { aiService, speakJapanese } from '../services/api';
+import { aiService, speakJapanese, speakBilingualText, stopSpeaking } from '../services/api';
 import { sounds } from '../services/sounds';
 import {
   Sparkles,
@@ -9,8 +9,8 @@ import {
   Calendar,
   Send,
   Volume2,
+  VolumeX,
   CheckCircle2,
-  ArrowRight,
   RotateCcw,
   Bot,
   User,
@@ -22,6 +22,7 @@ export default function AiSenseiPage() {
   const { currentLevel, askAi, user, guestProgress, gamification, selectedLesson } = useApp();
 
   const [activeMode, setActiveMode] = useState('chat'); // 'chat' | 'sentence' | 'roadmap'
+  const [playingAudioIdx, setPlayingAudioIdx] = useState(null);
   
   // Chat state
   const [messages, setMessages] = useState([
@@ -252,11 +253,24 @@ export default function AiSenseiPage() {
                     {m.sender === 'ai' && (
                       <button
                         type="button"
-                        onClick={() => speakJapanese(m.text)}
-                        className="text-[11px] text-pink-600 hover:text-pink-800 font-bold flex items-center gap-1 cursor-pointer pl-1"
+                        onClick={() => {
+                          if (playingAudioIdx === idx) {
+                            stopSpeaking();
+                            setPlayingAudioIdx(null);
+                          } else {
+                            setPlayingAudioIdx(idx);
+                            speakBilingualText(m.text, () => setPlayingAudioIdx(null));
+                          }
+                        }}
+                        className={`text-[11px] font-bold flex items-center gap-1.5 cursor-pointer pl-1 transition-colors ${
+                          playingAudioIdx === idx
+                            ? 'text-rose-600 animate-pulse'
+                            : 'text-pink-600 hover:text-pink-800'
+                        }`}
+                        title={playingAudioIdx === idx ? 'Dừng đọc' : 'Nghe phát âm chuẩn (tiếng Nhật chuẩn Tokyo, tiếng Việt rõ ràng)'}
                       >
-                        <Volume2 size={13} />
-                        <span>Nghe giọng đọc</span>
+                        {playingAudioIdx === idx ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                        <span>{playingAudioIdx === idx ? 'Dừng đọc' : 'Nghe giọng đọc chuẩn'}</span>
                       </button>
                     )}
                   </div>

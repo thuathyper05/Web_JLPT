@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { speakJapanese, aiService } from '../services/api';
+import { speakJapanese, speakBilingualText, stopSpeaking, aiService } from '../services/api';
 import { sounds } from '../services/sounds';
 import FuriganaWord from './FuriganaWord';
 import {
@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   MessageSquare,
   Volume2,
+  VolumeX,
   Send,
   HelpCircle,
   RotateCcw
@@ -25,10 +26,41 @@ export default function AiExplainModal() {
   const [chatLoading, setChatLoading] = useState(false);
   const [microQuiz, setMicroQuiz] = useState(null);
   const [selectedQuizOption, setSelectedQuizOption] = useState(null);
+  const [isPlayingSpeech, setIsPlayingSpeech] = useState(false);
+
+  const handleClose = () => {
+    stopSpeaking();
+    setIsPlayingSpeech(false);
+    closeAiModal();
+  };
 
   if (!aiModal.isOpen) return null;
 
   const { title, data, loading } = aiModal;
+
+  const toggleFullAnalysisSpeech = () => {
+    if (isPlayingSpeech) {
+      stopSpeaking();
+      setIsPlayingSpeech(false);
+    } else {
+      const parts = [];
+      if (data?.nuance || data?.core_concept || data?.why_correct) {
+        parts.push(data.nuance || data.core_concept || data.why_correct);
+      }
+      if (data?.mnemonic || data?.mnemonic_story || data?.radical_breakdown) {
+        parts.push('Mẹo ghi nhớ: ' + (data.mnemonic || data.mnemonic_story || data.radical_breakdown));
+      }
+      if (data?.example) {
+        parts.push('Câu tiếng Nhật: ' + data.example.jp);
+        if (data.example.vi) parts.push('Dịch nghĩa: ' + data.example.vi);
+      }
+      const fullText = parts.join('\n\n');
+      if (fullText) {
+        setIsPlayingSpeech(true);
+        speakBilingualText(fullText, () => setIsPlayingSpeech(false));
+      }
+    }
+  };
 
   const handleSendChat = async (e) => {
     e?.preventDefault();
@@ -90,7 +122,7 @@ export default function AiExplainModal() {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in"
-      onClick={closeAiModal}
+      onClick={handleClose}
     >
       <div
         className="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden flex flex-col max-h-[88vh] animate-in zoom-in-95"
@@ -114,7 +146,7 @@ export default function AiExplainModal() {
 
           <button
             type="button"
-            onClick={closeAiModal}
+            onClick={handleClose}
             className="p-1 rounded-full text-white/80 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
             aria-label="Đóng"
           >
@@ -123,7 +155,7 @@ export default function AiExplainModal() {
         </div>
 
         {/* ── 2. TABS ── */}
-        <div className="px-5 pt-3 pb-2 border-b border-pink-100 bg-pink-50/30 flex items-center gap-2 shrink-0">
+        <div className="px-5 pt-3 pb-2 border-b border-pink-100 bg-pink-50/30 flex items-center gap-2 shrink-0 flex-wrap">
           <button
             type="button"
             onClick={() => {
@@ -168,6 +200,22 @@ export default function AiExplainModal() {
             <HelpCircle size={13} />
             <span>Đố vui nhanh</span>
           </button>
+
+          {activeTab === 'analysis' && !loading && (
+            <button
+              type="button"
+              onClick={toggleFullAnalysisSpeech}
+              className={`ml-auto px-2.5 py-1 rounded-xl text-[11px] font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                isPlayingSpeech
+                  ? 'bg-rose-50 text-rose-600 border border-rose-200 animate-pulse'
+                  : 'bg-white text-pink-700 border border-pink-200 hover:bg-pink-50'
+              }`}
+              title="Đọc toàn bộ phân tích (tiếng Nhật chuẩn Tokyo, tiếng Việt rõ ràng)"
+            >
+              {isPlayingSpeech ? <VolumeX size={12} /> : <Volume2 size={12} />}
+              <span>{isPlayingSpeech ? 'Dừng đọc' : 'Nghe giọng đọc'}</span>
+            </button>
+          )}
         </div>
 
         {/* ── 3. CONTENT BODY (SCROLLABLE) ── */}
@@ -277,7 +325,7 @@ export default function AiExplainModal() {
                   chatMessages.map((msg, idx) => (
                     <div
                       key={idx}
-                      className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}
                     >
                       <div
                         className={`p-3 rounded-2xl text-xs max-w-[85%] leading-relaxed whitespace-pre-line ${
@@ -288,6 +336,17 @@ export default function AiExplainModal() {
                       >
                         {msg.text}
                       </div>
+
+                      {msg.role === 'ai' && (
+                        <button
+                          type="button"
+                          onClick={() => speakBilingualText(msg.text)}
+                          className="text-[10.5px] text-pink-600 hover:text-pink-800 font-bold flex items-center gap-1 cursor-pointer pl-1 mt-1"
+                        >
+                          <Volume2 size={11} />
+                          <span>Nghe đọc</span>
+                        </button>
+                      )}
                     </div>
                   ))
                 )}
@@ -397,7 +456,7 @@ export default function AiExplainModal() {
         <div className="p-4 border-t border-pink-50 bg-pink-50/20 flex justify-end shrink-0">
           <button
             type="button"
-            onClick={closeAiModal}
+            onClick={handleClose}
             className="px-5 py-2 rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs shadow-lotus transition-all cursor-pointer"
           >
             Đã hiểu, quay lại học
