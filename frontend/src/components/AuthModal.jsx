@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { authService } from '../services/api';
+import SakuraPulse from './SakuraPulse';
 import {
   X,
   Mail,
@@ -34,6 +35,8 @@ export default function AuthModal() {
   // Forgot Password flow steps: 'request' | 'otp' | 'done'
   const [forgotStep, setForgotStep] = useState('request');
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
+  const [receivedOtp, setReceivedOtp] = useState('');
+  const [showGoogleChooser, setShowGoogleChooser] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -53,14 +56,34 @@ export default function AuthModal() {
   const isPasswordMatch = password && confirmPassword && password === confirmPassword;
 
   const handleOtpInput = (index, value) => {
-    if (value.length > 1) value = value.slice(-1);
+    if (!/^\d*$/.test(value)) return;
+    const digit = value.slice(-1);
     const updated = [...otpCode];
-    updated[index] = value;
+    updated[index] = digit;
     setOtpCode(updated);
 
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`auth-otp-${index + 1}`);
-      nextInput?.focus();
+    if (digit && index < 5) {
+      document.getElementById(`auth-otp-${index + 1}`)?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !otpCode[index] && index > 0) {
+      document.getElementById(`auth-otp-${index - 1}`)?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').trim().replace(/\D/g, '').slice(0, 6);
+    if (pasted.length > 0) {
+      const updated = ['', '', '', '', '', ''];
+      pasted.split('').forEach((char, i) => {
+        if (i < 6) updated[i] = char;
+      });
+      setOtpCode(updated);
+      const targetIdx = Math.min(pasted.length, 5);
+      document.getElementById(`auth-otp-${targetIdx}`)?.focus();
     }
   };
 
@@ -114,6 +137,9 @@ export default function AuthModal() {
             sounds.playCorrect();
             setForgotStep('otp');
             setSuccessMsg(res.data.message || 'Mã OTP đã được gửi đến email của bạn.');
+            if (res.data.otp) {
+              setReceivedOtp(res.data.otp);
+            }
           } else {
             setError(res.data?.message || 'Không tìm thấy tài khoản với email này.');
           }
@@ -164,20 +190,22 @@ export default function AuthModal() {
     }
   };
 
-  const handleSocialQuickLogin = async (provider) => {
+  const handleSocialQuickLogin = async (provider, chosenEmail = null, chosenName = null) => {
     sounds.playCorrect();
     setError('');
     setLoading(true);
 
     try {
-      const mockSocialPayload = {
-        provider,
-        email: provider === 'Google' ? 'hocvien.google@gmail.com' : 'hocvien.facebook@gmail.com',
-        name: `Học viên ${provider}`,
-        avatar: ''
-      };
+      const targetEmail = chosenEmail || (provider === 'Google' ? (email.trim() || 'thuatnguyen.developer@gmail.com') : 'bahuy3373@gmail.com');
+      const targetName = chosenName || (provider === 'Google' ? 'Nguyễn Văn Thuật' : 'Huy B');
 
-      const res = await authService.socialLogin(mockSocialPayload);
+      const res = await authService.socialLogin({
+        provider,
+        email: targetEmail,
+        name: targetName,
+        avatar: ''
+      });
+
       if (res.data?.success) {
         sounds.playLevelUp();
         localStorage.setItem('nihongo_token', res.data.token);
@@ -187,11 +215,11 @@ export default function AuthModal() {
         setError(res.data?.message || `Đăng nhập qua ${provider} không thành công.`);
       }
     } catch {
-      // Fallback offline session
+      // Offline fallback session
       const fallbackUser = {
         id: Date.now(),
-        username: `Học viên ${provider}`,
-        email: `${provider.toLowerCase()}@hyperjapan.vn`,
+        username: chosenName || `Học viên ${provider}`,
+        email: chosenEmail || `${provider.toLowerCase()}@hyperjapan.vn`,
         role: 'user'
       };
       localStorage.setItem('nihongo_token', 'mock_social_token_jwt');
@@ -199,6 +227,7 @@ export default function AuthModal() {
       setAuthModalOpen(false);
     } finally {
       setLoading(false);
+      setShowGoogleChooser(false);
     }
   };
 
@@ -403,6 +432,27 @@ export default function AuthModal() {
                     <span className="text-xs font-semibold text-pink-600">{email}</span>
                   </div>
 
+                  {/* Real-time OTP Alert Banner */}
+                  {receivedOtp && (
+                    <div className="p-3 bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50 border border-pink-200 rounded-2xl flex items-center justify-between text-xs animate-in fade-in shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <SakuraPulse size={14} />
+                        <span className="text-slate-700">Mã OTP: <strong className="text-sm font-mono text-pink-700 tracking-widest bg-white px-2.5 py-0.5 rounded-lg border border-pink-200 ml-1 font-black">{receivedOtp}</strong></span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          sounds.playFlip();
+                          const digits = receivedOtp.split('');
+                          setOtpCode(digits);
+                        }}
+                        className="px-3 py-1 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-[11px] rounded-xl shadow-sm transition-all cursor-pointer active:scale-95"
+                      >
+                        Điền nhanh
+                      </button>
+                    </div>
+                  )}
+
                   <div className="flex justify-center gap-2 sm:gap-2.5">
                     {[0, 1, 2, 3, 4, 5].map((idx) => (
                       <input
@@ -412,6 +462,8 @@ export default function AuthModal() {
                         maxLength={1}
                         value={otpCode[idx]}
                         onChange={(e) => handleOtpInput(idx, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                        onPaste={handleOtpPaste}
                         className="w-10 sm:w-12 h-12 sm:h-14 text-center text-lg sm:text-xl font-black rounded-xl sm:rounded-2xl border-2 border-pink-300 focus:border-pink-600 focus:outline-none bg-pink-50/30 focus:bg-white transition-all shadow-inner"
                       />
                     ))}
@@ -613,11 +665,71 @@ export default function AuthModal() {
                     </div>
                   </div>
 
+                  {/* Google Account Quick Selector */}
+                  {showGoogleChooser && (
+                    <div className="mb-3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm space-y-2 animate-in fade-in slide-in-from-top-1">
+                      <div className="flex items-center justify-between pb-1.5 border-b border-slate-200/60">
+                        <span className="text-[11px] font-bold text-slate-600">Chọn tài khoản Google:</span>
+                        <button
+                          type="button"
+                          onClick={() => setShowGoogleChooser(false)}
+                          className="text-[10px] text-slate-400 hover:text-slate-700 cursor-pointer"
+                        >
+                          Đóng
+                        </button>
+                      </div>
+                      
+                      <button
+                        type="button"
+                        onClick={() => handleSocialQuickLogin('Google', 'thuatnguyen.developer@gmail.com', 'Nguyễn Văn Thuật')}
+                        className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
+                      >
+                        <div className="w-8 h-8 rounded-full bg-blue-500 text-white font-black text-xs flex items-center justify-center shrink-0">
+                          T
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-xs font-bold text-slate-800 truncate">Nguyễn Văn Thuật</span>
+                          <span className="text-[10.5px] text-slate-400 truncate">thuatnguyen.developer@gmail.com</span>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleSocialQuickLogin('Google', 'thuathyper05@gmail.com', 'Thuat Hyper')}
+                        className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
+                      >
+                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white font-black text-xs flex items-center justify-center shrink-0">
+                          H
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-xs font-bold text-slate-800 truncate">Thuat Hyper</span>
+                          <span className="text-[10.5px] text-slate-400 truncate">thuathyper05@gmail.com</span>
+                        </div>
+                      </button>
+
+                      {email.trim() && !['thuatnguyen.developer@gmail.com', 'thuathyper05@gmail.com'].includes(email.trim().toLowerCase()) && (
+                        <button
+                          type="button"
+                          onClick={() => handleSocialQuickLogin('Google', email.trim().toLowerCase(), email.trim().split('@')[0])}
+                          className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-purple-500 text-white font-black text-xs flex items-center justify-center shrink-0">
+                            G
+                          </div>
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-xs font-bold text-slate-800 truncate">{email.trim()}</span>
+                            <span className="text-[10.5px] text-slate-400 truncate">Sử dụng email đã nhập</span>
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-2 gap-2.5">
                     {/* Google Button */}
                     <button
                       type="button"
-                      onClick={() => handleSocialQuickLogin('Google')}
+                      onClick={() => setShowGoogleChooser(!showGoogleChooser)}
                       className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
                       <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -632,7 +744,7 @@ export default function AuthModal() {
                     {/* Facebook Button */}
                     <button
                       type="button"
-                      onClick={() => handleSocialQuickLogin('Facebook')}
+                      onClick={() => handleSocialQuickLogin('Facebook', 'bahuy3373@gmail.com', 'Huy B')}
                       className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
                       <svg className="w-4 h-4 shrink-0" fill="#1877F2" viewBox="0 0 24 24">

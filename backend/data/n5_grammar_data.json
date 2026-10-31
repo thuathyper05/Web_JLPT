@@ -1,5 +1,919 @@
 [
   {
+    "id": 67,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "～であれ (Cho dù là...)",
+    "structure": "N / Nghi vấn từ + であれ",
+    "meaning": "Bất kể trong trường hợp nào thì kết quả vẫn không thay đổi.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.507Z"
+  },
+  {
+    "id": 123,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "～たりとも",
+    "structure": "Số từ 1 + たりとも...ない",
+    "meaning": "Dù chỉ một... cũng không được để lãng phí hay vi phạm.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.060Z"
+  },
+  {
+    "id": 68,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "～極まりない (Hết sức, vô cùng)",
+    "structure": "A-na + 極まりない",
+    "meaning": "Biểu thị mức độ cảm xúc hoặc đánh giá đạt tới đỉnh điểm.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.507Z"
+  },
+  {
+    "id": 124,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "～すら / ～ですら",
+    "structure": "N + すら",
+    "meaning": "Thậm chí đến cả mức độ đơn giản này cũng không thể.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.060Z"
+  },
+  {
+    "id": 125,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "～をもって",
+    "structure": "N + ををもって",
+    "meaning": "Bằng phương tiện, hoặc lấy mốc thời điểm này làm hạn chót kết thúc.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.061Z"
+  },
+  {
+    "id": 126,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "～極まりない / ～極まる",
+    "structure": "A-na + 極まりない / 極まる",
+    "meaning": "Hết sức, vô cùng (mức độ cảm xúc hoặc hành vi đạt đến tột độ).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.061Z"
+  },
+  {
+    "id": 127,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "～を余儀なくされる",
+    "structure": "N + を余儀なくされる",
+    "meaning": "Buộc lòng phải chấp nhận tình thế không thể né tránh do hoàn cảnh bên ngoài.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.062Z"
+  },
+  {
+    "id": 128,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "～ならでは / ～ならではの",
+    "structure": "N + ならでは / N1 ならではの N2",
+    "meaning": "Chỉ có thể là người đó hay nơi đó mới có được nét đặc sắc tuyệt vời ấy.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.063Z"
+  },
+  {
+    "id": 129,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "～にたえない",
+    "structure": "V-ru / N + にたえない",
+    "meaning": "Không nén nổi cảm xúc (vui sướng, tri ân, xấu hổ).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.063Z"
+  },
+  {
+    "id": 130,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "～てやまない",
+    "structure": "V-te + やまない",
+    "meaning": "Thành tâm chúc phúc hoặc mong ước không bao giờ nguôi ngoai.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.064Z"
+  },
+  {
+    "id": 131,
+    "level": "N1",
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "～と相まって",
+    "structure": "N + と相まって",
+    "meaning": "Cộng hưởng cùng với yếu tố khác tạo nên hiệu quả vượt bậc.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.064Z"
+  },
+  {
+    "id": 132,
+    "level": "N1",
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "～を皮切りに（して）",
+    "structure": "N + を皮切りに",
+    "meaning": "Mở đầu chuỗi sự kiện hoặc hoạt động ngày càng nhân rộng ra sau đó.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.065Z"
+  },
+  {
+    "id": 65,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "～に際して (Nhân dịp, khi bắt đầu)",
+    "structure": "N / V-thể từ điển + に際して",
+    "meaning": "Diễn đạt thời điểm trọng đại, bắt đầu một sự kiện lớn trang trọng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.506Z"
+  },
+  {
+    "id": 111,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "～に際して / ～に際し",
+    "structure": "N / V-ru + に際して",
+    "meaning": "Nhân dịp, vào thời điểm bắt đầu một sự kiện lớn trang trọng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.054Z"
+  },
+  {
+    "id": 66,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "～を契機に (Lấy làm bước ngoặt hoặc cơ hội)",
+    "structure": "N + を契機に",
+    "meaning": "Một sự kiện đóng vai trò là động lực thúc đẩy thay đổi lớn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.506Z"
+  },
+  {
+    "id": 112,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "～を契機に / ～を契機として",
+    "structure": "N + を契機に",
+    "meaning": "Lấy một cơ hội hoặc sự kiện làm bước ngoặt thay đổi lớn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.054Z"
+  },
+  {
+    "id": 113,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "～つつある",
+    "structure": "V-masu (bỏ masu) + つつある",
+    "meaning": "Đang dần dần biến đổi theo một chiều hướng nào đó.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.055Z"
+  },
+  {
+    "id": 114,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "～にほかならない",
+    "structure": "N / Thể thông thường + からにほかならない",
+    "meaning": "Chính là, không gì khác ngoài (khẳng định lý do tuyệt đối duy nhất).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.055Z"
+  },
+  {
+    "id": 115,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "～ざるを得ない",
+    "structure": "V-nai (bỏ nai) + ざるを得ない (suru sang せざるを得ない)",
+    "meaning": "Đành phải, buộc phải làm dù trong lòng không muốn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.056Z"
+  },
+  {
+    "id": 116,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "～かねない",
+    "structure": "V-masu (bỏ masu) + かねない",
+    "meaning": "Có nguy cơ, có khả năng dẫn tới hậu quả xấu đáng lo ngại.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.057Z"
+  },
+  {
+    "id": 117,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "～かねる",
+    "structure": "V-masu (bỏ masu) + かねる",
+    "meaning": "Khó lòng có thể, không thể làm được (từ chối lịch sự trong kinh doanh).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.057Z"
+  },
+  {
+    "id": 118,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "～っこない",
+    "structure": "V-masu (bỏ masu) + っこない",
+    "meaning": "Tuyệt đối không thể nào (phủ định dứt khoát trong khẩu ngữ).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.058Z"
+  },
+  {
+    "id": 119,
+    "level": "N2",
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "～に相違ない",
+    "structure": "Thể thông thường + に相違ない",
+    "meaning": "Chắc chắn không sai lệch đi đâu được (khẳng định với mức độ tin tưởng cao).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.058Z"
+  },
+  {
+    "id": 120,
+    "level": "N2",
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "～にすぎない",
+    "structure": "Thể thông thường / N + にすぎない",
+    "meaning": "Chẳng qua chỉ là, không hơn không kém (đánh giá mức độ bình thường).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.058Z"
+  },
+  {
+    "id": 121,
+    "level": "N2",
+    "lesson_number": 11,
+    "order_num": 1,
+    "title": "～を問わず / ～は問わず",
+    "structure": "N + を問わず",
+    "meaning": "Không màng tới, bất kể điều kiện (tuổi tác, giới tính, quốc tịch).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.059Z"
+  },
+  {
+    "id": 122,
+    "level": "N2",
+    "lesson_number": 12,
+    "order_num": 1,
+    "title": "～にもかかわらず",
+    "structure": "Thể thông thường / N + にもかかわらず",
+    "meaning": "Mặc dù, bất chấp điều kiện (thực tế diễn ra ngược lại với suy đoán thông thường).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.059Z"
+  },
+  {
+    "id": 62,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "～わけだ (Thảo nào, hèn chi)",
+    "structure": "Thể thông thường + わけだ",
+    "meaning": "Giải thích kết quả hiển nhiên sau khi đã hiểu rõ nguyên nhân.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.504Z"
+  },
+  {
+    "id": 96,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "～に関して / ～に関する",
+    "structure": "N + に関して / N1 に関する N2",
+    "meaning": "Liên quan đến vấn đề nào đó (văn phong trang trọng hơn について).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.044Z"
+  },
+  {
+    "id": 63,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "～べきだ (Nên, phải làm)",
+    "structure": "V-thể từ điển + べきだ",
+    "meaning": "Bổn phận đạo đức, điều đương nhiên nên làm theo chuẩn mực.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.505Z"
+  },
+  {
+    "id": 97,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "～に対して / ～に対する",
+    "structure": "N + に対して / N1 に対する N2",
+    "meaning": "Đối với đối tượng (thái độ), hoặc so sánh hai đối tượng trái ngược nhau.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.045Z"
+  },
+  {
+    "id": 64,
+    "level": "N3",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "～に対して (Đối với, trái ngược với)",
+    "structure": "N + に対して / N1 に対する N2",
+    "meaning": "Biểu thị thái độ hướng tới đối tượng hoặc so sánh tương phản.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.505Z"
+  },
+  {
+    "id": 98,
+    "level": "N3",
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "～によって / ～による",
+    "structure": "N + によって / N1 による N2",
+    "meaning": "Chỉ nguyên nhân, phương tiện cách thức, chủ thể tạo ra tác phẩm, hoặc tùy theo đối tượng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.045Z"
+  },
+  {
+    "id": 99,
+    "level": "N3",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "～につれて / ～にしたがって",
+    "structure": "V-ru / N + につれて / にしたがって",
+    "meaning": "Cùng với sự biến đổi của A thì B cũng biến đổi song song theo chiều hướng kéo theo.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.046Z"
+  },
+  {
+    "id": 100,
+    "level": "N3",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "～をはじめ / ～をはじめとする",
+    "structure": "N + をはじめ / N1 をはじめとする N2",
+    "meaning": "Trước tiên phải kể đến đối tượng tiêu biểu nhất trong số nhiều đối tượng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.047Z"
+  },
+  {
+    "id": 101,
+    "level": "N3",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "～に基づいて / ～に基づく",
+    "structure": "N + に基づいて / N1 に基づく N2",
+    "meaning": "Lấy cái gì làm căn cứ, nền tảng cơ sở pháp lý hoặc dữ liệu thực tế.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.047Z"
+  },
+  {
+    "id": 102,
+    "level": "N3",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "～をめぐって / ～をめぐる",
+    "structure": "N + をめぐって / N1 をめぐる N2",
+    "meaning": "Xoay quanh một vấn đề tranh cãi, tranh chấp, hoặc thảo luận sôi nổi.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.048Z"
+  },
+  {
+    "id": 103,
+    "level": "N3",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "～わけではない / ～わけがない",
+    "structure": "Thể thông thường + わけではない / わけがない",
+    "meaning": "Không hẳn là như vậy / Tuyệt đối không có khả năng xảy ra.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.049Z"
+  },
+  {
+    "id": 104,
+    "level": "N3",
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "～わけにはいかない",
+    "structure": "V-ru / V-nai + わけにはいかない",
+    "meaning": "Không thể làm / Buộc phải làm vì ràng buộc đạo đức, phép tắc xã hội.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.049Z"
+  },
+  {
+    "id": 105,
+    "level": "N3",
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "～わりに（は） / ～にしては",
+    "structure": "Thể thông thường / N の + わりに / N + にしては",
+    "meaning": "So với tiêu chuẩn hay thực tế thì kết quả lại ngoài dự kiến bất ngờ.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.050Z"
+  },
+  {
+    "id": 106,
+    "level": "N3",
+    "lesson_number": 11,
+    "order_num": 1,
+    "title": "～くせに",
+    "structure": "Thể thông thường / N の + くせに",
+    "meaning": "Thế mà, vậy mà (mang sắc thái chê bai, mỉa mai, trách móc sâu sắc).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.050Z"
+  },
+  {
+    "id": 107,
+    "level": "N3",
+    "lesson_number": 12,
+    "order_num": 1,
+    "title": "～とおりに / ～どおりに",
+    "structure": "V-ru / V-ta / N + どおりに",
+    "meaning": "Làm theo đúng như những gì đã nghĩ, đã vẽ hoặc đã lên kế hoạch.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.051Z"
+  },
+  {
+    "id": 108,
+    "level": "N3",
+    "lesson_number": 13,
+    "order_num": 1,
+    "title": "～たびに",
+    "structure": "V-ru / N の + たびに",
+    "meaning": "Cứ mỗi lần làm gì là một kết quả quen thuộc lại lặp lại.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.051Z"
+  },
+  {
+    "id": 109,
+    "level": "N3",
+    "lesson_number": 14,
+    "order_num": 1,
+    "title": "～最中に / ～最中だ",
+    "structure": "V-te iru / N の + 最中に",
+    "meaning": "Đúng vào lúc đang tập trung làm việc gì thì sự việc bất ngờ chen ngang.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.052Z"
+  },
+  {
+    "id": 110,
+    "level": "N3",
+    "lesson_number": 15,
+    "order_num": 1,
+    "title": "～おかげで / ～せいで",
+    "structure": "Thể thông thường + おかげで / せいで",
+    "meaning": "Nhờ có (kết quả tích cực) / Do tại vì (hậu quả tiêu cực trách móc).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.053Z"
+  },
+  {
+    "id": 56,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 1,
+    "title": "～んです (Giải thích lý do, xác nhận)",
+    "structure": "Thể thông thường + んです",
+    "meaning": "Dùng để nhấn mạnh lý do hoặc hỏi xác nhận thông tin thực tế.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.496Z"
+  },
+  {
+    "id": 70,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 2,
+    "title": "～んです / ～んですが",
+    "structure": "Thể thông thường + んです",
+    "meaning": "Nhấn mạnh nguyên nhân, lý do hoặc dùng làm tiền đề mở đầu câu chuyện nhờ vả.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.022Z"
+  },
+  {
+    "id": 57,
+    "level": "N4",
+    "lesson_number": 27,
+    "order_num": 1,
+    "title": "Động từ thể khả năng (可能形)",
+    "structure": "Nhóm 1: i sang eる, Nhóm 2: られる, Nhóm 3: できる",
+    "meaning": "Diễn tả năng lực có thể làm được việc gì đó.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.502Z"
+  },
+  {
+    "id": 58,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 1,
+    "title": "～ながら (Vừa làm A vừa làm B)",
+    "structure": "V-masu (bỏ masu) + ながら",
+    "meaning": "Hai hành động diễn ra song song do cùng một chủ thể thực hiện.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.502Z"
+  },
+  {
+    "id": 71,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 2,
+    "title": "～ながら (Hành động đồng thời)",
+    "structure": "V-masu (bỏ masu) + ながら",
+    "meaning": "Hai hành động diễn ra song song cùng lúc, hành động sau là hành động chính.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.028Z"
+  },
+  {
+    "id": 72,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 3,
+    "title": "～し、～し (Liệt kê lý do)",
+    "structure": "Thể thông thường + し、 thể thông thường + し",
+    "meaning": "Liệt kê từ 2 lý do hoặc đặc điểm trở lên để đưa ra kết luận.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.029Z"
+  },
+  {
+    "id": 73,
+    "level": "N4",
+    "lesson_number": 29,
+    "order_num": 1,
+    "title": "V-te います (Trạng thái kết quả của tự động từ)",
+    "structure": "N が V-te います",
+    "meaning": "Miêu tả trạng thái hiển hiện trước mắt của sự vật sau một biến cố (ví dụ: cửa đang mở, đèn đang sáng).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.030Z"
+  },
+  {
+    "id": 74,
+    "level": "N4",
+    "lesson_number": 30,
+    "order_num": 1,
+    "title": "V-te あります (Trạng thái có chủ đích của tha động từ)",
+    "structure": "N が V-te あります",
+    "meaning": "Miêu tả trạng thái của sự vật là kết quả của một hành động có chủ đích của con người.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.030Z"
+  },
+  {
+    "id": 75,
+    "level": "N4",
+    "lesson_number": 30,
+    "order_num": 2,
+    "title": "V-te おきます (Hành động chuẩn bị trước)",
+    "structure": "V-te + おきます",
+    "meaning": "Làm sẵn việc gì đó trước để chuẩn bị cho một việc tiếp theo, hoặc giữ nguyên trạng thái.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.031Z"
+  },
+  {
+    "id": 59,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 1,
+    "title": "～つもりです (Dự định làm gì)",
+    "structure": "V-thể từ điển + つもりです",
+    "meaning": "Biểu thị ý chí, kế hoạch đã được dự tính từ trước.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.503Z"
+  },
+  {
+    "id": 76,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 2,
+    "title": "Động từ thể ý chí (意向形) + と思っています",
+    "structure": "V-ý chí + と思っています",
+    "meaning": "Biểu thị ý định, quyết tâm của người nói đã ấp ủ từ trước đến nay.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.032Z"
+  },
+  {
+    "id": 77,
+    "level": "N4",
+    "lesson_number": 32,
+    "order_num": 1,
+    "title": "V-ta / V-nai ほうがいいです",
+    "structure": "V-ta / V-nai + ほうがいいです",
+    "meaning": "Đưa ra lời khuyên nên hoặc không nên làm gì trong tình huống cụ thể.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.032Z"
+  },
+  {
+    "id": 78,
+    "level": "N4",
+    "lesson_number": 32,
+    "order_num": 2,
+    "title": "～でしょう / ～かもしれません",
+    "structure": "Thể thông thường + でしょう / かもしれません",
+    "meaning": "Phán đoán khả năng xảy ra của sự việc (khoảng 70% hoặc 50%).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.033Z"
+  },
+  {
+    "id": 79,
+    "level": "N4",
+    "lesson_number": 33,
+    "order_num": 1,
+    "title": "Thể mệnh lệnh (命令形) & Thể cấm đoán (禁止形)",
+    "structure": "Nhóm 1: u sang e | Nhóm 2: + ろ | Nhóm 3: しろ / こい",
+    "meaning": "Ra lệnh dứt khoát hoặc cảnh báo cấm chỉ trong tình huống khẩn cấp, biển báo.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.033Z"
+  },
+  {
+    "id": 80,
+    "level": "N4",
+    "lesson_number": 34,
+    "order_num": 1,
+    "title": "V1-ta / N の とおりに V2",
+    "structure": "V1-ru / V1-ta / N の + とおりに",
+    "meaning": "Thực hiện hành động V2 theo đúng chính xác như chỉ dẫn hoặc hình mẫu của V1.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.034Z"
+  },
+  {
+    "id": 81,
+    "level": "N4",
+    "lesson_number": 34,
+    "order_num": 2,
+    "title": "V1-ta / N の あとで V2",
+    "structure": "V1-ta / N の + あとで",
+    "meaning": "Sau khi làm xong V1 thì thực hiện tiếp V2.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.034Z"
+  },
+  {
+    "id": 82,
+    "level": "N4",
+    "lesson_number": 35,
+    "order_num": 1,
+    "title": "Động từ thể điều kiện (条件形 / ば)",
+    "structure": "Nhóm 1: u sang eば | Nhóm 2: + れば | Nhóm 3: すれば / くれば",
+    "meaning": "Nếu điều kiện trước xảy ra thì hệ quả sau sẽ xảy ra.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.035Z"
+  },
+  {
+    "id": 83,
+    "level": "N4",
+    "lesson_number": 36,
+    "order_num": 1,
+    "title": "V-ru / V-nai ようにします",
+    "structure": "V-ru / V-nai + ようにします",
+    "meaning": "Luôn nỗ lực, cố gắng duy trì một thói quen tốt hoặc từ bỏ thói quen xấu.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.036Z"
+  },
+  {
+    "id": 60,
+    "level": "N4",
+    "lesson_number": 37,
+    "order_num": 1,
+    "title": "Động từ thể bị động (受身形)",
+    "structure": "N1 は N2 に V-bị động",
+    "meaning": "Hành động bị tác động bởi đối tượng khác (thường gây phiền toái).",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.503Z"
+  },
+  {
+    "id": 84,
+    "level": "N4",
+    "lesson_number": 38,
+    "order_num": 1,
+    "title": "Danh từ hóa động từ (のは / のが / のを)",
+    "structure": "V-thể từ điển + のは / のが / のを",
+    "meaning": "Biến một mệnh đề động từ thành danh từ để làm chủ ngữ hoặc bổ ngữ trong câu.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.037Z"
+  },
+  {
+    "id": 85,
+    "level": "N4",
+    "lesson_number": 39,
+    "order_num": 1,
+    "title": "Nguyên nhân - lý do (て / で)",
+    "structure": "V-te / V-nakute / A-i くて / N で",
+    "meaning": "Vì nguyên nhân khách quan dẫn tới cảm xúc, trạng thái bất ngờ ngoài ý muốn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.038Z"
+  },
+  {
+    "id": 86,
+    "level": "N4",
+    "lesson_number": 40,
+    "order_num": 1,
+    "title": "Nghi vấn từ lồng ghép (か / かどうか)",
+    "structure": "Câu hỏi nghi vấn + か / Thể thông thường + かどうか",
+    "meaning": "Lồng một câu hỏi thành một vế nhỏ trong câu lớn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.038Z"
+  },
+  {
+    "id": 87,
+    "level": "N4",
+    "lesson_number": 41,
+    "order_num": 1,
+    "title": "Hành động cho và nhận kính trọng (いただきます / くださいます)",
+    "structure": "V-te いただきます / くださいます / やります",
+    "meaning": "Diễn tả hành động làm ơn cho ai đó với sự tôn trọng đối với cấp trên hoặc người lớn tuổi.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.039Z"
+  },
+  {
+    "id": 88,
+    "level": "N4",
+    "lesson_number": 42,
+    "order_num": 1,
+    "title": "Mục đích hành động (ために)",
+    "structure": "V-thể từ điển / N の + ために",
+    "meaning": "Làm việc gì đó vì mục đích to lớn hoặc vì lợi ích của đối tượng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.040Z"
+  },
+  {
+    "id": 89,
+    "level": "N4",
+    "lesson_number": 43,
+    "order_num": 1,
+    "title": "Dường như, sắp sửa (そうです - Biểu hiện bề ngoài)",
+    "structure": "V-masu (bỏ masu) + そうです | A-i (bỏ i) + そうです",
+    "meaning": "Phán đoán dựa trên những gì nhìn thấy trước mắt.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.040Z"
+  },
+  {
+    "id": 90,
+    "level": "N4",
+    "lesson_number": 44,
+    "order_num": 1,
+    "title": "Quá mức (～すぎます) / Dễ và Khó (～やすい / ～にくい)",
+    "structure": "V-masu (bỏ masu) + すぎます / やすい / にくい",
+    "meaning": "Làm điều gì quá giới hạn hoặc tính chất thao tác dễ dàng, khó khăn.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.041Z"
+  },
+  {
+    "id": 91,
+    "level": "N4",
+    "lesson_number": 45,
+    "order_num": 1,
+    "title": "Trường hợp giả định (場合は) / Tương phản bất ngờ (のに)",
+    "structure": "Thể thông thường + 場合は / のに",
+    "meaning": "Giả định tình huống phát sinh hoặc diễn tả sự việc xảy ra trái ngược với kỳ vọng.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.041Z"
+  },
+  {
+    "id": 92,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 1,
+    "title": "Giai đoạn thời điểm (ところです) / Vừa mới xong (ばかりです)",
+    "structure": "V-ru / V-te iru / V-ta + ところです | V-ta + ばかりです",
+    "meaning": "Xác định chính xác thời điểm trước khi làm, đang làm, vừa làm xong.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.042Z"
+  },
+  {
+    "id": 93,
+    "level": "N4",
+    "lesson_number": 47,
+    "order_num": 1,
+    "title": "Nghe nói là (そうです - Truyền đạt) / Có vẻ như (ようです)",
+    "structure": "Thể thông thường + そうです / ようです",
+    "meaning": "Truyền đạt lại tin tức nghe được từ nguồn khác hoặc suy đoán qua các giác quan.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.042Z"
+  },
+  {
+    "id": 61,
+    "level": "N4",
+    "lesson_number": 48,
+    "order_num": 1,
+    "title": "Động từ thể sai khiến (使役形)",
+    "structure": "V-sai khiến (させる / せる)",
+    "meaning": "Cho phép hoặc bắt buộc ai đó làm việc gì.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T16:23:25.504Z"
+  },
+  {
+    "id": 94,
+    "level": "N4",
+    "lesson_number": 49,
+    "order_num": 1,
+    "title": "Tôn kính ngữ (尊敬語 - 尊敬動詞, お～になります)",
+    "structure": "お + V-masu (bỏ masu) + になります",
+    "meaning": "Biểu thị sự kính trọng cao nhất đối với hành động của khách hàng, cấp trên.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.043Z"
+  },
+  {
+    "id": 95,
+    "level": "N4",
+    "lesson_number": 50,
+    "order_num": 1,
+    "title": "Khiêm nhường ngữ (謙譲語 - 謙譲動詞, お～します)",
+    "structure": "お + V-masu (bỏ masu) + します / いたします",
+    "meaning": "Hạ thấp hành động của bản thân để nâng vị thế của người nghe.",
+    "usage_notes": null,
+    "examples": [],
+    "created_at": "2026-10-31T17:20:44.043Z"
+  },
+  {
+    "id": 1,
+    "level": "N5",
     "lesson_number": 1,
     "order_num": 1,
     "title": "N1 は N2 です (N1 là N2)",
@@ -9,22 +923,25 @@
     "examples": [
       {
         "jp": "わたしはマイク・ミラーです。",
-        "kana": "わたしはマイク・ミラーです。",
-        "vi": "Tôi là Mike Miller."
+        "vi": "Tôi là Mike Miller.",
+        "kana": "わたしはマイク・ミラーです。"
       },
       {
         "jp": "サントスさんはブラジル人です。",
-        "kana": "サントスさんはブラジルじんです。",
-        "vi": "Anh Santos là người Brazil."
+        "vi": "Anh Santos là người Brazil.",
+        "kana": "サントスさんはブラジルじんです。"
       },
       {
         "jp": "わたしは会社員です。",
-        "kana": "わたしはかいしゃいんです。",
-        "vi": "Tôi là nhân viên công ty."
+        "vi": "Tôi là nhân viên công ty.",
+        "kana": "わたしはかいしゃいんです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.623Z"
   },
   {
+    "id": 2,
+    "level": "N5",
     "lesson_number": 1,
     "order_num": 2,
     "title": "N1 は N2 じゃありません (N1 không phải là N2)",
@@ -34,17 +951,20 @@
     "examples": [
       {
         "jp": "サントスさんは学生じゃありません。",
-        "kana": "サントスさんはがくせいじゃありません。",
-        "vi": "Anh Santos không phải là học sinh."
+        "vi": "Anh Santos không phải là học sinh.",
+        "kana": "サントスさんはがくせいじゃありません。"
       },
       {
         "jp": "わたしは医者ではありません。",
-        "kana": "わたしはいしゃではありません。",
-        "vi": "Tôi không phải là bác sĩ."
+        "vi": "Tôi không phải là bác sĩ.",
+        "kana": "わたしはいしゃではありません。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.626Z"
   },
   {
+    "id": 3,
+    "level": "N5",
     "lesson_number": 1,
     "order_num": 3,
     "title": "N1 は N2 ですか (N1 có phải là N2 không?)",
@@ -54,22 +974,25 @@
     "examples": [
       {
         "jp": "ミラーさんはアメリカ人ですか。",
-        "kana": "ミラーさんはアメリカじんですか。",
-        "vi": "Anh Miller có phải là người Mỹ không?"
+        "vi": "Anh Miller có phải là người Mỹ không?",
+        "kana": "ミラーさんはアメリカじんですか。"
       },
       {
         "jp": "はい、アメリカ人です。",
-        "kana": "はい、アメリカじんです。",
-        "vi": "Vâng, là người Mỹ."
+        "vi": "Vâng, là người Mỹ.",
+        "kana": "はい、アメリカじんです。"
       },
       {
         "jp": "いいえ、アメリカ人じゃありません。",
-        "kana": "いいえ、アメリカじんじゃありません。",
-        "vi": "Không, không phải người Mỹ."
+        "vi": "Không, không phải người Mỹ.",
+        "kana": "いいえ、アメリカじんじゃありません。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.627Z"
   },
   {
+    "id": 4,
+    "level": "N5",
     "lesson_number": 1,
     "order_num": 4,
     "title": "N も (Cũng là...)",
@@ -79,12 +1002,15 @@
     "examples": [
       {
         "jp": "ミラーさんは会社員です。グプタさんも会社員です。",
-        "kana": "ミラーさんはかいしゃいんです。グプタさんもかいしゃいんです。",
-        "vi": "Anh Miller là nhân viên công ty. Anh Gupta cũng là nhân viên công ty."
+        "vi": "Anh Miller là nhân viên công ty. Anh Gupta cũng là nhân viên công ty.",
+        "kana": "ミラーさんはかいしゃいんです。グプタさんもかいしゃいんです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.627Z"
   },
   {
+    "id": 5,
+    "level": "N5",
     "lesson_number": 1,
     "order_num": 5,
     "title": "N1 の N2 (N2 của N1 / N2 thuộc N1)",
@@ -94,12 +1020,15 @@
     "examples": [
       {
         "jp": "ミラーさんはIMCの社員です。",
-        "kana": "ミラーさんはIMCのしゃいんです。",
-        "vi": "Anh Miller là nhân viên của công ty IMC."
+        "vi": "Anh Miller là nhân viên của công ty IMC.",
+        "kana": "ミラーさんはIMCのしゃいんです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.628Z"
   },
   {
+    "id": 6,
+    "level": "N5",
     "lesson_number": 2,
     "order_num": 1,
     "title": "これ / それ / あれ (Cái này / Cái đó / Cái kia)",
@@ -109,22 +1038,25 @@
     "examples": [
       {
         "jp": "これは辞書です。",
-        "kana": "これはじしょです。",
-        "vi": "Đây là cuốn từ điển."
+        "vi": "Đây là cuốn từ điển.",
+        "kana": "これはじしょです。"
       },
       {
         "jp": "それは傘ですか。",
-        "kana": "それはかさですか。",
-        "vi": "Đó có phải là cái ô không?"
+        "vi": "Đó có phải là cái ô không?",
+        "kana": "それはかさですか。"
       },
       {
         "jp": "あれはコンピューターの本です。",
-        "kana": "あれはコンピューターのほんです。",
-        "vi": "Kia là cuốn sách về máy tính."
+        "vi": "Kia là cuốn sách về máy tính.",
+        "kana": "あれはコンピューターのほんです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.628Z"
   },
   {
+    "id": 7,
+    "level": "N5",
     "lesson_number": 2,
     "order_num": 2,
     "title": "この N / その N / あの N (N này / N đó / N kia)",
@@ -134,17 +1066,20 @@
     "examples": [
       {
         "jp": "この本はわたしのです。",
-        "kana": "このほんはわたしのです。",
-        "vi": "Cuốn sách này là của tôi."
+        "vi": "Cuốn sách này là của tôi.",
+        "kana": "このほんはわたしのです。"
       },
       {
         "jp": "あの人はどなたですか。",
-        "kana": "あのひとはどなたですか。",
-        "vi": "Người kia là vị nào thế ạ?"
+        "vi": "Người kia là vị nào thế ạ?",
+        "kana": "あのひとはどなたですか。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.628Z"
   },
   {
+    "id": 8,
+    "level": "N5",
     "lesson_number": 2,
     "order_num": 3,
     "title": "Câu 1 か、Câu 2 か (Lựa chọn Cái này hay Cái kia?)",
@@ -154,12 +1089,15 @@
     "examples": [
       {
         "jp": "これは「９」ですか、「７」ですか。…「９」です。",
-        "kana": "これは「きゅう」ですか、「なな」ですか。…「きゅう」です。",
-        "vi": "Đây là số 9 hay số 7? ...Là số 9."
+        "vi": "Đây là số 9 hay số 7? ...Là số 9.",
+        "kana": "これは「きゅう」ですか、「なな」ですか。…「きゅう」です。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.629Z"
   },
   {
+    "id": 9,
+    "level": "N5",
     "lesson_number": 3,
     "order_num": 1,
     "title": "ここ / そこ / あそこ / どこ (Chỗ này / Chỗ đó / Chỗ kia / Ở đâu)",
@@ -169,17 +1107,20 @@
     "examples": [
       {
         "jp": "ここは教室です。",
-        "kana": "ここはきょうしつです。",
-        "vi": "Đây là phòng học."
+        "vi": "Đây là phòng học.",
+        "kana": "ここはきょうしつです。"
       },
       {
         "jp": "トイレはどこですか。…あそこです。",
-        "kana": "トイレはどこですか。…あそこです。",
-        "vi": "Nhà vệ sinh ở đâu ạ? ...Ở đằng kia ạ."
+        "vi": "Nhà vệ sinh ở đâu ạ? ...Ở đằng kia ạ.",
+        "kana": "トイレはどこですか。…あそこです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.629Z"
   },
   {
+    "id": 10,
+    "level": "N5",
     "lesson_number": 3,
     "order_num": 2,
     "title": "N は [Địa điểm] です (N ở [Địa điểm])",
@@ -189,17 +1130,20 @@
     "examples": [
       {
         "jp": "事務所はあちらです。",
-        "kana": "じむしょはあちらです。",
-        "vi": "Văn phòng ở phía đằng kia."
+        "vi": "Văn phòng ở phía đằng kia.",
+        "kana": "じむしょはあちらです。"
       },
       {
         "jp": "ミラーさんは会議室です。",
-        "kana": "ミラーさんはかいぎしつです。",
-        "vi": "Anh Miller đang ở phòng họp."
+        "vi": "Anh Miller đang ở phòng họp.",
+        "kana": "ミラーさんはかいぎしつです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.629Z"
   },
   {
+    "id": 11,
+    "level": "N5",
     "lesson_number": 4,
     "order_num": 1,
     "title": "今 ～時 ～分 です (Bây giờ là... giờ... phút)",
@@ -209,12 +1153,15 @@
     "examples": [
       {
         "jp": "今何時ですか。…4時半です。",
-        "kana": "いまなんじですか。…よじはんです。",
-        "vi": "Bây giờ là mấy giờ? ...Là 4 giờ rưỡi."
+        "vi": "Bây giờ là mấy giờ? ...Là 4 giờ rưỡi.",
+        "kana": "いまなんじですか。…よじはんです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.630Z"
   },
   {
+    "id": 12,
+    "level": "N5",
     "lesson_number": 4,
     "order_num": 2,
     "title": "Động từ thì Hiện tại & Quá khứ (ます / ません / ました / ませんでした)",
@@ -224,17 +1171,20 @@
     "examples": [
       {
         "jp": "毎朝6時に起きます。",
-        "kana": "まいあさろくじにおきます。",
-        "vi": "Mỗi sáng tôi thức dậy lúc 6 giờ."
+        "vi": "Mỗi sáng tôi thức dậy lúc 6 giờ.",
+        "kana": "まいあさろくじにおきます。"
       },
       {
         "jp": "昨日は勉強しませんでした。",
-        "kana": "きのうはべんきょうしませんでした。",
-        "vi": "Hôm qua tôi đã không học bài."
+        "vi": "Hôm qua tôi đã không học bài.",
+        "kana": "きのうはべんきょうしませんでした。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.630Z"
   },
   {
+    "id": 13,
+    "level": "N5",
     "lesson_number": 4,
     "order_num": 3,
     "title": "N (Thời gian) に V (Làm gì vào lúc...)",
@@ -244,12 +1194,15 @@
     "examples": [
       {
         "jp": "日曜日に奈良へ行きました。",
-        "kana": "にちようびに ならへ いきました。",
-        "vi": "Tôi đã đi Nara vào Chủ Nhật."
+        "vi": "Tôi đã đi Nara vào Chủ Nhật.",
+        "kana": "にちようびに ならへ いきました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.631Z"
   },
   {
+    "id": 14,
+    "level": "N5",
     "lesson_number": 4,
     "order_num": 4,
     "title": "N1 から N2 まで (Từ N1 đến N2)",
@@ -259,12 +1212,15 @@
     "examples": [
       {
         "jp": "銀行は9時から3時までです。",
-        "kana": "ぎんこうは くじから さんじまでです。",
-        "vi": "Ngân hàng mở cửa từ 9 giờ đến 3 giờ."
+        "vi": "Ngân hàng mở cửa từ 9 giờ đến 3 giờ.",
+        "kana": "ぎんこうは くじから さんじまでです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.631Z"
   },
   {
+    "id": 15,
+    "level": "N5",
     "lesson_number": 5,
     "order_num": 1,
     "title": "N (Địa điểm) へ 行きます / 来ます / 帰ります (Đi / Đến / Về đâu)",
@@ -274,17 +1230,20 @@
     "examples": [
       {
         "jp": "わたしは京都へ行きます。",
-        "kana": "わたしはきょうとへいきます。",
-        "vi": "Tôi đi đến Kyoto."
+        "vi": "Tôi đi đến Kyoto.",
+        "kana": "わたしはきょうとへいきます。"
       },
       {
         "jp": "来週日本へ来ます。",
-        "kana": "らいしゅうにほんへきます。",
-        "vi": "Tuần sau tôi đến Nhật Bản."
+        "vi": "Tuần sau tôi đến Nhật Bản.",
+        "kana": "らいしゅうにほんへきます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.631Z"
   },
   {
+    "id": 16,
+    "level": "N5",
     "lesson_number": 5,
     "order_num": 2,
     "title": "どこ [へ] も 行きません (Không đi đâu cả)",
@@ -294,12 +1253,15 @@
     "examples": [
       {
         "jp": "日曜日どこも行きませんでした。",
-        "kana": "にちようびどこもいきませんでした。",
-        "vi": "Chủ nhật tôi đã chẳng đi đâu cả."
+        "vi": "Chủ nhật tôi đã chẳng đi đâu cả.",
+        "kana": "にちようびどこもいきませんでした。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.631Z"
   },
   {
+    "id": 17,
+    "level": "N5",
     "lesson_number": 5,
     "order_num": 3,
     "title": "N (Phương tiện) で 行きます (Đi bằng phương tiện...)",
@@ -309,17 +1271,20 @@
     "examples": [
       {
         "jp": "電車で行きます。",
-        "kana": "でんしゃでいきます。",
-        "vi": "Tôi đi bằng tàu điện."
+        "vi": "Tôi đi bằng tàu điện.",
+        "kana": "でんしゃでいきます。"
       },
       {
         "jp": "駅から歩いて帰りました。",
-        "kana": "えきからあるいてかえりました。",
-        "vi": "Tôi đã đi bộ về từ nhà ga."
+        "vi": "Tôi đã đi bộ về từ nhà ga.",
+        "kana": "えきからあるいてかえりました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.632Z"
   },
   {
+    "id": 18,
+    "level": "N5",
     "lesson_number": 6,
     "order_num": 1,
     "title": "N を V (Làm cái gì - Tân ngữ trực tiếp)",
@@ -329,17 +1294,20 @@
     "examples": [
       {
         "jp": "ごはんを食べます。",
-        "kana": "ごはんをたべます。",
-        "vi": "Tôi ăn cơm."
+        "vi": "Tôi ăn cơm.",
+        "kana": "ごはんをたべます。"
       },
       {
         "jp": "水を飲みます。",
-        "kana": "みずをのみます。",
-        "vi": "Tôi uống nước."
+        "vi": "Tôi uống nước.",
+        "kana": "みずをのみます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.632Z"
   },
   {
+    "id": 19,
+    "level": "N5",
     "lesson_number": 6,
     "order_num": 2,
     "title": "N (Địa điểm) で V (Làm gì tại địa điểm nào)",
@@ -349,12 +1317,15 @@
     "examples": [
       {
         "jp": "図書館で本を読みます。",
-        "kana": "としょかんでほんをよみます。",
-        "vi": "Tôi đọc sách ở thư viện."
+        "vi": "Tôi đọc sách ở thư viện.",
+        "kana": "としょかんでほんをよみます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.632Z"
   },
   {
+    "id": 20,
+    "level": "N5",
     "lesson_number": 6,
     "order_num": 3,
     "title": "V ませんか / V ましょう (Rủ rê / Đề nghị cùng làm)",
@@ -364,12 +1335,15 @@
     "examples": [
       {
         "jp": "いっしょに京都へ行きませんか。…ええ、行きましょう。",
-        "kana": "いっしょにきょうとへいきませんか。…ええ、いきましょう。",
-        "vi": "Bạn cùng đi Kyoto với tôi không? ...Vâng, cùng đi nhé!"
+        "vi": "Bạn cùng đi Kyoto với tôi không? ...Vâng, cùng đi nhé!",
+        "kana": "いっしょにきょうとへいきませんか。…ええ、いきましょう。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.633Z"
   },
   {
+    "id": 21,
+    "level": "N5",
     "lesson_number": 7,
     "order_num": 1,
     "title": "N (Công cụ) で V (Làm gì bằng dụng cụ/ngôn ngữ gì)",
@@ -379,17 +1353,20 @@
     "examples": [
       {
         "jp": "はしでご飯を食べます。",
-        "kana": "はしでごはんをたべます。",
-        "vi": "Tôi ăn cơm bằng đũa."
+        "vi": "Tôi ăn cơm bằng đũa.",
+        "kana": "はしでごはんをたべます。"
       },
       {
         "jp": "日本語で手紙を書きました。",
-        "kana": "にほんごでてがみをかきました。",
-        "vi": "Tôi đã viết thư bằng tiếng Nhật."
+        "vi": "Tôi đã viết thư bằng tiếng Nhật.",
+        "kana": "にほんごでてがみをかきました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.633Z"
   },
   {
+    "id": 22,
+    "level": "N5",
     "lesson_number": 7,
     "order_num": 2,
     "title": "N (Người) に あげます / もらいます (Tặng cho ai / Nhận từ ai)",
@@ -399,17 +1376,20 @@
     "examples": [
       {
         "jp": "わたしは木村さんに花をあげました。",
-        "kana": "わたしはきむらさんにはなをあげました。",
-        "vi": "Tôi đã tặng hoa cho chị Kimura."
+        "vi": "Tôi đã tặng hoa cho chị Kimura.",
+        "kana": "わたしはきむらさんにはなをあげました。"
       },
       {
         "jp": "わたしは山田さんに本をもらいました。",
-        "kana": "わたしはやまださんにほんをもらいました。",
-        "vi": "Tôi đã nhận cuốn sách từ anh Yamada."
+        "vi": "Tôi đã nhận cuốn sách từ anh Yamada.",
+        "kana": "わたしはやまださんにほんをもらいました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.633Z"
   },
   {
+    "id": 23,
+    "level": "N5",
     "lesson_number": 7,
     "order_num": 3,
     "title": "もう V ました (Đã làm... rồi)",
@@ -419,12 +1399,15 @@
     "examples": [
       {
         "jp": "もう昼ごはんを食べましたか。…いいえ、まだです。",
-        "kana": "もうひるごはんをたべましたか。…いいえ、まだです。",
-        "vi": "Bạn đã ăn trưa chưa? ...Chưa, tôi chưa ăn."
+        "vi": "Bạn đã ăn trưa chưa? ...Chưa, tôi chưa ăn.",
+        "kana": "もうひるごはんをたべましたか。…いいえ、まだです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.634Z"
   },
   {
+    "id": 24,
+    "level": "N5",
     "lesson_number": 8,
     "order_num": 1,
     "title": "Tính từ đuôi い và Tính từ đuôi な (Cách chia & Vị ngữ)",
@@ -434,17 +1417,20 @@
     "examples": [
       {
         "jp": "富士山は高いです。",
-        "kana": "ふじさんはたかいです。",
-        "vi": "Núi Phú Sĩ thì cao."
+        "vi": "Núi Phú Sĩ thì cao.",
+        "kana": "ふじさんはたかいです。"
       },
       {
         "jp": "この町は静かじゃありません。",
-        "kana": "このまちはしずかじゃありません。",
-        "vi": "Thành phố này không yên tĩnh."
+        "vi": "Thành phố này không yên tĩnh.",
+        "kana": "このまちはしずかじゃありません。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.634Z"
   },
   {
+    "id": 25,
+    "level": "N5",
     "lesson_number": 8,
     "order_num": 2,
     "title": "A な N / A い N (Tính từ bổ nghĩa cho Danh từ)",
@@ -454,17 +1440,20 @@
     "examples": [
       {
         "jp": "桜はきれいな花です。",
-        "kana": "さくらはきれいなはなです。",
-        "vi": "Hoa anh đào là một loài hoa đẹp."
+        "vi": "Hoa anh đào là một loài hoa đẹp.",
+        "kana": "さくらはきれいなはなです。"
       },
       {
         "jp": "これは新しいパソコンです。",
-        "kana": "これはあたらしいパソコンです。",
-        "vi": "Đây là chiếc máy vi tính mới."
+        "vi": "Đây là chiếc máy vi tính mới.",
+        "kana": "これはあたらしいパソコンです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.634Z"
   },
   {
+    "id": 26,
+    "level": "N5",
     "lesson_number": 9,
     "order_num": 1,
     "title": "N が あります / わかります (Có / Hiểu cái gì)",
@@ -474,17 +1463,20 @@
     "examples": [
       {
         "jp": "わたしは日本語がわかります。",
-        "kana": "わたしはにほんごがわかります。",
-        "vi": "Tôi hiểu tiếng Nhật."
+        "vi": "Tôi hiểu tiếng Nhật.",
+        "kana": "わたしはにほんごがわかります。"
       },
       {
         "jp": "車があります。",
-        "kana": "くるまがあります。",
-        "vi": "Tôi có xe ô tô."
+        "vi": "Tôi có xe ô tô.",
+        "kana": "くるまがあります。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.635Z"
   },
   {
+    "id": 27,
+    "level": "N5",
     "lesson_number": 9,
     "order_num": 2,
     "title": "N が 好きです / 嫌いです / 上手です / 下手です (Thích / Ghét / Giỏi / Kém)",
@@ -494,17 +1486,20 @@
     "examples": [
       {
         "jp": "わたしはイタリア料理が好きです。",
-        "kana": "わたしはイタリアりょうりがすきです。",
-        "vi": "Tôi thích món ăn Ý."
+        "vi": "Tôi thích món ăn Ý.",
+        "kana": "わたしはイタリアりょうりがすきです。"
       },
       {
         "jp": "サントスさんはサッカーが上手です。",
-        "kana": "サントスさんはサッカーがじょうずです。",
-        "vi": "Anh Santos đá bóng rất giỏi."
+        "vi": "Anh Santos đá bóng rất giỏi.",
+        "kana": "サントスさんはサッカーがじょうずです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.635Z"
   },
   {
+    "id": 28,
+    "level": "N5",
     "lesson_number": 10,
     "order_num": 1,
     "title": "N が あります / います (Có người / đồ vật ở đâu)",
@@ -514,17 +1509,20 @@
     "examples": [
       {
         "jp": "教室にテレビがあります。",
-        "kana": "きょうしつにテレビがあります。",
-        "vi": "Trong lớp học có một chiếc TV."
+        "vi": "Trong lớp học có một chiếc TV.",
+        "kana": "きょうしつにテレビがあります。"
       },
       {
         "jp": "あそこに男の人がいます。",
-        "kana": "あそこに おとこのひとが います。",
-        "vi": "Ở đằng kia có một người đàn ông."
+        "vi": "Ở đằng kia có một người đàn ông.",
+        "kana": "あそこに おとこのひとが います。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.636Z"
   },
   {
+    "id": 29,
+    "level": "N5",
     "lesson_number": 11,
     "order_num": 1,
     "title": "Lượng từ (Số đếm) trong câu",
@@ -534,17 +1532,20 @@
     "examples": [
       {
         "jp": "りんごを4つ買いました。",
-        "kana": "りんごをよっつかいました。",
-        "vi": "Tôi đã mua 4 quả táo."
+        "vi": "Tôi đã mua 4 quả táo.",
+        "kana": "りんごをよっつかいました。"
       },
       {
         "jp": "外国人の学生が2人います。",
-        "kana": "がいこくじんのがくせいがふたりいます。",
-        "vi": "Có 2 bạn học sinh người nước ngoài."
+        "vi": "Có 2 bạn học sinh người nước ngoài.",
+        "kana": "がいこくじんのがくせいがふたりいます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.636Z"
   },
   {
+    "id": 30,
+    "level": "N5",
     "lesson_number": 12,
     "order_num": 1,
     "title": "So sánh hơn: N1 は N2 より A です (N1 thì A hơn N2)",
@@ -554,17 +1555,20 @@
     "examples": [
       {
         "jp": "新幹線は飛行機より安いです。",
-        "kana": "しんかんせんはひこうきよりやすいです。",
-        "vi": "Tàu Shinkansen thì rẻ hơn máy bay."
+        "vi": "Tàu Shinkansen thì rẻ hơn máy bay.",
+        "kana": "しんかんせんはひこうきよりやすいです。"
       },
       {
         "jp": "日本料理と中華料理とどちらが好きですか。…日本料理のほうが好きです。",
-        "kana": "にほんりょうりとちゅうかりょうりとどちらがすきですか。…にほんりょうりのほうがすきです。",
-        "vi": "Giữa món Nhật và món Trung bạn thích món nào hơn? ...Tôi thích món Nhật hơn."
+        "vi": "Giữa món Nhật và món Trung bạn thích món nào hơn? ...Tôi thích món Nhật hơn.",
+        "kana": "にほんりょうりとちゅうかりょうりとどちらがすきですか。…にほんりょうりのほうがすきです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.636Z"
   },
   {
+    "id": 31,
+    "level": "N5",
     "lesson_number": 12,
     "order_num": 2,
     "title": "So sánh nhất: [Phạm vi] の中で [Đối tượng] が いちばん A です",
@@ -574,12 +1578,15 @@
     "examples": [
       {
         "jp": "スポーツの中でサッカーがいちばんおもしろいです。",
-        "kana": "スポーツのなかでサッカーがいちばんおもしろいです。",
-        "vi": "Trong các môn thể thao thì bóng đá thú vị nhất."
+        "vi": "Trong các môn thể thao thì bóng đá thú vị nhất.",
+        "kana": "スポーツのなかでサッカーがいちばんおもしろいです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.637Z"
   },
   {
+    "id": 32,
+    "level": "N5",
     "lesson_number": 13,
     "order_num": 1,
     "title": "N が 欲しいです (Tôi muốn có N)",
@@ -589,12 +1596,15 @@
     "examples": [
       {
         "jp": "わたしは新しいパソコンが欲しいです。",
-        "kana": "わたしはあたらしいパソコンがほしいです。",
-        "vi": "Tôi muốn có một chiếc máy tính mới."
+        "vi": "Tôi muốn có một chiếc máy tính mới.",
+        "kana": "わたしはあたらしいパソコンがほしいです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.637Z"
   },
   {
+    "id": 33,
+    "level": "N5",
     "lesson_number": 13,
     "order_num": 2,
     "title": "V たいです (Tôi muốn làm V)",
@@ -604,17 +1614,20 @@
     "examples": [
       {
         "jp": "日本へ行きたいです。",
-        "kana": "にほんへいきたいです。",
-        "vi": "Tôi muốn đi Nhật Bản."
+        "vi": "Tôi muốn đi Nhật Bản.",
+        "kana": "にほんへいきたいです。"
       },
       {
         "jp": "お酒を飲みたくないです。",
-        "kana": "おさけをのみたくないです。",
-        "vi": "Tôi không muốn uống rượu."
+        "vi": "Tôi không muốn uống rượu.",
+        "kana": "おさけをのみたくないです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.637Z"
   },
   {
+    "id": 34,
+    "level": "N5",
     "lesson_number": 13,
     "order_num": 3,
     "title": "N (Địa điểm) へ V(bỏ ます) に 行きます (Đi đâu để làm gì)",
@@ -624,37 +1637,43 @@
     "examples": [
       {
         "jp": "デパートへ買い物に行きます。",
-        "kana": "デパートへかいものにいきます。",
-        "vi": "Tôi đến bách hóa để mua sắm."
+        "vi": "Tôi đến bách hóa để mua sắm.",
+        "kana": "デパートへかいものにいきます。"
       },
       {
         "jp": "日本へ勉強に来ました。",
-        "kana": "にほんへべんきょうにきました。",
-        "vi": "Tôi đã đến Nhật Bản để học tập."
+        "vi": "Tôi đã đến Nhật Bản để học tập.",
+        "kana": "にほんへべんきょうにきました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.638Z"
   },
   {
+    "id": 35,
+    "level": "N5",
     "lesson_number": 14,
     "order_num": 1,
     "title": "Thể て (Te) & V て ください (Xin hãy làm V)",
     "structure": "Động từ thể て + ください",
     "meaning": "Lời nhờ vả, yêu cầu, sai khiến một cách lịch sự.",
-    "usage_notes": "Phân chia 3 nhóm động từ: Nhóm 1 (い・ち・り sang って; み・び・に sang んで; き sang いて; ぎ sang いで; し sang して), Nhóm 2 (bỏ ます thêm て), Nhóm 3 (して, きて).",
+    "usage_notes": "Phân chia 3 nhóm động từ: Nhóm 1 (い・ち・り -> って; み・び・に -> んで; き -> いて; ぎ -> いで; し -> して), Nhóm 2 (bỏ ます thêm て), Nhóm 3 (して, きて).",
     "examples": [
       {
         "jp": "ちょっと待ってください。",
-        "kana": "ちょっとまってください。",
-        "vi": "Xin hãy đợi một chút."
+        "vi": "Xin hãy đợi một chút.",
+        "kana": "ちょっとまってください。"
       },
       {
         "jp": "ここに名前を書いてください。",
-        "kana": "ここになまえをかいてください。",
-        "vi": "Xin vui lòng viết tên vào đây."
+        "vi": "Xin vui lòng viết tên vào đây.",
+        "kana": "ここになまえをかいてください。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.638Z"
   },
   {
+    "id": 36,
+    "level": "N5",
     "lesson_number": 14,
     "order_num": 2,
     "title": "V て います (Đang làm gì - Hành động tiếp diễn)",
@@ -664,17 +1683,20 @@
     "examples": [
       {
         "jp": "今雨が降っています。",
-        "kana": "いまあめがふっています。",
-        "vi": "Bây giờ trời đang mưa."
+        "vi": "Bây giờ trời đang mưa.",
+        "kana": "いまあめがふっています。"
       },
       {
         "jp": "ミラーさんは電話をかけています。",
-        "kana": "ミラーさんはでんわをかけています。",
-        "vi": "Anh Miller đang gọi điện thoại."
+        "vi": "Anh Miller đang gọi điện thoại.",
+        "kana": "ミラーさんはでんわをかけています。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.639Z"
   },
   {
+    "id": 37,
+    "level": "N5",
     "lesson_number": 15,
     "order_num": 1,
     "title": "V ても いいですか (Làm... có được không? - Xin phép)",
@@ -684,12 +1706,15 @@
     "examples": [
       {
         "jp": "ここで写真を撮ってもいいですか。",
-        "kana": "ここでしゃしんをとってもいいですか。",
-        "vi": "Tôi chụp ảnh ở đây có được không?"
+        "vi": "Tôi chụp ảnh ở đây có được không?",
+        "kana": "ここでしゃしんをとってもいいですか。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.639Z"
   },
   {
+    "id": 38,
+    "level": "N5",
     "lesson_number": 15,
     "order_num": 2,
     "title": "V ては いけません (Không được làm... - Cấm đoán)",
@@ -699,12 +1724,15 @@
     "examples": [
       {
         "jp": "ここでタバコを吸ってはいけません。",
-        "kana": "ここでタバコをすってはいけません。",
-        "vi": "Không được hút thuốc ở đây."
+        "vi": "Không được hút thuốc ở đây.",
+        "kana": "ここでタバコをすってはいけません。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.639Z"
   },
   {
+    "id": 39,
+    "level": "N5",
     "lesson_number": 16,
     "order_num": 1,
     "title": "V1 て、V2 て、V3 ます (Trình tự chuỗi hành động)",
@@ -714,12 +1742,15 @@
     "examples": [
       {
         "jp": "朝起きて、シャワーを浴びて、会社へ行きます。",
-        "kana": "あさおきて、シャワーをあびて、かいしゃへいきます。",
-        "vi": "Sáng thức dậy, tắm vòi sen, rồi đi làm."
+        "vi": "Sáng thức dậy, tắm vòi sen, rồi đi làm.",
+        "kana": "あさおきて、シャワーをあびて、かいしゃへいきます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.640Z"
   },
   {
+    "id": 40,
+    "level": "N5",
     "lesson_number": 16,
     "order_num": 2,
     "title": "V1 てから、V2 (Sau khi làm V1 thì làm V2)",
@@ -729,27 +1760,33 @@
     "examples": [
       {
         "jp": "仕事が終わってから、飲みに行きます。",
-        "kana": "しごとがおわってから、のみにいきます。",
-        "vi": "Sau khi công việc kết thúc, tôi đi uống."
+        "vi": "Sau khi công việc kết thúc, tôi đi uống.",
+        "kana": "しごとがおわってから、のみにいきます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.640Z"
   },
   {
+    "id": 41,
+    "level": "N5",
     "lesson_number": 17,
     "order_num": 1,
     "title": "V ないで ください (Xin đừng làm V)",
     "structure": "Động từ thể ない + で + ください",
     "meaning": "Yêu cầu hoặc khuyên nhủ ai đó lịch sự đừng làm điều gì đó.",
-    "usage_notes": "Cách chia thể ない: Nhóm 1 đổi hàng い sang あ + ない (Lưu ý: い sang わ); Nhóm 2 bỏ ます + ない; Nhóm 3 (しない, こない).",
+    "usage_notes": "Cách chia thể ない: Nhóm 1 đổi hàng い -> あ + ない (Lưu ý: い -> わ); Nhóm 2 bỏ ます + ない; Nhóm 3 (しない, こない).",
     "examples": [
       {
         "jp": "ここでタバコを吸わないでください。",
-        "kana": "ここでタバコをすわないでください。",
-        "vi": "Xin đừng hút thuốc ở đây."
+        "vi": "Xin đừng hút thuốc ở đây.",
+        "kana": "ここでタバコをすわないでください。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.640Z"
   },
   {
+    "id": 42,
+    "level": "N5",
     "lesson_number": 17,
     "order_num": 2,
     "title": "V なければ なりません (Phải làm V)",
@@ -759,12 +1796,15 @@
     "examples": [
       {
         "jp": "毎日薬を飲まなければなりません。",
-        "kana": "まいにちくすりをのまなければなりません。",
-        "vi": "Mỗi ngày tôi phải uống thuốc."
+        "vi": "Mỗi ngày tôi phải uống thuốc.",
+        "kana": "まいにちくすりをのまなければなりません。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.641Z"
   },
   {
+    "id": 43,
+    "level": "N5",
     "lesson_number": 18,
     "order_num": 1,
     "title": "V ることが できます (Có thể làm V - Năng lực / Khả năng)",
@@ -774,12 +1814,15 @@
     "examples": [
       {
         "jp": "わたしは漢字を読むことができます。",
-        "kana": "わたしはかんじをよむことができます。",
-        "vi": "Tôi có thể đọc được chữ Hán."
+        "vi": "Tôi có thể đọc được chữ Hán.",
+        "kana": "わたしはかんじをよむことができます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.641Z"
   },
   {
+    "id": 44,
+    "level": "N5",
     "lesson_number": 18,
     "order_num": 2,
     "title": "V1 る前に、V2 (Trước khi làm V1 thì làm V2)",
@@ -789,12 +1832,15 @@
     "examples": [
       {
         "jp": "寝る前に、日記を書きます。",
-        "kana": "ねるまえに、にっきをかきます。",
-        "vi": "Trước khi đi ngủ, tôi viết nhật ký."
+        "vi": "Trước khi đi ngủ, tôi viết nhật ký.",
+        "kana": "ねるまえに、にっきをかきます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.641Z"
   },
   {
+    "id": 45,
+    "level": "N5",
     "lesson_number": 19,
     "order_num": 1,
     "title": "V た ことが あります (Đã từng trải qua kinh nghiệm V)",
@@ -804,12 +1850,15 @@
     "examples": [
       {
         "jp": "富士山に登ったことがあります。",
-        "kana": "ふじさんにのぼったことがあります。",
-        "vi": "Tôi đã từng leo núi Phú Sĩ."
+        "vi": "Tôi đã từng leo núi Phú Sĩ.",
+        "kana": "ふじさんにのぼったことがあります。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.642Z"
   },
   {
+    "id": 46,
+    "level": "N5",
     "lesson_number": 19,
     "order_num": 2,
     "title": "V1 たり、V2 たり します (Lúc thì làm V1, lúc thì làm V2 - Liệt kê hành động)",
@@ -819,32 +1868,38 @@
     "examples": [
       {
         "jp": "休みの日は買い物をしたり、映画を見たりします。",
-        "kana": "やすみのひはかいものをしたり、えいがをみたりします。",
-        "vi": "Ngày nghỉ tôi lúc thì đi mua sắm, lúc thì xem phim."
+        "vi": "Ngày nghỉ tôi lúc thì đi mua sắm, lúc thì xem phim.",
+        "kana": "やすみのひはかいものをしたり、えいがをみたりします。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.642Z"
   },
   {
+    "id": 47,
+    "level": "N5",
     "lesson_number": 20,
     "order_num": 1,
     "title": "Thể thông thường (Futsuukei / 普通形)",
     "structure": "Thay thế các dạng lịch sự です/ます bằng thể ngắn (Từ điển, ない, た, だ)",
     "meaning": "Dùng để giao tiếp thân mật với bạn bè, người thân, hoặc làm thành phần trong câu phức.",
-    "usage_notes": "Quy tắc cơ bản: V ます sang V る; V ません sang V ない; V ました sang V た; Danh từ/Tính từ đuôi な です sang だ.",
+    "usage_notes": "Quy tắc cơ bản: V ます -> V る; V ません -> V ない; V ました -> V た; Danh từ/Tính từ đuôi な です -> だ.",
     "examples": [
       {
         "jp": "明日東京へ行く？…うん、行く。",
-        "kana": "あしたとうきょうへいく？…うん、いく。",
-        "vi": "Ngày mai đi Tokyo không? ...Ừ, có đi."
+        "vi": "Ngày mai đi Tokyo không? ...Ừ, có đi.",
+        "kana": "あしたとうきょうへいく？…うん、いく。"
       },
       {
         "jp": "今忙しい？…ううん、忙しくない。",
-        "kana": "いまいそがしい？…ううん、いそがしくない。",
-        "vi": "Giờ rảnh không? ...Không, không rảnh."
+        "vi": "Giờ rảnh không? ...Không, không rảnh.",
+        "kana": "いまいそがしい？…ううん、いそがしくない。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.642Z"
   },
   {
+    "id": 48,
+    "level": "N5",
     "lesson_number": 21,
     "order_num": 1,
     "title": "[Thể thông thường] と 思います (Tôi nghĩ rằng...)",
@@ -854,17 +1909,20 @@
     "examples": [
       {
         "jp": "明日は雨が降ると思います。",
-        "kana": "あしたはあめがふるとおもいます。",
-        "vi": "Tôi nghĩ ngày mai trời sẽ mưa."
+        "vi": "Tôi nghĩ ngày mai trời sẽ mưa.",
+        "kana": "あしたはあめがふるとおもいます。"
       },
       {
         "jp": "日本は物価が高いと思います。",
-        "kana": "にほんはぶっかがたかいとおもいます。",
-        "vi": "Tôi nghĩ giá cả ở Nhật Bản đắt đỏ."
+        "vi": "Tôi nghĩ giá cả ở Nhật Bản đắt đỏ.",
+        "kana": "にほんはぶっかがたかいとおもいます。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.643Z"
   },
   {
+    "id": 49,
+    "level": "N5",
     "lesson_number": 21,
     "order_num": 2,
     "title": "[Câu / Thể thông thường] と 言いました (Ai đó đã nói rằng...)",
@@ -874,12 +1932,15 @@
     "examples": [
       {
         "jp": "田中さんは「明日休みます」と言いました。",
-        "kana": "たなかさんは「あしたやすみます」といいました。",
-        "vi": "Anh Tanaka đã nói: 'Ngày mai tôi nghỉ'."
+        "vi": "Anh Tanaka đã nói: 'Ngày mai tôi nghỉ'.",
+        "kana": "たなかさんは「あしたやすみます」といいました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.643Z"
   },
   {
+    "id": 50,
+    "level": "N5",
     "lesson_number": 22,
     "order_num": 1,
     "title": "Mệnh đề bổ nghĩa cho danh từ (Bổ ngữ định ngữ)",
@@ -889,17 +1950,20 @@
     "examples": [
       {
         "jp": "これはミラーさんが作ったケーキです。",
-        "kana": "これはミラーさんがつくったケーキです。",
-        "vi": "Đây là chiếc bánh kem mà anh Miller đã làm."
+        "vi": "Đây là chiếc bánh kem mà anh Miller đã làm.",
+        "kana": "これはミラーさんがつくったケーキです。"
       },
       {
         "jp": "あそこで本を読んでいる人は誰ですか。",
-        "kana": "あそこでほんをよんでいるひとはだれですか。",
-        "vi": "Người đang đọc sách ở đằng kia là ai thế?"
+        "vi": "Người đang đọc sách ở đằng kia là ai thế?",
+        "kana": "あそこでほんをよんでいるひとはだれですか。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.643Z"
   },
   {
+    "id": 51,
+    "level": "N5",
     "lesson_number": 23,
     "order_num": 1,
     "title": "V る / V ない / A / N の + とき、... (Khi...)",
@@ -909,17 +1973,20 @@
     "examples": [
       {
         "jp": "図書館で本を借りるとき、カードが必要です。",
-        "kana": "としょかんでほんをかりるとき、カードがひつようです。",
-        "vi": "Khi mượn sách ở thư viện thì cần có thẻ."
+        "vi": "Khi mượn sách ở thư viện thì cần có thẻ.",
+        "kana": "としょかんでほんをかりるとき、カードがひつようです。"
       },
       {
         "jp": "暇なとき、ゲームをします。",
-        "kana": "ひまなとき、ゲームをします。",
-        "vi": "Khi rảnh rỗi, tôi chơi game."
+        "vi": "Khi rảnh rỗi, tôi chơi game.",
+        "kana": "ひまなとき、ゲームをします。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.644Z"
   },
   {
+    "id": 52,
+    "level": "N5",
     "lesson_number": 23,
     "order_num": 2,
     "title": "V る + と、... (Hễ mà... thì...)",
@@ -929,17 +1996,20 @@
     "examples": [
       {
         "jp": "このボタンを押すと、お釣りが出ます。",
-        "kana": "このボタンをおすと、おつりがでます。",
-        "vi": "Hễ ấn nút này thì tiền thừa sẽ chạy ra."
+        "vi": "Hễ ấn nút này thì tiền thừa sẽ chạy ra.",
+        "kana": "このボタンをおすと、おつりがでます。"
       },
       {
         "jp": "右へ曲がると、郵便局があります。",
-        "kana": "みぎへまがると、ゆうびんきょくがあります。",
-        "vi": "Hễ rẽ phải thì sẽ thấy bưu điện."
+        "vi": "Hễ rẽ phải thì sẽ thấy bưu điện.",
+        "kana": "みぎへまがると、ゆうびんきょくがあります。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.644Z"
   },
   {
+    "id": 53,
+    "level": "N5",
     "lesson_number": 24,
     "order_num": 1,
     "title": "Kính ngữ cho - nhận hành động (V て あげます / もらいます / くれます)",
@@ -949,17 +2019,20 @@
     "examples": [
       {
         "jp": "佐藤さんはわたしにお金を貸してくれました。",
-        "kana": "さとうさんはわたしにおかねをかしてくれました。",
-        "vi": "Chị Sato đã cho tôi vay tiền."
+        "vi": "Chị Sato đã cho tôi vay tiền.",
+        "kana": "さとうさんはわたしにおかねをかしてくれました。"
       },
       {
         "jp": "わたしは山田さんに傘を貸してあげました。",
-        "kana": "わたしはやまださんにかさをかしてあげました。",
-        "vi": "Tôi đã cho anh Yamada mượn ô."
+        "vi": "Tôi đã cho anh Yamada mượn ô.",
+        "kana": "わたしはやまださんにかさをかしてあげました。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.644Z"
   },
   {
+    "id": 54,
+    "level": "N5",
     "lesson_number": 25,
     "order_num": 1,
     "title": "Câu điều kiện giả định: V たら、... (Nếu / Sau khi... thì...)",
@@ -969,34 +2042,38 @@
     "examples": [
       {
         "jp": "お金があったら、旅行に行きます。",
-        "kana": "おかねがあったら、りょこうにいきます。",
-        "vi": "Nếu có tiền, tôi sẽ đi du lịch."
+        "vi": "Nếu có tiền, tôi sẽ đi du lịch.",
+        "kana": "おかねがあったら、りょこうにいきます。"
       },
       {
         "jp": "10時になったら、出かけましょう。",
-        "kana": "じゅうじになったら、でかけましょう。",
-        "vi": "Đến 10 giờ thì chúng ta xuất phát nhé."
+        "vi": "Đến 10 giờ thì chúng ta xuất phát nhé.",
+        "kana": "じゅうじになったら、でかけましょう。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.645Z"
   },
   {
+    "id": 55,
+    "level": "N5",
     "lesson_number": 25,
     "order_num": 2,
     "title": "V ても、... (Dù... thì vẫn...)",
-    "structure": "Động từ thể て + も || Tính từ い sang くても || Tính từ な/Danh từ sang でも",
+    "structure": "Động từ thể て + も || Tính từ い -> くても || Tính từ な/Danh từ -> でも",
     "meaning": "Biểu thị quan hệ nhượng bộ ngược: dẫu có A thì kết quả B vẫn không đổi.",
     "usage_notes": "Ngược lại hoàn toàn với たら.",
     "examples": [
       {
         "jp": "雨が降っても、サッカーをします。",
-        "kana": "あめがふっても、サッカーをします。",
-        "vi": "Dù trời có mưa, tôi vẫn đá bóng."
+        "vi": "Dù trời có mưa, tôi vẫn đá bóng.",
+        "kana": "あめがふっても、サッカーをします。"
       },
       {
         "jp": "高くても、このパソコンを買いたいです。",
-        "kana": "たかくても、このパソコンをかいたいです。",
-        "vi": "Dù có đắt, tôi vẫn muốn mua chiếc máy tính này."
+        "vi": "Dù có đắt, tôi vẫn muốn mua chiếc máy tính này.",
+        "kana": "たかくても、このパソコンをかいたいです。"
       }
-    ]
+    ],
+    "created_at": "2026-10-30T01:26:35.645Z"
   }
 ]

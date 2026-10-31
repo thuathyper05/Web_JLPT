@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { lessonService, vocabService, speakJapanese } from '../services/api';
 import FuriganaWord from '../components/FuriganaWord';
+import SakuraPulse from '../components/SakuraPulse';
 import {
   Play,
   Sparkles,
@@ -128,7 +129,7 @@ export default function DashboardPage() {
           <div className="relative z-10">
             {/* Lesson Tag Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-xs font-bold mb-4 backdrop-blur-md">
-              <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping" />
+              <SakuraPulse size={14} />
               <span>
                 {currentLevel === 'N4' ? 'BÀI 26 - Cấu trúc んです và thể thông thường' :
                  currentLevel === 'N3' ? 'BÀI 01 - Diễn đạt thời gian & mục đích' :

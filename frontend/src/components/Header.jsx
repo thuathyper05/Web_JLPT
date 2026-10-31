@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { vocabService, speakJapanese } from '../services/api';
 import FuriganaWord from './FuriganaWord';
+import SakuraPulse from './SakuraPulse';
 import {
   Menu,
   Zap,
@@ -220,7 +221,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
               className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-50 via-rose-50/70 to-purple-50/50 hover:from-pink-100 hover:to-purple-100/70 border border-pink-200/90 shadow-sm transition-all group cursor-pointer"
               title="Nhấn để đổi trình độ học tập"
             >
-              <span className="w-2 h-2 rounded-full bg-pink-600 animate-pulse shadow-[0_0_8px_rgba(236,72,153,0.6)]" />
+              <SakuraPulse size={15} />
               <div className="flex items-center gap-1.5">
                 <span className="text-[11px] sm:text-xs font-black text-slate-800 tracking-wide">
                   Cấp độ {currentLevel || 'N5'}
@@ -471,7 +472,9 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
             >
               <Bell size={15} />
               {unreadCount > 0 && (
-                <span className="w-2 h-2 rounded-full bg-pink-600 absolute top-1.5 right-1.5 ring-2 ring-white animate-pulse" />
+                <span className="absolute -top-0.5 -right-0.5">
+                  <SakuraPulse size={13} glowing={false} />
+                </span>
               )}
             </button>
 

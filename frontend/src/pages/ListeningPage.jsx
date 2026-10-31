@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import confetti from 'canvas-confetti';
+import SakuraPulse from '../components/SakuraPulse';
 import {
   Headphones,
   Play,
@@ -1166,8 +1167,9 @@ export default function ListeningPage() {
                   {track.topic}
                 </span>
                 {isPlaying && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-pink-600 bg-pink-100 px-2 py-0.2 rounded-full animate-pulse">
-                    Đang phát...
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-pink-600 bg-pink-100 px-2.5 py-0.5 rounded-full shadow-sm">
+                    <SakuraPulse size={11} glowing={false} />
+                    <span>Đang phát...</span>
                   </span>
                 )}
               </div>

@@ -1,1532 +1,2276 @@
 [
   {
-    "kanji": "一",
-    "onyomi": "イチ, イツ",
-    "kunyomi": "ひと, ひと・つ",
-    "han_viet": "NHẤT",
-    "meaning": "Một, số một",
-    "stroke": 1,
-    "examples": [
-      {
-        "w": "一日",
-        "k": "ついたち",
-        "m": "Mùng 1"
-      },
-      {
-        "w": "一人",
-        "k": "ひとり",
-        "m": "Một người"
-      }
-    ]
+    "id": 129,
+    "kanji": "顕",
+    "onyomi": "ケン",
+    "kunyomi": "あきらか",
+    "han_viet": "HIỂN",
+    "meaning": "Hiển hiện, rõ rệt, nổi bật",
+    "stroke_count": 18,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
   },
   {
-    "kanji": "二",
-    "onyomi": "ニ",
-    "kunyomi": "ふた, ふた・つ",
-    "han_viet": "NHỊ",
-    "meaning": "Hai, số hai",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "二日",
-        "k": "ふつか",
-        "m": "Mùng 2"
-      },
-      {
-        "w": "二人",
-        "k": "ふたり",
-        "m": "Hai người"
-      }
-    ]
+    "id": 130,
+    "kanji": "著",
+    "onyomi": "チョ",
+    "kunyomi": "いちじる・しい",
+    "han_viet": "TRỨ",
+    "meaning": "Đáng kể, trứ danh tác phẩm",
+    "stroke_count": 11,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
   },
   {
-    "kanji": "三",
-    "onyomi": "サン",
-    "kunyomi": "み, みっ・つ",
-    "han_viet": "TAM",
-    "meaning": "Ba, số ba",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "三日",
-        "k": "みっか",
-        "m": "Mùng 3"
-      },
-      {
-        "w": "三人",
-        "k": "さんにん",
-        "m": "Ba người"
-      }
-    ]
+    "id": 131,
+    "kanji": "網",
+    "onyomi": "モウ",
+    "kunyomi": "あみ",
+    "han_viet": "VÕNG",
+    "meaning": "Lưới trời, bao quát toàn diện",
+    "stroke_count": 14,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
   },
   {
-    "kanji": "四",
+    "id": 132,
+    "kanji": "羅",
+    "onyomi": "ラ",
+    "kunyomi": "",
+    "han_viet": "LA",
+    "meaning": "La bàn, bao trùm, lụa là",
+    "stroke_count": 19,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
+  },
+  {
+    "id": 133,
+    "kanji": "脆",
+    "onyomi": "ゼイ",
+    "kunyomi": "もろ・い",
+    "han_viet": "THÚY",
+    "meaning": "Mong manh, dễ tổn thương, giòn",
+    "stroke_count": 10,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.074Z"
+  },
+  {
+    "id": 134,
+    "kanji": "弱",
+    "onyomi": "ジャク",
+    "kunyomi": "よわ・い",
+    "han_viet": "NHƯỢC",
+    "meaning": "Yếu ớt, non nớt",
+    "stroke_count": 10,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.074Z"
+  },
+  {
+    "id": 135,
+    "kanji": "抜",
+    "onyomi": "バツ",
+    "kunyomi": "ぬ・く",
+    "han_viet": "BẠT",
+    "meaning": "Rút ra, cất nhắc đề bạt",
+    "stroke_count": 7,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.074Z"
+  },
+  {
+    "id": 136,
+    "kanji": "擢",
+    "onyomi": "テキ",
+    "kunyomi": "",
+    "han_viet": "TRẠC",
+    "meaning": "Cất nhắc lên chức vị lãnh đạo",
+    "stroke_count": 17,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.074Z"
+  },
+  {
+    "id": 137,
+    "kanji": "緻",
+    "onyomi": "チ",
+    "kunyomi": "",
+    "han_viet": "TRÍ",
+    "meaning": "Chặt chẽ, tỉ mỉ từng chi tiết",
+    "stroke_count": 15,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.075Z"
+  },
+  {
+    "id": 138,
+    "kanji": "密",
+    "onyomi": "ミツ",
+    "kunyomi": "ひそ・か",
+    "han_viet": "MẬT",
+    "meaning": "Bí mật, mật độ dày đặc",
+    "stroke_count": 11,
+    "level": "N1",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.075Z"
+  },
+  {
+    "id": 89,
+    "kanji": "際",
+    "onyomi": "サイ",
+    "kunyomi": "きわ",
+    "han_viet": "TẾ",
+    "meaning": "Thời điểm, ranh giới",
+    "stroke_count": 14,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.703Z"
+  },
+  {
+    "id": 90,
+    "kanji": "契",
+    "onyomi": "ケイ",
+    "kunyomi": "ちぎ・る",
+    "han_viet": "KHẾ",
+    "meaning": "Khế ước, hợp đồng, thời cơ",
+    "stroke_count": 9,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.703Z"
+  },
+  {
+    "id": 91,
+    "kanji": "妥",
+    "onyomi": "ダ",
+    "kunyomi": "",
+    "han_viet": "THỎA",
+    "meaning": "Thỏa đáng, yên ổn",
+    "stroke_count": 7,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.703Z"
+  },
+  {
+    "id": 120,
+    "kanji": "機",
+    "onyomi": "キ",
+    "kunyomi": "はた",
+    "han_viet": "CƠ",
+    "meaning": "Thời cơ, máy móc kỹ thuật",
+    "stroke_count": 16,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 121,
+    "kanji": "徹",
+    "onyomi": "テツ",
+    "kunyomi": "",
+    "han_viet": "TRIỆT",
+    "meaning": "Triệt để, thấu suốt",
+    "stroke_count": 15,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 122,
+    "kanji": "底",
+    "onyomi": "テイ",
+    "kunyomi": "そこ",
+    "han_viet": "ĐẾ",
+    "meaning": "Đáy sâu, gốc rễ tận cùng",
+    "stroke_count": 8,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 123,
+    "kanji": "握",
+    "onyomi": "アク",
+    "kunyomi": "にぎ・る",
+    "han_viet": "ÁC",
+    "meaning": "Nắm chắc trong tay, thấu suốt",
+    "stroke_count": 12,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 125,
+    "kanji": "促",
+    "onyomi": "ソク",
+    "kunyomi": "うなが・す",
+    "han_viet": "XÚC",
+    "meaning": "Thúc đẩy tiến triển",
+    "stroke_count": 9,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 126,
+    "kanji": "蓄",
+    "onyomi": "チク",
+    "kunyomi": "たくわ・える",
+    "han_viet": "SÚC",
+    "meaning": "Tích trữ, tích lũy tri thức",
+    "stroke_count": 13,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.072Z"
+  },
+  {
+    "id": 127,
+    "kanji": "克",
+    "onyomi": "コク",
+    "kunyomi": "",
+    "han_viet": "KHẮC",
+    "meaning": "Khắc phục gian nan",
+    "stroke_count": 7,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
+  },
+  {
+    "id": 128,
+    "kanji": "岐",
+    "onyomi": "キ",
+    "kunyomi": "",
+    "han_viet": "KỲ",
+    "meaning": "Ngã rẽ, phân nhánh đa diện",
+    "stroke_count": 7,
+    "level": "N2",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.073Z"
+  },
+  {
+    "id": 87,
+    "kanji": "政",
+    "onyomi": "セイ",
+    "kunyomi": "まつりごと",
+    "han_viet": "CHÍNH",
+    "meaning": "Chính trị, đường lối chính sách",
+    "stroke_count": 9,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.702Z"
+  },
+  {
+    "id": 88,
+    "kanji": "経",
+    "onyomi": "ケイ",
+    "kunyomi": "へ・る",
+    "han_viet": "KINH",
+    "meaning": "Kinh tế, trải qua",
+    "stroke_count": 11,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.703Z"
+  },
+  {
+    "id": 108,
+    "kanji": "治",
+    "onyomi": "ジ、チ",
+    "kunyomi": "おさ・める",
+    "han_viet": "TRỊ",
+    "meaning": "Cai trị, chữa lành bệnh",
+    "stroke_count": 8,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
+  },
+  {
+    "id": 110,
+    "kanji": "済",
+    "onyomi": "サイ",
+    "kunyomi": "す・む",
+    "han_viet": "TẾ",
+    "meaning": "Kinh tế, cứu giúp, hoàn tất",
+    "stroke_count": 11,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
+  },
+  {
+    "id": 111,
+    "kanji": "歴",
+    "onyomi": "レキ",
+    "kunyomi": "",
+    "han_viet": "LỊCH",
+    "meaning": "Lịch sử, trải nghiệm",
+    "stroke_count": 14,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
+  },
+  {
+    "id": 112,
+    "kanji": "史",
     "onyomi": "シ",
-    "kunyomi": "よ, よっ・つ, よん",
-    "han_viet": "TỨ",
-    "meaning": "Bốn, số bốn",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "四日",
-        "k": "よっか",
-        "m": "Mùng 4"
-      },
-      {
-        "w": "四月",
-        "k": "しがつ",
-        "m": "Tháng 4"
-      }
-    ]
+    "kunyomi": "",
+    "han_viet": "SỬ",
+    "meaning": "Sử gia, ghi chép lịch sử",
+    "stroke_count": 5,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
   },
   {
-    "kanji": "五",
-    "onyomi": "ゴ",
-    "kunyomi": "いつ, いつ・つ",
-    "han_viet": "NGŨ",
-    "meaning": "Năm, số năm",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "五日",
-        "k": "いつか",
-        "m": "Mùng 5"
-      },
-      {
-        "w": "五月",
-        "k": "ごがつ",
-        "m": "Tháng 5"
-      }
-    ]
+    "id": 113,
+    "kanji": "連",
+    "onyomi": "レン",
+    "kunyomi": "つら・なる",
+    "han_viet": "LIÊN",
+    "meaning": "Kết nối, liên lạc",
+    "stroke_count": 10,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
   },
   {
-    "kanji": "六",
-    "onyomi": "ロク",
-    "kunyomi": "む, むっ・つ",
-    "han_viet": "LỤC",
-    "meaning": "Sáu, số sáu",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "六日",
-        "k": "むいか",
-        "m": "Mùng 6"
-      },
-      {
-        "w": "六人",
-        "k": "ろくにん",
-        "m": "Sáu người"
-      }
-    ]
+    "id": 114,
+    "kanji": "絡",
+    "onyomi": "ラク",
+    "kunyomi": "から・む",
+    "han_viet": "LẠC",
+    "meaning": "Dây ràng buộc, liên lạc",
+    "stroke_count": 12,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.070Z"
   },
   {
-    "kanji": "七",
-    "onyomi": "シチ",
-    "kunyomi": "なな, なな・つ",
-    "han_viet": "THẤT",
-    "meaning": "Bảy, số bảy",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "七日",
-        "k": "なのか",
-        "m": "Mùng 7"
-      },
-      {
-        "w": "七月",
-        "k": "しちがつ",
-        "m": "Tháng 7"
-      }
-    ]
+    "id": 115,
+    "kanji": "設",
+    "onyomi": "セツ",
+    "kunyomi": "もう・ける",
+    "han_viet": "THIẾT",
+    "meaning": "Thiết lập, thành lập",
+    "stroke_count": 11,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.071Z"
   },
   {
-    "kanji": "八",
-    "onyomi": "ハチ",
-    "kunyomi": "や, やっ・つ",
-    "han_viet": "BÁT",
-    "meaning": "Tám, số tám",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "八日",
-        "k": "ようか",
-        "m": "Mùng 8"
-      },
-      {
-        "w": "八月",
-        "k": "はちがつ",
-        "m": "Tháng 8"
-      }
-    ]
+    "id": 116,
+    "kanji": "計",
+    "onyomi": "ケイ",
+    "kunyomi": "はか・る",
+    "han_viet": "KẾ",
+    "meaning": "Kế hoạch, đo lường",
+    "stroke_count": 9,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.071Z"
   },
   {
-    "kanji": "九",
-    "onyomi": "キュウ, ク",
-    "kunyomi": "ここの, ここの・つ",
-    "han_viet": "CỬU",
-    "meaning": "Chín, số chín",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "九日",
-        "k": "ここのか",
-        "m": "Mùng 9"
-      },
-      {
-        "w": "九月",
-        "k": "くがつ",
-        "m": "Tháng 9"
-      }
-    ]
+    "id": 117,
+    "kanji": "認",
+    "onyomi": "ニン",
+    "kunyomi": "みと・める",
+    "han_viet": "NHẬN",
+    "meaning": "Công nhận, thừa nhận",
+    "stroke_count": 14,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.071Z"
   },
   {
-    "kanji": "十",
-    "onyomi": "ジュウ, ジッ",
-    "kunyomi": "とお, と",
-    "han_viet": "THẬP",
-    "meaning": "Mười, số mười",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "十日",
-        "k": "とおか",
-        "m": "Mùng 10"
-      },
-      {
-        "w": "十分",
-        "k": "じゅっぷん",
-        "m": "10 phút"
-      }
-    ]
+    "id": 118,
+    "kanji": "確",
+    "onyomi": "カク",
+    "kunyomi": "たし・か",
+    "han_viet": "XÁC",
+    "meaning": "Chính xác, chắc chắn",
+    "stroke_count": 15,
+    "level": "N3",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.071Z"
   },
   {
-    "kanji": "百",
-    "onyomi": "ヒャク",
-    "kunyomi": "もも",
-    "han_viet": "BÁCH",
-    "meaning": "Trăm, một trăm",
-    "stroke": 6,
-    "examples": [
-      {
-        "w": "百円",
-        "k": "ひゃくえん",
-        "m": "100 yên"
-      },
-      {
-        "w": "三百",
-        "k": "さんびゃく",
-        "m": "300"
-      }
-    ]
-  },
-  {
-    "kanji": "千",
-    "onyomi": "セン",
-    "kunyomi": "ち",
-    "han_viet": "THIÊN",
-    "meaning": "Nghìn, một nghìn",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "千円",
-        "k": "せんえん",
-        "m": "1000 yên"
-      },
-      {
-        "w": "三千",
-        "k": "さんぜん",
-        "m": "3000"
-      }
-    ]
-  },
-  {
-    "kanji": "万",
-    "onyomi": "マン, バン",
-    "kunyomi": "よろず",
-    "han_viet": "VẠN",
-    "meaning": "Mười nghìn (vạn)",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "一万円",
-        "k": "いちまんえん",
-        "m": "1 vạn yên"
-      }
-    ]
-  },
-  {
-    "kanji": "円",
-    "onyomi": "エン",
-    "kunyomi": "まる・い",
-    "han_viet": "VIÊN",
-    "meaning": "Đồng Yên, hình tròn",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "円",
-        "k": "えん",
-        "m": "Đồng Yên"
-      },
-      {
-        "w": "円い",
-        "k": "まるい",
-        "m": "Tròn"
-      }
-    ]
-  },
-  {
-    "kanji": "日",
-    "onyomi": "ニチ, ジツ",
-    "kunyomi": "ひ, -び, -か",
-    "han_viet": "NHẬT",
-    "meaning": "Mặt trời, ngày, Nhật Bản",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "日本",
-        "k": "にほん",
-        "m": "Nhật Bản"
-      },
-      {
-        "w": "日曜日",
-        "k": "にちようび",
-        "m": "Chủ nhật"
-      }
-    ]
-  },
-  {
-    "kanji": "月",
-    "onyomi": "ゲツ, ガツ",
-    "kunyomi": "つき",
-    "han_viet": "NGUYỆT",
-    "meaning": "Mặt trăng, tháng",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "月曜日",
-        "k": "げつようび",
-        "m": "Thứ hai"
-      },
-      {
-        "w": "今月",
-        "k": "こんげつ",
-        "m": "Tháng này"
-      }
-    ]
-  },
-  {
-    "kanji": "火",
-    "onyomi": "カ",
-    "kunyomi": "ひ, ほ",
-    "han_viet": "HỎA",
-    "meaning": "Lửa",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "火曜日",
-        "k": "かようび",
-        "m": "Thứ ba"
-      },
-      {
-        "w": "花火",
-        "k": "はなび",
-        "m": "Pháo hoa"
-      }
-    ]
-  },
-  {
-    "kanji": "水",
-    "onyomi": "スイ",
-    "kunyomi": "みず",
-    "han_viet": "THỦY",
-    "meaning": "Nước",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "水曜日",
-        "k": "すいようび",
-        "m": "Thứ tư"
-      },
-      {
-        "w": "水",
-        "k": "みず",
-        "m": "Nước lọc"
-      }
-    ]
-  },
-  {
-    "kanji": "木",
-    "onyomi": "ボク, モク",
-    "kunyomi": "き, こ",
-    "han_viet": "MỘC",
-    "meaning": "Cây, gỗ",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "木曜日",
-        "k": "もくようび",
-        "m": "Thứ năm"
-      },
-      {
-        "w": "木",
-        "k": "き",
-        "m": "Cái cây"
-      }
-    ]
-  },
-  {
-    "kanji": "金",
-    "onyomi": "キン, コン",
-    "kunyomi": "かね, かな",
-    "han_viet": "KIM",
-    "meaning": "Vàng, tiền",
-    "stroke": 8,
-    "examples": [
-      {
-        "w": "金曜日",
-        "k": "きんようび",
-        "m": "Thứ sáu"
-      },
-      {
-        "w": "お金",
-        "k": "おかね",
-        "m": "Tiền bạc"
-      }
-    ]
-  },
-  {
-    "kanji": "土",
-    "onyomi": "ド, ト",
-    "kunyomi": "つち",
-    "han_viet": "THỔ",
-    "meaning": "Đất, thổ nhưỡng",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "土曜日",
-        "k": "どようび",
-        "m": "Thứ bảy"
-      },
-      {
-        "w": "土地",
-        "k": "とち",
-        "m": "Khu đất"
-      }
-    ]
-  },
-  {
-    "kanji": "人",
-    "onyomi": "ジン, ニン",
-    "kunyomi": "ひと",
-    "han_viet": "NHÂN",
-    "meaning": "Người",
-    "stroke": 2,
-    "examples": [
-      {
-        "w": "日本人",
-        "k": "にほんじん",
-        "m": "Người Nhật"
-      },
-      {
-        "w": "あの人",
-        "k": "あのひと",
-        "m": "Người kia"
-      }
-    ]
-  },
-  {
-    "kanji": "子",
-    "onyomi": "シ, ス",
-    "kunyomi": "こ",
-    "han_viet": "TỬ",
-    "meaning": "Con cái, trẻ em",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "子ども",
-        "k": "こども",
-        "m": "Trẻ con"
-      },
-      {
-        "w": "女の子",
-        "k": "おんなのこ",
-        "m": "Bé gái"
-      }
-    ]
-  },
-  {
-    "kanji": "女",
-    "onyomi": "ジョ, ニョ",
-    "kunyomi": "おんな, め",
-    "han_viet": "NỮ",
-    "meaning": "Phụ nữ, nữ giới",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "女の人",
-        "k": "おんなのひと",
-        "m": "Người phụ nữ"
-      }
-    ]
-  },
-  {
-    "kanji": "男",
-    "onyomi": "ダン, ナン",
-    "kunyomi": "おとこ",
-    "han_viet": "NAM",
-    "meaning": "Đàn ông, nam giới",
-    "stroke": 7,
-    "examples": [
-      {
-        "w": "男の人",
-        "k": "おとこのひと",
-        "m": "Người đàn ông"
-      }
-    ]
-  },
-  {
-    "kanji": "先",
-    "onyomi": "セン",
-    "kunyomi": "さき",
-    "han_viet": "TIÊN",
-    "meaning": "Trước, đi trước",
-    "stroke": 6,
-    "examples": [
-      {
-        "w": "先生",
-        "k": "せんせい",
-        "m": "Thầy/cô giáo"
-      },
-      {
-        "w": "先週",
-        "k": "せんしゅう",
-        "m": "Tuần trước"
-      }
-    ]
-  },
-  {
-    "kanji": "生",
-    "onyomi": "セイ, ショウ",
-    "kunyomi": "い・きる, う・まれる, なま",
-    "han_viet": "SINH",
-    "meaning": "Sinh sống, sinh ra, học sinh",
-    "stroke": 5,
-    "examples": [
-      {
-        "w": "学生",
-        "k": "がくせい",
-        "m": "Học sinh"
-      },
-      {
-        "w": "生まれる",
-        "k": "うまれる",
-        "m": "Sinh ra"
-      }
-    ]
-  },
-  {
-    "kanji": "学",
-    "onyomi": "ガク",
-    "kunyomi": "まな・ぶ",
-    "han_viet": "HỌC",
-    "meaning": "Học tập, trường học",
-    "stroke": 8,
-    "examples": [
-      {
-        "w": "学校",
-        "k": "がっこう",
-        "m": "Trường học"
-      },
-      {
-        "w": "大学",
-        "k": "だいがく",
-        "m": "Đại học"
-      }
-    ]
-  },
-  {
+    "id": 29,
     "kanji": "校",
     "onyomi": "コウ",
     "kunyomi": "",
     "han_viet": "HIỆU",
     "meaning": "Trường học",
-    "stroke": 10,
+    "stroke_count": 10,
+    "level": "N4",
     "examples": [
       {
-        "w": "学校",
         "k": "がっこう",
-        "m": "Trường học"
+        "m": "Trường học",
+        "w": "学校"
       },
       {
-        "w": "高校",
         "k": "こうこう",
-        "m": "Trường cấp 3"
+        "m": "Trường cấp 3",
+        "w": "高校"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
-    "kanji": "本",
-    "onyomi": "ホン",
-    "kunyomi": "もと",
-    "han_viet": "BẢN",
-    "meaning": "Sách, gốc, nguồn gốc",
-    "stroke": 5,
-    "examples": [
-      {
-        "w": "本",
-        "k": "ほん",
-        "m": "Cuốn sách"
-      },
-      {
-        "w": "日本",
-        "k": "にほん",
-        "m": "Nhật Bản"
-      }
-    ]
-  },
-  {
-    "kanji": "名",
-    "onyomi": "メイ, ミョウ",
-    "kunyomi": "な",
-    "han_viet": "DANH",
-    "meaning": "Tên, danh tiếng",
-    "stroke": 6,
-    "examples": [
-      {
-        "w": "名前",
-        "k": "なまえ",
-        "m": "Tên"
-      },
-      {
-        "w": "有名",
-        "k": "ゆうめい",
-        "m": "Nổi tiếng"
-      }
-    ]
-  },
-  {
-    "kanji": "前",
-    "onyomi": "ゼン",
-    "kunyomi": "まえ",
-    "han_viet": "TIỀN",
-    "meaning": "Trước, phía trước",
-    "stroke": 9,
-    "examples": [
-      {
-        "w": "前",
-        "k": "まえ",
-        "m": "Phía trước"
-      },
-      {
-        "w": "午前",
-        "k": "ごぜん",
-        "m": "Buổi sáng (AM)"
-      }
-    ]
-  },
-  {
-    "kanji": "後",
-    "onyomi": "ゴ, コウ",
-    "kunyomi": "のち, うし・ろ, あと",
-    "han_viet": "HẬU",
-    "meaning": "Sau, phía sau",
-    "stroke": 9,
-    "examples": [
-      {
-        "w": "後ろ",
-        "k": "うしろ",
-        "m": "Phía sau"
-      },
-      {
-        "w": "午後",
-        "k": "ごご",
-        "m": "Buổi chiều (PM)"
-      }
-    ]
-  },
-  {
-    "kanji": "午",
-    "onyomi": "ゴ",
-    "kunyomi": "うま",
-    "han_viet": "NGỌ",
-    "meaning": "Giữa trưa",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "午前",
-        "k": "ごぜん",
-        "m": "Sáng"
-      },
-      {
-        "w": "午後",
-        "k": "ごご",
-        "m": "Chiều"
-      }
-    ]
-  },
-  {
-    "kanji": "今",
-    "onyomi": "コン, キン",
-    "kunyomi": "いま",
-    "han_viet": "KIM",
-    "meaning": "Bây giờ, hiện tại",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "今",
-        "k": "いま",
-        "m": "Bây giờ"
-      },
-      {
-        "w": "今日",
-        "k": "きょう",
-        "m": "Hôm nay"
-      }
-    ]
-  },
-  {
-    "kanji": "時",
-    "onyomi": "ジ",
-    "kunyomi": "とき",
-    "han_viet": "THỜI",
-    "meaning": "Thời gian, giờ",
-    "stroke": 10,
-    "examples": [
-      {
-        "w": "時間",
-        "k": "じかん",
-        "m": "Thời gian"
-      },
-      {
-        "w": "何時",
-        "k": "なんじ",
-        "m": "Mấy giờ"
-      }
-    ]
-  },
-  {
-    "kanji": "分",
-    "onyomi": "ブン, フン, ブ",
-    "kunyomi": "わ・ける, わ・かる",
-    "han_viet": "PHÂN",
-    "meaning": "Phút, hiểu, chia phần",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "半分",
-        "k": "はんぶん",
-        "m": "Một nửa"
-      },
-      {
-        "w": "分かる",
-        "k": "わかる",
-        "m": "Hiểu"
-      }
-    ]
-  },
-  {
-    "kanji": "半",
-    "onyomi": "ハン",
-    "kunyomi": "なか・ば",
-    "han_viet": "BÁN",
-    "meaning": "Nửa, rưỡi",
-    "stroke": 5,
-    "examples": [
-      {
-        "w": "半",
-        "k": "はん",
-        "m": "Rưỡi (giờ)"
-      },
-      {
-        "w": "半分",
-        "k": "はんぶん",
-        "m": "Một nửa"
-      }
-    ]
-  },
-  {
-    "kanji": "何",
-    "onyomi": "カ",
-    "kunyomi": "なに, なん",
-    "han_viet": "HÀ",
-    "meaning": "Cái gì, mấy",
-    "stroke": 7,
-    "examples": [
-      {
-        "w": "何",
-        "k": "なに",
-        "m": "Cái gì"
-      },
-      {
-        "w": "何時",
-        "k": "なんじ",
-        "m": "Mấy giờ"
-      }
-    ]
-  },
-  {
-    "kanji": "上",
-    "onyomi": "ジョウ, ショウ",
-    "kunyomi": "うえ, あ・がる, のぼ・る",
-    "han_viet": "THƯỢNG",
-    "meaning": "Trên, phía trên",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "上",
-        "k": "うえ",
-        "m": "Phía trên"
-      },
-      {
-        "w": "上手",
-        "k": "じょうず",
-        "m": "Giỏi"
-      }
-    ]
-  },
-  {
-    "kanji": "下",
-    "onyomi": "カ, ゲ",
-    "kunyomi": "した, さ・がる, くだ・る",
-    "han_viet": "HẠ",
-    "meaning": "Dưới, phía dưới",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "下",
-        "k": "した",
-        "m": "Phía dưới"
-      },
-      {
-        "w": "下手",
-        "k": "へた",
-        "m": "Kém"
-      }
-    ]
-  },
-  {
-    "kanji": "中",
-    "onyomi": "チュウ",
-    "kunyomi": "なか",
-    "han_viet": "TRUNG",
-    "meaning": "Trong, ở giữa, Trung Quốc",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "中",
-        "k": "なか",
-        "m": "Bên trong"
-      },
-      {
-        "w": "中国",
-        "k": "ちゅうごく",
-        "m": "Trung Quốc"
-      }
-    ]
-  },
-  {
-    "kanji": "大",
-    "onyomi": "ダイ, タイ",
-    "kunyomi": "おお・きい",
-    "han_viet": "ĐẠI",
-    "meaning": "To lớn",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "大きい",
-        "k": "おおきい",
-        "m": "To, lớn"
-      },
-      {
-        "w": "大学",
-        "k": "だいがく",
-        "m": "Đại học"
-      }
-    ]
-  },
-  {
-    "kanji": "小",
-    "onyomi": "ショウ",
-    "kunyomi": "ちい・さい, こ, お",
-    "han_viet": "TIỂU",
-    "meaning": "Nhỏ, bé",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "小さい",
-        "k": "ちいさい",
-        "m": "Nhỏ, bé"
-      },
-      {
-        "w": "小学校",
-        "k": "しょうがっこう",
-        "m": "Trường tiểu học"
-      }
-    ]
-  },
-  {
-    "kanji": "山",
-    "onyomi": "サン",
-    "kunyomi": "やま",
-    "han_viet": "SƠN",
-    "meaning": "Núi",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "山",
-        "k": "やま",
-        "m": "Ngọn núi"
-      },
-      {
-        "w": "富士山",
-        "k": "ふじさん",
-        "m": "Núi Phú Sĩ"
-      }
-    ]
-  },
-  {
-    "kanji": "川",
-    "onyomi": "セン",
-    "kunyomi": "かわ",
-    "han_viet": "XUYÊN",
-    "meaning": "Sông",
-    "stroke": 3,
-    "examples": [
-      {
-        "w": "川",
-        "k": "かわ",
-        "m": "Dòng sông"
-      }
-    ]
-  },
-  {
-    "kanji": "天",
-    "onyomi": "テン",
-    "kunyomi": "あまつ, あめ",
-    "han_viet": "THIÊN",
-    "meaning": "Trời, thời tiết",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "天気",
-        "k": "てんき",
-        "m": "Thời tiết"
-      },
-      {
-        "w": "天ぷら",
-        "k": "てんぷら",
-        "m": "Món tempura"
-      }
-    ]
-  },
-  {
-    "kanji": "気",
-    "onyomi": "キ, ケ",
-    "kunyomi": "いき",
-    "han_viet": "KHÍ",
-    "meaning": "Khí, tinh thần, tâm trạng",
-    "stroke": 6,
-    "examples": [
-      {
-        "w": "元気",
-        "k": "げんき",
-        "m": "Khỏe mạnh"
-      },
-      {
-        "w": "天気",
-        "k": "てんき",
-        "m": "Thời tiết"
-      }
-    ]
-  },
-  {
-    "kanji": "雨",
-    "onyomi": "ウ",
-    "kunyomi": "あめ, あま",
-    "han_viet": "VŨ",
-    "meaning": "Mưa",
-    "stroke": 8,
-    "examples": [
-      {
-        "w": "雨",
-        "k": "あめ",
-        "m": "Trời mưa"
-      }
-    ]
-  },
-  {
-    "kanji": "白",
-    "onyomi": "ハク, ビャク",
-    "kunyomi": "しろ, しろ・い",
-    "han_viet": "BẠCH",
-    "meaning": "Màu trắng",
-    "stroke": 5,
-    "examples": [
-      {
-        "w": "白い",
-        "k": "しろい",
-        "m": "Màu trắng"
-      }
-    ]
-  },
-  {
-    "kanji": "黒",
-    "onyomi": "コク",
-    "kunyomi": "くろ, くろ・い",
-    "han_viet": "HẮC",
-    "meaning": "Màu đen",
-    "stroke": 11,
-    "examples": [
-      {
-        "w": "黒い",
-        "k": "くろい",
-        "m": "Màu đen"
-      }
-    ]
-  },
-  {
-    "kanji": "赤",
-    "onyomi": "セキ, シャク",
-    "kunyomi": "あか, あか・い",
-    "han_viet": "XÍCH",
-    "meaning": "Màu đỏ",
-    "stroke": 7,
-    "examples": [
-      {
-        "w": "赤い",
-        "k": "あかい",
-        "m": "Màu đỏ"
-      }
-    ]
-  },
-  {
-    "kanji": "青",
-    "onyomi": "セイ, ショウ",
-    "kunyomi": "あお, あお・い",
-    "han_viet": "THANH",
-    "meaning": "Màu xanh da trời",
-    "stroke": 8,
-    "examples": [
-      {
-        "w": "青い",
-        "k": "あおい",
-        "m": "Xanh dương"
-      }
-    ]
-  },
-  {
-    "kanji": "行",
-    "onyomi": "コウ, ギョウ",
-    "kunyomi": "い・く, ゆ・く, おこな・う",
-    "han_viet": "HÀNH",
-    "meaning": "Đi, tiến hành",
-    "stroke": 6,
-    "examples": [
-      {
-        "w": "行く",
-        "k": "いく",
-        "m": "Đi"
-      },
-      {
-        "w": "旅行",
-        "k": "りょこう",
-        "m": "Du lịch"
-      }
-    ]
-  },
-  {
-    "kanji": "来",
-    "onyomi": "ライ",
-    "kunyomi": "く・る, きた・る",
-    "han_viet": "LAI",
-    "meaning": "Đến, tới",
-    "stroke": 7,
-    "examples": [
-      {
-        "w": "来る",
-        "k": "くる",
-        "m": "Đến"
-      },
-      {
-        "w": "来週",
-        "k": "らいしゅう",
-        "m": "Tuần sau"
-      }
-    ]
-  },
-  {
-    "kanji": "帰",
-    "onyomi": "キ",
-    "kunyomi": "かえ・る",
-    "han_viet": "QUY",
-    "meaning": "Trở về, về nhà",
-    "stroke": 10,
-    "examples": [
-      {
-        "w": "帰る",
-        "k": "かえる",
-        "m": "Trở về"
-      }
-    ]
-  },
-  {
-    "kanji": "見",
-    "onyomi": "ケン",
-    "kunyomi": "み・る, み・える",
-    "han_viet": "KIẾN",
-    "meaning": "Nhìn, xem",
-    "stroke": 7,
-    "examples": [
-      {
-        "w": "見る",
-        "k": "みる",
-        "m": "Nhìn, xem"
-      },
-      {
-        "w": "意見",
-        "k": "いけん",
-        "m": "Ý kiến"
-      }
-    ]
-  },
-  {
-    "kanji": "聞",
-    "onyomi": "ブン, モン",
-    "kunyomi": "き・く, き・こえる",
-    "han_viet": "VĂN",
-    "meaning": "Nghe, hỏi",
-    "stroke": 14,
-    "examples": [
-      {
-        "w": "聞く",
-        "k": "きく",
-        "m": "Nghe"
-      },
-      {
-        "w": "新聞",
-        "k": "しんぶん",
-        "m": "Tờ báo"
-      }
-    ]
-  },
-  {
-    "kanji": "食",
-    "onyomi": "ショク, ジキ",
-    "kunyomi": "た・べる, く・う",
-    "han_viet": "THỰC",
-    "meaning": "Ăn, món ăn",
-    "stroke": 9,
-    "examples": [
-      {
-        "w": "食べる",
-        "k": "たべる",
-        "m": "Ăn"
-      },
-      {
-        "w": "食べ物",
-        "k": "たべもの",
-        "m": "Đồ ăn"
-      }
-    ]
-  },
-  {
-    "kanji": "飲",
-    "onyomi": "イン",
-    "kunyomi": "の・む",
-    "han_viet": "ẨM",
-    "meaning": "Uống",
-    "stroke": 12,
-    "examples": [
-      {
-        "w": "飲む",
-        "k": "のむ",
-        "m": "Uống"
-      },
-      {
-        "w": "飲み物",
-        "k": "のみもの",
-        "m": "Đồ uống"
-      }
-    ]
-  },
-  {
+    "id": 61,
     "kanji": "買",
     "onyomi": "バイ",
     "kunyomi": "か・う",
     "han_viet": "MÃI",
-    "meaning": "Mua",
-    "stroke": 12,
+    "meaning": "Mua sắm",
+    "stroke_count": 12,
+    "level": "N4",
     "examples": [
       {
-        "w": "買う",
         "k": "かう",
-        "m": "Mua sắm"
+        "m": "Mua sắm",
+        "w": "買う"
       },
       {
-        "w": "買い物",
         "k": "かいもの",
-        "m": "Mua sắm"
+        "m": "Mua sắm",
+        "w": "買い物"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
-    "kanji": "書",
-    "onyomi": "ショ",
-    "kunyomi": "か・く",
-    "han_viet": "THƯ",
-    "meaning": "Viết, cuốn sách",
-    "stroke": 10,
-    "examples": [
-      {
-        "w": "書く",
-        "k": "かく",
-        "m": "Viết"
-      },
-      {
-        "w": "辞書",
-        "k": "じしょ",
-        "m": "Từ điển"
-      }
-    ]
-  },
-  {
-    "kanji": "読",
-    "onyomi": "ドク, トク",
-    "kunyomi": "よ・む",
-    "han_viet": "ĐỘC",
-    "meaning": "Đọc",
-    "stroke": 14,
-    "examples": [
-      {
-        "w": "読む",
-        "k": "よむ",
-        "m": "Đọc sách"
-      }
-    ]
-  },
-  {
-    "kanji": "話",
-    "onyomi": "ワ",
-    "kunyomi": "はな・す, はなし",
-    "han_viet": "THOẠI",
-    "meaning": "Nói chuyện, câu chuyện",
-    "stroke": 13,
-    "examples": [
-      {
-        "w": "話す",
-        "k": "はなす",
-        "m": "Nói chuyện"
-      },
-      {
-        "w": "電話",
-        "k": "でんわ",
-        "m": "Điện thoại"
-      }
-    ]
-  },
-  {
-    "kanji": "語",
-    "onyomi": "ゴ",
-    "kunyomi": "かた・る",
-    "han_viet": "NGỮ",
-    "meaning": "Ngôn ngữ, tiếng",
-    "stroke": 14,
-    "examples": [
-      {
-        "w": "日本語",
-        "k": "にほんご",
-        "m": "Tiếng Nhật"
-      },
-      {
-        "w": "英語",
-        "k": "えいご",
-        "m": "Tiếng Anh"
-      }
-    ]
-  },
-  {
-    "kanji": "友",
-    "onyomi": "ユウ",
-    "kunyomi": "とも",
-    "han_viet": "HỮU",
-    "meaning": "Bạn bè",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "友達",
-        "k": "ともだち",
-        "m": "Bạn bè"
-      }
-    ]
-  },
-  {
-    "kanji": "父",
-    "onyomi": "フ",
-    "kunyomi": "ちち, とう",
-    "han_viet": "PHỤ",
-    "meaning": "Bố, cha",
-    "stroke": 4,
-    "examples": [
-      {
-        "w": "父",
-        "k": "ちち",
-        "m": "Bố mình"
-      },
-      {
-        "w": "お父さん",
-        "k": "おとうさん",
-        "m": "Bố bạn"
-      }
-    ]
-  },
-  {
-    "kanji": "母",
-    "onyomi": "ボ",
-    "kunyomi": "はは, かあ",
-    "han_viet": "MẪU",
-    "meaning": "Mẹ",
-    "stroke": 5,
-    "examples": [
-      {
-        "w": "母",
-        "k": "はは",
-        "m": "Mẹ mình"
-      },
-      {
-        "w": "お母さん",
-        "k": "おかあさん",
-        "m": "Mẹ bạn"
-      }
-    ]
-  },
-  {
-    "kanji": "家",
-    "onyomi": "カ, ケ",
-    "kunyomi": "いえ, や, うち",
-    "han_viet": "GIA",
-    "meaning": "Nhà, gia đình",
-    "stroke": 10,
-    "examples": [
-      {
-        "w": "家",
-        "k": "うち",
-        "m": "Ngôi nhà"
-      },
-      {
-        "w": "家族",
-        "k": "かぞく",
-        "m": "Gia đình"
-      }
-    ]
-  },
-  {
+    "id": 70,
     "kanji": "車",
     "onyomi": "シャ",
     "kunyomi": "くるま",
     "han_viet": "XA",
-    "meaning": "Xe cộ, xe hơi",
-    "stroke": 7,
+    "meaning": "Xe cộ, phương tiện",
+    "stroke_count": 7,
+    "level": "N4",
     "examples": [
       {
-        "w": "車",
         "k": "くるま",
-        "m": "Xe hơi"
+        "m": "Xe hơi",
+        "w": "車"
       },
       {
-        "w": "電車",
         "k": "でんしゃ",
-        "m": "Tàu điện"
+        "m": "Tàu điện",
+        "w": "電車"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 71,
     "kanji": "電",
     "onyomi": "デン",
     "kunyomi": "",
     "han_viet": "ĐIỆN",
-    "meaning": "Điện, tia sét",
-    "stroke": 13,
+    "meaning": "Điện lực, sấm chớp",
+    "stroke_count": 13,
+    "level": "N4",
     "examples": [
       {
-        "w": "電気",
         "k": "でんき",
-        "m": "Điện, đèn"
+        "m": "Điện, đèn",
+        "w": "電気"
       },
       {
-        "w": "電話",
         "k": "でんわ",
-        "m": "Điện thoại"
+        "m": "Điện thoại",
+        "w": "電話"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 72,
     "kanji": "駅",
     "onyomi": "エキ",
     "kunyomi": "",
     "han_viet": "DỊCH",
-    "meaning": "Nhà ga",
-    "stroke": 14,
+    "meaning": "Nhà ga tàu điện",
+    "stroke_count": 14,
+    "level": "N4",
     "examples": [
       {
-        "w": "駅",
         "k": "えき",
-        "m": "Nhà ga"
+        "m": "Nhà ga",
+        "w": "駅"
       },
       {
-        "w": "駅前",
         "k": "えきまえ",
-        "m": "Trước nhà ga"
+        "m": "Trước nhà ga",
+        "w": "駅前"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 73,
     "kanji": "道",
-    "onyomi": "ドウ, トウ",
+    "onyomi": "ドウ",
     "kunyomi": "みち",
     "han_viet": "ĐẠO",
-    "meaning": "Con đường, đạo",
-    "stroke": 12,
+    "meaning": "Con đường, đạo lý",
+    "stroke_count": 12,
+    "level": "N4",
     "examples": [
       {
-        "w": "道",
         "k": "みち",
-        "m": "Con đường"
+        "m": "Con đường",
+        "w": "道"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 74,
     "kanji": "国",
     "onyomi": "コク",
     "kunyomi": "くに",
     "han_viet": "QUỐC",
     "meaning": "Đất nước, quốc gia",
-    "stroke": 8,
+    "stroke_count": 8,
+    "level": "N4",
     "examples": [
       {
-        "w": "国",
         "k": "くに",
-        "m": "Đất nước"
+        "m": "Đất nước",
+        "w": "国"
       },
       {
-        "w": "外国人",
         "k": "がいこくじん",
-        "m": "Người nước ngoài"
+        "m": "Người nước ngoài",
+        "w": "外国人"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 75,
     "kanji": "社",
     "onyomi": "シャ",
     "kunyomi": "やしろ",
     "han_viet": "XÃ",
     "meaning": "Công ty, đền thờ",
-    "stroke": 7,
+    "stroke_count": 7,
+    "level": "N4",
     "examples": [
       {
-        "w": "会社",
         "k": "かいしゃ",
-        "m": "Công ty"
+        "m": "Công ty",
+        "w": "会社"
       },
       {
-        "w": "神社",
         "k": "じんじゃ",
-        "m": "Đền thờ thần đạo"
+        "m": "Đền thờ thần đạo",
+        "w": "神社"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 76,
     "kanji": "会",
-    "onyomi": "カイ, エ",
+    "onyomi": "カイ",
     "kunyomi": "あ・う",
     "han_viet": "HỘI",
     "meaning": "Gặp gỡ, xã hội",
-    "stroke": 6,
+    "stroke_count": 6,
+    "level": "N4",
     "examples": [
       {
-        "w": "会う",
         "k": "あう",
-        "m": "Gặp gỡ"
+        "m": "Gặp gỡ",
+        "w": "会う"
       },
       {
-        "w": "会社",
         "k": "かいしゃ",
-        "m": "Công ty"
+        "m": "Công ty",
+        "w": "会社"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 84,
+    "kanji": "店",
+    "onyomi": "テン",
+    "kunyomi": "みせ",
+    "han_viet": "ĐIẾM",
+    "meaning": "Cửa hàng, tiệm buôn",
+    "stroke_count": 8,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T16:23:39.701Z"
+  },
+  {
+    "id": 97,
+    "kanji": "病",
+    "onyomi": "ビョウ",
+    "kunyomi": "や・む",
+    "han_viet": "BỆNH",
+    "meaning": "Bệnh tật, ốm đau",
+    "stroke_count": 10,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.067Z"
+  },
+  {
+    "id": 98,
+    "kanji": "院",
+    "onyomi": "イン",
+    "kunyomi": "",
+    "han_viet": "VIỆN",
+    "meaning": "Bệnh viện, cơ quan",
+    "stroke_count": 10,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.068Z"
+  },
+  {
+    "id": 99,
+    "kanji": "銀",
+    "onyomi": "ギン",
+    "kunyomi": "",
+    "han_viet": "NGÂN",
+    "meaning": "Bạc, tiền tệ ngân hàng",
+    "stroke_count": 14,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.068Z"
+  },
+  {
+    "id": 101,
+    "kanji": "旅",
+    "onyomi": "リョ",
+    "kunyomi": "たび",
+    "han_viet": "LỮ",
+    "meaning": "Chuyến du lịch, chuyến đi",
+    "stroke_count": 10,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.068Z"
+  },
+  {
+    "id": 102,
+    "kanji": "館",
+    "onyomi": "カン",
+    "kunyomi": "やかた",
+    "han_viet": "QUÁN",
+    "meaning": "Tòa nhà, hội quán, bảo tàng",
+    "stroke_count": 16,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.068Z"
+  },
+  {
+    "id": 104,
+    "kanji": "売",
+    "onyomi": "バイ",
+    "kunyomi": "う・る",
+    "han_viet": "MẠI",
+    "meaning": "Bán hàng",
+    "stroke_count": 7,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.069Z"
+  },
+  {
+    "id": 105,
+    "kanji": "質",
+    "onyomi": "シツ",
+    "kunyomi": "",
+    "han_viet": "CHẤT",
+    "meaning": "Phẩm chất, câu hỏi",
+    "stroke_count": 15,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.069Z"
+  },
+  {
+    "id": 106,
+    "kanji": "問",
+    "onyomi": "モン",
+    "kunyomi": "と・う",
+    "han_viet": "VẤN",
+    "meaning": "Hỏi han, vấn đáp",
+    "stroke_count": 11,
+    "level": "N4",
+    "examples": null,
+    "created_at": "2026-10-31T17:20:44.069Z"
+  },
+  {
+    "id": 1,
+    "kanji": "一",
+    "onyomi": "イチ, イツ",
+    "kunyomi": "ひと, ひと・つ",
+    "han_viet": "NHẤT",
+    "meaning": "Một, số một",
+    "stroke_count": 1,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ついたち",
+        "m": "Mùng 1",
+        "w": "一日"
+      },
+      {
+        "k": "ひとり",
+        "m": "Một người",
+        "w": "一人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 2,
+    "kanji": "二",
+    "onyomi": "ニ",
+    "kunyomi": "ふた, ふた・つ",
+    "han_viet": "NHỊ",
+    "meaning": "Hai, số hai",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ふつか",
+        "m": "Mùng 2",
+        "w": "二日"
+      },
+      {
+        "k": "ふたり",
+        "m": "Hai người",
+        "w": "二人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 3,
+    "kanji": "三",
+    "onyomi": "サン",
+    "kunyomi": "み, みっ・つ",
+    "han_viet": "TAM",
+    "meaning": "Ba, số ba",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "みっか",
+        "m": "Mùng 3",
+        "w": "三日"
+      },
+      {
+        "k": "さんにん",
+        "m": "Ba người",
+        "w": "三人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 4,
+    "kanji": "四",
+    "onyomi": "シ",
+    "kunyomi": "よ, よっ・つ, よん",
+    "han_viet": "TỨ",
+    "meaning": "Bốn, số bốn",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "よっか",
+        "m": "Mùng 4",
+        "w": "四日"
+      },
+      {
+        "k": "しがつ",
+        "m": "Tháng 4",
+        "w": "四月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 5,
+    "kanji": "五",
+    "onyomi": "ゴ",
+    "kunyomi": "いつ, いつ・つ",
+    "han_viet": "NGŨ",
+    "meaning": "Năm, số năm",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "いつか",
+        "m": "Mùng 5",
+        "w": "五日"
+      },
+      {
+        "k": "ごがつ",
+        "m": "Tháng 5",
+        "w": "五月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 6,
+    "kanji": "六",
+    "onyomi": "ロク",
+    "kunyomi": "む, むっ・つ",
+    "han_viet": "LỤC",
+    "meaning": "Sáu, số sáu",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "むいか",
+        "m": "Mùng 6",
+        "w": "六日"
+      },
+      {
+        "k": "ろくにん",
+        "m": "Sáu người",
+        "w": "六人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 7,
+    "kanji": "七",
+    "onyomi": "シチ",
+    "kunyomi": "なな, なな・つ",
+    "han_viet": "THẤT",
+    "meaning": "Bảy, số bảy",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "なのか",
+        "m": "Mùng 7",
+        "w": "七日"
+      },
+      {
+        "k": "しちがつ",
+        "m": "Tháng 7",
+        "w": "七月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 8,
+    "kanji": "八",
+    "onyomi": "ハチ",
+    "kunyomi": "や, やっ・つ",
+    "han_viet": "BÁT",
+    "meaning": "Tám, số tám",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ようか",
+        "m": "Mùng 8",
+        "w": "八日"
+      },
+      {
+        "k": "はちがつ",
+        "m": "Tháng 8",
+        "w": "八月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 9,
+    "kanji": "九",
+    "onyomi": "キュウ, ク",
+    "kunyomi": "ここの, ここの・つ",
+    "han_viet": "CỬU",
+    "meaning": "Chín, số chín",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ここのか",
+        "m": "Mùng 9",
+        "w": "九日"
+      },
+      {
+        "k": "くがつ",
+        "m": "Tháng 9",
+        "w": "九月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 10,
+    "kanji": "十",
+    "onyomi": "ジュウ, ジッ",
+    "kunyomi": "とお, と",
+    "han_viet": "THẬP",
+    "meaning": "Mười, số mười",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "とおか",
+        "m": "Mùng 10",
+        "w": "十日"
+      },
+      {
+        "k": "じゅっぷん",
+        "m": "10 phút",
+        "w": "十分"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 11,
+    "kanji": "百",
+    "onyomi": "ヒャク",
+    "kunyomi": "もも",
+    "han_viet": "BÁCH",
+    "meaning": "Trăm, một trăm",
+    "stroke_count": 6,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ひゃくえん",
+        "m": "100 yên",
+        "w": "百円"
+      },
+      {
+        "k": "さんびゃく",
+        "m": "300",
+        "w": "三百"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 12,
+    "kanji": "千",
+    "onyomi": "セン",
+    "kunyomi": "ち",
+    "han_viet": "THIÊN",
+    "meaning": "Nghìn, một nghìn",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "せんえん",
+        "m": "1000 yên",
+        "w": "千円"
+      },
+      {
+        "k": "さんぜん",
+        "m": "3000",
+        "w": "三千"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 13,
+    "kanji": "万",
+    "onyomi": "マン, バン",
+    "kunyomi": "よろず",
+    "han_viet": "VẠN",
+    "meaning": "Mười nghìn (vạn)",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "いちまんえん",
+        "m": "1 vạn yên",
+        "w": "一万円"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 14,
+    "kanji": "円",
+    "onyomi": "エン",
+    "kunyomi": "まる・い",
+    "han_viet": "VIÊN",
+    "meaning": "Đồng Yên, hình tròn",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "えん",
+        "m": "Đồng Yên",
+        "w": "円"
+      },
+      {
+        "k": "まるい",
+        "m": "Tròn",
+        "w": "円い"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 15,
+    "kanji": "日",
+    "onyomi": "ニチ, ジツ",
+    "kunyomi": "ひ, -び, -か",
+    "han_viet": "NHẬT",
+    "meaning": "Mặt trời, ngày, Nhật Bản",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "にほん",
+        "m": "Nhật Bản",
+        "w": "日本"
+      },
+      {
+        "k": "にちようび",
+        "m": "Chủ nhật",
+        "w": "日曜日"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 16,
+    "kanji": "月",
+    "onyomi": "ゲツ, ガツ",
+    "kunyomi": "つき",
+    "han_viet": "NGUYỆT",
+    "meaning": "Mặt trăng, tháng",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "げつようび",
+        "m": "Thứ hai",
+        "w": "月曜日"
+      },
+      {
+        "k": "こんげつ",
+        "m": "Tháng này",
+        "w": "今月"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 17,
+    "kanji": "火",
+    "onyomi": "カ",
+    "kunyomi": "ひ, ほ",
+    "han_viet": "HỎA",
+    "meaning": "Lửa",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "かようび",
+        "m": "Thứ ba",
+        "w": "火曜日"
+      },
+      {
+        "k": "はなび",
+        "m": "Pháo hoa",
+        "w": "花火"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 18,
+    "kanji": "水",
+    "onyomi": "スイ",
+    "kunyomi": "みず",
+    "han_viet": "THỦY",
+    "meaning": "Nước",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "すいようび",
+        "m": "Thứ tư",
+        "w": "水曜日"
+      },
+      {
+        "k": "みず",
+        "m": "Nước lọc",
+        "w": "水"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 19,
+    "kanji": "木",
+    "onyomi": "ボク, モク",
+    "kunyomi": "き, こ",
+    "han_viet": "MỘC",
+    "meaning": "Cây, gỗ",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "もくようび",
+        "m": "Thứ năm",
+        "w": "木曜日"
+      },
+      {
+        "k": "き",
+        "m": "Cái cây",
+        "w": "木"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 20,
+    "kanji": "金",
+    "onyomi": "キン, コン",
+    "kunyomi": "かね, かな",
+    "han_viet": "KIM",
+    "meaning": "Vàng, tiền",
+    "stroke_count": 8,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "きんようび",
+        "m": "Thứ sáu",
+        "w": "金曜日"
+      },
+      {
+        "k": "おかね",
+        "m": "Tiền bạc",
+        "w": "お金"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 21,
+    "kanji": "土",
+    "onyomi": "ド, ト",
+    "kunyomi": "つち",
+    "han_viet": "THỔ",
+    "meaning": "Đất, thổ nhưỡng",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "どようび",
+        "m": "Thứ bảy",
+        "w": "土曜日"
+      },
+      {
+        "k": "とち",
+        "m": "Khu đất",
+        "w": "土地"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 22,
+    "kanji": "人",
+    "onyomi": "ジン, ニン",
+    "kunyomi": "ひと",
+    "han_viet": "NHÂN",
+    "meaning": "Người",
+    "stroke_count": 2,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "にほんじん",
+        "m": "Người Nhật",
+        "w": "日本人"
+      },
+      {
+        "k": "あのひと",
+        "m": "Người kia",
+        "w": "あの人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 23,
+    "kanji": "子",
+    "onyomi": "シ, ス",
+    "kunyomi": "こ",
+    "han_viet": "TỬ",
+    "meaning": "Con cái, trẻ em",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "こども",
+        "m": "Trẻ con",
+        "w": "子ども"
+      },
+      {
+        "k": "おんなのこ",
+        "m": "Bé gái",
+        "w": "女の子"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 24,
+    "kanji": "女",
+    "onyomi": "ジョ, ニョ",
+    "kunyomi": "おんな, め",
+    "han_viet": "NỮ",
+    "meaning": "Phụ nữ, nữ giới",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "おんなのひと",
+        "m": "Người phụ nữ",
+        "w": "女の人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 25,
+    "kanji": "男",
+    "onyomi": "ダン, ナン",
+    "kunyomi": "おとこ",
+    "han_viet": "NAM",
+    "meaning": "Đàn ông, nam giới",
+    "stroke_count": 7,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "おとこのひと",
+        "m": "Người đàn ông",
+        "w": "男の人"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 26,
+    "kanji": "先",
+    "onyomi": "セン",
+    "kunyomi": "さき",
+    "han_viet": "TIÊN",
+    "meaning": "Trước, đi trước",
+    "stroke_count": 6,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "せんせい",
+        "m": "Thầy/cô giáo",
+        "w": "先生"
+      },
+      {
+        "k": "せんしゅう",
+        "m": "Tuần trước",
+        "w": "先週"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 27,
+    "kanji": "生",
+    "onyomi": "セイ, ショウ",
+    "kunyomi": "い・きる, う・まれる, なま",
+    "han_viet": "SINH",
+    "meaning": "Sinh sống, sinh ra, học sinh",
+    "stroke_count": 5,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "がくせい",
+        "m": "Học sinh",
+        "w": "学生"
+      },
+      {
+        "k": "うまれる",
+        "m": "Sinh ra",
+        "w": "生まれる"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 28,
+    "kanji": "学",
+    "onyomi": "ガク",
+    "kunyomi": "まな・ぶ",
+    "han_viet": "HỌC",
+    "meaning": "Học tập, trường học",
+    "stroke_count": 8,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "がっこう",
+        "m": "Trường học",
+        "w": "学校"
+      },
+      {
+        "k": "だいがく",
+        "m": "Đại học",
+        "w": "大学"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 30,
+    "kanji": "本",
+    "onyomi": "ホン",
+    "kunyomi": "もと",
+    "han_viet": "BẢN",
+    "meaning": "Sách, gốc, nguồn gốc",
+    "stroke_count": 5,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ほん",
+        "m": "Cuốn sách",
+        "w": "本"
+      },
+      {
+        "k": "にほん",
+        "m": "Nhật Bản",
+        "w": "日本"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 31,
+    "kanji": "名",
+    "onyomi": "メイ, ミョウ",
+    "kunyomi": "な",
+    "han_viet": "DANH",
+    "meaning": "Tên, danh tiếng",
+    "stroke_count": 6,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "なまえ",
+        "m": "Tên",
+        "w": "名前"
+      },
+      {
+        "k": "ゆうめい",
+        "m": "Nổi tiếng",
+        "w": "有名"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 32,
+    "kanji": "前",
+    "onyomi": "ゼン",
+    "kunyomi": "まえ",
+    "han_viet": "TIỀN",
+    "meaning": "Trước, phía trước",
+    "stroke_count": 9,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "まえ",
+        "m": "Phía trước",
+        "w": "前"
+      },
+      {
+        "k": "ごぜん",
+        "m": "Buổi sáng (AM)",
+        "w": "午前"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 33,
+    "kanji": "後",
+    "onyomi": "ゴ, コウ",
+    "kunyomi": "のち, うし・ろ, あと",
+    "han_viet": "HẬU",
+    "meaning": "Sau, phía sau",
+    "stroke_count": 9,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "うしろ",
+        "m": "Phía sau",
+        "w": "後ろ"
+      },
+      {
+        "k": "ごご",
+        "m": "Buổi chiều (PM)",
+        "w": "午後"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 34,
+    "kanji": "午",
+    "onyomi": "ゴ",
+    "kunyomi": "うま",
+    "han_viet": "NGỌ",
+    "meaning": "Giữa trưa",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ごぜん",
+        "m": "Sáng",
+        "w": "午前"
+      },
+      {
+        "k": "ごご",
+        "m": "Chiều",
+        "w": "午後"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 35,
+    "kanji": "今",
+    "onyomi": "コン, キン",
+    "kunyomi": "いま",
+    "han_viet": "KIM",
+    "meaning": "Bây giờ, hiện tại",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "いま",
+        "m": "Bây giờ",
+        "w": "今"
+      },
+      {
+        "k": "きょう",
+        "m": "Hôm nay",
+        "w": "今日"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 36,
+    "kanji": "時",
+    "onyomi": "ジ",
+    "kunyomi": "とき",
+    "han_viet": "THỜI",
+    "meaning": "Thời gian, giờ",
+    "stroke_count": 10,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "じかん",
+        "m": "Thời gian",
+        "w": "時間"
+      },
+      {
+        "k": "なんじ",
+        "m": "Mấy giờ",
+        "w": "何時"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 37,
+    "kanji": "分",
+    "onyomi": "ブン, フン, ブ",
+    "kunyomi": "わ・ける, わ・かる",
+    "han_viet": "PHÂN",
+    "meaning": "Phút, hiểu, chia phần",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "はんぶん",
+        "m": "Một nửa",
+        "w": "半分"
+      },
+      {
+        "k": "わかる",
+        "m": "Hiểu",
+        "w": "分かる"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 38,
+    "kanji": "半",
+    "onyomi": "ハン",
+    "kunyomi": "なか・ば",
+    "han_viet": "BÁN",
+    "meaning": "Nửa, rưỡi",
+    "stroke_count": 5,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "はん",
+        "m": "Rưỡi (giờ)",
+        "w": "半"
+      },
+      {
+        "k": "はんぶん",
+        "m": "Một nửa",
+        "w": "半分"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 39,
+    "kanji": "何",
+    "onyomi": "カ",
+    "kunyomi": "なに, なん",
+    "han_viet": "HÀ",
+    "meaning": "Cái gì, mấy",
+    "stroke_count": 7,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "なに",
+        "m": "Cái gì",
+        "w": "何"
+      },
+      {
+        "k": "なんじ",
+        "m": "Mấy giờ",
+        "w": "何時"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 40,
+    "kanji": "上",
+    "onyomi": "ジョウ, ショウ",
+    "kunyomi": "うえ, あ・がる, のぼ・る",
+    "han_viet": "THƯỢNG",
+    "meaning": "Trên, phía trên",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "うえ",
+        "m": "Phía trên",
+        "w": "上"
+      },
+      {
+        "k": "じょうず",
+        "m": "Giỏi",
+        "w": "上手"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 41,
+    "kanji": "下",
+    "onyomi": "カ, ゲ",
+    "kunyomi": "した, さ・がる, くだ・る",
+    "han_viet": "HẠ",
+    "meaning": "Dưới, phía dưới",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "した",
+        "m": "Phía dưới",
+        "w": "下"
+      },
+      {
+        "k": "へた",
+        "m": "Kém",
+        "w": "下手"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 42,
+    "kanji": "中",
+    "onyomi": "チュウ",
+    "kunyomi": "なか",
+    "han_viet": "TRUNG",
+    "meaning": "Trong, ở giữa, Trung Quốc",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "なか",
+        "m": "Bên trong",
+        "w": "中"
+      },
+      {
+        "k": "ちゅうごく",
+        "m": "Trung Quốc",
+        "w": "中国"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 43,
+    "kanji": "大",
+    "onyomi": "ダイ, タイ",
+    "kunyomi": "おお・きい",
+    "han_viet": "ĐẠI",
+    "meaning": "To lớn",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "おおきい",
+        "m": "To, lớn",
+        "w": "大きい"
+      },
+      {
+        "k": "だいがく",
+        "m": "Đại học",
+        "w": "大学"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 44,
+    "kanji": "小",
+    "onyomi": "ショウ",
+    "kunyomi": "ちい・さい, こ, お",
+    "han_viet": "TIỂU",
+    "meaning": "Nhỏ, bé",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ちいさい",
+        "m": "Nhỏ, bé",
+        "w": "小さい"
+      },
+      {
+        "k": "しょうがっこう",
+        "m": "Trường tiểu học",
+        "w": "小学校"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 45,
+    "kanji": "山",
+    "onyomi": "サン",
+    "kunyomi": "やま",
+    "han_viet": "SƠN",
+    "meaning": "Núi",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "やま",
+        "m": "Ngọn núi",
+        "w": "山"
+      },
+      {
+        "k": "ふじさん",
+        "m": "Núi Phú Sĩ",
+        "w": "富士山"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 46,
+    "kanji": "川",
+    "onyomi": "セン",
+    "kunyomi": "かわ",
+    "han_viet": "XUYÊN",
+    "meaning": "Sông",
+    "stroke_count": 3,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "かわ",
+        "m": "Dòng sông",
+        "w": "川"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 47,
+    "kanji": "天",
+    "onyomi": "テン",
+    "kunyomi": "あまつ, あめ",
+    "han_viet": "THIÊN",
+    "meaning": "Trời, thời tiết",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "てんき",
+        "m": "Thời tiết",
+        "w": "天気"
+      },
+      {
+        "k": "てんぷら",
+        "m": "Món tempura",
+        "w": "天ぷら"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 48,
+    "kanji": "気",
+    "onyomi": "キ, ケ",
+    "kunyomi": "いき",
+    "han_viet": "KHÍ",
+    "meaning": "Khí, tinh thần, tâm trạng",
+    "stroke_count": 6,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "げんき",
+        "m": "Khỏe mạnh",
+        "w": "元気"
+      },
+      {
+        "k": "てんき",
+        "m": "Thời tiết",
+        "w": "天気"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 49,
+    "kanji": "雨",
+    "onyomi": "ウ",
+    "kunyomi": "あめ, あま",
+    "han_viet": "VŨ",
+    "meaning": "Mưa",
+    "stroke_count": 8,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "あめ",
+        "m": "Trời mưa",
+        "w": "雨"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 50,
+    "kanji": "白",
+    "onyomi": "ハク, ビャク",
+    "kunyomi": "しろ, しろ・い",
+    "han_viet": "BẠCH",
+    "meaning": "Màu trắng",
+    "stroke_count": 5,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "しろい",
+        "m": "Màu trắng",
+        "w": "白い"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 51,
+    "kanji": "黒",
+    "onyomi": "コク",
+    "kunyomi": "くろ, くろ・い",
+    "han_viet": "HẮC",
+    "meaning": "Màu đen",
+    "stroke_count": 11,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "くろい",
+        "m": "Màu đen",
+        "w": "黒い"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 52,
+    "kanji": "赤",
+    "onyomi": "セキ, シャク",
+    "kunyomi": "あか, あか・い",
+    "han_viet": "XÍCH",
+    "meaning": "Màu đỏ",
+    "stroke_count": 7,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "あかい",
+        "m": "Màu đỏ",
+        "w": "赤い"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 53,
+    "kanji": "青",
+    "onyomi": "セイ, ショウ",
+    "kunyomi": "あお, あお・い",
+    "han_viet": "THANH",
+    "meaning": "Màu xanh da trời",
+    "stroke_count": 8,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "あおい",
+        "m": "Xanh dương",
+        "w": "青い"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 54,
+    "kanji": "行",
+    "onyomi": "コウ, ギョウ",
+    "kunyomi": "い・く, ゆ・く, おこな・う",
+    "han_viet": "HÀNH",
+    "meaning": "Đi, tiến hành",
+    "stroke_count": 6,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "いく",
+        "m": "Đi",
+        "w": "行く"
+      },
+      {
+        "k": "りょこう",
+        "m": "Du lịch",
+        "w": "旅行"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 55,
+    "kanji": "来",
+    "onyomi": "ライ",
+    "kunyomi": "く・る, きた・る",
+    "han_viet": "LAI",
+    "meaning": "Đến, tới",
+    "stroke_count": 7,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "くる",
+        "m": "Đến",
+        "w": "来る"
+      },
+      {
+        "k": "らいしゅう",
+        "m": "Tuần sau",
+        "w": "来週"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 56,
+    "kanji": "帰",
+    "onyomi": "キ",
+    "kunyomi": "かえ・る",
+    "han_viet": "QUY",
+    "meaning": "Trở về, về nhà",
+    "stroke_count": 10,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "かえる",
+        "m": "Trở về",
+        "w": "帰る"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 57,
+    "kanji": "見",
+    "onyomi": "ケン",
+    "kunyomi": "み・る, み・える",
+    "han_viet": "KIẾN",
+    "meaning": "Nhìn, xem",
+    "stroke_count": 7,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "みる",
+        "m": "Nhìn, xem",
+        "w": "見る"
+      },
+      {
+        "k": "いけん",
+        "m": "Ý kiến",
+        "w": "意見"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 58,
+    "kanji": "聞",
+    "onyomi": "ブン, モン",
+    "kunyomi": "き・く, き・こえる",
+    "han_viet": "VĂN",
+    "meaning": "Nghe, hỏi",
+    "stroke_count": 14,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "きく",
+        "m": "Nghe",
+        "w": "聞く"
+      },
+      {
+        "k": "しんぶん",
+        "m": "Tờ báo",
+        "w": "新聞"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 59,
+    "kanji": "食",
+    "onyomi": "ショク, ジキ",
+    "kunyomi": "た・べる, く・う",
+    "han_viet": "THỰC",
+    "meaning": "Ăn, món ăn",
+    "stroke_count": 9,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "たべる",
+        "m": "Ăn",
+        "w": "食べる"
+      },
+      {
+        "k": "たべもの",
+        "m": "Đồ ăn",
+        "w": "食べ物"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 60,
+    "kanji": "飲",
+    "onyomi": "イン",
+    "kunyomi": "の・む",
+    "han_viet": "ẨM",
+    "meaning": "Uống",
+    "stroke_count": 12,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "のむ",
+        "m": "Uống",
+        "w": "飲む"
+      },
+      {
+        "k": "のみもの",
+        "m": "Đồ uống",
+        "w": "飲み物"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 62,
+    "kanji": "書",
+    "onyomi": "ショ",
+    "kunyomi": "か・く",
+    "han_viet": "THƯ",
+    "meaning": "Viết, cuốn sách",
+    "stroke_count": 10,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "かく",
+        "m": "Viết",
+        "w": "書く"
+      },
+      {
+        "k": "じしょ",
+        "m": "Từ điển",
+        "w": "辞書"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 63,
+    "kanji": "読",
+    "onyomi": "ドク, トク",
+    "kunyomi": "よ・む",
+    "han_viet": "ĐỘC",
+    "meaning": "Đọc",
+    "stroke_count": 14,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "よむ",
+        "m": "Đọc sách",
+        "w": "読む"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 64,
+    "kanji": "話",
+    "onyomi": "ワ",
+    "kunyomi": "はな・す, はなし",
+    "han_viet": "THOẠI",
+    "meaning": "Nói chuyện, câu chuyện",
+    "stroke_count": 13,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "はなす",
+        "m": "Nói chuyện",
+        "w": "話す"
+      },
+      {
+        "k": "でんわ",
+        "m": "Điện thoại",
+        "w": "電話"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 65,
+    "kanji": "語",
+    "onyomi": "ゴ",
+    "kunyomi": "かた・る",
+    "han_viet": "NGỮ",
+    "meaning": "Ngôn ngữ, tiếng",
+    "stroke_count": 14,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "にほんご",
+        "m": "Tiếng Nhật",
+        "w": "日本語"
+      },
+      {
+        "k": "えいご",
+        "m": "Tiếng Anh",
+        "w": "英語"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 66,
+    "kanji": "友",
+    "onyomi": "ユウ",
+    "kunyomi": "とも",
+    "han_viet": "HỮU",
+    "meaning": "Bạn bè",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ともだち",
+        "m": "Bạn bè",
+        "w": "友達"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 67,
+    "kanji": "父",
+    "onyomi": "フ",
+    "kunyomi": "ちち, とう",
+    "han_viet": "PHỤ",
+    "meaning": "Bố, cha",
+    "stroke_count": 4,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "ちち",
+        "m": "Bố mình",
+        "w": "父"
+      },
+      {
+        "k": "おとうさん",
+        "m": "Bố bạn",
+        "w": "お父さん"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 68,
+    "kanji": "母",
+    "onyomi": "ボ",
+    "kunyomi": "はは, かあ",
+    "han_viet": "MẪU",
+    "meaning": "Mẹ",
+    "stroke_count": 5,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "はは",
+        "m": "Mẹ mình",
+        "w": "母"
+      },
+      {
+        "k": "おかあさん",
+        "m": "Mẹ bạn",
+        "w": "お母さん"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 69,
+    "kanji": "家",
+    "onyomi": "カ, ケ",
+    "kunyomi": "いえ, や, うち",
+    "han_viet": "GIA",
+    "meaning": "Nhà, gia đình",
+    "stroke_count": 10,
+    "level": "N5",
+    "examples": [
+      {
+        "k": "うち",
+        "m": "Ngôi nhà",
+        "w": "家"
+      },
+      {
+        "k": "かぞく",
+        "m": "Gia đình",
+        "w": "家族"
+      }
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
+  },
+  {
+    "id": 77,
     "kanji": "門",
     "onyomi": "モン",
     "kunyomi": "かど",
     "han_viet": "MÔN",
     "meaning": "Cổng, cửa",
-    "stroke": 8,
+    "stroke_count": 8,
+    "level": "N5",
     "examples": [
       {
-        "w": "専門",
         "k": "せんもん",
-        "m": "Chuyên môn"
+        "m": "Chuyên môn",
+        "w": "専門"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 78,
     "kanji": "間",
     "onyomi": "カン, ケン",
     "kunyomi": "あいだ, ま",
     "han_viet": "GIAN",
     "meaning": "Khoảng cách, ở giữa, thời gian",
-    "stroke": 12,
+    "stroke_count": 12,
+    "level": "N5",
     "examples": [
       {
-        "w": "時間",
         "k": "じかん",
-        "m": "Thời gian"
+        "m": "Thời gian",
+        "w": "時間"
       },
       {
-        "w": "間",
         "k": "あいだ",
-        "m": "Ở giữa"
+        "m": "Ở giữa",
+        "w": "間"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 79,
     "kanji": "週",
     "onyomi": "シュウ",
     "kunyomi": "",
     "han_viet": "CHU",
     "meaning": "Tuần lễ",
-    "stroke": 11,
+    "stroke_count": 11,
+    "level": "N5",
     "examples": [
       {
-        "w": "今週",
         "k": "こんしゅう",
-        "m": "Tuần này"
+        "m": "Tuần này",
+        "w": "今週"
       },
       {
-        "w": "来週",
         "k": "らいしゅう",
-        "m": "Tuần sau"
+        "m": "Tuần sau",
+        "w": "来週"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   },
   {
+    "id": 80,
     "kanji": "年",
     "onyomi": "ネン",
     "kunyomi": "とし",
     "han_viet": "NIÊN",
     "meaning": "Năm, tuổi",
-    "stroke": 6,
+    "stroke_count": 6,
+    "level": "N5",
     "examples": [
       {
-        "w": "今年",
         "k": "ことし",
-        "m": "Năm nay"
+        "m": "Năm nay",
+        "w": "今年"
       },
       {
-        "w": "去年",
         "k": "きょねん",
-        "m": "Năm ngoái"
+        "m": "Năm ngoái",
+        "w": "去年"
       }
-    ]
+    ],
+    "created_at": "2026-10-07T15:55:26.059Z"
   }
 ]
