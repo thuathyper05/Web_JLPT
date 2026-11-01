@@ -223,7 +223,14 @@ async function autoInitDatabase(pool) {
       ALTER TABLE kanji ADD COLUMN IF NOT EXISTS examples JSONB DEFAULT '[]'::jsonb;
       ALTER TABLE kanji DROP CONSTRAINT IF EXISTS kanji_kanji_key;
       ALTER TABLE kanji DROP CONSTRAINT IF EXISTS uq_kanji_character;
+      DROP INDEX IF EXISTS uq_kanji_char;
       CREATE UNIQUE INDEX IF NOT EXISTS uq_kanji_level_char ON kanji (level, kanji);
+
+      -- Drop old legacy single-level indexes that conflict with multi-level (N5-N1)
+      DROP INDEX IF EXISTS uq_vocab_lesson_order;
+      DROP INDEX IF EXISTS idx_vocab_order;
+      DROP INDEX IF EXISTS idx_vocab_lesson;
+      CREATE UNIQUE INDEX IF NOT EXISTS uq_vocab_level_lesson_order ON vocabularies (level, lesson_number, order_num);
 
       CREATE INDEX IF NOT EXISTS idx_vocab_level_lesson ON vocabularies (level, lesson_number);
       CREATE INDEX IF NOT EXISTS idx_lessons_level ON lessons (level);
@@ -381,13 +388,43 @@ async function autoInitDatabase(pool) {
           await client.query(`
             INSERT INTO particle_exercises (level, sentence_jp, sentence_vi, options, correct_answer, explanation)
             VALUES ($1, $2, $3, $4, $5, $6)
-          `, [e.level, e.sentence_jp, e.sentence_vi, JSON.stringify(e.options || []), e.correct_answer, e.explanation]);
+          `, [
+            e.level || 'N5',
+            e.sentence_jp || e.question || '',
+            e.sentence_vi || e.explanation || '',
+            JSON.stringify(e.options || []),
+            e.correct_answer || e.answer || '',
+            e.explanation || ''
+          ]);
         }
         console.log(`[Auto Seed] Seeded ${exercisesData.length} particle exercises.`);
       }
 
       console.log('[Auto Seed] Complete! All tables and JLPT datasets ready.');
     } else {
+      // Independent check for particle exercises in case previous run was interrupted
+      const exCountRes = await client.query('SELECT COUNT(*) FROM particle_exercises');
+      const totalExercises = parseInt(exCountRes.rows[0].count, 10);
+      if (totalExercises === 0) {
+        const exercisesFile = path.join(DATA_DIR, 'all_particle_exercises.json');
+        if (fs.existsSync(exercisesFile)) {
+          const exercisesData = JSON.parse(fs.readFileSync(exercisesFile, 'utf8'));
+          for (const e of exercisesData) {
+            await client.query(`
+              INSERT INTO particle_exercises (level, sentence_jp, sentence_vi, options, correct_answer, explanation)
+              VALUES ($1, $2, $3, $4, $5, $6)
+            `, [
+              e.level || 'N5',
+              e.sentence_jp || e.question || '',
+              e.sentence_vi || e.explanation || '',
+              JSON.stringify(e.options || []),
+              e.correct_answer || e.answer || '',
+              e.explanation || ''
+            ]);
+          }
+          console.log(`[Auto Seed] Seeded ${exercisesData.length} particle exercises.`);
+        }
+      }
       console.log(`[PostgreSQL Schema] Database verified healthy with ${totalVocab} vocabularies, ${totalKanji} kanji, ${totalGrammar} grammar points.`);
     }
   } catch (err) {

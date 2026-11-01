@@ -3,7 +3,24 @@ const fs = require('fs');
 const path = require('path');
 const { autoInitDatabase } = require('../init_db');
 
-// Lấy DATABASE_URL từ tham số dòng lệnh hoặc biến môi trường hoặc tệp .env
+// Ham chuan hoa chuoi ket noi phong truong hop mat khau co ky tu dac biet nhu @
+function normalizeDatabaseUrl(raw) {
+  if (!raw) return raw;
+  raw = raw.trim();
+  const match = raw.match(/^postgresql:\/\/([^:]+):(.*)@([^@]+:\d+\/[^?]+.*)$/);
+  if (match) {
+    const user = match[1];
+    let password = match[2];
+    const rest = match[3];
+    if (password.includes('@') && !password.includes('%40')) {
+      password = encodeURIComponent(password);
+    }
+    return `postgresql://${user}:${password}@${rest}`;
+  }
+  return raw;
+}
+
+// Lay DATABASE_URL tu tham so dong lenh hoac bien moi truong hoac tep .env
 let connectionString = process.argv[2] || process.env.DATABASE_URL;
 
 if (!connectionString) {
@@ -19,43 +36,44 @@ if (!connectionString) {
 
 if (!connectionString) {
   console.log('====================================================');
-  console.log('       HƯỚNG DẪN ĐẨY DỮ LIỆU LÊN SUPABASE');
+  console.log('       HUONG DAN DAY DU LIEU LEN SUPABASE');
   console.log('====================================================\n');
-  console.log('Vui lòng cung cấp chuỗi kết nối DATABASE_URL của Supabase theo 1 trong các cách sau:');
-  console.log('\nCách 1: Truyền trực tiếp chuỗi kết nối vào lệnh:');
+  console.log('Vui long cung cap chuoi ket noi DATABASE_URL cua Supabase theo 1 trong cac cach sau:');
+  console.log('\nCach 1: Truyen truc tiep chuoi ket noi vao lenh:');
   console.log('  node backend/scripts/push_to_supabase.js "postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:6543/postgres"');
-  console.log('\nCách 2: Gán biến môi trường trong PowerShell:');
+  console.log('\nCach 2: Gan bien moi truong trong PowerShell:');
   console.log('  $env:DATABASE_URL="postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:6543/postgres"');
   console.log('  node backend/scripts/push_to_supabase.js');
-  console.log('\nCách 3: Điền vào tệp backend/.env dòng:');
+  console.log('\nCach 3: Dien vao tep backend/.env dong:');
   console.log('  DATABASE_URL=postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:6543/postgres');
   console.log('  node backend/scripts/push_to_supabase.js\n');
   process.exit(1);
 }
 
-// Clean connection string
-connectionString = connectionString.trim();
+// Chuan hoa chuoi URI
+connectionString = normalizeDatabaseUrl(connectionString);
 
 console.log('====================================================');
-console.log('    BẮT ĐẦU NẠP DỮ LIỆU TOÀN BỘ N5 - N1 LÊN SUPABASE');
+console.log('    BAT DAU NAP DU LIEU TOAN BO N5 - N1 LEN SUPABASE');
 console.log('====================================================\n');
-console.log('Đang kết nối tới Supabase qua SSL...');
+console.log('Dang ket noi toi Supabase qua SSL...');
 
 const pool = new Pool({
   connectionString: connectionString,
   ssl: { rejectUnauthorized: false },
-  connectionTimeoutMillis: 10000
+  connectionTimeoutMillis: 15000
 });
 
 async function main() {
   try {
     const client = await pool.connect();
-    console.log('Kết nối thành công với Supabase PostgreSQL!');
+    console.log('Ket noi thanh cong voi Supabase PostgreSQL!');
 
-    console.log('\nĐang tạo bảng và nạp 130 bài học, 9.584 từ vựng, 607 Kanji, 276 ngữ pháp...');
+    console.log('\nDang cap nhat cau truc bang (Schema Migration)...');
+    console.log('Dang nap 130 bai hoc, 9.584 tu vung, 607 Kanji, 276 ngu phap, 45 tro tu, 60 bai tap...');
     await autoInitDatabase(pool);
 
-    // Kiểm tra số lượng thực tế trong Supabase
+    // Kiem tra so luong thuc te trong Supabase
     const counts = {};
     const tables = ['lessons', 'vocabularies', 'kanji', 'grammar_points', 'particles', 'particle_exercises'];
     for (const tbl of tables) {
@@ -64,26 +82,26 @@ async function main() {
     }
 
     console.log('\n====================================================');
-    console.log('   XÁC NHẬN SỐ LƯỢNG DỮ LIỆU ĐÃ NẠP TRÊN SUPABASE:');
+    console.log('   XAC NHAN SO LUONG DU LIEU DA NAP TREN SUPABASE:');
     console.log('====================================================');
-    console.log(`- Bài học (lessons): ${counts.lessons} bài (N5 đến N1)`);
-    console.log(`- Từ vựng (vocabularies): ${counts.vocabularies} từ vựng chuẩn`);
-    console.log(`- Chữ Hán (kanji): ${counts.kanji} chữ Hán đầy đủ âm On/Kun/Hán Việt`);
-    console.log(`- Ngữ pháp (grammar_points): ${counts.grammar_points} điểm ngữ pháp`);
-    console.log(`- Trợ từ (particles): ${counts.particles} cấu trúc trợ từ`);
-    console.log(`- Bài tập trợ từ (particle_exercises): ${counts.particle_exercises} câu hỏi trắc nghiệm`);
+    console.log(`- Bai hoc (lessons): ${counts.lessons} bai (N5 den N1)`);
+    console.log(`- Tu vung (vocabularies): ${counts.vocabularies} tu vung chuan`);
+    console.log(`- Chu Han (kanji): ${counts.kanji} chu Han day du am On/Kun/Han Viet`);
+    console.log(`- Ngu phap (grammar_points): ${counts.grammar_points} diem ngu phap`);
+    console.log(`- Tro tu (particles): ${counts.particles} cau truc tro tu`);
+    console.log(`- Bai tap tro tu (particle_exercises): ${counts.particle_exercises} cau hoi trac nghiem`);
     console.log('====================================================');
-    console.log('NẠP DỮ LIỆU LÊN SUPABASE HOÀN TẤT 100%!');
+    console.log('NAP DU LIEU LEN SUPABASE HOAN TAT 100%!');
 
     client.release();
     await pool.end();
     process.exit(0);
   } catch (err) {
-    console.error('Lỗi trong quá trình nạp dữ liệu lên Supabase:', err.message);
+    console.error('Loi trong qua trinh nap du lieu len Supabase:', err.message);
     if (err.message.includes('password authentication failed')) {
-      console.error('\nGợi ý: Mật khẩu cơ sở dữ liệu Supabase bị sai. Vui lòng kiểm tra lại mật khẩu bạn đã đặt trong chuỗi URI.');
+      console.error('\nGoi y: Mat khau co so du lieu Supabase bi sai. Vui long kiem tra lai mat khau ban da dat trong chuoi URI.');
     } else if (err.message.includes('ENOTFOUND') || err.message.includes('timeout')) {
-      console.error('\nGợi ý: Không tìm thấy máy chủ Supabase. Vui lòng kiểm tra lại tên miền host và cổng (6543 hoặc 5432).');
+      console.error('\nGoi y: Khong tim thay may chu Supabase. Vui long kiem tra lai ten mien host va cong (6543 hoac 5432).');
     }
     await pool.end();
     process.exit(1);
