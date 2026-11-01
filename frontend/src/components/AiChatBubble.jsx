@@ -66,28 +66,28 @@ export default function AiChatBubble() {
 
   return (
     <>
-      {/* Floating Trigger Button: Safely positioned above mobile bottom bar */}
-      <div className="fixed right-3.5 sm:right-4 bottom-[78px] sm:bottom-20 lg:bottom-6 z-40">
+      {/* Floating Trigger Button: Positioned comfortably 26px+ above mobile bottom bar to never overlap 'Thêm' menu */}
+      <div className="fixed right-3.5 sm:right-5 lg:right-6 bottom-[calc(env(safe-area-inset-bottom,0px)+86px)] lg:bottom-6 z-30">
         <button
           type="button"
           onClick={() => { sounds.playFlip(); setIsOpen(!isOpen); }}
-          className="group relative flex items-center justify-center sm:justify-start gap-2 w-12 h-12 sm:w-auto sm:h-auto sm:px-4 sm:py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-bold text-xs shadow-lotus-lg hover:scale-105 active:scale-95 transition-all"
-          aria-label="Mở Trợ lý AI"
+          className="group relative flex items-center justify-center sm:justify-start gap-2 w-11 h-11 sm:w-auto sm:h-auto sm:px-4 sm:py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-bold text-xs shadow-lotus-lg hover:scale-105 active:scale-95 transition-all cursor-pointer ring-2 ring-white/80"
+          aria-label="Mở Trợ lý AI Sensei"
           title="Trợ lý AI Sensei 24/7"
         >
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center animate-pulse">
-            <Sparkles size={14} className="text-white" />
+          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center animate-pulse">
+            <Sparkles size={13} className="text-white" />
           </div>
           <span className="hidden sm:inline tracking-tight font-extrabold">Hỏi Trợ Lý AI</span>
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute top-1 right-1 ring-2 ring-white" />
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute top-0.5 right-0.5 ring-2 ring-white" />
         </button>
       </div>
 
       {/* Expanded Chat Drawer / Popover Window */}
       {isOpen && (
         <div
-          className="fixed right-3 sm:right-4 bottom-[82px] lg:bottom-20 z-50 w-[calc(100vw-24px)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-pink-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4"
-          style={{ height: '480px', maxHeight: '75vh' }}
+          className="fixed right-3 sm:right-5 lg:right-6 bottom-[calc(env(safe-area-inset-bottom,0px)+80px)] lg:bottom-20 z-50 w-[calc(100vw-24px)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-pink-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4"
+          style={{ height: 'min(480px, calc(100dvh - env(safe-area-inset-bottom, 0px) - 100px))', maxHeight: 'calc(100dvh - env(safe-area-inset-bottom, 0px) - 100px)' }}
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 px-4 py-3 text-white flex items-center justify-between shadow-sm">
