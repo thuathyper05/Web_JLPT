@@ -51,12 +51,14 @@ export default function App() {
       case 'quiz':
         return <QuizPage />;
       case 'practice':
+      case 'typing':
         return <PracticePage />;
       case 'wordmatch':
         return <WordMatchPage />;
       case 'garden':
         return <GardenPage />;
       case 'ai_sensei':
+      case 'sensei':
         return <AiSenseiPage />;
       case 'support':
         return <SupportPage />;

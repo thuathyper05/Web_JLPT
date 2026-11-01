@@ -47,7 +47,7 @@ export default function Sidebar({
         { id: 'listening', label: 'Luyện nghe', icon: Headphones, isNew: true },
         { id: 'flashcard', label: 'Flashcard 3D', icon: Layers },
         { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
-        { id: 'typing', label: 'Luyện gõ', icon: Keyboard },
+        { id: 'practice', label: 'Luyện gõ', icon: Keyboard },
         { id: 'wordmatch', label: 'Nối từ', icon: Award },
         { id: 'garden', label: 'Vườn cây', icon: TreeDeciduous }
       ]
@@ -61,7 +61,7 @@ export default function Sidebar({
     {
       title: 'Công cụ & Hỗ trợ',
       items: [
-        { id: 'sensei', label: 'Trợ lý AI Sensei', icon: Sparkles, isNew: true },
+        { id: 'ai_sensei', label: 'Trợ lý AI Sensei', icon: Sparkles, isNew: true },
         { id: 'support', label: 'Trung tâm trợ giúp', icon: LifeBuoy }
       ]
     }
