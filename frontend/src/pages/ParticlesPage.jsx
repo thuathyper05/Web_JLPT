@@ -44,14 +44,29 @@ export default function ParticlesPage() {
   const normalizedParticles = rawList.map(p => {
     if (!p) return null;
     const pStr = p.particle || '';
-    const cleanChar = pStr.replace(/\s*\(.*?\)/g, '').trim() || pStr;
-    const romajiFromParen = pStr.includes('(') ? pStr.replace(/.*\((.*?)\).*/, '$1') : '';
-    
+
+    // 1. Strip trailing dash and notes like '- Thời gian', '– Nơi đến'
+    const withoutDash = pStr.split(/\s*[-–—]\s*/)[0].trim();
+
+    // 2. Extract clean particle character (e.g. 'は', 'に', 'で', 'から', 'について')
+    const cleanChar = withoutDash.replace(/\s*\(.*?\)/g, '').trim() || withoutDash;
+
+    // 3. For the badge: if there are multiple slash variants like 'くらい / ぐらい', pick primary
+    const badgeChar = cleanChar.includes('/') ? cleanChar.split('/')[0].trim() : cleanChar;
+
+    // 4. Extract romaji inside parentheses (e.g. 'ni', 'de', 'wa', 'wo/o')
+    const romMatch = withoutDash.match(/\((.*?)\)/);
+    const romajiFromParen = romMatch ? romMatch[1].trim() : '';
+
+    // 5. Clean title: prioritize role (e.g. 'Cách trợ từ chỉ thời điểm'), strip any dash
+    const cleanTitle = (p.role || p.title || p.meaning || cleanChar).split(/\s*[-–—]\s*/)[0].trim();
+
     return {
       ...p,
       cleanChar,
-      title: p.title || p.role || cleanChar || pStr,
-      usage: p.usage || p.meaning || '',
+      badgeChar,
+      title: cleanTitle,
+      usage: p.meaning || p.usage || '',
       formula: p.formula || (typeof p.notes === 'string' && p.notes.includes('Công thức') ? p.notes : ''),
       examples: Array.isArray(p.examples) && p.examples.length > 0 
         ? p.examples 
@@ -66,6 +81,7 @@ export default function ParticlesPage() {
     return (
       (p.particle && p.particle.toLowerCase().includes(q)) ||
       (p.cleanChar && p.cleanChar.toLowerCase().includes(q)) ||
+      (p.badgeChar && p.badgeChar.toLowerCase().includes(q)) ||
       (p.romaji && p.romaji.toLowerCase().includes(q)) ||
       (p.title && p.title.toLowerCase().includes(q)) ||
       (p.usage && p.usage.toLowerCase().includes(q))
@@ -151,20 +167,28 @@ export default function ParticlesPage() {
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div
-                      className={`min-w-[48px] px-3 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center font-jp font-black shadow-lotus shrink-0 whitespace-nowrap leading-none ${
-                        item.cleanChar.length > 2
-                          ? 'text-sm sm:text-base'
-                          : item.cleanChar.length > 1
-                          ? 'text-lg sm:text-xl'
+                      className={`w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center font-jp font-black shadow-lotus shrink-0 select-none leading-none ${
+                        item.badgeChar.length > 4
+                          ? 'text-xs px-1 text-center leading-tight'
+                          : item.badgeChar.length > 2
+                          ? 'text-sm'
+                          : item.badgeChar.length > 1
+                          ? 'text-lg'
                           : 'text-2xl'
                       }`}
+                      title={item.cleanChar}
                     >
-                      {item.cleanChar}
+                      {item.badgeChar}
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         {item.romaji && (
                           <span className="text-xs font-jp font-bold text-slate-400">{item.romaji}</span>
+                        )}
+                        {item.cleanChar.includes('/') && (
+                          <span className="text-[11px] font-jp text-pink-600/80 font-semibold">
+                            ({item.cleanChar})
+                          </span>
                         )}
                         <span className="px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[10px] border border-pink-100">
                           {item.level || activeLevel}
@@ -178,7 +202,7 @@ export default function ParticlesPage() {
 
                   <button
                     type="button"
-                    onClick={() => speakJapanese(item.cleanChar || item.particle)}
+                    onClick={() => speakJapanese(item.badgeChar || item.cleanChar)}
                     className="p-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer shrink-0"
                     title="Nghe phát âm"
                   >

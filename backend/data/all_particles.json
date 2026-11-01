@@ -32,7 +32,7 @@
   {
     "id": 4,
     "level": "N5",
-    "particle": "に (ni) - Thời gian",
+    "particle": "に (ni)",
     "role": "Cách trợ từ chỉ thời điểm",
     "meaning": "Chỉ thời điểm cụ thể có con số xác định diễn ra hành động.",
     "example": "毎朝 6時［に］起きます。",
@@ -42,7 +42,7 @@
   {
     "id": 5,
     "level": "N5",
-    "particle": "に (ni) - Nơi đến & Tồn tại",
+    "particle": "に (ni)",
     "role": "Cách trợ từ chỉ đích đến / nơi ở",
     "meaning": "Chỉ điểm đến của di chuyển (iku, kuru, kaeru) hoặc nơi tồn tại của người/vật (iru, aru).",
     "example": "日本［に］行きます。/ 部屋に 机が［に］あります。",
@@ -52,7 +52,7 @@
   {
     "id": 6,
     "level": "N5",
-    "particle": "で (de) - Nơi hành động",
+    "particle": "で (de)",
     "role": "Cách trợ từ chỉ địa điểm",
     "meaning": "Chỉ địa điểm diễn ra một hành động, sự việc.",
     "example": "図書館［で］本を 読みます。",
@@ -62,7 +62,7 @@
   {
     "id": 7,
     "level": "N5",
-    "particle": "で (de) - Phương tiện / Công cụ",
+    "particle": "で (de)",
     "role": "Cách trợ từ chỉ công cụ",
     "meaning": "Bằng phương tiện giao thông, công cụ, ngôn ngữ, nguyên liệu.",
     "example": "箸［で］食べます。/ 日本語［で］話します。",
@@ -82,7 +82,7 @@
   {
     "id": 9,
     "level": "N5",
-    "particle": "と (to) - Và / Cùng với",
+    "particle": "と (to)",
     "role": "Liên từ / Cách trợ từ",
     "meaning": "Liệt kê toàn bộ danh từ (và), hoặc làm gì cùng với ai.",
     "example": "パン［と］卵を 買いました。/ 友達［と］映画を 見ます。",
@@ -92,7 +92,7 @@
   {
     "id": 10,
     "level": "N5",
-    "particle": "から (kara) - Điểm xuất phát",
+    "particle": "から (kara)",
     "role": "Cách trợ từ chỉ mốc bắt đầu",
     "meaning": "Từ (thời gian bắt đầu, không gian bắt đầu, người gửi).",
     "example": "9時［から］働きます。/ ベトナム［から］来ました。",
@@ -102,7 +102,7 @@
   {
     "id": 11,
     "level": "N5",
-    "particle": "まで (made) - Điểm kết thúc",
+    "particle": "まで (made)",
     "role": "Cách trợ từ chỉ mốc kết thúc",
     "meaning": "Đến, tới (thời gian kết thúc, địa điểm kết thúc).",
     "example": "5時［まで］勉強します。/ 駅［まで］歩きます。",
@@ -172,7 +172,7 @@
   {
     "id": 18,
     "level": "N4",
-    "particle": "ばかり (bakari) - N4",
+    "particle": "ばかり (bakari)",
     "role": "Phó trợ từ biểu thị lặp lại/vừa mới",
     "meaning": "Toàn là, chỉ toàn là / Vたばかり: vừa mới làm gì.",
     "example": "テレビ［ばかり］見て います。/ 食べた［ばかり］です。",
@@ -182,7 +182,7 @@
   {
     "id": 19,
     "level": "N4",
-    "particle": "でも (demo) - Đưa ra ví dụ",
+    "particle": "でも (demo)",
     "role": "Phó trợ từ gợi ý",
     "meaning": "Ví dụ như... (đưa ra một gợi ý tiêu biểu khi rủ rê/đề nghị).",
     "example": "お茶［でも］飲みませんか。",
@@ -202,7 +202,7 @@
   {
     "id": 21,
     "level": "N4",
-    "particle": "ほど (hodo) - So sánh không bằng",
+    "particle": "ほど (hodo)",
     "role": "Phó trợ từ mức độ",
     "meaning": "Không bằng... (trong câu phủ định so sánh).",
     "example": "今年は 去年［ほど］寒くないです。",
@@ -232,7 +232,7 @@
   {
     "id": 24,
     "level": "N4",
-    "particle": "し (shi) - Nối câu liệt kê",
+    "particle": "し (shi)",
     "role": "Tiếp từ nối câu",
     "meaning": "Vừa... lại vừa... (liệt kê nhiều lý do dẫn đến kết luận).",
     "example": "頭も 痛い［し］、熱も あります。",
