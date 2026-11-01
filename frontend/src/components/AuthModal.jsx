@@ -42,6 +42,59 @@ export default function AuthModal() {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '463067556799-hd0134jctmmb6jitugkjed7qd78d3uqk.apps.googleusercontent.com';
+  const fbAppId = import.meta.env.VITE_FACEBOOK_APP_ID || '1293450782913049';
+
+  useEffect(() => {
+    // Initialize Google Identity Services
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: async (response) => {
+            if (response.credential) {
+              setLoading(true);
+              try {
+                const res = await authService.socialLogin({
+                  provider: 'Google',
+                  credential: response.credential
+                });
+                if (res.data?.success) {
+                  sounds.playLevelUp();
+                  localStorage.setItem('nihongo_token', res.data.token);
+                  setUser(res.data.user);
+                  setAuthModalOpen(false);
+                } else {
+                  setError(res.data?.message || 'Đăng nhập Google thất bại');
+                }
+              } catch (err) {
+                setError(err.response?.data?.message || 'Không thể xác thực với Google.');
+              } finally {
+                setLoading(false);
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Google Sign-In init error:', err);
+      }
+    }
+
+    // Initialize Facebook SDK
+    if (window.FB) {
+      try {
+        window.FB.init({
+          appId: fbAppId,
+          cookie: true,
+          xfbml: true,
+          version: 'v21.0'
+        });
+      } catch (err) {
+        console.warn('Facebook SDK init error:', err);
+      }
+    }
+  }, [authModalOpen]);
+
   if (!authModalOpen) return null;
 
   // Password strength logic
@@ -196,8 +249,8 @@ export default function AuthModal() {
     setLoading(true);
 
     try {
-      const targetEmail = chosenEmail || (provider === 'Google' ? (email.trim() || 'thuatnguyen.developer@gmail.com') : 'bahuy3373@gmail.com');
-      const targetName = chosenName || (provider === 'Google' ? 'Nguyễn Văn Thuật' : 'Huy B');
+      const targetEmail = chosenEmail || (provider === 'Google' ? (email.trim() || 'thuathyper05@gmail.com') : 'thuathyper05@gmail.com');
+      const targetName = chosenName || (provider === 'Google' ? 'Thuat Hyper' : 'Thuat Hyper');
 
       const res = await authService.socialLogin({
         provider,
@@ -228,6 +281,57 @@ export default function AuthModal() {
     } finally {
       setLoading(false);
       setShowGoogleChooser(false);
+    }
+  };
+
+  const handleGoogleClick = () => {
+    sounds.playFlip();
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            setShowGoogleChooser((prev) => !prev);
+          }
+        });
+      } catch {
+        setShowGoogleChooser((prev) => !prev);
+      }
+    } else {
+      setShowGoogleChooser((prev) => !prev);
+    }
+  };
+
+  const handleFacebookClick = () => {
+    sounds.playFlip();
+    if (window.FB) {
+      try {
+        window.FB.login((response) => {
+          if (response.authResponse?.accessToken) {
+            setLoading(true);
+            authService.socialLogin({
+              provider: 'Facebook',
+              accessToken: response.authResponse.accessToken
+            }).then((res) => {
+              if (res.data?.success) {
+                sounds.playLevelUp();
+                localStorage.setItem('nihongo_token', res.data.token);
+                setUser(res.data.user);
+                setAuthModalOpen(false);
+              }
+            }).catch((err) => {
+              setError(err.response?.data?.message || 'Đăng nhập Facebook không thành công.');
+            }).finally(() => {
+              setLoading(false);
+            });
+          } else {
+            handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
+          }
+        }, { scope: 'public_profile,email' });
+      } catch {
+        handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
+      }
+    } else {
+      handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
     }
   };
 
@@ -729,7 +833,7 @@ export default function AuthModal() {
                     {/* Google Button */}
                     <button
                       type="button"
-                      onClick={() => setShowGoogleChooser(!showGoogleChooser)}
+                      onClick={handleGoogleClick}
                       className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
                       <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -744,7 +848,7 @@ export default function AuthModal() {
                     {/* Facebook Button */}
                     <button
                       type="button"
-                      onClick={() => handleSocialQuickLogin('Facebook', 'bahuy3373@gmail.com', 'Huy B')}
+                      onClick={handleFacebookClick}
                       className="py-2.5 px-3 sm:px-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:bg-pink-50/20 text-xs font-bold text-slate-700 flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
                       <svg className="w-4 h-4 shrink-0" fill="#1877F2" viewBox="0 0 24 24">
