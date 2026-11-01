@@ -66,13 +66,14 @@ export default function AiChatBubble() {
 
   return (
     <>
-      {/* Floating Trigger Button */}
-      <div className="fixed right-4 bottom-20 lg:bottom-6 z-40">
+      {/* Floating Trigger Button: Safely positioned above mobile bottom bar */}
+      <div className="fixed right-3.5 sm:right-4 bottom-[78px] sm:bottom-20 lg:bottom-6 z-40">
         <button
           type="button"
           onClick={() => { sounds.playFlip(); setIsOpen(!isOpen); }}
-          className="group relative flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-bold text-xs shadow-lotus-lg hover:scale-105 active:scale-95 transition-all"
+          className="group relative flex items-center justify-center sm:justify-start gap-2 w-12 h-12 sm:w-auto sm:h-auto sm:px-4 sm:py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-bold text-xs shadow-lotus-lg hover:scale-105 active:scale-95 transition-all"
           aria-label="Mở Trợ lý AI"
+          title="Trợ lý AI Sensei 24/7"
         >
           <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center animate-pulse">
             <Sparkles size={14} className="text-white" />
@@ -85,7 +86,7 @@ export default function AiChatBubble() {
       {/* Expanded Chat Drawer / Popover Window */}
       {isOpen && (
         <div
-          className="fixed right-4 bottom-24 lg:bottom-20 z-50 w-[calc(100vw-32px)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-pink-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4"
+          className="fixed right-3 sm:right-4 bottom-[82px] lg:bottom-20 z-50 w-[calc(100vw-24px)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-pink-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4"
           style={{ height: '480px', maxHeight: '75vh' }}
         >
           {/* Header */}
@@ -104,7 +105,7 @@ export default function AiChatBubble() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10"
+              className="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -139,7 +140,7 @@ export default function AiChatBubble() {
                           key={sIdx}
                           type="button"
                           onClick={() => handleSend(sug)}
-                          className="px-2 py-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-[10.5px] font-semibold border border-pink-200/50 transition-colors text-left"
+                          className="px-2 py-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 text-[10.5px] font-semibold border border-pink-200/50 transition-colors text-left cursor-pointer"
                         >
                           {sug}
                         </button>
@@ -180,7 +181,7 @@ export default function AiChatBubble() {
             <button
               type="submit"
               disabled={!input.trim() || loading}
-              className="w-8 h-8 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 text-white flex items-center justify-center shadow-lotus-sm disabled:opacity-40 transition-transform active:scale-95"
+              className="w-8 h-8 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 text-white flex items-center justify-center shadow-lotus-sm disabled:opacity-40 transition-transform active:scale-95 cursor-pointer"
             >
               <Send size={14} />
             </button>

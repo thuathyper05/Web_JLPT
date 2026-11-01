@@ -137,7 +137,7 @@ export default function KanjiPage() {
             >
               {/* Stroke Badge */}
               <div className="absolute top-3 right-3 text-[10px] font-bold text-slate-400 bg-pink-50/60 px-2 py-0.5 rounded-full border border-pink-100">
-                {item.stroke || item.stroke_count || 1} nét
+                {item.stroke_count || item.stroke || 1} nét
               </div>
 
               {/* Kanji Char */}
@@ -192,7 +192,7 @@ export default function KanjiPage() {
             {/* Top Char */}
             <div className="text-center pt-2">
               <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-xs">
-                Kanji {activeLevel} - {selectedKanji.stroke || selectedKanji.stroke_count || 1} nét
+                Kanji {activeLevel} - {selectedKanji.stroke_count || selectedKanji.stroke || 1} nét
               </span>
               <h2 className="text-7xl font-black font-jp text-slate-900 my-2">
                 {selectedKanji.kanji}

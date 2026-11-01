@@ -662,152 +662,155 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
 
       {/* ── FULLSCREEN RESPONSIVE MOBILE SEARCH MODAL (NO SQUEEZING / NO LAYOUT BREAKS) ── */}
       {mobileSearchOpen && (
-        <div className="sm:hidden fixed inset-0 z-50 bg-white/98 backdrop-blur-2xl flex flex-col p-4 animate-in fade-in">
-          {/* Search Header Bar */}
-          <div className="flex items-center gap-2.5 pb-3 border-b border-pink-100 shrink-0">
-            <div className="relative flex-1">
-              <Search
-                size={16}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-              />
-              <input
-                type="text"
-                autoFocus
-                placeholder="Tra từ (Kanji, Romaji, tiếng Việt)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-8 py-2.5 rounded-2xl border border-pink-200 bg-pink-50/30 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-500"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 p-1 cursor-pointer"
-                >
-                  <X size={15} />
-                </button>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setMobileSearchOpen(false)}
-              className="px-3.5 py-2.5 rounded-2xl bg-pink-50 text-pink-700 font-bold text-xs shrink-0 cursor-pointer"
-            >
-              Đóng
-            </button>
-          </div>
-
-          {/* AI Suggestion Chips on Mobile */}
-          {!searchQuery.trim() ? (
-            <div className="py-4 space-y-3 flex-1 overflow-y-auto">
-              <div className="flex items-center gap-1.5 text-xs font-black text-pink-700 uppercase tracking-wider">
-                <Sparkles size={14} className="text-pink-600" />
-                <span>GỢI Ý TÌM KIẾM TỪ AI SENSEI</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {aiSearchChips.map((chip, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      sounds.playFlip();
-                      setSearchQuery(chip.query);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-bold border border-pink-200/80 cursor-pointer"
-                  >
-                    {chip.label}
-                  </button>
-                ))}
-              </div>
-              <p className="text-xs text-slate-400 pt-2 leading-relaxed">
-                Nhập chữ Hán Kanji, Hiragana hoặc nghĩa tiếng Việt để tra cứu tức thì toàn bộ 1.512 từ vựng N5 Minna no Nihongo.
-              </p>
-            </div>
-          ) : (
-            /* Results List on Mobile */
-            <div className="flex-1 overflow-y-auto divide-y divide-pink-50 py-2">
-              <div className="py-1 flex justify-between items-center text-[10.5px] font-bold text-slate-400 uppercase">
-                <span>Kết quả tra cứu ({searchResults.length} từ)</span>
-              </div>
-
-              {searchResults.length === 0 ? (
-                <div className="py-10 text-center text-xs text-slate-500 space-y-3">
-                  <p className="font-semibold mb-0">Không tìm thấy từ vựng khớp với "{searchQuery}"</p>
+        <div className="sm:hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md flex flex-col p-3 animate-in fade-in">
+          <div className="w-full max-w-lg mx-auto bg-white rounded-3xl shadow-2xl border border-pink-100 flex flex-col h-full max-h-[92dvh] overflow-hidden">
+            {/* Search Header Bar */}
+            <div className="p-3.5 bg-slate-50 border-b border-pink-100/80 flex items-center gap-2.5 shrink-0">
+              <div className="relative flex-1">
+                <Search
+                  size={18}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                />
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="Tra từ (Kanji, Romaji, tiếng Việt)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ fontSize: '16px' }}
+                  className="w-full pl-10 pr-8 py-2.5 rounded-2xl border border-pink-200 bg-white text-base font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500 shadow-sm"
+                />
+                {searchQuery && (
                   <button
                     type="button"
-                    onClick={() => {
-                      setMobileSearchOpen(false);
-                      askAi(
-                        'free_question',
-                        { query: searchQuery },
-                        `AI Phân Tích: 「${searchQuery}」`
-                      );
-                    }}
-                    className="px-4 py-2.5 rounded-2xl bg-pink-50 text-pink-700 font-bold border border-pink-200 inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
                   >
-                    <Sparkles size={15} />
-                    <span>Nhờ AI giải thích nghĩa & ngữ cảnh cụm từ này</span>
+                    <X size={16} />
                   </button>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setMobileSearchOpen(false)}
+                className="px-3.5 py-2.5 rounded-2xl bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold text-xs shrink-0 cursor-pointer transition-colors"
+              >
+                Đóng
+              </button>
+            </div>
+
+            {/* AI Suggestion Chips on Mobile */}
+            {!searchQuery.trim() ? (
+              <div className="p-4 space-y-3 flex-1 overflow-y-auto bg-slate-50/50">
+                <div className="flex items-center gap-1.5 text-xs font-black text-pink-700 uppercase tracking-wider">
+                  <Sparkles size={14} className="text-pink-600" />
+                  <span>GỢI Ý TÌM KIẾM TỪ AI SENSEI</span>
                 </div>
-              ) : (
-                searchResults.map((word) => (
-                  <div key={word.id} className="py-3 flex items-center justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        {/* Furigana on Mobile Search */}
-                        <FuriganaWord
-                          kanji={word.kanji}
-                          kana={word.clean_kana || word.kana}
-                          size="sm"
-                        />
-                        <span className="px-1.5 py-0.2 rounded bg-pink-50 text-[9px] font-extrabold text-pink-700 border border-pink-100 shrink-0">
-                          Bài {word.lesson_number}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-600 truncate mt-1 mb-0 font-medium">
-                        {word.clean_vietnamese || word.vietnamese}
-                      </p>
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                  {aiSearchChips.map((chip, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        sounds.playFlip();
+                        setSearchQuery(chip.query);
+                      }}
+                      className="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 text-slate-700 hover:text-pink-700 text-xs font-semibold border border-pink-100 shadow-sm cursor-pointer transition-all"
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-500 pt-2 leading-relaxed">
+                  Nhập chữ Hán Kanji, Hiragana hoặc nghĩa tiếng Việt để tra cứu tức thì toàn bộ 1.512 từ vựng N5 Minna no Nihongo.
+                </p>
+              </div>
+            ) : (
+              /* Results List on Mobile */
+              <div className="flex-1 overflow-y-auto divide-y divide-pink-50/70 p-3 bg-white">
+                <div className="py-1 px-1 flex justify-between items-center text-[10.5px] font-bold text-slate-400 uppercase">
+                  <span>Kết quả tra cứu ({searchResults.length} từ)</span>
+                </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
-                        className="p-2.5 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 cursor-pointer"
-                        title="Nghe phát âm"
-                      >
-                        <Volume2 size={16} />
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setMobileSearchOpen(false);
-                          askAi('explain_vocab', word, `AI: Phân Tích 「${word.kanji || word.kana}」`);
-                        }}
-                        className="p-2.5 rounded-xl bg-white border border-pink-200 text-pink-600 hover:bg-pink-50 cursor-pointer shadow-sm"
-                        title="Hỏi AI"
-                      >
-                        <Sparkles size={16} />
-                      </button>
-                    </div>
+                {searchResults.length === 0 ? (
+                  <div className="py-10 text-center text-xs text-slate-500 space-y-3">
+                    <p className="font-semibold mb-0">Không tìm thấy từ vựng khớp với "{searchQuery}"</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileSearchOpen(false);
+                        askAi(
+                          'free_question',
+                          { query: searchQuery },
+                          `AI Phân Tích: 「${searchQuery}」`
+                        );
+                      }}
+                      className="px-4 py-2.5 rounded-2xl bg-pink-50 text-pink-700 font-bold border border-pink-200 inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    >
+                      <Sparkles size={15} />
+                      <span>Nhờ AI giải thích nghĩa & ngữ cảnh cụm từ này</span>
+                    </button>
                   </div>
-                ))
-              )}
-            </div>
-          )}
+                ) : (
+                  searchResults.map((word) => (
+                    <div key={word.id} className="py-3 px-2 flex items-center justify-between gap-2 hover:bg-pink-50/30 rounded-xl transition-colors">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          {/* Furigana on Mobile Search */}
+                          <FuriganaWord
+                            kanji={word.kanji}
+                            kana={word.clean_kana || word.kana}
+                            size="sm"
+                          />
+                          <span className="px-1.5 py-0.2 rounded bg-pink-50 text-[9px] font-extrabold text-pink-700 border border-pink-100 shrink-0">
+                            Bài {word.lesson_number}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-600 truncate mt-1 mb-0 font-medium">
+                          {word.clean_vietnamese || word.vietnamese}
+                        </p>
+                      </div>
 
-          {/* Bottom Link to Full Dictionary on Mobile */}
-          <div className="pt-3 border-t border-pink-100 shrink-0">
-            <button
-              type="button"
-              onClick={handleViewFullDictionary}
-              className="w-full py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-xs shadow-lotus flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <span>Xem trong Từ điển N5 (1.512 từ)</span>
-              <ArrowRight size={14} />
-            </button>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => speakJapanese(word.kanji, word.kana || word.clean_kana)}
+                          className="p-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 cursor-pointer"
+                          title="Nghe phát âm"
+                        >
+                          <Volume2 size={16} />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMobileSearchOpen(false);
+                            askAi('explain_vocab', word, `AI: Phân Tích 「${word.kanji || word.kana}」`);
+                          }}
+                          className="p-2 rounded-xl bg-white border border-pink-200 text-pink-600 hover:bg-pink-50 cursor-pointer shadow-sm"
+                          title="Hỏi AI"
+                        >
+                          <Sparkles size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* Bottom Link to Full Dictionary on Mobile */}
+            <div className="p-3 border-t border-pink-100 bg-slate-50 shrink-0">
+              <button
+                type="button"
+                onClick={handleViewFullDictionary}
+                className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-xs shadow-lotus flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Xem trong Từ điển N5 (1.512 từ)</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
           </div>
         </div>
       )}
