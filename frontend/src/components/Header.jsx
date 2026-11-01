@@ -569,8 +569,28 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 }}
                 className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1 rounded-full bg-pink-50 hover:bg-pink-100/70 border border-pink-200/70 transition-colors cursor-pointer"
               >
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-pink-600 text-white font-bold text-xs flex items-center justify-center relative">
-                  {user.username?.charAt(0).toUpperCase() || 'U'}
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg overflow-hidden border border-pink-300 relative shadow-xs shrink-0 bg-white flex items-center justify-center">
+                  {user.avatar_url || user.avatar ? (
+                    <img
+                      src={user.avatar_url || user.avatar}
+                      alt={user.username || 'Avatar'}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        if (e.currentTarget.nextElementSibling) {
+                          e.currentTarget.nextElementSibling.style.display = 'flex';
+                        }
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className={`w-full h-full bg-pink-600 text-white font-bold text-xs items-center justify-center ${
+                      user.avatar_url || user.avatar ? 'hidden' : 'flex'
+                    }`}
+                  >
+                    {user.username?.charAt(0).toUpperCase() || 'U'}
+                  </div>
                   {userPerks?.royal_crown && (
                     <Crown size={12} className="absolute -top-1.5 -right-1 text-amber-400 fill-amber-400" />
                   )}
@@ -584,17 +604,42 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
               {/* Dropdown Menu */}
               {profileDropdownOpen && (
                 <div
-                  className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-pink-100 py-1.5 z-50 animate-in fade-in slide-in-from-top-2"
+                  className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-pink-100 py-1.5 z-50 animate-in fade-in slide-in-from-top-2"
                   onClick={() => setProfileDropdownOpen(false)}
                 >
-                  <div className="px-4 py-2 border-b border-slate-100">
-                    <p className="text-xs font-bold text-slate-800 truncate mb-0">{user.username}</p>
-                    <p className="text-[11px] text-slate-400 truncate mb-0">{user.email}</p>
+                  <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl overflow-hidden border border-pink-200 shrink-0 bg-slate-50 flex items-center justify-center">
+                      {user.avatar_url || user.avatar ? (
+                        <img
+                          src={user.avatar_url || user.avatar}
+                          alt={user.username || 'Avatar'}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            if (e.currentTarget.nextElementSibling) {
+                              e.currentTarget.nextElementSibling.style.display = 'flex';
+                            }
+                          }}
+                        />
+                      ) : null}
+                      <div
+                        className={`w-full h-full bg-pink-600 text-white font-black text-sm items-center justify-center ${
+                          user.avatar_url || user.avatar ? 'hidden' : 'flex'
+                        }`}
+                      >
+                        {user.username?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-xs font-black text-slate-800 truncate mb-0.5">{user.username}</p>
+                      <p className="text-[11px] text-slate-400 truncate mb-0">{user.email}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
                     onClick={logout}
-                    className="w-full px-4 py-2 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer"
+                    className="w-full px-4 py-2.5 text-left text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2 cursor-pointer transition-colors"
                   >
                     <LogOut size={14} />
                     <span>Đăng xuất</span>

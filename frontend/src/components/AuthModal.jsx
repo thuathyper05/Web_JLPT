@@ -149,6 +149,7 @@ export default function AuthModal() {
         if (res.data?.success) {
           sounds.playCorrect();
           localStorage.setItem('nihongo_token', res.data.token);
+          try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
           setUser(res.data.user);
           setAuthModalOpen(false);
         } else {
@@ -170,6 +171,7 @@ export default function AuthModal() {
         if (res.data?.success) {
           sounds.playLevelUp();
           localStorage.setItem('nihongo_token', res.data.token);
+          try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
           setUser(res.data.user);
           setAuthModalOpen(false);
         } else {
@@ -277,6 +279,7 @@ export default function AuthModal() {
                   if (res.data?.success) {
                     sounds.playLevelUp();
                     localStorage.setItem('nihongo_token', res.data.token);
+                    try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
                     setUser(res.data.user);
                     setAuthModalOpen(false);
                   } else {
@@ -339,6 +342,7 @@ export default function AuthModal() {
               if (res.data?.success) {
                 sounds.playLevelUp();
                 localStorage.setItem('nihongo_token', res.data.token);
+                try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
                 setUser(res.data.user);
                 setAuthModalOpen(false);
               } else {

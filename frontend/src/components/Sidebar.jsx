@@ -262,17 +262,21 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
           </nav>
         </div>
 
-        {/* Bottom Area: Streak Card */}
+        {/* Bottom Area: Real Streak Card */}
         <div className={`border-t border-pink-50 ${sidebarCollapsed ? 'p-2' : 'p-3.5'}`}>
           {sidebarCollapsed ? (
             <div className="flex flex-col items-center">
               <div
                 onClick={() => handleNav({ id: 'home' })}
                 className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white flex flex-col items-center justify-center cursor-pointer shadow-sm hover:scale-105 transition-transform"
-                title={`Chuỗi ${gamification?.current_streak || 12} ngày học liên tục`}
+                title={`Chuỗi ${gamification?.current_streak || 0} ngày học liên tục`}
               >
-                <Flame size={18} className="text-amber-400 animate-bounce" fill="#f59e0b" />
-                <span className="text-[10px] font-black">{gamification?.current_streak || 12}d</span>
+                <Flame
+                  size={18}
+                  className={(gamification?.current_streak || 0) > 0 ? "text-amber-400 animate-bounce" : "text-slate-500"}
+                  fill={(gamification?.current_streak || 0) > 0 ? "#f59e0b" : "none"}
+                />
+                <span className="text-[10px] font-black">{gamification?.current_streak || 0}d</span>
               </div>
             </div>
           ) : (
@@ -290,13 +294,19 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile = () => {} }
                   Chuỗi ngày học liên tục
                 </span>
                 <div className="flex items-center gap-2">
-                  <Flame size={20} className="text-amber-400 animate-bounce" fill="#f59e0b" />
+                  <Flame
+                    size={20}
+                    className={(gamification?.current_streak || 0) > 0 ? "text-amber-400 animate-bounce" : "text-slate-500"}
+                    fill={(gamification?.current_streak || 0) > 0 ? "#f59e0b" : "none"}
+                  />
                   <span className="font-black text-lg tracking-tight text-white">
-                    {gamification?.current_streak || 12} ngày
+                    {gamification?.current_streak || 0} ngày
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1 mb-0">
-                  Hôm nay bạn đã học {gamification?.today_words_count || 0} từ
+                  {(gamification?.current_streak || 0) > 0
+                    ? `Hôm nay bạn đã học ${gamification?.today_words_count || 0} từ`
+                    : 'Học 1 từ hôm nay để bắt đầu chuỗi!'}
                 </p>
               </div>
             </div>

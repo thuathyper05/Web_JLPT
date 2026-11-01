@@ -29,17 +29,19 @@ const inMemoryUsers = [
 
 const inMemoryProgress = {};
 const inMemoryGamification = {
-  total_xp: 1240,
-  current_streak: 12,
-  longest_streak: 15,
-  level_tier: 'Chiến Binh N5',
+  total_xp: 0,
+  current_streak: 0,
+  longest_streak: 0,
+  today_words_count: 0,
+  last_active_date: null,
+  level_tier: 'Tân Thủ N5',
   badges: [
-    { key: 'first_step', title: 'Bước đầu tiên', desc: 'Hoàn thành bài học đầu tiên', unlocked: true },
-    { key: 'streak_3', title: 'Giữ lửa 3 ngày', desc: 'Học liên tục 3 ngày', unlocked: true },
-    { key: 'streak_7', title: 'Chiến binh 7 ngày', desc: 'Duy trì học 1 tuần', unlocked: true },
+    { key: 'first_step', title: 'Bước đầu tiên', desc: 'Hoàn thành bài học đầu tiên', unlocked: false },
+    { key: 'streak_3', title: 'Giữ lửa 3 ngày', desc: 'Học liên tục 3 ngày', unlocked: false },
+    { key: 'streak_7', title: 'Chiến binh 7 ngày', desc: 'Duy trì học 1 tuần', unlocked: false },
     { key: 'streak_30', title: 'Kiên trì 30 ngày', desc: '30 ngày không nghỉ', unlocked: false },
-    { key: 'kanji_master', title: 'Nhà Chữ Hán', desc: 'Thuộc 20 Kanji N5', unlocked: true },
-    { key: 'speed_reflex', title: 'Tốc độ phản xạ', desc: 'Nối từ 10/10 dưới 40s', unlocked: true }
+    { key: 'kanji_master', title: 'Nhà Chữ Hán', desc: 'Thuộc 20 Kanji N5', unlocked: false },
+    { key: 'speed_reflex', title: 'Tốc độ phản xạ', desc: 'Nối từ 10/10 dưới 40s', unlocked: false }
   ]
 };
 
@@ -137,12 +139,12 @@ app.post('/api/auth/login', async (req, res) => {
       if (userRes.rows.length > 0) {
         const user = userRes.rows[0];
         if (user.password_hash && bcrypt.compareSync(password, user.password_hash)) {
-          const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
+          const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }, JWT_SECRET, { expiresIn: '30d' });
           return res.json({
             success: true,
             message: 'Đăng nhập thành công!',
             token,
-            user: { id: user.id, username: user.username, email: user.email, role: user.role }
+            user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }
           });
         } else {
           return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không chính xác.' });
@@ -159,12 +161,12 @@ app.post('/api/auth/login', async (req, res) => {
     return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không chính xác.' });
   }
 
-  const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, JWT_SECRET, { expiresIn: '30d' });
+  const token = jwt.sign({ id: user.id, username: user.username, email: user.email, avatar_url: user.avatar_url || '' }, JWT_SECRET, { expiresIn: '30d' });
   return res.json({
     success: true,
     message: 'Đăng nhập thành công!',
     token,
-    user: { id: user.id, username: user.username, email: user.email }
+    user: { id: user.id, username: user.username, email: user.email, avatar_url: user.avatar_url || '' }
   });
 });
 
@@ -289,8 +291,17 @@ app.post('/api/auth/social-login', async (req, res) => {
       const checkRes = await db.pool.query('SELECT * FROM users WHERE LOWER(email) = $1', [cleanEmail]);
       let user;
       if (checkRes.rows.length > 0) {
-        user = checkRes.rows[0];
-        await db.pool.query('UPDATE users SET auth_provider = $1, avatar_url = COALESCE($2, avatar_url) WHERE id = $3', [safeProvider, cleanAvatar, user.id]);
+        const existing = checkRes.rows[0];
+        const updateRes = await db.pool.query(
+          `UPDATE users 
+           SET auth_provider = $1, 
+               avatar_url = CASE WHEN $2 <> '' THEN $2 ELSE avatar_url END,
+               username = CASE WHEN username IS NULL OR username = '' THEN $3 ELSE username END
+           WHERE id = $4
+           RETURNING id, username, email, role, avatar_url`,
+          [safeProvider, cleanAvatar, cleanUsername, existing.id]
+        );
+        user = updateRes.rows[0];
       } else {
         const insertRes = await db.pool.query(
           'INSERT INTO users (username, email, password_hash, auth_provider, role, avatar_url, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING id, username, email, role, avatar_url',
@@ -299,12 +310,12 @@ app.post('/api/auth/social-login', async (req, res) => {
         user = insertRes.rows[0];
       }
 
-      const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '30d' });
+      const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }, JWT_SECRET, { expiresIn: '30d' });
       return res.json({
         success: true,
         message: `Đăng nhập qua ${provider || 'tài khoản'} thành công!`,
         token,
-        user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url }
+        user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }
       });
     } catch (err) {
       console.error('Social login db error:', err);
@@ -531,9 +542,19 @@ app.post('/api/auth/reset-password-otp', async (req, res) => {
   });
 });
 
-app.get('/api/auth/me', (req, res) => {
+app.get('/api/auth/me', async (req, res) => {
   if (!req.user) {
     return res.json({ success: true, user: null });
+  }
+  if (db.pool && db.isDbConnected() && req.user.id) {
+    try {
+      const uRes = await db.pool.query('SELECT id, username, email, role, avatar_url FROM users WHERE id = $1', [req.user.id]);
+      if (uRes.rows.length > 0) {
+        return res.json({ success: true, user: uRes.rows[0] });
+      }
+    } catch (e) {
+      console.error('Fetch me error:', e);
+    }
   }
   res.json({ success: true, user: req.user });
 });

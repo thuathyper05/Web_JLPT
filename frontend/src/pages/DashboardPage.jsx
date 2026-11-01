@@ -19,7 +19,9 @@ import {
   Headphones,
   Newspaper,
   RotateCw,
-  Clock
+  Clock,
+  Check,
+  X
 } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
@@ -100,20 +102,64 @@ export default function DashboardPage() {
     });
   }, [guestProgress, currentLevel, levelVocabs]);
 
-  const daysOfWeek = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-  const currentDayIdx = (new Date().getDay() + 6) % 7; // Monday = 0, Sunday = 6
+  // Tính toán chuẩn 7 ngày trong tuần từ Thứ Hai đến Chủ Nhật
+  const weekDays = React.useMemo(() => {
+    const now = new Date();
+    const currentDay = (now.getDay() + 6) % 7; // Thứ 2 = 0, Chủ nhật = 6
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - currentDay);
+
+    const dayNames = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+    const fullNames = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
+
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const date = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${date}`;
+      week.push({
+        shortName: dayNames[i],
+        fullName: fullNames[i],
+        dateStr,
+        dayNum: d.getDate(),
+        isToday: i === currentDay,
+        isPast: i < currentDay,
+        isFuture: i > currentDay
+      });
+    }
+    return week;
+  }, []);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12 animate-in fade-in duration-300">
-      {/* ── 1. GREETING ── */}
-      <div>
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-          Chào mừng trở lại,
-        </span>
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2 flex-wrap">
-          <span className="font-jp text-pink-600">こんにちは,</span>
-          <span>{user?.username || 'Khách'}!</span>
-        </h1>
+      {/* ── 1. GREETING WITH REAL AVATAR SUPPORT ── */}
+      <div className="flex items-center gap-3.5">
+        {user && (user.avatar_url || user.avatar) ? (
+          <div className="relative shrink-0">
+            <img
+              src={user.avatar_url || user.avatar}
+              alt={user.username || 'Avatar'}
+              referrerPolicy="no-referrer"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover border-2 border-pink-300 shadow-sm"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white" title="Trực tuyến" />
+          </div>
+        ) : null}
+        <div>
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">
+            Chào mừng trở lại,
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2 flex-wrap mb-0">
+            <span className="font-jp text-pink-600">こんにちは,</span>
+            <span>{user?.username || 'Khách'}!</span>
+          </h1>
+        </div>
       </div>
 
       {/* ── 2. TOP HERO ROW (HERO BANNER + MỤC TIÊU HÔM NAY) ── */}
@@ -189,63 +235,162 @@ export default function DashboardPage() {
         </div>
 
         {/* Right 1 Col: Mục Tiêu Hôm Nay */}
-        <div className="rounded-3xl bg-white border border-pink-100 p-6 shadow-sm flex flex-col justify-between">
+        <div className="rounded-3xl bg-white border border-pink-100 p-5 sm:p-6 shadow-sm flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-extrabold text-sm text-slate-900 tracking-tight mb-0">
-                Mục tiêu hôm nay
-              </h3>
-              <span className="px-2.5 py-0.5 rounded-full bg-pink-50 text-pink-600 font-bold text-[11px] border border-pink-100">
-                10 từ
+            <div className="flex justify-between items-center mb-3">
+              <div className="flex items-center gap-1.5">
+                <Target size={16} className="text-pink-600" />
+                <h3 className="font-extrabold text-sm text-slate-900 tracking-tight mb-0">
+                  Mục tiêu hôm nay
+                </h3>
+              </div>
+              <span className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] border ${
+                (gamification?.today_words_count || 0) >= 10
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                  : 'bg-pink-50 text-pink-600 border-pink-100'
+              }`}>
+                {(gamification?.today_words_count || 0) >= 10 ? 'Hoàn thành' : `${gamification?.today_words_count || 0}/10 từ`}
               </span>
             </div>
 
             {/* Circular Progress & Text */}
             <div className="flex items-center gap-4 my-2">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-pink-100 border-t-pink-600 flex items-center justify-center shrink-0">
-                <div className="flex items-baseline justify-center whitespace-nowrap">
-                  <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
-                    {gamification?.today_words_count || 0}
-                  </span>
-                  <span className="text-xs font-bold text-slate-400 ml-0.5 shrink-0">/10</span>
+              <div
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 flex items-center justify-center shrink-0 transition-all shadow-inner"
+                style={{
+                  background: `conic-gradient(#db2777 ${Math.min(100, ((gamification?.today_words_count || 0) / 10) * 100)}%, #fce7f3 0)`
+                }}
+              >
+                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                  <div className="flex items-baseline justify-center whitespace-nowrap">
+                    <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
+                      {gamification?.today_words_count || 0}
+                    </span>
+                    <span className="text-xs font-bold text-slate-400 ml-0.5 shrink-0">/10</span>
+                  </div>
                 </div>
               </div>
               <div>
-                <p className="text-xs text-slate-600 font-medium mb-1">
-                  Còn {Math.max(0, 10 - (gamification?.today_words_count || 0))} từ nữa để hoàn thành mục tiêu ngày.
+                <p className="text-xs text-slate-600 font-medium mb-1.5 leading-snug">
+                  {(gamification?.today_words_count || 0) >= 10
+                    ? 'Bạn đã hoàn thành chỉ tiêu 10 từ hôm nay!'
+                    : `Còn ${Math.max(0, 10 - (gamification?.today_words_count || 0))} từ nữa để đạt chỉ tiêu ngày.`}
                 </p>
-                <span className="text-[11px] font-bold text-pink-600">
-                  Giữ vững chuỗi ngày học
-                </span>
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-pink-600">
+                  <Flame
+                    size={14}
+                    className={(gamification?.current_streak || 0) > 0 ? 'text-amber-500 fill-amber-500 animate-pulse' : 'text-slate-400'}
+                  />
+                  <span>
+                    {(gamification?.current_streak || 0) > 0
+                      ? `Chuỗi ${gamification.current_streak} ngày liên tục`
+                      : 'Chưa có chuỗi (Học để kích hoạt)'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* 7 Days of the week dots */}
+          {/* 7 Days of the week target tracking (T2 đến CN) */}
           <div className="pt-4 border-t border-pink-50 mt-4">
-            <div className="flex justify-between items-center">
-              {daysOfWeek.map((day, idx) => {
-                const isPassed = idx < currentDayIdx;
-                const isToday = idx === currentDayIdx;
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                Mục tiêu 7 ngày trong tuần
+              </span>
+              <span className="text-[10px] font-medium text-slate-400">
+                Chỉ tiêu: 10 từ/ngày
+              </span>
+            </div>
+
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center">
+              {weekDays.map((day) => {
+                const count = day.isToday
+                  ? (gamification?.today_words_count || 0)
+                  : ((gamification?.daily_study_counts && gamification.daily_study_counts[day.dateStr]) || 0);
+                const isMet = count >= 10;
+
                 return (
-                  <div key={day} className="flex flex-col items-center gap-1.5">
+                  <div key={day.shortName} className="flex flex-col items-center gap-1.5">
+                    {/* Status Indicator Icon Circle */}
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all ${
-                        isToday
-                          ? 'bg-pink-600 text-white ring-4 ring-pink-100 scale-110 shadow-sm'
-                          : isPassed
-                          ? 'bg-pink-200 text-pink-700'
-                          : 'bg-slate-100 text-slate-400'
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
+                        day.isToday
+                          ? isMet
+                            ? 'bg-gradient-to-tr from-pink-600 to-rose-500 text-white shadow-lotus ring-4 ring-pink-100 scale-110'
+                            : 'bg-pink-50 text-pink-700 border-2 border-dashed border-pink-500 ring-4 ring-pink-100/80 scale-105 font-black text-xs'
+                          : day.isPast
+                          ? isMet
+                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-300 ring-1 ring-emerald-400/20 shadow-2xs'
+                            : 'bg-rose-50 text-rose-500 border border-rose-200 shadow-2xs'
+                          : 'bg-slate-50 text-slate-300 border border-slate-200/80'
                       }`}
+                      title={
+                        day.isToday
+                          ? isMet
+                            ? `Hôm nay: Đã hoàn thành (${count}/10 từ)`
+                            : `Hôm nay: Đang học (${count}/10 từ)`
+                          : day.isPast
+                          ? isMet
+                            ? `${day.fullName} (${day.dayNum}): Đạt chỉ tiêu (${count}/10 từ)`
+                            : `${day.fullName} (${day.dayNum}): Chưa đạt (${count}/10 từ)`
+                          : `${day.fullName} (${day.dayNum}): Sắp tới`
+                      }
                     >
-                      {isPassed ? '✓' : isToday ? '★' : ''}
+                      {day.isToday ? (
+                        isMet ? (
+                          <Check size={14} className="stroke-[3]" />
+                        ) : (
+                          <span className="text-[11px] font-black">{count}</span>
+                        )
+                      ) : day.isPast ? (
+                        isMet ? (
+                          <Check size={13} className="stroke-[3]" />
+                        ) : (
+                          <X size={12} className="stroke-[2.5]" />
+                        )
+                      ) : (
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-200" />
+                      )}
                     </div>
-                    <span className={`text-[10px] font-semibold ${isToday ? 'text-pink-600 font-bold' : 'text-slate-400'}`}>
-                      {day}
-                    </span>
+
+                    {/* Day name and date number */}
+                    <div className="flex flex-col items-center">
+                      <span
+                        className={`text-[10px] tracking-tight ${
+                          day.isToday ? 'text-pink-600 font-black' : 'text-slate-600 font-bold'
+                        }`}
+                      >
+                        {day.shortName}
+                      </span>
+                      <span className="text-[9px] text-slate-400 font-medium">
+                        {day.dayNum}
+                      </span>
+                    </div>
                   </div>
                 );
               })}
+            </div>
+
+            {/* Legend for Check vs X */}
+            <div className="flex items-center justify-center gap-3 pt-3 mt-2 border-t border-slate-100 text-[10px] font-semibold text-slate-500 flex-wrap">
+              <div className="flex items-center gap-1">
+                <span className="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <Check size={9} className="stroke-[3]" />
+                </span>
+                <span>Đạt (≥10 từ)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-3.5 h-3.5 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+                  <X size={9} className="stroke-[2.5]" />
+                </span>
+                <span>Chưa đạt</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-3.5 h-3.5 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center">
+                  <Flame size={10} className="text-pink-600 fill-pink-500" />
+                </span>
+                <span>Hôm nay</span>
+              </div>
             </div>
           </div>
         </div>
