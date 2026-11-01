@@ -359,7 +359,7 @@ export default function AuthModal() {
             setError('Ứng dụng chưa được bạn cấp quyền đăng nhập trên Facebook.');
           }
         }
-      }, { scope: 'public_profile,email' });
+      }, { scope: 'public_profile' });
     } catch (err) {
       setError('Không thể mở cửa sổ đăng nhập Facebook: ' + (err.message || ''));
     }
