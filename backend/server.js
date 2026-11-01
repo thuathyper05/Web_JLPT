@@ -193,6 +193,32 @@ function verifyGoogleCredential(idToken) {
   });
 }
 
+// Helper to verify Google OAuth Access Token with Google UserInfo API
+function verifyGoogleAccessToken(accessToken) {
+  return new Promise((resolve) => {
+    https.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.email) {
+            resolve({
+              email: json.email,
+              name: json.name || json.email.split('@')[0],
+              avatar: json.picture || ''
+            });
+          } else {
+            resolve(null);
+          }
+        } catch {
+          resolve(null);
+        }
+      });
+    }).on('error', () => resolve(null));
+  });
+}
+
 // Helper to verify Facebook Access Token directly with Facebook Graph API
 function verifyFacebookAccessToken(accessToken) {
   return new Promise((resolve) => {
@@ -228,12 +254,21 @@ app.post('/api/auth/social-login', async (req, res) => {
   let verifiedAvatar = avatar;
 
   // Real production token verification
-  if (credential && safeProvider === 'google') {
-    const verifiedGoogle = await verifyGoogleCredential(credential);
-    if (verifiedGoogle) {
-      verifiedEmail = verifiedGoogle.email;
-      verifiedName = verifiedGoogle.name;
-      verifiedAvatar = verifiedGoogle.avatar;
+  if (safeProvider === 'google') {
+    if (credential) {
+      const verifiedGoogle = await verifyGoogleCredential(credential);
+      if (verifiedGoogle) {
+        verifiedEmail = verifiedGoogle.email;
+        verifiedName = verifiedGoogle.name;
+        verifiedAvatar = verifiedGoogle.avatar;
+      }
+    } else if (accessToken) {
+      const verifiedGoogle = await verifyGoogleAccessToken(accessToken);
+      if (verifiedGoogle) {
+        verifiedEmail = verifiedGoogle.email;
+        verifiedName = verifiedGoogle.name;
+        verifiedAvatar = verifiedGoogle.avatar;
+      }
     }
   } else if (accessToken && safeProvider === 'facebook') {
     const verifiedFb = await verifyFacebookAccessToken(accessToken);
@@ -1106,6 +1141,160 @@ app.get('/api/health', (req, res) => {
     db_mode: db.isDbConnected() ? 'PostgreSQL' : 'In-Memory Engine',
     timestamp: new Date().toISOString()
   });
+});
+
+// ── Meta Compliance: Privacy Policy ──
+app.get('/privacy', (req, res) => {
+  res.send(`<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chính sách quyền riêng tư | HyperJapanese</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12">
+  <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-200">
+    <div class="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
+      <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white font-bold text-xl">H</div>
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">Chính sách quyền riêng tư (Privacy Policy)</h1>
+        <p class="text-sm text-slate-500">HyperJapanese NihongoHub Platform | Cập nhật: 2026</p>
+      </div>
+    </div>
+    
+    <div class="space-y-6 text-sm md:text-base leading-relaxed text-slate-600">
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">1. Thông tin chúng tôi thu thập</h2>
+        <p>Khi bạn đăng nhập thông qua Google hoặc Facebook, chúng tôi chỉ thu thập các thông tin công khai cơ bản được sự đồng thuận của bạn:</p>
+        <ul class="list-disc pl-5 mt-2 space-y-1">
+          <li>Họ và tên hiển thị</li>
+          <li>Địa chỉ email liên hệ</li>
+          <li>Ảnh đại diện công khai (avatar)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">2. Mục đích sử dụng dữ liệu</h2>
+        <p>Dữ liệu được sử dụng duy nhất để:</p>
+        <ul class="list-disc pl-5 mt-2 space-y-1">
+          <li>Định danh tài khoản học viên và lưu trữ tiến trình học tập JLPT (N5 - N1)</li>
+          <li>Đồng bộ kết quả luyện thi, từ vựng và chuỗi ngày học trên các thiết bị</li>
+          <li>Gửi thông báo quan trọng liên quan đến tài khoản học tập</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">3. Bảo mật và Lưu trữ</h2>
+        <p>Mọi thông tin cá nhân và dữ liệu học tập đều được mã hóa bằng tiêu chuẩn an toàn cao cấp và không bao giờ được chia sẻ hay bán cho bất kỳ bên thứ ba nào.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">4. Quyền của bạn và Xóa dữ liệu</h2>
+        <p>Bạn có toàn quyền yêu cầu trích xuất hoặc xóa vĩnh viễn toàn bộ dữ liệu cá nhân của mình bất kỳ lúc nào bằng cách truy cập trang Hướng dẫn xóa dữ liệu hoặc gửi email trực tiếp tới quản trị viên.</p>
+      </section>
+
+      <section class="pt-4 border-t border-slate-100">
+        <p class="text-sm text-slate-500">Liên hệ quản trị viên: <a href="mailto:thuathyper05@gmail.com" class="text-red-600 font-medium hover:underline">thuathyper05@gmail.com</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>`);
+});
+
+// ── Meta Compliance: Terms of Service ──
+app.get('/terms', (req, res) => {
+  res.send(`<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Điều khoản dịch vụ | HyperJapanese</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12">
+  <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-200">
+    <div class="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
+      <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white font-bold text-xl">H</div>
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">Điều khoản dịch vụ (Terms of Service)</h1>
+        <p class="text-sm text-slate-500">HyperJapanese NihongoHub Platform | Cập nhật: 2026</p>
+      </div>
+    </div>
+    
+    <div class="space-y-6 text-sm md:text-base leading-relaxed text-slate-600">
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">1. Giới thiệu</h2>
+        <p>Chào mừng bạn đến với nền tảng học tiếng Nhật HyperJapanese. Khi truy cập và sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các điều khoản này.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">2. Sử dụng tài khoản</h2>
+        <p>Học viên có trách nhiệm bảo mật thông tin đăng nhập của mình. Mọi hoạt động phát sinh từ tài khoản của bạn thuộc trách nhiệm của bạn.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">3. Quyền sở hữu trí tuệ</h2>
+        <p>Toàn bộ tài liệu học tập, từ vựng, ngữ pháp, âm thanh phát âm và hệ thống AI được thiết kế và bảo vệ quyền tác giả bởi HyperJapanese.</p>
+      </section>
+
+      <section class="pt-4 border-t border-slate-100">
+        <p class="text-sm text-slate-500">Liên hệ hỗ trợ: <a href="mailto:thuathyper05@gmail.com" class="text-red-600 font-medium hover:underline">thuathyper05@gmail.com</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>`);
+});
+
+// ── Meta Compliance: User Data Deletion Instructions ──
+app.get('/data-deletion', (req, res) => {
+  res.send(`<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng dẫn xóa dữ liệu | HyperJapanese</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12">
+  <div class="max-w-3xl mx-auto bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-200">
+    <div class="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
+      <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white font-bold text-xl">H</div>
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">Hướng dẫn xóa dữ liệu người dùng (Data Deletion)</h1>
+        <p class="text-sm text-slate-500">HyperJapanese NihongoHub Platform | Chuẩn Facebook Meta Platform</p>
+      </div>
+    </div>
+    
+    <div class="space-y-6 text-sm md:text-base leading-relaxed text-slate-600">
+      <p>Theo chính sách nền tảng Meta Facebook và quy chuẩn quyền riêng tư GDPR, người dùng có toàn quyền xóa dữ liệu và lịch sử học tập của mình khỏi HyperJapanese bất kỳ lúc nào.</p>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">Cách 1: Gỡ ứng dụng trực tiếp trên Facebook</h2>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li>Mở Facebook, vào mục <strong>Cài đặt và quyền riêng tư (Settings and Privacy)</strong> sau đó chọn <strong>Cài đặt (Settings)</strong>.</li>
+          <li>Tìm và bấm vào mục <strong>Ứng dụng và trang web (Apps and Websites)</strong>.</li>
+          <li>Tìm ứng dụng <strong>HyperJapanese</strong> trong danh sách ứng dụng đã kết nối.</li>
+          <li>Nhấp vào nút <strong>Gỡ (Remove)</strong> để hủy quyền truy cập.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-slate-800 mb-2">Cách 2: Yêu cầu xóa sạch toàn bộ hồ sơ dữ liệu qua Email</h2>
+        <p>Nếu bạn muốn xóa toàn bộ lịch sử điểm số, tiến trình từ vựng và tài khoản khỏi cơ sở dữ liệu hệ thống, vui lòng gửi email yêu cầu:</p>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mt-2">
+          <p><strong>Email tiếp nhận:</strong> <span class="text-red-600 font-semibold">thuathyper05@gmail.com</span></p>
+          <p><strong>Tiêu đề:</strong> Yêu cầu xóa dữ liệu tài khoản HyperJapanese</p>
+          <p><strong>Nội dung:</strong> Cung cấp địa chỉ email bạn đã sử dụng để đăng nhập vào HyperJapanese.</p>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Hệ thống sẽ tiến hành xóa hoàn toàn dữ liệu trong vòng 24 giờ làm việc và gửi thông báo xác nhận về email của bạn.</p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>`);
 });
 
 app.listen(PORT, () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { authService } from '../services/api';
 import SakuraPulse from './SakuraPulse';
@@ -36,7 +36,6 @@ export default function AuthModal() {
   const [forgotStep, setForgotStep] = useState('request');
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
   const [receivedOtp, setReceivedOtp] = useState('');
-  const [showGoogleChooser, setShowGoogleChooser] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -243,95 +242,127 @@ export default function AuthModal() {
     }
   };
 
-  const handleSocialQuickLogin = async (provider, chosenEmail = null, chosenName = null) => {
-    sounds.playCorrect();
-    setError('');
-    setLoading(true);
-
-    try {
-      const targetEmail = chosenEmail || (provider === 'Google' ? (email.trim() || 'thuathyper05@gmail.com') : 'thuathyper05@gmail.com');
-      const targetName = chosenName || (provider === 'Google' ? 'Thuat Hyper' : 'Thuat Hyper');
-
-      const res = await authService.socialLogin({
-        provider,
-        email: targetEmail,
-        name: targetName,
-        avatar: ''
-      });
-
-      if (res.data?.success) {
-        sounds.playLevelUp();
-        localStorage.setItem('nihongo_token', res.data.token);
-        setUser(res.data.user);
-        setAuthModalOpen(false);
-      } else {
-        setError(res.data?.message || `Đăng nhập qua ${provider} không thành công.`);
-      }
-    } catch {
-      // Offline fallback session
-      const fallbackUser = {
-        id: Date.now(),
-        username: chosenName || `Học viên ${provider}`,
-        email: chosenEmail || `${provider.toLowerCase()}@hyperjapan.vn`,
-        role: 'user'
-      };
-      localStorage.setItem('nihongo_token', 'mock_social_token_jwt');
-      setUser(fallbackUser);
-      setAuthModalOpen(false);
-    } finally {
-      setLoading(false);
-      setShowGoogleChooser(false);
-    }
-  };
-
   const handleGoogleClick = () => {
     sounds.playFlip();
-    if (window.google?.accounts?.id) {
+    setError('');
+
+    // Real Google OAuth 2.0 Identity Services Flow
+    if (window.google?.accounts?.oauth2) {
       try {
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            setShowGoogleChooser((prev) => !prev);
+        const client = window.google.accounts.oauth2.initTokenClient({
+          client_id: googleClientId,
+          scope: 'email profile openid',
+          callback: async (tokenResponse) => {
+            if (tokenResponse.error) {
+              if (tokenResponse.error === 'popup_closed_by_user') {
+                return;
+              }
+              setError('Xác thực Google gián đoạn: ' + (tokenResponse.error_description || tokenResponse.error));
+              return;
+            }
+
+            if (tokenResponse.access_token) {
+              setLoading(true);
+              try {
+                // Fetch real user info from official Google endpoint
+                const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                  headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                });
+                const googleUser = await googleRes.json();
+
+                if (googleUser && googleUser.email) {
+                  const res = await authService.socialLogin({
+                    provider: 'Google',
+                    accessToken: tokenResponse.access_token,
+                    email: googleUser.email,
+                    name: googleUser.name || googleUser.email.split('@')[0],
+                    avatar: googleUser.picture || ''
+                  });
+
+                  if (res.data?.success) {
+                    sounds.playLevelUp();
+                    localStorage.setItem('nihongo_token', res.data.token);
+                    setUser(res.data.user);
+                    setAuthModalOpen(false);
+                  } else {
+                    setError(res.data?.message || 'Đăng nhập Google không thành công.');
+                  }
+                } else {
+                  setError('Không nhận được thông tin tài khoản từ Google.');
+                }
+              } catch (err) {
+                setError(err.response?.data?.message || 'Lỗi kết nối máy chủ khi xử lý Google Login.');
+              } finally {
+                setLoading(false);
+              }
+            }
           }
         });
-      } catch {
-        setShowGoogleChooser((prev) => !prev);
+        client.requestAccessToken({ prompt: 'select_account' });
+        return;
+      } catch (err) {
+        console.warn('Google Token Client init error:', err);
       }
+    }
+
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          setError('Không thể mở popup Google. Vui lòng cho phép mở popup trong trình duyệt.');
+        }
+      });
     } else {
-      setShowGoogleChooser((prev) => !prev);
+      setError('Google SDK chưa sẵn sàng. Vui lòng kiểm tra lại kết nối mạng.');
     }
   };
 
   const handleFacebookClick = () => {
     sounds.playFlip();
-    if (window.FB) {
-      try {
-        window.FB.login((response) => {
-          if (response.authResponse?.accessToken) {
-            setLoading(true);
-            authService.socialLogin({
-              provider: 'Facebook',
-              accessToken: response.authResponse.accessToken
-            }).then((res) => {
+    setError('');
+
+    if (typeof window.FB === 'undefined') {
+      setError('Facebook SDK chưa tải xong hoặc bị chặn bởi tiện ích mở rộng trình duyệt (AdBlock/Brave). Vui lòng tắt chặn và thử lại.');
+      return;
+    }
+
+    try {
+      window.FB.login((response) => {
+        if (response.authResponse?.accessToken) {
+          setLoading(true);
+          const accessToken = response.authResponse.accessToken;
+
+          window.FB.api('/me', { fields: 'id,name,email,picture.type(large)' }, async (fbUser) => {
+            try {
+              const res = await authService.socialLogin({
+                provider: 'Facebook',
+                accessToken,
+                email: fbUser.email || `fb_${fbUser.id}@facebook.hyperjapan.vn`,
+                name: fbUser.name || 'Học viên Facebook',
+                avatar: fbUser.picture?.data?.url || ''
+              });
+
               if (res.data?.success) {
                 sounds.playLevelUp();
                 localStorage.setItem('nihongo_token', res.data.token);
                 setUser(res.data.user);
                 setAuthModalOpen(false);
+              } else {
+                setError(res.data?.message || 'Đăng nhập Facebook không thành công.');
               }
-            }).catch((err) => {
-              setError(err.response?.data?.message || 'Đăng nhập Facebook không thành công.');
-            }).finally(() => {
+            } catch (err) {
+              setError(err.response?.data?.message || 'Lỗi kết nối máy chủ khi xử lý Facebook Login.');
+            } finally {
               setLoading(false);
-            });
-          } else {
-            handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
+            }
+          });
+        } else {
+          if (response.status === 'not_authorized') {
+            setError('Ứng dụng chưa được bạn cấp quyền đăng nhập trên Facebook.');
           }
-        }, { scope: 'public_profile,email' });
-      } catch {
-        handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
-      }
-    } else {
-      handleSocialQuickLogin('Facebook', 'thuathyper05@gmail.com', 'Thuat Hyper');
+        }
+      }, { scope: 'public_profile,email' });
+    } catch (err) {
+      setError('Không thể mở cửa sổ đăng nhập Facebook: ' + (err.message || ''));
     }
   };
 
@@ -768,66 +799,6 @@ export default function AuthModal() {
                       </span>
                     </div>
                   </div>
-
-                  {/* Google Account Quick Selector */}
-                  {showGoogleChooser && (
-                    <div className="mb-3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl shadow-sm space-y-2 animate-in fade-in slide-in-from-top-1">
-                      <div className="flex items-center justify-between pb-1.5 border-b border-slate-200/60">
-                        <span className="text-[11px] font-bold text-slate-600">Chọn tài khoản Google:</span>
-                        <button
-                          type="button"
-                          onClick={() => setShowGoogleChooser(false)}
-                          className="text-[10px] text-slate-400 hover:text-slate-700 cursor-pointer"
-                        >
-                          Đóng
-                        </button>
-                      </div>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleSocialQuickLogin('Google', 'thuatnguyen.developer@gmail.com', 'Nguyễn Văn Thuật')}
-                        className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-blue-500 text-white font-black text-xs flex items-center justify-center shrink-0">
-                          T
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-xs font-bold text-slate-800 truncate">Nguyễn Văn Thuật</span>
-                          <span className="text-[10.5px] text-slate-400 truncate">thuatnguyen.developer@gmail.com</span>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleSocialQuickLogin('Google', 'thuathyper05@gmail.com', 'Thuat Hyper')}
-                        className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white font-black text-xs flex items-center justify-center shrink-0">
-                          H
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-xs font-bold text-slate-800 truncate">Thuat Hyper</span>
-                          <span className="text-[10.5px] text-slate-400 truncate">thuathyper05@gmail.com</span>
-                        </div>
-                      </button>
-
-                      {email.trim() && !['thuatnguyen.developer@gmail.com', 'thuathyper05@gmail.com'].includes(email.trim().toLowerCase()) && (
-                        <button
-                          type="button"
-                          onClick={() => handleSocialQuickLogin('Google', email.trim().toLowerCase(), email.trim().split('@')[0])}
-                          className="w-full flex items-center gap-2.5 p-2 rounded-xl bg-white hover:bg-pink-50/50 border border-slate-100 hover:border-pink-200 transition-all text-left cursor-pointer"
-                        >
-                          <div className="w-8 h-8 rounded-full bg-purple-500 text-white font-black text-xs flex items-center justify-center shrink-0">
-                            G
-                          </div>
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-xs font-bold text-slate-800 truncate">{email.trim()}</span>
-                            <span className="text-[10.5px] text-slate-400 truncate">Sử dụng email đã nhập</span>
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  )}
 
                   <div className="grid grid-cols-2 gap-2.5">
                     {/* Google Button */}
