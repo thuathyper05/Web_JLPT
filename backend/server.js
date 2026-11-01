@@ -845,18 +845,22 @@ app.post('/api/ai/query', async (req, res) => {
 const forumArticles = [
   {
     id: 1,
-    title: 'Chiến thuật chinh phục 180/180 điểm JLPT N5 & N4 trong 3 tháng cho người mới bắt đầu',
+    title: 'Chiến thuật chinh phục 180/180 điểm JLPT N5 và N4 trong 3 tháng cho người mới bắt đầu',
     slug: 'chien-thuat-chinh-phuc-jlpt-n5-n4-trong-3-thang',
     summary: 'Phân tích chi tiết cấu trúc đề thi năng lực tiếng Nhật, cách phân bổ thời gian làm bài Moji-Goi, Choukai và phương pháp học từ vựng phản xạ giúp bạn đạt điểm tối đa ngay lần thi đầu.',
     category: 'Kinh nghiệm JLPT',
     readTime: '6 phút đọc',
-    views: 12480,
-    author: 'Thầy Kenji Sato - Giảng viên JLPT Tokyo',
-    authorRole: 'Chuyên gia luyện thi N5-N1',
-    publishedAt: '2026-10-28',
-    featured: true,
+    views: 14850,
+    author: 'Thầy Kenji Sato',
+    authorRole: 'Giảng viên Luyện thi JLPT Tokyo',
+    publishedAt: '2026-10-31',
+    publishedTime: '15 phút trước',
+    imageUrl: 'https://images.unsplash.com/photo-1528164344705-475426879c0d?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Tạp chí Giáo dục Ngôn ngữ Tokyo',
+    sourceUrl: 'https://www.jlpt.jp',
+    featured: false,
     tags: ['JLPT N5', 'Luyện thi', 'Kinh nghiệm', 'Choukai'],
-    content: `Kỳ thi JLPT N5 là bước ngoặt đầu tiên trên hành trình chinh phục tiếng Nhật. Rất nhiều bạn học viên than phiền rằng học trước quên sau, hoặc khi vào phòng thi phần nghe (Choukai) bị "ngợp" vì tốc độ nói tự nhiên của người Nhật.
+    content: `Kỳ thi JLPT N5 là bước ngoặt đầu tiên trên hành trình chinh phục tiếng Nhật. Rất nhiều học viên than phiền rằng học trước quên sau, hoặc khi vào phòng thi phần nghe (Choukai) bị "ngợp" vì tốc độ nói tự nhiên của người Nhật.
 
 Dưới đây là 3 trụ cột giúp bạn bứt phá điểm số:
 1. Nắm chắc 1.500 từ vựng cốt lõi của 25 bài Minna no Nihongo bằng phương pháp Spaced Repetition (Lặp lại ngắt quãng). Đừng chỉ học mặt chữ, hãy nghe phát âm và tự tay gõ Romaji để kích hoạt trí nhớ cơ bắp.
@@ -877,11 +881,117 @@ Hãy nhớ: Sự kiên trì mỗi ngày 30 phút giá trị hơn học dồn 5 t
         id: 102,
         author: 'Trần Thị Mai',
         rating: 5,
-        content: 'Phần phân tích bẫy nghe Choukai quá chuẩn, trước giờ mình toàn bị lừa ở các từ 「ちょっと」 với 「でも」.',
+        content: 'Phần phân tích bẫy nghe Choukai quá chuẩn, trước giờ mình toàn bị lừa ở các từ chotto với demo.',
         createdAt: 'Hôm nay lúc 09:15',
         likes: 18
       }
     ]
+  },
+  {
+    id: 6,
+    title: 'Lịch thi JLPT 2026 chính thức: Thời hạn nộp hồ sơ, địa điểm thi và lệ phí tại Hà Nội, Đà Nẵng, Huế, TP.HCM',
+    slug: 'lich-thi-jlpt-2026-chinh-thuc-han-nop-ho-so',
+    summary: 'Cập nhật từ Quỹ Giao lưu Quốc tế Nhật Bản (Japan Foundation): Lịch thi JLPT đợt 1 (Chủ Nhật đầu tháng 7) và đợt 2 (Chủ Nhật đầu tháng 12), quy trình mua hồ sơ và tra cứu kết quả trực tuyến.',
+    category: 'Kỳ thi & Lịch thi',
+    readTime: '6 phút đọc',
+    views: 31200,
+    author: 'Ban Thư Ký Kỳ Thi JLPT Việt Nam',
+    authorRole: 'Cổng thông tin khảo thí quốc gia',
+    publishedAt: '2026-11-01',
+    publishedTime: 'Vừa xong',
+    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Quỹ Giao lưu Quốc tế Nhật Bản (Japan Foundation)',
+    sourceUrl: 'https://jpf.org.vn',
+    featured: true,
+    tags: ['JLPT 2026', 'Lịch thi', 'Địa điểm thi', 'Lệ phí thi'],
+    content: `Kỳ thi Năng lực Tiếng Nhật (JLPT) năm 2026 được tổ chức định kỳ 2 lần vào ngày Chủ Nhật đầu tiên của tháng 7 và tháng 12 trên toàn cầu.
+
+1. Lịch thi cụ thể năm 2026:
+- Đợt 1: Chủ Nhật, ngày 05/07/2026. Hạn nộp hồ sơ từ đầu tháng 3 đến giữa tháng 4.
+- Đợt 2: Chủ Nhật, ngày 06/12/2026. Hạn nộp hồ sơ từ đầu tháng 8 đến giữa tháng 9.
+
+2. Địa điểm tiếp nhận hồ sơ và tổ chức thi tại Việt Nam:
+- Hà Nội: Trường Đại học Ngoại ngữ - Đại học Quốc gia Hà Nội (N1, N2) và Trường Đại học Hà Nội (N3, N4, N5).
+- Đà Nẵng: Trường Đại học Ngoại ngữ - Đại học Đà Nẵng (131 Lương Nhữ Hộc, Cẩm Lệ).
+- Huế: Trường Đại học Ngoại ngữ - Đại học Huế (57 Nguyễn Khoa Chiêm, An Cựu).
+- TP. Hồ Chí Minh: Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG TP.HCM và Trường Đại học Sư phạm TP.HCM.
+
+3. Lệ phí thi tham khảo năm 2026:
+- Cấp độ N5, N4: 650.000 VNĐ / thí sinh.
+- Cấp độ N3, N2, N1: 700.000 VNĐ / thí sinh.
+
+Học viên lưu ý chuẩn bị 2 ảnh thẻ 3x4 chụp trong vòng 6 tháng, bản photo Căn cước công dân và điền chính xác thông tin cá nhân để nhận chứng chỉ đúng hẹn.`,
+    comments: [
+      {
+        id: 601,
+        author: 'Lê Bảo Anh',
+        rating: 5,
+        content: 'Bài viết cập nhật rất đúng lúc. Mình đang chuẩn bị đăng ký thi đợt tới ở điểm Đại học Ngoại ngữ Đà Nẵng!',
+        createdAt: '1 giờ trước',
+        likes: 35
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: 'Nhật Bản mở rộng chính sách Visa Tokutei Ginou 2026: Đón 820.000 lao động và cơ hội vĩnh trú lâu dài',
+    slug: 'nhat-ban-mo-rong-chinh-sach-visa-tokutei-ginou-2026',
+    summary: 'Chính phủ Nhật Bản chính thức nới lỏng diện Kỹ năng đặc định số 2 lên 16 khối ngành, cho phép lao động được cấp quyền cư trú dài hạn và bảo lãnh người thân sang Nhật định cư.',
+    category: 'Du học & Việc làm',
+    readTime: '7 phút đọc',
+    views: 22400,
+    author: 'Văn Phòng Cố Vấn Định Cư Tokyo',
+    authorRole: 'Chuyên gia Luật Pháp & Thị Thực',
+    publishedAt: '2026-10-31',
+    publishedTime: '45 phút trước',
+    imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Cục Quản lý Xuất nhập cảnh Nhật Bản (ISA)',
+    sourceUrl: 'https://www.moj.go.jp',
+    featured: false,
+    tags: ['Tokutei Ginou', 'Visa Nhật', 'Vĩnh trú', 'Việc làm'],
+    content: `Theo thông báo mới nhất từ Bộ Tư pháp Nhật Bản, chỉ tiêu tiếp nhận lao động kỹ năng đặc định (Tokutei Ginou) giai đoạn 2024 - 2029 được nâng lên 820.000 người, gấp đôi so với giai đoạn trước.
+
+Các điểm mới đột phá người lao động cần nắm rõ:
+1. Mở rộng diện Kỹ năng đặc định số 2: Trước đây chỉ áp dụng cho ngành xây dựng và đóng tàu, nay đã mở rộng thêm 14 ngành khác gồm: chế tạo máy, nông nghiệp, dịch vụ ăn uống, khách sạn, vệ sinh tòa nhà, bảo dưỡng ô tô.
+2. Quyền lợi vượt trội của Tokutei số 2:
+- Không giới hạn thời gian lưu trú tại Nhật Bản (có thể gia hạn liên tục đến khi xin visa Vĩnh trú).
+- Được quyền đón vợ/chồng và con cái sang sinh sống tại Nhật Bản.
+3. Yêu cầu tiếng Nhật:
+- Tokutei số 1: Tối thiểu JLPT N4 hoặc JFT-Basic A2.
+- Tokutei số 2: Khuyến khích đạt trình độ JLPT N3 trở lên để vượt qua bài kiểm tra chuyên môn cấp cao.`,
+    comments: []
+  },
+  {
+    id: 8,
+    title: 'Kỳ thi NAT-TEST và TOPJ 2026: Giải pháp thay thế hoàn hảo khi lỡ kỳ thi JLPT',
+    slug: 'ky-thi-nat-test-va-topj-2026-cam-nang',
+    summary: 'Không cần chờ đợi 6 tháng một lần như JLPT: Kỳ thi NAT-TEST tổ chức 6 lần một năm vào các tháng chẵn, cấp chứng chỉ giá trị tương đương để xin visa du học và kỹ năng đặc định.',
+    category: 'Kỳ thi & Lịch thi',
+    readTime: '5 phút đọc',
+    views: 16800,
+    author: 'Ban Tư Vấn Du Học Đông Du',
+    authorRole: 'Cố vấn khảo thí quốc tế',
+    publishedAt: '2026-10-30',
+    publishedTime: '2 giờ trước',
+    imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Hội đồng Khảo thí NAT-TEST Nhật Bản',
+    sourceUrl: 'http://www.nat-test.com',
+    featured: false,
+    tags: ['NAT-TEST', 'TOPJ', 'Chứng chỉ tiếng Nhật', 'Du học'],
+    content: `Rất nhiều học viên bị lỡ hạn nộp hồ sơ JLPT hoặc cần chứng chỉ gấp để nộp hồ sơ Cục Xuất Nhập Cảnh (COE). NAT-TEST và TOPJ chính là phương án cứu cánh lý tưởng nhất.
+
+1. Ưu điểm vượt trội của NAT-TEST:
+- Tổ chức 6 đợt thi mỗi năm: Vào các tháng 2, 4, 6, 8, 10, 12.
+- Thời gian biết kết quả nhanh chóng: Chỉ sau 2 đến 3 tuần thi là có kết quả online và chứng chỉ gốc.
+- Cấu trúc đề thi bám sát 100% format của JLPT, chia làm 5 cấp độ từ 5Q (tương đương N5) đến 1Q (tương đương N1).
+
+2. Quy đổi trình độ:
+- NAT-TEST 5Q tương đương JLPT N5 (Yêu cầu khoảng 700 - 800 từ vựng và 100 chữ Kanji).
+- NAT-TEST 4Q tương đương JLPT N4.
+- NAT-TEST 3Q tương đương JLPT N3.
+
+Luyện từ vựng và làm trắc nghiệm phản xạ trên WebApp HYPER mỗi ngày sẽ giúp bạn tự tin vượt qua cả hai kỳ thi này với điểm số vượt trội.`,
+    comments: []
   },
   {
     id: 2,
@@ -890,10 +1000,14 @@ Hãy nhớ: Sự kiên trì mỗi ngày 30 phút giá trị hơn học dồn 5 t
     summary: 'Tổng hợp đánh giá thực tế từ hơn 5.000 học viên về học phí, giáo trình, chất lượng giảng viên bản xứ và môi trường luyện phản xạ giữa các trung tâm offline và nền tảng học thông minh.',
     category: 'Đánh giá khóa học',
     readTime: '8 phút đọc',
-    views: 9850,
+    views: 15400,
     author: 'Cộng đồng Học viên JLPT Việt Nam',
     authorRole: 'Khảo sát độc lập',
-    publishedAt: '2026-10-25',
+    publishedAt: '2026-10-29',
+    publishedTime: 'Hôm qua',
+    imageUrl: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Khảo sát Học viên Tiếng Nhật 2026',
+    sourceUrl: 'https://hyper-jlpt.onrender.com/forum',
     featured: false,
     tags: ['Đánh giá', 'Trung tâm', 'Khóa học', 'Học phí'],
     content: `Khi bắt đầu học tiếng Nhật, người học thường đứng trước hai lựa chọn: Đăng ký trung tâm truyền thống với mức học phí từ 4.000.000đ - 8.000.000đ/khóa, hoặc tự học kết hợp các nền tảng WebApp công nghệ.
@@ -916,15 +1030,19 @@ Lời khuyên từ các thủ khoa: Kết hợp học ngữ pháp cơ bản và 
   },
   {
     id: 3,
-    title: 'Cẩm nang du học & Việc làm Nhật Bản: Những điều kiện then chốt để đỗ visa kỹ sư và Tokutei',
+    title: 'Cẩm nang du học và Việc làm Nhật Bản: Những điều kiện then chốt để đỗ visa kỹ sư và Tokutei',
     slug: 'cam-nang-du-hoc-va-viec-lam-nhat-ban',
     summary: 'Cập nhật chính sách visa mới nhất của Cục Xuất Nhập Cảnh Nhật Bản: Yêu cầu chứng chỉ JLPT, quy trình phỏng vấn doanh nghiệp và cách viết CV chuẩn phong cách Nhật.',
     category: 'Du học & Việc làm',
     readTime: '7 phút đọc',
-    views: 14200,
+    views: 18200,
     author: 'Ban Cố Vấn Nhân Sự Nhật Bản',
     authorRole: 'HR Specialist Tokyo',
-    publishedAt: '2026-10-22',
+    publishedAt: '2026-10-28',
+    publishedTime: '3 ngày trước',
+    imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Hiệp hội Phát triển Nhân lực Quốc tế Nhật Bản',
+    sourceUrl: 'https://www.mofa.go.jp',
     featured: false,
     tags: ['Du học', 'Visa kỹ sư', 'Tokutei', 'Việc làm Nhật'],
     content: `Nhật Bản đang mở rộng cơ hội việc làm cho lao động chất lượng cao từ Việt Nam. Tuy nhiên, rào cản lớn nhất của ứng viên không phải là bằng cấp chuyên môn, mà là năng lực giao tiếp tiếng Nhật thực tế.
@@ -951,10 +1069,14 @@ Doanh nghiệp Nhật đánh giá cao điều gì?
     summary: 'Tại sao học vẹt từ vựng lại nhanh quên? Khám phá đường cong lãng quên Ebbinghaus và cách thuật toán Vườn Cây SRS giúp não bộ chuyển từ vựng vào vùng trí nhớ vĩnh viễn.',
     category: 'Phương pháp học',
     readTime: '5 phút đọc',
-    views: 8900,
+    views: 12900,
     author: 'Đội Ngũ Sư Phạm HYPER',
     authorRole: 'Nghiên cứu Não bộ & Ngôn ngữ',
-    publishedAt: '2026-10-20',
+    publishedAt: '2026-10-27',
+    publishedTime: '4 ngày trước',
+    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Viện Khoa học Nhận thức Tokyo',
+    sourceUrl: 'https://hyper-jlpt.onrender.com',
     featured: false,
     tags: ['SRS', 'Trí nhớ', 'Khoa học học tập', 'Vườn cây'],
     content: `Theo đường cong lãng quên của nhà tâm lý học Hermann Ebbinghaus, con người sẽ quên đi 70% lượng kiến thức mới học sau 24 giờ nếu không được ôn tập đúng chu kỳ.
@@ -971,15 +1093,19 @@ Trang Vườn Cây trên WebApp của chúng ta mô phỏng chính xác quá tr�
   },
   {
     id: 5,
-    title: 'Văn hóa ứng xử công sở Nhật Bản: 7 quy tắc "sống còn" người mới đi làm cần biết',
+    title: 'Văn hóa ứng xử công sở Nhật Bản: 7 quy tắc sống còn người mới đi làm cần biết',
     slug: 'van-hoa-ung-xu-cong-so-nhat-ban',
     summary: 'Tìm hiểu quy tắc báo cáo Hou-Ren-So, văn hóa cúi chào Ojigi, nghệ thuật dùng kính ngữ Keigo và những điều cấm kỵ nơi làm việc để xây dựng hình ảnh chuyên nghiệp.',
     category: 'Văn hóa Nhật',
     readTime: '6 phút đọc',
-    views: 11100,
+    views: 14100,
     author: 'Yamamoto Kenji',
     authorRole: 'Cố vấn Văn hóa Doanh nghiệp',
-    publishedAt: '2026-10-18',
+    publishedAt: '2026-10-26',
+    publishedTime: '5 ngày trước',
+    imageUrl: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1200&q=80',
+    sourceName: 'Hiệp hội Doanh nghiệp Nhật Bản Keidanren',
+    sourceUrl: 'https://www.keidanren.or.jp',
     featured: false,
     tags: ['Văn hóa công sở', 'Kính ngữ', 'Hou-Ren-So', 'Kỹ năng'],
     content: `Làm việc trong môi trường Nhật Bản đòi hỏi sự tinh tế và thấu hiểu văn hóa sâu sắc. Người Nhật rất coi trọng sự hòa hợp tập thể (Wa) và tính chuyên nghiệp trong từng cử chỉ nhỏ.
@@ -988,107 +1114,12 @@ Trang Vườn Cây trên WebApp của chúng ta mô phỏng chính xác quá tr�
 1. Đúng giờ là tuyệt đối: Đến sớm 5-10 phút được xem là đúng giờ.
 2. Nguyên tắc Hou-Ren-So: Hokoku (Báo cáo), Renraku (Liên lạc), Sodan (Thảo luận). Mọi vấn đề phát sinh phải được thông báo ngay cho cấp trên.
 3. Chào hỏi năng lượng vào đầu ngày (Ohayou gozaimasu) và cảm ơn khi ra về (Otsukaresama desu).
-4. Phân biệt rõ vợ chồng của người khác: Nhớ dùng 「奥さん」(Okusan) khi hỏi thăm vợ đồng nghiệp, và 「妻」(Tsuma) khi nói về vợ mình.
+4. Phân biệt rõ vợ chồng của người khác: Nhớ dùng Okusan khi hỏi thăm vợ đồng nghiệp, và Tsuma khi nói về vợ mình.
 5. Luôn xác nhận lại bằng văn bản hoặc email sau các cuộc trao đổi quan trọng.`,
-    comments: []
-  },
-  {
-    id: 6,
-    title: 'Lịch thi JLPT 2026 chính thức: Thời hạn nộp hồ sơ, địa điểm thi và lệ phí tại Hà Nội, Đà Nẵng, Huế, TP.HCM',
-    slug: 'lich-thi-jlpt-2026-chinh-thuc-han-nop-ho-so',
-    summary: 'Cập nhật từ Quỹ Giao lưu Quốc tế Nhật Bản (Japan Foundation): Lịch thi JLPT đợt 1 (Chủ Nhật đầu tháng 7) và đợt 2 (Chủ Nhật đầu tháng 12), quy trình mua hồ sơ và tra cứu kết quả trực tuyến.',
-    category: 'Kỳ thi & Lịch thi',
-    readTime: '6 phút đọc',
-    views: 24500,
-    author: 'Ban Thư Ký Kỳ Thi JLPT Việt Nam',
-    authorRole: 'Cổng thông tin khảo thí',
-    publishedAt: '2026-10-30',
-    featured: true,
-    tags: ['JLPT 2026', 'Lịch thi', 'Địa điểm thi', 'Lệ phí thi'],
-    content: `Kỳ thi Năng lực Tiếng Nhật (JLPT) năm 2026 được tổ chức định kỳ 2 lần vào ngày Chủ Nhật đầu tiên của tháng 7 và tháng 12 trên toàn cầu.
-
-1. Lịch thi cụ thể:
-- Đợt 1: Chủ Nhật, ngày 05/07/2026. Hạn nộp hồ sơ từ đầu tháng 3 đến giữa tháng 4.
-- Đợt 2: Chủ Nhật, ngày 06/12/2026. Hạn nộp hồ sơ từ đầu tháng 8 đến giữa tháng 9.
-
-2. Địa điểm tiếp nhận hồ sơ và tổ chức thi tại Việt Nam:
-- Hà Nội: Trường Đại học Ngoại ngữ - Đại học Quốc gia Hà Nội (N1, N2) và Trường Đại học Hà Nội (N3, N4, N5).
-- Đà Nẵng: Trường Đại học Ngoại ngữ - Đại học Đà Nẵng (131 Lương Nhữ Hộc, Cẩm Lệ).
-- Huế: Trường Đại học Ngoại ngữ - Đại học Huế (57 Nguyễn Khoa Chiêm, An Cựu).
-- TP. Hồ Chí Minh: Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG TP.HCM và Trường Đại học Sư phạm TP.HCM.
-
-3. Lệ phí thi tham khảo năm 2026:
-- Cấp độ N5, N4: 650.000 VNĐ / thí sinh.
-- Cấp độ N3, N2, N1: 700.000 VNĐ / thí sinh.
-
-Học viên lưu ý chuẩn bị 2 ảnh thẻ 3x4 chụp trong vòng 6 tháng, bản photo Căn cước công dân và điền chính xác thông tin cá nhân để nhận chứng chỉ đúng hẹn.`,
-    comments: [
-      {
-        id: 601,
-        author: 'Lê Bảo Anh',
-        rating: 5,
-        content: 'Bài viết cập nhật rất đúng lúc. Mình đang chuẩn bị đăng ký thi đợt tới ở điểm Đại học Ngoại ngữ Đà Nẵng!',
-        createdAt: '1 ngày trước',
-        likes: 31
-      }
-    ]
-  },
-  {
-    id: 7,
-    title: 'Nhật Bản mở rộng chính sách Visa Tokutei Ginou 2026: Đón 820.000 lao động và cơ hội vĩnh trú',
-    slug: 'nhat-ban-mo-rong-chinh-sach-visa-tokutei-ginou-2026',
-    summary: 'Chính phủ Nhật Bản chính thức nới lỏng diện Kỹ năng đặc định số 2 lên 16 khối ngành, cho phép lao động được cấp quyền cư trú dài hạn và bảo lãnh người thân sang Nhật định cư.',
-    category: 'Du học & Việc làm',
-    readTime: '7 phút đọc',
-    views: 18900,
-    author: 'Văn Phòng Cố Vấn Định Cư Tokyo',
-    authorRole: 'Chuyên gia Luật Pháp & Thị Thực',
-    publishedAt: '2026-10-27',
-    featured: false,
-    tags: ['Tokutei Ginou', 'Visa Nhật', 'Vĩnh trú', 'Việc làm'],
-    content: `Theo thông báo mới nhất từ Bộ Tư pháp Nhật Bản, chỉ tiêu tiếp nhận lao động kỹ năng đặc định (Tokutei Ginou) giai đoạn 2024 - 2029 được nâng lên 820.000 người, gấp đôi so với giai đoạn trước.
-
-Các điểm mới đột phá người lao động cần nắm rõ:
-1. Mở rộng diện Kỹ năng đặc định số 2: Trước đây chỉ áp dụng cho ngành xây dựng và đóng tàu, nay đã mở rộng thêm 14 ngành khác gồm: chế tạo máy, nông nghiệp, dịch vụ ăn uống, khách sạn, vệ sinh tòa nhà, bảo dưỡng ô tô.
-2. Quyền lợi vượt trội của Tokutei số 2:
-- Không giới hạn thời gian lưu trú tại Nhật Bản (có thể gia hạn liên tục đến khi xin visa Vĩnh trú).
-- Được quyền đón vợ/chồng và con cái sang sinh sống tại Nhật Bản.
-3. Yêu cầu tiếng Nhật:
-- Tokutei số 1: Tối thiểu JLPT N4 hoặc JFT-Basic A2.
-- Tokutei số 2: Khuyến khích đạt trình độ JLPT N3 trở lên để vượt qua bài kiểm tra chuyên môn cấp cao.`,
-    comments: []
-  },
-  {
-    id: 8,
-    title: 'Kỳ thi NAT-TEST và TOPJ 2026: Giải pháp thay thế hoàn hảo khi lỡ kỳ thi JLPT',
-    slug: 'ky-thi-nat-test-va-topj-2026-cam-nang',
-    summary: 'Không cần chờ đợi 6 tháng một lần như JLPT: Kỳ thi NAT-TEST tổ chức 6 lần một năm vào các tháng chẵn, cấp chứng chỉ giá trị tương đương để xin visa du học và kỹ năng đặc định.',
-    category: 'Kỳ thi & Lịch thi',
-    readTime: '5 phút đọc',
-    views: 13200,
-    author: 'Ban Tư Vấn Du Học Đông Du',
-    authorRole: 'Cố vấn khảo thí quốc tế',
-    publishedAt: '2026-10-24',
-    featured: false,
-    tags: ['NAT-TEST', 'TOPJ', 'Chứng chỉ tiếng Nhật', 'Du học'],
-    content: `Rất nhiều học viên bị lỡ hạn nộp hồ sơ JLPT hoặc cần chứng chỉ gấp để nộp hồ sơ Cục Xuất Nhập Cảnh (COE). NAT-TEST và TOPJ chính là phương án cứu cánh lý tưởng nhất.
-
-1. Ưu điểm vượt trội của NAT-TEST:
-- Tổ chức 6 đợt thi mỗi năm: Vào các tháng 2, 4, 6, 8, 10, 12.
-- Thời gian biết kết quả nhanh chóng: Chỉ sau 2 đến 3 tuần thi là có kết quả online và chứng chỉ gốc.
-- Cấu trúc đề thi bám sát 100% format của JLPT, chia làm 5 cấp độ từ 5Q (tương đương N5) đến 1Q (tương đương N1).
-
-2. Quy đổi trình độ:
-- NAT-TEST 5Q = JLPT N5 (Yêu cầu khoảng 700 - 800 từ vựng và 100 chữ Kanji).
-- NAT-TEST 4Q = JLPT N4.
-- NAT-TEST 3Q = JLPT N3.
-
-Luyện từ vựng và làm trắc nghiệm phản xạ trên WebApp HYPER mỗi ngày sẽ giúp bạn tự tin vượt qua cả hai kỳ thi này với điểm số vượt trội.`,
     comments: []
   }
 ];
 
-// Comprehensive Directory of Reputable Japanese Language Centers in Vietnam
 const japaneseCenters = [
   // Đà Nẵng
   {
