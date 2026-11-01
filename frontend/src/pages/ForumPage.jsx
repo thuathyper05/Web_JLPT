@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { forumService, speakBilingualText, stopSpeaking } from '../services/api';
 import { sounds } from '../services/sounds';
@@ -46,7 +46,9 @@ import {
   Network,
   FolderTree,
   ChevronDown,
-  Compass
+  Compass,
+  Radio,
+  ArrowUpRight
 } from 'lucide-react';
 
 export default function ForumPage() {
@@ -61,6 +63,19 @@ export default function ForumPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastRefreshedTime, setLastRefreshedTime] = useState('Vừa xong');
+
+  // Auto Crawl & Continuous Ingestion state
+  const [isCrawling, setIsCrawling] = useState(false);
+  const [crawlToast, setCrawlToast] = useState(null);
+  const [crawlerStatus, setCrawlerStatus] = useState({
+    totalArticles: 95,
+    activeSources: 15,
+    lastUpdated: 'Vừa xong'
+  });
+
+  // Pagination state (Báo Mới list browsing)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Centers directory state
   const [selectedCity, setSelectedCity] = useState('all');
@@ -92,7 +107,7 @@ export default function ForumPage() {
   const [copiedLink, setCopiedLink] = useState(false);
 
   // Reader font size state
-  const [readerFontSize, setReaderFontSize] = useState('base'); // 'sm' | 'base' | 'lg'
+  const [readerFontSize, setReaderFontSize] = useState('base');
 
   // Comments state
   const [commentAuthor, setCommentAuthor] = useState(user?.username || '');
@@ -172,15 +187,16 @@ export default function ForumPage() {
   ];
 
   const categories = [
-    { id: 'all', label: 'Trang chủ Báo chí' },
-    { id: 'sitemap_explorer', label: 'Sơ đồ liên kết' },
-    { id: 'centers', label: 'Tra cứu Trung tâm' },
-    { id: 'Kỳ thi & Lịch thi', label: 'Lịch thi JLPT & NAT-TEST' },
-    { id: 'Du học & Việc làm', label: 'Du học & Visa Tokutei' },
-    { id: 'Kinh nghiệm JLPT', label: 'Bí kíp JLPT (N5 - N1)' },
-    { id: 'Phương pháp học', label: 'Phương pháp ghi nhớ SRS' },
+    { id: 'all', label: 'Báo Mới Hôm Nay' },
+    { id: 'hot', label: 'Tin Nóng 24H' },
+    { id: 'Kỳ thi JLPT', label: 'Kỳ thi JLPT' },
+    { id: 'Trung tâm Nhật ngữ', label: 'Trung tâm Nhật ngữ' },
+    { id: 'Chính sách Visa', label: 'Chính sách Visa & Việc làm' },
+    { id: 'Du học & Học bổng', label: 'Du học & Học bổng' },
+    { id: 'Phương pháp học', label: 'Phương pháp học' },
     { id: 'Văn hóa Nhật', label: 'Văn hóa & Đời sống' },
-    { id: 'Đánh giá khóa học', label: 'Review & Đánh giá' },
+    { id: 'centers', label: 'Tra cứu Trung tâm' },
+    { id: 'sitemap_explorer', label: 'Sơ đồ liên kết' }
   ];
 
   const cities = [
@@ -189,7 +205,7 @@ export default function ForumPage() {
     { id: 'Hà Nội', label: 'Hà Nội' },
     { id: 'Quảng Nam', label: 'Quảng Nam' },
     { id: 'TP. Hồ Chí Minh', label: 'TP. Hồ Chí Minh' },
-    { id: 'Các tỉnh khác', label: 'Các tỉnh khác' },
+    { id: 'Các tỉnh khác', label: 'Các tỉnh khác' }
   ];
 
   const todayNewsDate = new Date().toLocaleDateString('vi-VN', {
@@ -207,22 +223,43 @@ export default function ForumPage() {
     return () => clearInterval(timer);
   }, [webappAds.length]);
 
-  // Live news polling every 60s
+  // Live status update & news polling every 45s
   useEffect(() => {
+    fetchCrawlerStatus();
     const interval = setInterval(() => {
       fetchArticles(false);
+      fetchCrawlerStatus();
       setLastRefreshedTime('Vừa cập nhật 1 phút trước');
-    }, 60000);
+    }, 45000);
     return () => clearInterval(interval);
   }, [selectedCategory]);
+
+  const fetchCrawlerStatus = async () => {
+    try {
+      const res = await forumService.getStatus();
+      if (res.data?.success) {
+        setCrawlerStatus(res.data);
+      }
+    } catch {
+      // Keep existing status
+    }
+  };
 
   const fetchArticles = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     setRefreshing(true);
     try {
+      const isHotOnly = selectedCategory === 'hot';
+      const categoryParam =
+        selectedCategory === 'all' || selectedCategory === 'hot' || selectedCategory === 'centers' || selectedCategory === 'sitemap_explorer'
+          ? undefined
+          : selectedCategory;
+
       const res = await forumService.getArticles({
-        category: selectedCategory === 'all' || selectedCategory === 'centers' || selectedCategory === 'sitemap_explorer' ? undefined : selectedCategory,
-        search: searchQuery || undefined
+        category: categoryParam,
+        search: searchQuery || undefined,
+        sort: isHotOnly ? 'hot' : 'newest',
+        all: 'true'
       });
       setArticles(res.data?.data || []);
       setLastRefreshedTime('Vừa xong');
@@ -256,104 +293,134 @@ export default function ForumPage() {
   };
 
   useEffect(() => {
-    fetchArticles(true);
-    fetchReviews();
-  }, [selectedCategory]);
+    fetchArticles();
+    setCurrentPage(1);
+  }, [selectedCategory, searchQuery]);
 
   useEffect(() => {
     fetchCenters();
   }, [selectedCity, centerSearch]);
 
-  const handleManualRefresh = () => {
-    sounds.playFlip();
-    fetchArticles(false);
-    fetchCenters();
+  useEffect(() => {
     fetchReviews();
+  }, []);
+
+  // Trigger continuous auto-crawling
+  const handleTriggerAutoCrawl = async () => {
+    setIsCrawling(true);
+    try {
+      sounds.playSuccess();
+      const res = await forumService.crawlNews(3);
+      if (res.data?.success) {
+        confetti({ particleCount: 40, spread: 70, origin: { y: 0.15 } });
+        setCrawlToast(res.data.message);
+        if (res.data.data?.length) {
+          setArticles((prev) => [...res.data.data, ...prev]);
+        }
+        fetchCrawlerStatus();
+        setTimeout(() => setCrawlToast(null), 5000);
+      }
+    } catch (err) {
+      console.error('Auto crawl error:', err);
+    } finally {
+      setIsCrawling(false);
+    }
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    sounds.playFlip();
-    fetchArticles(true);
-  };
-
+  // Article selection & reader actions
   const handleOpenArticle = (art) => {
-    sounds.playFlip();
+    sounds.playSelect();
     setSelectedArticle(art);
     setAiSummary(null);
-    stopSpeaking();
     setIsPlayingAudio(false);
+    stopSpeaking();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToList = () => {
     sounds.playFlip();
-    stopSpeaking();
-    setIsPlayingAudio(false);
     setSelectedArticle(null);
+    setIsPlayingAudio(false);
+    stopSpeaking();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleToggleArticleAudio = () => {
+  // Audio Speech Reader
+  const handleToggleAudio = () => {
     if (!selectedArticle) return;
     if (isPlayingAudio) {
       stopSpeaking();
       setIsPlayingAudio(false);
     } else {
       setIsPlayingAudio(true);
-      const textToRead = `${selectedArticle.title}. ${selectedArticle.summary}. ${selectedArticle.content.slice(0, 500)}`;
-      speakBilingualText(textToRead, () => {
-        setIsPlayingAudio(false);
-      });
+      const textToRead = selectedArticle.title + '. ' + selectedArticle.summary + '. ' + selectedArticle.content;
+      speakBilingualText(
+        textToRead,
+        'vi-VN',
+        () => setIsPlayingAudio(false),
+        () => setIsPlayingAudio(false)
+      );
     }
   };
 
-  const toggleBookmark = (artId) => {
-    sounds.playCorrect();
-    let updated;
-    if (bookmarkedIds.includes(artId)) {
-      updated = bookmarkedIds.filter((id) => id !== artId);
-    } else {
-      updated = [...bookmarkedIds, artId];
-    }
-    setBookmarkedIds(updated);
-    localStorage.setItem('nihongo_bookmarked_news', JSON.stringify(updated));
+  // Bookmark Toggle
+  const handleToggleBookmark = (id, e) => {
+    e?.stopPropagation();
+    sounds.playSelect();
+    setBookmarkedIds((prev) => {
+      const exists = prev.includes(id);
+      const next = exists ? prev.filter((item) => item !== id) : [...prev, id];
+      localStorage.setItem('nihongo_bookmarked_news', JSON.stringify(next));
+      return next;
+    });
   };
 
-  const copyArticleLink = () => {
-    sounds.playCorrect();
-    navigator.clipboard.writeText(window.location.href);
+  // Copy Article Link
+  const handleCopyArticleLink = () => {
+    sounds.playSuccess();
+    const url = window.location.origin + '/forum/' + (selectedArticle?.slug || selectedArticle?.id);
+    navigator.clipboard.writeText(url);
     setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
+    setTimeout(() => setCopiedLink(false), 2500);
   };
 
-  const copyCenterPhone = (phone, id) => {
-    sounds.playCorrect();
-    navigator.clipboard.writeText(phone);
-    setCopiedCenterPhone(id);
-    setTimeout(() => setCopiedCenterPhone(null), 2000);
+  // AI Summary Generation
+  const handleGenerateAiSummary = async () => {
+    if (!selectedArticle) return;
+    setLoadingAiSummary(true);
+    try {
+      sounds.playFlip();
+      const prompt =
+        'Bạn là Thư ký Báo chí cấp cao của Báo Mới Nhật Ngữ. Hãy tóm tắt bài viết sau thành 3 ý chính then chốt ngắn gọn, chuẩn xác, mang tính thời sự cao nhất:\\n\\nTiêu đề: ' +
+        selectedArticle.title +
+        '\\n\\nNội dung: ' +
+        selectedArticle.content;
+      const response = await askAi(prompt);
+      setAiSummary(response);
+    } catch {
+      setAiSummary('Không thể tạo tóm tắt lúc này. Vui lòng thử lại sau.');
+    } finally {
+      setLoadingAiSummary(false);
+    }
   };
 
+  // Handle Comment Submission
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!commentText.trim() || !selectedArticle) return;
-
-    sounds.playFlip();
     setSubmittingComment(true);
     try {
+      sounds.playSuccess();
       const res = await forumService.addComment(selectedArticle.id, {
-        author: commentAuthor || 'Bạn đọc',
+        author: commentAuthor,
         content: commentText,
         rating: commentRating
       });
-
       if (res.data?.success) {
-        sounds.playLevelUp();
-        confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
-        setSelectedArticle({
-          ...selectedArticle,
-          comments: [res.data.comment, ...(selectedArticle.comments || [])]
-        });
+        setSelectedArticle((prev) => ({
+          ...prev,
+          comments: [res.data.data, ...(prev.comments || [])]
+        }));
         setCommentText('');
         setCommentSuccess(true);
         setTimeout(() => setCommentSuccess(false), 3000);
@@ -365,205 +432,150 @@ export default function ForumPage() {
     }
   };
 
-  const handleReviewSubmit = async (e) => {
-    e.preventDefault();
-    if (!reviewText.trim()) return;
-
-    sounds.playFlip();
-    setSubmittingReview(true);
-    try {
-      const res = await forumService.addReview({
-        author: reviewAuthor || 'Học viên ẩn danh',
-        centerName: reviewCenter,
-        content: reviewText,
-        rating: reviewRating
-      });
-
-      if (res.data?.success) {
-        sounds.playLevelUp();
-        confetti({ particleCount: 40, spread: 70, origin: { y: 0.8 } });
-        setReviews([res.data.data, ...reviews]);
-        setReviewText('');
-        setReviewSuccess(true);
-        setTimeout(() => setReviewSuccess(false), 3000);
-      }
-    } catch (err) {
-      console.error('Review error:', err);
-    } finally {
-      setSubmittingReview(false);
-    }
-  };
-
-  const handleVoteSubmit = () => {
+  // Vote in Poll
+  const handleVotePoll = (level) => {
     if (hasVoted) return;
-    sounds.playCorrect();
-    confetti({ particleCount: 35, spread: 60, origin: { y: 0.7 } });
+    sounds.playSuccess();
+    setSelectedVote(level);
     setHasVoted(true);
     setVoteStats((prev) => ({
       ...prev,
-      [selectedVote]: prev[selectedVote] + 1
+      [level]: (prev[level] || 0) + 1
     }));
+    confetti({ particleCount: 25, spread: 50, origin: { y: 0.8 } });
   };
 
-  const handleGenerateAiSummary = async () => {
-    if (!selectedArticle) return;
-    sounds.playFlip();
-    setLoadingAiSummary(true);
-    try {
-      const prompt = `Bạn là biên tập viên báo chí cao cấp. Hãy tóm tắt bài viết sau thành 3 ý chính then chốt ngắn gọn, súc tích dành cho học viên tiếng Nhật:\nTiêu đề: ${selectedArticle.title}\nNội dung: ${selectedArticle.content}`;
-      const res = await askAi('custom', { prompt });
-      if (res?.explanation || res?.reply) {
-        setAiSummary(res.explanation || res.reply);
-      } else {
-        setAiSummary('Bài viết phân tích các quy định và bí kíp cần thiết nhất để người học tiếng Nhật đạt điểm cao trong kỳ thi thực tế.');
-      }
-    } catch {
-      setAiSummary('Tóm tắt nhanh: Nắm vững từ vựng cốt lõi, luyện nghe thực tế hàng ngày và làm đề thi thử có bấm giờ là phương pháp tối ưu nhất.');
-    } finally {
-      setLoadingAiSummary(false);
-    }
+  // Copy Center Phone
+  const handleCopyPhone = (phone, id, e) => {
+    e.stopPropagation();
+    sounds.playSuccess();
+    navigator.clipboard.writeText(phone);
+    setCopiedCenterPhone(id);
+    setTimeout(() => setCopiedCenterPhone(null), 2000);
   };
 
-  const totalVotes = Object.values(voteStats).reduce((a, b) => a + b, 0);
+  // Filtered Articles & Spotlight Hierarchy
+  const filteredArticles = useMemo(() => {
+    return articles;
+  }, [articles]);
 
-  const featuredArticle = articles.find((a) => a.featured) || articles[0];
-  const secondaryFeatured = articles.filter((a) => a.id !== featuredArticle?.id).slice(0, 3);
-  const remainingArticles = articles.filter((a) => a.id !== featuredArticle?.id && !secondaryFeatured.some((s) => s.id === a.id));
+  const featuredArticle = filteredArticles[0] || null;
+  const secondaryFeatured = filteredArticles.slice(1, 3);
+  const remainingArticles = filteredArticles.slice(3);
+
+  // Pagination for remaining stream articles
+  const totalPages = Math.ceil(remainingArticles.length / itemsPerPage);
+  const paginatedArticles = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return remainingArticles.slice(start, start + itemsPerPage);
+  }, [remainingArticles, currentPage, itemsPerPage]);
 
   const currentLeaderAd = webappAds[activeLeaderAdIndex];
 
   return (
-    <div className="bg-[#ffffff] min-h-screen text-slate-800 antialiased font-sans">
-      {/* ── 1. TOP EDITORIAL BAR (QUẢNG CÁO CHUYỂN HƯỚNG GÓC TRÁI) ── */}
-      <div className="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2.5 text-xs">
-          {/* Left: Prominent Sponsor WebApp Link */}
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen bg-slate-50/60 text-slate-800 font-sans selection:bg-rose-100 selection:text-rose-900 pb-20">
+      {/* ── 1. TOAST NOTIFICATION: AUTO-CRAWLER RESULT ── */}
+      {crawlToast && (
+        <div className="fixed top-4 right-4 z-50 max-w-md p-4 rounded-2xl bg-white border border-emerald-300 shadow-xl flex items-start gap-3 animate-in fade-in slide-in-from-top-4">
+          <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+            <CheckCircle2 size={18} />
+          </div>
+          <div className="space-y-0.5">
+            <p className="text-xs font-bold text-slate-900 mb-0">Hệ Thống Báo Mới Tự Động</p>
+            <p className="text-xs text-slate-600 mb-0 leading-relaxed">{crawlToast}</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── 2. TOP MASTHEAD & EDITORIAL STATUS BAR (BAOMOI / VNEXPRESS) ── */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        {/* Top Mini Ticker Bar */}
+        <div className="border-b border-slate-100 py-1.5 px-4 sm:px-6 text-[11px] text-slate-500 bg-slate-50/70">
+          <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold text-slate-700 capitalize">{todayNewsDate}</span>
+              <span className="hidden sm:inline text-slate-300">|</span>
+              <span className="hidden sm:flex items-center gap-1 font-medium text-slate-600">
+                <Sun size={12} className="text-amber-500" />
+                <span>Tokyo 18°C</span>
+              </span>
+              <span className="hidden sm:inline text-slate-300">|</span>
+              <span className="hidden md:flex items-center gap-1 font-medium text-slate-600">
+                <DollarSign size={12} className="text-emerald-600" />
+                <span>1 JPY = 168.50 VND</span>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Live Crawler Status Indicator */}
+              <div className="flex items-center gap-1.5 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>{crawlerStatus.totalArticles || articles.length} Bài Viết Chính Thống</span>
+              </div>
+
+              {/* Trigger Continuous Ingestion Button */}
+              <button
+                type="button"
+                onClick={handleTriggerAutoCrawl}
+                disabled={isCrawling}
+                className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 text-[10.5px] font-black cursor-pointer transition-all disabled:opacity-50"
+                title="Hệ thống tự động tìm kiếm, tra cứu và nạp bài viết mới nhất"
+              >
+                <RotateCw size={11} className={isCrawling ? 'animate-spin text-rose-600' : 'text-rose-600'} />
+                <span>{isCrawling ? 'Đang quét tin...' : 'Tự động quét tin mới'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Logo & Ecosystem Bar */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div
+              onClick={() => {
+                setSelectedCategory('all');
+                setSelectedArticle(null);
+              }}
+              className="cursor-pointer group flex items-center gap-2.5"
+            >
+              <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-serif font-black text-xl tracking-tight shadow-xs">
+                H
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-serif mb-0 leading-none group-hover:text-rose-700 transition-colors">
+                  BÁO MỚI NHẬT NGỮ
+                </h1>
+                <p className="text-[10px] text-slate-500 font-semibold tracking-wide uppercase mt-0.5 mb-0">
+                  Cổng Thông Tin Báo Chí & Năng Lực Tiếng Nhật Toàn Diện
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Ecosystem WebApp Link Button */}
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {
                 sounds.playFlip();
-                setActiveTab('home');
+                setActiveTab('lessons');
               }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600 hover:from-rose-500 hover:to-pink-500 text-white font-black shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer border border-rose-400/40"
-              title="Nhấn để mở Web App học tập tiếng Nhật HYPER JLPT"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs font-black shadow-xs transition-all cursor-pointer"
             >
-              <img src="/hyper_logo.png" alt="HYPER" className="h-3.5 w-auto object-contain" />
-              <span className="tracking-wide">VÀO HỌC WEB APP HYPER JLPT</span>
-              <ExternalLink size={12} className="text-pink-200" />
+              <Sparkles size={13} className="text-rose-200" />
+              <span className="hidden sm:inline">Vào Học Ngay Trên WebApp</span>
+              <span className="sm:hidden">Học WebApp</span>
             </button>
-
-            <span className="hidden md:inline-block text-[11px] text-slate-400 border-l border-slate-700 pl-3">
-              Tài trợ học thuật: Hệ thống Học Tiếng Nhật HYPER Japanese
-            </span>
-          </div>
-
-          {/* Right: Live Update Status, Tokyo Weather & JPY Exchange Rate */}
-          <div className="flex items-center gap-3 text-[11px] text-slate-300">
-            <div className="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-emerald-400 font-semibold">{lastRefreshedTime}</span>
-              <button
-                type="button"
-                onClick={handleManualRefresh}
-                className="hover:text-white transition-colors cursor-pointer ml-1"
-                title="Làm mới tin tức ngay"
-              >
-                <RotateCw size={11} className={refreshing ? 'animate-spin' : ''} />
-              </button>
-            </div>
-
-            <span className="hidden sm:inline-block text-slate-300 font-medium capitalize">
-              {todayNewsDate}
-            </span>
-            <div className="hidden lg:flex items-center gap-1 bg-slate-800 px-2 py-0.5 rounded-md border border-slate-700">
-              <Sun size={12} className="text-amber-300" />
-              <span>Tokyo: 18°C</span>
-            </div>
-            <div className="hidden lg:flex items-center gap-1 bg-slate-800 px-2 py-0.5 rounded-md border border-slate-700">
-              <DollarSign size={12} className="text-emerald-300" />
-              <span>1 JPY = 168.50 VND</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── 2. NEWSPAPER HEADER (VNEXPRESS / BAOMOI STYLE) ── */}
-      <header className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Masthead Title */}
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="px-2 py-0.5 rounded bg-rose-700 text-white font-black text-[9px] tracking-widest uppercase">
-                  BÁO ĐIỆN TỬ
-                </span>
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  CỔNG THÔNG TIN KHẢO THÍ & ĐỜI SỐNG 24H
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight font-serif">
-                NHẬT BẢN <span className="text-rose-700">24H</span>
-              </h1>
-              <p className="text-xs text-slate-500 font-medium mt-1 mb-0">
-                Tin tức khảo thí JLPT, danh bạ trung tâm uy tín toàn quốc, visa Tokutei và cẩm nang du học.
-              </p>
-            </div>
-
-            {/* QUẢNG CÁO WEB APP SỐ 1: EDITORIAL SPONSOR BOX (CHUẨN BÁO CHÍ THƯƠNG MẠI) */}
-            <div
-              onClick={() => {
-                sounds.playFlip();
-                setActiveTab(currentLeaderAd.targetTab || 'home');
-              }}
-              className="bg-slate-50 hover:bg-rose-50/40 p-3 sm:p-4 rounded-2xl border border-slate-200 hover:border-rose-300 transition-all cursor-pointer flex items-center gap-3.5 max-w-lg shadow-xs group"
-              title="Nhấn để mở tính năng WebApp HYPER"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white p-1.5 border border-slate-200 flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
-                <img src="/hyper_logo.png" alt="HYPER" className="h-8 w-auto object-contain" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-slate-200 text-slate-700">
-                    {currentLeaderAd.sponsorName}
-                  </span>
-                  <span className="text-[10px] font-bold text-rose-700">{currentLeaderAd.badge}</span>
-                </div>
-                <h4 className="text-xs font-black text-slate-900 truncate mb-0.5">
-                  {currentLeaderAd.title}
-                </h4>
-                <p className="text-[11px] text-slate-600 truncate mb-0.5">
-                  {currentLeaderAd.desc}
-                </p>
-                <div className="text-[11px] text-rose-700 font-extrabold flex items-center gap-1 group-hover:underline">
-                  <span>{currentLeaderAd.buttonText}</span>
-                  <ChevronRight size={12} />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* ── 3. BREAKING NEWS TICKER ── */}
-        <div className="border-t border-slate-100 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex items-center gap-3 overflow-hidden text-xs">
-            <div className="flex items-center gap-1 px-2.5 py-0.5 rounded bg-rose-700 text-white font-black text-[10px] shrink-0 tracking-wider">
-              <Flame size={12} className="animate-pulse" />
-              <span>DÒNG SỰ KIỆN</span>
-            </div>
-            <div className="truncate text-slate-700 font-medium text-[11.5px]">
-              <span className="font-bold text-slate-900">Mới nhất:</span> Lịch thi JLPT đợt 1 (05/07/2026) và đợt 2 (06/12/2026) đã chốt thời hạn nộp hồ sơ tại 4 hội đồng thi | Nhật Bản chính thức nới lỏng diện Tokutei Ginou 2 lên 16 ngành nghề | Cập nhật danh bạ trung tâm tiếng Nhật kiểm định uy tín tại Hà Nội, Đà Nẵng, Quảng Nam, TP.HCM.
-            </div>
-          </div>
-        </div>
-
-        {/* ── 4. CATEGORY NAVIGATION BAR ── */}
-        <div className="border-t border-slate-200 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar py-0.5">
-            <nav className="flex items-center gap-1 sm:gap-2">
+        {/* Categories Sticky Navigation Bar */}
+        <div className="border-t border-slate-100 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+            <nav className="flex items-center space-x-1 shrink-0">
               {categories.map((c) => {
                 const isActive = selectedCategory === c.id;
                 return (
@@ -571,16 +583,18 @@ export default function ForumPage() {
                     key={c.id}
                     type="button"
                     onClick={() => {
-                      sounds.playFlip();
+                      sounds.playSelect();
                       setSelectedCategory(c.id);
                       setSelectedArticle(null);
                     }}
-                    className={`px-3 py-2 text-xs font-bold whitespace-nowrap transition-colors border-b-2 cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                       isActive
-                        ? 'text-rose-700 border-rose-700 font-black'
-                        : 'text-slate-700 border-transparent hover:text-rose-600 hover:border-slate-300'
+                        ? 'bg-rose-50 text-rose-800 font-black border border-rose-200/90 shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                   >
+                    {c.id === 'hot' && <Flame size={13} className="text-rose-600" />}
+                    {c.id === 'centers' && <Building size={13} className="text-emerald-600" />}
                     {c.id === 'sitemap_explorer' && <Network size={13} className="text-rose-600" />}
                     <span>{c.label}</span>
                   </button>
@@ -588,22 +602,61 @@ export default function ForumPage() {
               })}
             </nav>
 
-            <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative my-1">
+            {/* Quick Search Input */}
+            <div className="relative shrink-0 max-w-[200px] hidden md:block">
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Tìm tin tức, kỳ thi, visa..."
+                placeholder="Tìm tin tức, kỳ thi..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1 rounded-full border border-slate-200 text-xs w-48 lg:w-60 focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
+                className="w-full pl-7 pr-3 py-1 text-xs rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-rose-500"
               />
-              <Search size={13} className="absolute left-2.5 text-slate-400" />
-            </form>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* ── 5. MAIN CONTENT CONTAINER ── */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      {/* ── 3. ROTATING EDITORIAL LEADERBOARD SPONSOR AD (CLEAN & PRESTIGE) ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+              <img src="/hyper_logo.png" alt="HYPER" className="h-6 w-auto object-contain" />
+            </div>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                  {currentLeaderAd.sponsorName}
+                </span>
+                <span className="text-[10px] font-bold text-rose-700">{currentLeaderAd.badge}</span>
+              </div>
+              <p className="text-xs font-bold text-slate-900 mb-0 leading-tight">
+                {currentLeaderAd.title}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+            <span className="text-[11px] text-slate-500 hidden lg:inline max-w-sm truncate">
+              {currentLeaderAd.desc}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playFlip();
+                setActiveTab(currentLeaderAd.targetTab);
+              }}
+              className="px-3 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-800 text-white text-xs font-black shadow-xs transition-all cursor-pointer shrink-0"
+            >
+              {currentLeaderAd.buttonText}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 4. MAIN EDITORIAL CONTENT CONTAINER ── */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* CASE A: READING SPECIFIC FULL ARTICLE */}
         {selectedArticle ? (
           <div className="space-y-6 max-w-4xl mx-auto">
@@ -641,7 +694,7 @@ export default function ForumPage() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all cursor-pointer"
               >
                 <ChevronLeft size={14} />
-                <span>Quay lại danh sách bài</span>
+                <span>Quay lại luồng tin</span>
               </button>
 
               <div className="flex items-center gap-2">
@@ -650,144 +703,142 @@ export default function ForumPage() {
                   <button
                     type="button"
                     onClick={() => setReaderFontSize('sm')}
-                    className={`px-2 py-1 rounded-lg transition-colors cursor-pointer ${
-                      readerFontSize === 'sm' ? 'bg-slate-100 text-slate-900 font-black' : 'hover:bg-slate-50'
-                    }`}
+                    className={'px-2 py-1 rounded-lg cursor-pointer ' + (readerFontSize === 'sm' ? 'bg-slate-100 text-slate-900' : '')}
                     title="Cỡ chữ nhỏ"
                   >
-                    A-
+                    Aa-
                   </button>
                   <button
                     type="button"
                     onClick={() => setReaderFontSize('base')}
-                    className={`px-2 py-1 rounded-lg transition-colors cursor-pointer ${
-                      readerFontSize === 'base' ? 'bg-slate-100 text-slate-900 font-black' : 'hover:bg-slate-50'
-                    }`}
+                    className={'px-2 py-1 rounded-lg cursor-pointer ' + (readerFontSize === 'base' ? 'bg-slate-100 text-slate-900' : '')}
                     title="Cỡ chữ chuẩn"
                   >
-                    A
+                    Aa
                   </button>
                   <button
                     type="button"
                     onClick={() => setReaderFontSize('lg')}
-                    className={`px-2 py-1 rounded-lg transition-colors cursor-pointer ${
-                      readerFontSize === 'lg' ? 'bg-slate-100 text-slate-900 font-black' : 'hover:bg-slate-50'
-                    }`}
+                    className={'px-2 py-1 rounded-lg cursor-pointer ' + (readerFontSize === 'lg' ? 'bg-slate-100 text-slate-900' : '')}
                     title="Cỡ chữ lớn"
                   >
-                    A+
+                    Aa+
                   </button>
                 </div>
 
-                {/* Audio Reader */}
+                {/* Audio Speech Reader Button */}
                 <button
                   type="button"
-                  onClick={handleToggleArticleAudio}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer border ${
+                  onClick={handleToggleAudio}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                     isPlayingAudio
-                      ? 'bg-rose-600 text-white border-rose-600 animate-pulse'
-                      : 'bg-white border-slate-200 text-slate-700 hover:bg-rose-50 hover:text-rose-700'
+                      ? 'bg-rose-50 text-rose-800 border-rose-300 animate-pulse'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                   }`}
-                  title="Nghe phát thanh đọc bài báo song ngữ"
+                  title={isPlayingAudio ? 'Dừng đọc bài báo' : 'Nghe đọc bài báo song ngữ'}
                 >
-                  {isPlayingAudio ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                  <span>{isPlayingAudio ? 'Dừng đọc' : 'Nghe đọc'}</span>
+                  {isPlayingAudio ? <VolumeX size={14} className="text-rose-600" /> : <Volume2 size={14} />}
+                  <span>{isPlayingAudio ? 'Đang đọc...' : 'Nghe đọc'}</span>
                 </button>
 
-                {/* Bookmark */}
+                {/* Bookmark Button */}
                 <button
                   type="button"
-                  onClick={() => toggleBookmark(selectedArticle.id)}
-                  className="p-1.5 rounded-xl border border-slate-200 bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 transition-colors cursor-pointer"
-                  title="Lưu bài viết vào danh sách đã lưu"
+                  onClick={(e) => handleToggleBookmark(selectedArticle.id, e)}
+                  className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
+                    bookmarkedIds.includes(selectedArticle.id)
+                      ? 'bg-rose-50 text-rose-700 border-rose-300'
+                      : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
+                  }`}
+                  title="Lưu bài viết"
                 >
-                  <Bookmark
-                    size={15}
-                    className={bookmarkedIds.includes(selectedArticle.id) ? 'fill-rose-600 text-rose-600' : ''}
-                  />
+                  <Bookmark size={14} className={bookmarkedIds.includes(selectedArticle.id) ? 'fill-rose-600' : ''} />
                 </button>
 
-                {/* Share Link */}
+                {/* Copy Link Button */}
                 <button
                   type="button"
-                  onClick={copyArticleLink}
-                  className="p-1.5 rounded-xl border border-slate-200 bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 transition-colors cursor-pointer"
+                  onClick={handleCopyArticleLink}
+                  className="p-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 transition-all cursor-pointer"
                   title="Sao chép liên kết bài viết"
                 >
-                  {copiedLink ? <Check size={15} className="text-emerald-600" /> : <Share2 size={15} />}
+                  {copiedLink ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
                 </button>
               </div>
             </div>
 
-            {/* Article Content Header */}
-            <div>
-              <div className="flex items-center gap-2 text-xs text-rose-700 font-black uppercase tracking-wider mb-2">
+            {/* Article Headline & Metadata */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-xs font-black uppercase text-rose-700">
                 <span>{selectedArticle.category}</span>
-                <span>/</span>
-                <span className="text-slate-400 font-normal capitalize">
+                <span className="text-slate-300">/</span>
+                <span className="text-slate-400 font-medium capitalize">
                   {selectedArticle.publishedAt} ({selectedArticle.publishedTime || 'Vừa xong'})
                 </span>
-                <span>/</span>
-                <span className="text-slate-400 font-normal">{selectedArticle.readTime}</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight font-serif leading-snug mb-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black text-slate-900 tracking-tight leading-snug">
                 {selectedArticle.title}
               </h1>
 
-              {/* Author & Source Citation Card */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 mb-6 text-xs text-slate-600">
+              {/* Author & Official Source Credit */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm">
-                    {selectedArticle.author?.charAt(0) || 'B'}
+                  <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700">
+                    <User size={15} />
                   </div>
                   <div>
-                    <div className="font-black text-slate-900">{selectedArticle.author}</div>
-                    <div className="text-[11px] text-slate-400">{selectedArticle.authorRole}</div>
+                    <span className="font-extrabold text-slate-900 block">{selectedArticle.author}</span>
+                    <span className="text-slate-500 text-[11px] block">{selectedArticle.authorRole || 'Nhà báo chuyên đề'}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-slate-500 text-xs">
-                  {selectedArticle.sourceName && (
-                    <div className="flex items-center gap-1 font-semibold text-rose-700">
-                      <span>Nguồn: {selectedArticle.sourceName}</span>
-                      {selectedArticle.sourceUrl && (
-                        <a
-                          href={selectedArticle.sourceUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:underline"
-                          title="Mở liên kết nguồn chính thống"
-                        >
-                          <ExternalLink size={11} />
-                        </a>
-                      )}
-                    </div>
+                <div className="flex items-center gap-3 text-slate-500">
+                  <span className="flex items-center gap-1 font-semibold text-slate-700">
+                    <ShieldCheck size={13} className="text-rose-600" />
+                    <span>Nguồn: {selectedArticle.sourceName}</span>
+                  </span>
+                  {selectedArticle.sourceUrl && (
+                    <a
+                      href={selectedArticle.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-rose-700 hover:text-rose-800 font-bold flex items-center gap-0.5"
+                      title="Mở liên kết nguồn chính thống"
+                    >
+                      <ExternalLink size={12} />
+                    </a>
                   )}
-                  <div className="flex items-center gap-1 text-slate-400">
+                  <span>/</span>
+                  <span className="flex items-center gap-1">
                     <Eye size={13} />
-                    <span>{selectedArticle.views.toLocaleString()} lượt xem</span>
-                  </div>
+                    <span>{selectedArticle.views.toLocaleString()}</span>
+                  </span>
                 </div>
               </div>
 
-              {/* High-Resolution Article Featured Photo */}
-              {selectedArticle.imageUrl && (
-                <div className="rounded-2xl overflow-hidden mb-6 border border-slate-200 shadow-xs">
-                  <img
-                    src={selectedArticle.imageUrl}
-                    alt={selectedArticle.title}
-                    className="w-full h-auto max-h-[460px] object-cover"
-                  />
-                  <div className="p-2.5 bg-slate-50 text-[11px] text-slate-500 text-center border-t border-slate-100">
-                    Hình ảnh minh họa chuyên môn | Nguồn ảnh: Tư liệu Báo Điện Tử Nhật Bản 24h
-                  </div>
-                </div>
-              )}
+              {/* Lead Summary */}
+              <p className="text-base sm:text-lg font-serif font-medium text-slate-700 leading-relaxed border-l-4 border-rose-600 pl-4 py-1 italic bg-rose-50/20 rounded-r-xl">
+                {selectedArticle.summary}
+              </p>
 
-              {/* AI Article Summary */}
-              <div className="p-4 rounded-2xl bg-rose-50/60 border border-rose-200 mb-6">
-                <div className="flex items-center justify-between mb-2">
+              {/* High-Resolution Hero Image with Caption */}
+              <div className="space-y-2">
+                <div className="rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
+                  <img
+                    src={selectedArticle.imageUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80'}
+                    alt={selectedArticle.imageAlt || selectedArticle.title}
+                    className="w-full h-auto max-h-[480px] object-cover"
+                  />
+                </div>
+                <p className="text-[11.5px] text-slate-500 text-center italic mb-0">
+                  {selectedArticle.imageCaption || ('Ảnh tư liệu kiểm chứng: ' + selectedArticle.title)}
+                </p>
+              </div>
+
+              {/* AI Summary Box */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-rose-50/50 border border-rose-200/90 space-y-2">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-xs font-black text-rose-800 uppercase tracking-wider">
                     <Sparkles size={14} className="text-rose-600" />
                     <span>TÓM TẮT BỞI AI SENSEI</span>
@@ -816,7 +867,7 @@ export default function ForumPage() {
                     : 'text-base leading-relaxed'
                 }`}
               >
-                {selectedArticle.content.split('\n\n').map((para, idx) => (
+                {selectedArticle.content.split('\\n\\n').map((para, idx) => (
                   <p key={idx} className="whitespace-pre-line leading-relaxed mb-4">
                     {para}
                   </p>
@@ -1071,7 +1122,7 @@ export default function ForumPage() {
                     className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all disabled:opacity-40 cursor-pointer flex items-center gap-1.5"
                   >
                     <Send size={12} />
-                    <span>Gửi bình luận</span>
+                    <span>{submittingComment ? 'Đang gửi...' : 'Gửi bình luận'}</span>
                   </button>
                 </div>
               </form>
@@ -1079,23 +1130,17 @@ export default function ForumPage() {
               {/* Comments List */}
               <div className="space-y-3">
                 {selectedArticle.comments?.map((c) => (
-                  <div key={c.id} className="p-3.5 rounded-2xl bg-white border border-slate-200 text-xs space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-black text-slate-900">{c.author}</span>
+                  <div key={c.id} className="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-slate-800">{c.author}</span>
                       <div className="flex items-center gap-1 text-amber-400">
-                        {Array.from({ length: c.rating || 5 }).map((_, i) => (
-                          <Star key={i} size={11} className="fill-amber-400" />
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star key={s} size={11} className={c.rating >= s ? 'fill-amber-400' : 'text-slate-200'} />
                         ))}
                       </div>
                     </div>
-                    <p className="text-slate-600 leading-relaxed mb-0">{c.content}</p>
-                    <div className="flex items-center justify-between text-[10.5px] text-slate-400 pt-1">
-                      <span>{c.createdAt}</span>
-                      <div className="flex items-center gap-1">
-                        <ThumbsUp size={11} />
-                        <span>{c.likes || 1} hữu ích</span>
-                      </div>
-                    </div>
+                    <p className="text-xs text-slate-600 mb-0">{c.content}</p>
+                    <span className="text-[10px] text-slate-400 block pt-1">{c.createdAt}</span>
                   </div>
                 ))}
               </div>
@@ -1103,272 +1148,146 @@ export default function ForumPage() {
           </div>
         ) : selectedCategory === 'sitemap_explorer' ? (
           /* CASE B: INTERACTIVE SƠ ĐỒ LIÊN KẾT HỆ THỐNG TOÀN DIỆN */
-          <div className="space-y-6 max-w-5xl mx-auto">
-            <div className="p-6 rounded-3xl bg-slate-900 text-white relative overflow-hidden shadow-xs">
-              <div className="relative z-10 max-w-2xl">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold mb-2 border border-rose-400/30">
-                  <Network size={13} />
-                  <span>SƠ ĐỒ LIÊN KẾT BÁO CHÍ & TRA CỨU</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
-                  Mạng Lưới Sơ Đồ Liên Kết Toàn Bộ Nội Dung Hệ Thống
-                </h2>
-                <p className="text-xs text-slate-300 mb-0 leading-relaxed">
-                  Cấu trúc phân tầng liên kết chuẩn SEO giúp người đọc và công cụ tìm kiếm Google dễ dàng tiếp cận mọi bài báo, lịch thi JLPT và danh bạ trung tâm Nhật ngữ tại Việt Nam.
-                </p>
+          <div className="space-y-8 max-w-5xl mx-auto">
+            <div className="text-center space-y-2 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-black">
+                <Network size={14} className="text-rose-600" />
+                <span>SƠ ĐỒ LIÊN KẾT BÁO CHÍ & TRA CỨU</span>
               </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 font-serif">
+                Mạng Lưới Sơ Đồ Liên Kết Toàn Bộ Nội Dung Hệ Thống
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Cấu trúc phân tầng liên kết chuẩn SEO giúp người đọc và công cụ tìm kiếm Google dễ dàng tiếp cận mọi bài viết, kỳ thi, danh bạ trung tâm và ứng dụng học tập.
+              </p>
             </div>
 
-            {/* Hierarchical Visual Link Trees */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {/* Branch 1: Kỳ thi & Lịch thi */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center font-bold">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-slate-900 mb-0">Kỳ Thi & Lịch Thi Quốc Tế</h3>
-                    <span className="text-[11px] text-slate-400">JLPT, NAT-TEST, TOPJ, BJT</span>
-                  </div>
+            {/* Tree Nodes Map */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Branch 1: JLPT Exams & Schedules */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+                <div className="flex items-center gap-2 text-rose-700 font-black text-sm uppercase">
+                  <Award size={18} />
+                  <span>KỲ THI JLPT & LỊCH THI</span>
                 </div>
-
-                <div className="space-y-2 text-xs pl-2 border-l-2 border-rose-200 ml-3">
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 6);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Lịch thi JLPT 2026 chính thức (Hạn nộp hồ sơ & lệ phí)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 8);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Kỳ thi NAT-TEST & TOPJ 2026 (6 đợt/năm)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 1);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Chiến thuật đạt 180/180 điểm JLPT N5 - N4</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
+                <div className="space-y-2">
+                  {[
+                    'Lịch thi JLPT 2026 đợt 1 và đợt 2',
+                    'Thủ tục đăng ký hồ sơ online không qua trung gian',
+                    'Thang điểm chuẩn hóa IRT và cách tính điểm liệt',
+                    'Chiến thuật thi nghe Choukai N5 - N1',
+                    'Quy định vật dụng phòng thi và nhận chứng chỉ'
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setSelectedCategory('Kỳ thi JLPT');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 text-xs font-semibold text-slate-700 hover:text-rose-800 transition-all flex items-center justify-between border border-transparent hover:border-rose-200 cursor-pointer"
+                    >
+                      <span className="truncate pr-2">{item}</span>
+                      <ChevronRight size={13} className="text-slate-400 shrink-0" />
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Branch 2: Danh bạ Trung tâm Nhật ngữ */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-slate-900 mb-0">Tra Cứu Trung Tâm Toàn Quốc</h3>
-                    <span className="text-[11px] text-slate-400">Đà Nẵng, Hà Nội, Quảng Nam, TP.HCM</span>
-                  </div>
+              {/* Branch 2: Japanese Language Centers by Province */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+                <div className="flex items-center gap-2 text-emerald-700 font-black text-sm uppercase">
+                  <Building size={18} />
+                  <span>TRA CỨU TRUNG TÂM THEO TỈNH</span>
                 </div>
-
-                <div className="space-y-2 text-xs pl-2 border-l-2 border-blue-200 ml-3">
-                  <div
-                    onClick={() => {
-                      setSelectedCategory('centers');
-                      setSelectedCity('Đà Nẵng');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Trung tâm tiếng Nhật tại Đà Nẵng (Đông Du, Sakura, Jellyfish)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      setSelectedCategory('centers');
-                      setSelectedCity('Hà Nội');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Trung tâm tiếng Nhật tại Hà Nội (Japan Foundation, Dũng Mori, Riki)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      setSelectedCategory('centers');
-                      setSelectedCity('Quảng Nam');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Trung tâm tiếng Nhật tại Quảng Nam (Sakura Tam Kỳ, Hội An)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      setSelectedCategory('centers');
-                      setSelectedCity('TP. Hồ Chí Minh');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 hover:text-blue-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Trung tâm tiếng Nhật tại TP.HCM (Đông Du, Sakura Lê Thánh Tôn)</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
+                <div className="space-y-2">
+                  {[
+                    'Trung tâm tiếng Nhật tại Đà Nẵng (Đông Du, Sakura, Jellyfish)',
+                    'Trung tâm tiếng Nhật tại Hà Nội (Riki, Mina, Dungmori)',
+                    'Trung tâm tiếng Nhật tại TP. Hồ Chí Minh (Đông Du, Sakae)',
+                    'Trung tâm tiếng Nhật tại Quảng Nam, Hội An, Tam Kỳ',
+                    'Trung tâm tiếng Nhật tại các tỉnh thành khác'
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setSelectedCategory('centers');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-all flex items-center justify-between border border-transparent hover:border-emerald-200 cursor-pointer"
+                    >
+                      <span className="truncate pr-2">{item}</span>
+                      <ChevronRight size={13} className="text-slate-400 shrink-0" />
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Branch 3: Visa Tokutei & Du học */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-slate-900 mb-0">Chính Sách Visa & Du Học</h3>
-                    <span className="text-[11px] text-slate-400">Tokutei Ginou 2, Visa Kỹ sư, COE</span>
-                  </div>
+              {/* Branch 3: WebApp JLPT Ecosystem Tools */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+                <div className="flex items-center gap-2 text-amber-700 font-black text-sm uppercase">
+                  <Zap size={18} />
+                  <span>LIÊN KẾT HỆ SINH THÁI WEBAPP</span>
                 </div>
-
-                <div className="space-y-2 text-xs pl-2 border-l-2 border-emerald-200 ml-3">
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 7);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Nhật Bản mở rộng 16 ngành nghề Visa Tokutei 2</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 3);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Điều kiện then chốt để đỗ visa kỹ sư và Tokutei</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Branch 4: Khoa học học tập & Phương pháp */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
-                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center font-bold">
-                    4
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-black text-slate-900 mb-0">Phương Pháp Học Tập Khoa Học</h3>
-                    <span className="text-[11px] text-slate-400">Spaced Repetition SRS, Flashcard 3D</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2 text-xs pl-2 border-l-2 border-purple-200 ml-3">
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 4);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">Phương pháp Spaced Repetition ghi nhớ 1.500 từ vựng</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      const art = articles.find((a) => a.id === 5);
-                      if (art) handleOpenArticle(art);
-                    }}
-                    className="p-2 rounded-xl bg-slate-50 hover:bg-purple-50 hover:text-purple-700 cursor-pointer transition-colors flex items-center justify-between"
-                  >
-                    <span className="font-bold">7 quy tắc sống còn trong văn hóa công sở Nhật</span>
-                    <ChevronRight size={13} className="text-slate-400" />
-                  </div>
+                <div className="space-y-2">
+                  {[
+                    { title: 'Bài học Minna no Nihongo N5 (25 bài)', tab: 'lessons' },
+                    { title: 'Flashcard 3D lật thẻ âm thanh bản xứ', tab: 'flashcard' },
+                    { title: 'Luyện đề thi thử JLPT N5 có bấm giờ', tab: 'quiz' },
+                    { title: 'Luyện gõ phím Romaji - Hiragana', tab: 'practice' },
+                    { title: 'Vườn Cây Bonsai rèn chuỗi học SRS', tab: 'garden' },
+                    { title: 'Trợ lý AI Sensei giải thích ngữ pháp', tab: 'ai-sensei' }
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        sounds.playFlip();
+                        setActiveTab(item.tab);
+                      }}
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 text-xs font-semibold text-slate-700 hover:text-amber-800 transition-all flex items-center justify-between border border-transparent hover:border-amber-200 cursor-pointer"
+                    >
+                      <span className="truncate pr-2">{item.title}</span>
+                      <Award size={13} className="text-amber-500 shrink-0" />
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         ) : selectedCategory === 'centers' ? (
-          /* CASE C: DEDICATED DIRECTORY OF JAPANESE LANGUAGE CENTERS */
+          /* CASE C: DIRECTORY OF JAPANESE LANGUAGE CENTERS */
           <div className="space-y-6">
-            {/* Breadcrumbs for Center Directory */}
-            <div className="flex items-center gap-1.5 text-xs text-slate-500 pb-2 border-b border-slate-100">
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('all')}
-                className="hover:text-rose-700 font-semibold cursor-pointer"
-              >
-                Trang chủ Báo chí
-              </button>
-              <span>/</span>
-              <span className="text-slate-900 font-bold">Tra Cứu Trung Tâm Tiếng Nhật Toàn Quốc</span>
-            </div>
-
-            <div className="p-6 rounded-3xl bg-slate-900 text-white relative overflow-hidden shadow-xs">
-              <div className="relative z-10 max-w-2xl">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold mb-2 border border-rose-400/30">
-                  <Building size={13} />
-                  <span>DANH BẠ TRUNG TÂM TIẾNG NHẬT TOÀN QUỐC</span>
-                </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
-                  Tra Cứu Trung Tâm Tiếng Nhật Uy Tín & Kiểm Định Chất Lượng
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-serif">
+                  Danh Bạ Trung Tâm Tiếng Nhật Uy Tín Toàn Quốc
                 </h2>
-                <p className="text-xs text-slate-300 mb-0 leading-relaxed">
-                  Tổng hợp các cơ sở đào tạo tiếng Nhật chuẩn mực tại Đà Nẵng, Hà Nội, Quảng Nam, TP. Hồ Chí Minh và các tỉnh thành lớn. Đầy đủ thông tin học phí, thế mạnh và hotline liên hệ.
+                <p className="text-xs text-slate-500 mt-1 mb-0">
+                  Tra cứu thông tin chính xác, địa chỉ, số hotline và đánh giá chất lượng đào tạo tại Đà Nẵng, Hà Nội, TP.HCM, Quảng Nam...
                 </p>
               </div>
-            </div>
 
-            {/* City Selector Pills & Search Bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-slate-200">
-              <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto no-scrollbar py-0.5">
+              {/* City Filter Tabs */}
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
                 {cities.map((city) => (
                   <button
                     key={city.id}
                     type="button"
                     onClick={() => {
-                      sounds.playFlip();
+                      sounds.playSelect();
                       setSelectedCity(city.id);
                     }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-black whitespace-nowrap transition-all cursor-pointer border ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       selectedCity === city.id
-                        ? 'bg-rose-700 text-white border-rose-700 shadow-xs'
-                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                        ? 'bg-slate-900 text-white shadow-xs'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                     }`}
                   >
                     {city.label}
                   </button>
                 ))}
-              </div>
-
-              <div className="relative w-full sm:w-64">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Tìm theo tên hoặc địa chỉ..."
-                  value={centerSearch}
-                  onChange={(e) => setCenterSearch(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
-                />
               </div>
             </div>
 
@@ -1421,78 +1340,35 @@ export default function ForumPage() {
                       </div>
                     </div>
 
-                    <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs">
-                      <div className="flex items-start gap-1.5 text-slate-600">
+                    <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs text-slate-600">
+                      <div className="flex items-start gap-2">
                         <MapPin size={13} className="text-rose-600 shrink-0 mt-0.5" />
-                        <span className="text-[11.5px] leading-snug">{c.address}</span>
+                        <span className="text-slate-700 font-medium">{c.address}</span>
                       </div>
-                      <div className="flex items-center justify-between text-[11.5px]">
-                        <span className="text-slate-400">Học phí tham khảo:</span>
-                        <span className="font-bold text-slate-800">{c.tuitionRange}</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Phone size={13} className="text-emerald-600 shrink-0" />
+                          <span className="font-bold text-slate-800">{c.hotline}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => handleCopyPhone(c.hotline, c.id, e)}
+                          className="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-slate-100 text-[11px] font-bold text-slate-600 border border-slate-200 cursor-pointer flex items-center gap-1"
+                        >
+                          {copiedCenterPhone === c.id ? <Check size={11} className="text-emerald-600" /> : <Copy size={11} />}
+                          <span>{copiedCenterPhone === c.id ? 'Đã sao chép' : 'Sao chép SĐT'}</span>
+                        </button>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-3">
-                    <button
-                      type="button"
-                      onClick={() => copyCenterPhone(c.phone, c.id)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
-                    >
-                      {copiedCenterPhone === c.id ? (
-                        <>
-                          <Check size={12} className="text-emerald-600" />
-                          <span>Đã sao chép SĐT</span>
-                        </>
-                      ) : (
-                        <>
-                          <Phone size={12} className="text-slate-400" />
-                          <span>{c.phone}</span>
-                        </>
-                      )}
-                    </button>
-
-                    <a
-                      href={c.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-colors"
-                    >
-                      <span>Xem Website</span>
-                      <ExternalLink size={12} />
-                    </a>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* QUẢNG CÁO WEB APP SỐ 3: EDITORIAL SPONSOR FOOTER BANNER */}
-            <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200 text-center space-y-3">
-              <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                LỜI KHUYÊN THỦ KHOA
-              </span>
-              <h3 className="text-lg font-black text-slate-900 mb-0">
-                Kết Hợp Học Tại Trung Tâm & Ôn Tập Hàng Ngày Trên WebApp HYPER JLPT
-              </h3>
-              <p className="text-xs text-slate-600 max-w-xl mx-auto leading-relaxed mb-0">
-                Học ngữ pháp ở trung tâm, sau đó dùng Flashcard 3D và Trợ lý AI Sensei trên webapp để ôn tập từ vựng ngắt quãng (SRS) mỗi ngày 15 phút là công thức đỗ N5 - N1 nhanh nhất.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  sounds.playFlip();
-                  setActiveTab('lessons');
-                }}
-                className="px-5 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs font-black shadow-xs transition-all cursor-pointer"
-              >
-                Vào học cùng WebApp miễn phí ngay
-              </button>
-            </div>
           </div>
         ) : (
-          /* CASE D: STANDARD EDITORIAL HOMEPAGE (VNEXPRESS STYLE) */
+          /* CASE D: STANDARD BAOMOI / VNEXPRESS EDITORIAL HOMEPAGE */
           <div className="space-y-8">
-            {/* 1. HERO TOP HEADLINE EDITORIAL GRID (12-COLUMNS) */}
+            {/* 1. TOP SPOTLIGHT HEADLINE EDITORIAL GRID (12-COLUMNS) */}
             {featuredArticle && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-8 border-b border-slate-200">
                 {/* Main Hero Story (7 cols) */}
@@ -1502,13 +1378,13 @@ export default function ForumPage() {
                 >
                   <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
                     <img
-                      src={featuredArticle.imageUrl || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80"}
+                      src={featuredArticle.imageUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80'}
                       alt={featuredArticle.title}
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-2">
                       <span className="px-2.5 py-1 rounded bg-rose-700 text-white font-black text-[10px] uppercase tracking-wider shadow-sm">
-                        TIÊU ĐIỂM
+                        TIÊU ĐIỂM BÁO CHÍ
                       </span>
                       <span className="px-2.5 py-1 rounded bg-slate-900/85 backdrop-blur-md text-white font-bold text-[10px]">
                         {featuredArticle.category}
@@ -1524,9 +1400,9 @@ export default function ForumPage() {
                       {featuredArticle.summary}
                     </p>
                     <div className="flex items-center gap-3 text-xs text-slate-400 font-medium pt-2">
-                      <span>{featuredArticle.author}</span>
+                      <span className="font-bold text-slate-700">{featuredArticle.sourceName}</span>
                       <span>/</span>
-                      <span>{featuredArticle.readTime}</span>
+                      <span>{featuredArticle.publishedTime || 'Vừa xong'}</span>
                       <span>/</span>
                       <span>{featuredArticle.views.toLocaleString()} lượt xem</span>
                     </div>
@@ -1544,7 +1420,7 @@ export default function ForumPage() {
                       <div className="flex items-center gap-2 text-[10.5px] text-rose-700 font-black uppercase">
                         <span>{art.category}</span>
                         <span className="text-slate-300">/</span>
-                        <span className="text-slate-400 font-normal">{art.readTime}</span>
+                        <span className="text-slate-400 font-normal">{art.publishedTime || 'Vừa xong'}</span>
                       </div>
                       <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-rose-700 transition-colors line-clamp-2 leading-snug">
                         {art.title}
@@ -1558,317 +1434,306 @@ export default function ForumPage() {
               </div>
             )}
 
-            {/* QUẢNG CÁO WEB APP SỐ 4: FULL-WIDTH CLEAN EDITORIAL SPREAD */}
-            <div className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-white p-2 border border-slate-200 flex items-center justify-center shrink-0 shadow-xs">
-                  <img src="/hyper_logo.png" alt="HYPER" className="h-10 w-auto object-contain" />
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded bg-rose-100 text-rose-700 border border-rose-200">
-                      TÀI TRỢ CHÍNH THỨC
-                    </span>
-                    <span className="text-xs text-slate-400 font-medium">Bảo trợ bởi HYPER Japanese</span>
-                  </div>
-                  <h3 className="text-base sm:text-lg font-black text-slate-900 mb-0">
-                    Nền Tảng Tự Học Tiếng Nhật Thông Minh HYPER JLPT (N5 - N1)
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed max-w-xl mb-0">
-                    Trọn bộ 25 bài học Minna no Nihongo, 1.500 từ vựng và Kanji N5 có giọng đọc Tokyo chuẩn cao độ, Trợ lý AI Sensei giải thích ngữ pháp cá nhân hóa và Vườn Cây Bonsai rèn luyện chuỗi ngày học.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-2.5 shrink-0 w-full md:w-auto">
-                <button
-                  type="button"
-                  onClick={() => {
-                    sounds.playFlip();
-                    setActiveTab('lessons');
-                  }}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs shadow-xs transition-all cursor-pointer"
-                >
-                  Bắt đầu học ngay
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    sounds.playFlip();
-                    setActiveTab('flashcard');
-                  }}
-                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200 transition-all cursor-pointer"
-                >
-                  Lật thẻ Flashcard 3D
-                </button>
-              </div>
-            </div>
-
-            {/* 2. MAIN EDITORIAL BODY & SIDEBAR COLUMNS */}
+            {/* 2. MAIN BODY: 2-COLUMN BAOMOI STREAM & SIDEBAR WIDGETS */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              {/* Left Column: Remaining Articles (8 cols) */}
+              {/* Left Column: Chronological Articles Stream (8 cols) */}
               <div className="lg:col-span-8 space-y-6">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
                   <div className="flex items-center gap-2">
                     <Newspaper size={17} className="text-rose-700" />
                     <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-0">
-                      TIN MỚI CẬP NHẬT
+                      DÒNG SỰ KIỆN & TIN TỨC CHÍNH THỐNG
                     </h3>
                   </div>
                   <span className="text-xs text-slate-400 font-medium">
-                    {remainingArticles.length} bài viết
+                    Trang {currentPage} / {totalPages || 1} ({filteredArticles.length} bài viết)
                   </span>
                 </div>
 
-                <div className="divide-y divide-slate-100">
-                  {remainingArticles.map((art) => (
+                {/* Stream of Articles (Baomoi horizontal cards) */}
+                <div className="divide-y divide-slate-200/80">
+                  {paginatedArticles.map((art) => (
                     <article
                       key={art.id}
                       onClick={() => handleOpenArticle(art)}
-                      className="py-5 first:pt-0 space-y-2 cursor-pointer group"
+                      className="py-4 sm:py-5 first:pt-0 cursor-pointer group flex flex-col-reverse sm:flex-row items-start justify-between gap-4"
                     >
-                      <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-                        <div className="flex items-center gap-1.5 text-xs text-rose-700 font-black uppercase">
-                          <span className="text-slate-400 font-normal">Trang chủ /</span>
-                          <span>{art.category}</span>
-                          <span className="text-slate-300">/</span>
-                          <span className="text-slate-400 font-normal capitalize">
-                            {art.publishedAt} ({art.publishedTime || 'Vừa xong'})
+                      {/* Left: Article Text & Meta */}
+                      <div className="flex-1 space-y-1.5">
+                        <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
+                          <div className="flex items-center gap-1.5 text-xs font-black uppercase text-rose-700">
+                            <span className="text-slate-400 font-normal">Trang chủ /</span>
+                            <span>{art.category}</span>
+                            <span className="text-slate-300">/</span>
+                            <span className="text-slate-400 font-normal lowercase">
+                              {art.publishedTime || 'Vừa xong'}
+                            </span>
+                          </div>
+                          <span
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-rose-50 group-hover:text-rose-700 text-[10.5px] font-bold text-slate-500 border border-slate-200 group-hover:border-rose-200 transition-all"
+                            title="Bài viết có sơ đồ liên kết phân tầng chi tiết"
+                          >
+                            <Network size={11} className="text-rose-600" />
+                            <span>Sơ đồ liên kết</span>
                           </span>
                         </div>
-                        <span
-                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-rose-50 group-hover:text-rose-700 text-[10.5px] font-bold text-slate-500 border border-slate-200 group-hover:border-rose-200 transition-all"
-                          title="Bài viết có sơ đồ liên kết phân tầng chi tiết"
-                        >
-                          <Network size={11} className="text-rose-600" />
-                          <span>Sơ đồ liên kết</span>
-                        </span>
+
+                        <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-rose-700 transition-colors leading-snug">
+                          {art.title}
+                        </h4>
+
+                        <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 leading-relaxed mb-0">
+                          {art.summary}
+                        </p>
+
+                        <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-1">
+                          <span className="font-semibold text-slate-600">{art.sourceName}</span>
+                          <span>/</span>
+                          <span>{art.readTime}</span>
+                          <span>/</span>
+                          <span>{art.views.toLocaleString()} lượt xem</span>
+                        </div>
                       </div>
-                      <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-rose-700 transition-colors leading-snug">
-                        {art.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 leading-relaxed mb-0">
-                        {art.summary}
-                      </p>
-                      <div className="flex items-center gap-3 text-xs text-slate-400 pt-1">
-                        <span>{art.author}</span>
-                        <span>/</span>
-                        <span>{art.readTime}</span>
-                        <span>/</span>
-                        <span>{art.views.toLocaleString()} lượt xem</span>
+
+                      {/* Right: Crisp Image Thumbnail */}
+                      <div className="w-full sm:w-44 aspect-video sm:aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                        <img
+                          src={art.imageUrl || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80'}
+                          alt={art.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
                     </article>
                   ))}
                 </div>
+
+                {/* Numbered Pagination Bar */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-200 flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playSelect();
+                        setCurrentPage((prev) => Math.max(1, prev - 1));
+                        window.scrollTo({ top: 350, behavior: 'smooth' });
+                      }}
+                      disabled={currentPage === 1}
+                      className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 disabled:opacity-40 cursor-pointer flex items-center gap-1"
+                    >
+                      <ChevronLeft size={14} />
+                      <span>Trang trước</span>
+                    </button>
+
+                    <div className="flex items-center gap-1.5">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        const pageNum = i + 1;
+                        return (
+                          <button
+                            key={pageNum}
+                            type="button"
+                            onClick={() => {
+                              sounds.playSelect();
+                              setCurrentPage(pageNum);
+                              window.scrollTo({ top: 350, behavior: 'smooth' });
+                            }}
+                            className={`w-8 h-8 rounded-xl text-xs font-bold cursor-pointer transition-all ${
+                              currentPage === pageNum
+                                ? 'bg-rose-700 text-white font-black shadow-xs'
+                                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                            }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                      {totalPages > 5 && <span className="text-xs text-slate-400">...</span>}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playSelect();
+                        setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+                        window.scrollTo({ top: 350, behavior: 'smooth' });
+                      }}
+                      disabled={currentPage === totalPages}
+                      className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 disabled:opacity-40 cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Trang tiếp theo</span>
+                      <ChevronRight size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Right Column: Poll, Reviews, and Sidebar Widget (4 cols) */}
+              {/* Right Column: Widgets Sidebar (4 cols) */}
               <div className="lg:col-span-4 space-y-6">
-                {/* Sơ đồ liên kết nhanh (Quick Site Links Widget) */}
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                  <div className="flex items-center gap-1.5 text-xs font-black text-rose-700 uppercase tracking-wider">
-                    <FolderTree size={14} />
-                    <span>SƠ ĐỒ LIÊN KẾT NHANH</span>
+                {/* WIDGET 1: TIN NÓNG 24H ĐỌC NHIỀU */}
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                    <Flame size={16} className="text-rose-600" />
+                    <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider mb-0">
+                      TIN NÓNG 24H ĐỌC NHIỀU NHẤT
+                    </h4>
                   </div>
-                  <div className="space-y-1.5 text-xs">
-                    <div
-                      onClick={() => {
-                        setSelectedCategory('Kỳ thi & Lịch thi');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                    >
-                      <span className="font-semibold">Lịch thi JLPT 2026 đợt 1 và đợt 2</span>
-                      <ChevronRight size={12} className="text-slate-400" />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setSelectedCategory('centers');
-                        setSelectedCity('Đà Nẵng');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                    >
-                      <span className="font-semibold">Trung tâm tiếng Nhật tại Đà Nẵng</span>
-                      <ChevronRight size={12} className="text-slate-400" />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setSelectedCategory('centers');
-                        setSelectedCity('Hà Nội');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                    >
-                      <span className="font-semibold">Trung tâm tiếng Nhật tại Hà Nội</span>
-                      <ChevronRight size={12} className="text-slate-400" />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setSelectedCategory('centers');
-                        setSelectedCity('TP. Hồ Chí Minh');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between"
-                    >
-                      <span className="font-semibold">Trung tâm tiếng Nhật tại TP.HCM</span>
-                      <ChevronRight size={12} className="text-slate-400" />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setSelectedCategory('sitemap_explorer');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
-                      className="pt-2 text-center"
-                    >
-                      <span className="text-xs font-black text-rose-700 hover:underline cursor-pointer">
-                        Xem toàn bộ sơ đồ liên kết hệ thống
-                      </span>
-                    </div>
+                  <div className="space-y-3">
+                    {articles.slice(0, 5).map((hot, idx) => (
+                      <div
+                        key={hot.id}
+                        onClick={() => handleOpenArticle(hot)}
+                        className="flex items-start gap-3 cursor-pointer group pb-2.5 border-b border-slate-100 last:border-0 last:pb-0"
+                      >
+                        <span className="font-serif font-black text-xl text-rose-700/80 w-6 shrink-0 leading-none">
+                          0{idx + 1}
+                        </span>
+                        <div className="space-y-1">
+                          <h5 className="text-xs font-bold text-slate-800 group-hover:text-rose-700 transition-colors line-clamp-2 leading-snug mb-0">
+                            {hot.title}
+                          </h5>
+                          <span className="text-[10.5px] text-slate-400 block">{hot.views.toLocaleString()} lượt xem</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Interactive Reader Poll */}
+                {/* WIDGET 2: TRA CỨU TRUNG TÂM THEO TỈNH THÀNH */}
                 <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                  <div className="flex items-center gap-1.5 text-xs font-black text-rose-700 uppercase tracking-wider">
-                    <Award size={14} />
-                    <span>KHẢO SÁT BẠN ĐỌC</span>
+                  <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                    <Building size={16} className="text-emerald-600" />
+                    <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider mb-0">
+                      TRA CỨU TRUNG TÂM TIẾNG NHẬT
+                    </h4>
                   </div>
-                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug mb-0">
-                    Mục tiêu chứng chỉ JLPT năm 2026 của bạn là cấp độ nào?
-                  </h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {['Đà Nẵng', 'Hà Nội', 'TP. Hồ Chí Minh', 'Quảng Nam'].map((city) => (
+                      <button
+                        key={city}
+                        type="button"
+                        onClick={() => {
+                          sounds.playSelect();
+                          setSelectedCategory('centers');
+                          setSelectedCity(city);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:text-emerald-800 font-bold text-slate-700 border border-slate-200/80 transition-all text-left flex items-center justify-between cursor-pointer"
+                      >
+                        <span>{city}</span>
+                        <ChevronRight size={12} className="text-slate-400" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-                  <div className="space-y-2 pt-1">
-                    {['N5', 'N4', 'N3', 'N2', 'N1'].map((level) => {
-                      const count = voteStats[level] || 0;
-                      const pct = Math.round((count / totalVotes) * 100);
+                {/* WIDGET 3: SƠ ĐỒ LIÊN KẾT NHANH */}
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                  <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                    <FolderTree size={16} className="text-rose-600" />
+                    <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider mb-0">
+                      SƠ ĐỒ LIÊN KẾT HỆ THỐNG
+                    </h4>
+                  </div>
+                  <div className="space-y-1.5 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playSelect();
+                        setSelectedCategory('Kỳ thi JLPT');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between text-left font-semibold text-slate-700"
+                    >
+                      <span>Lịch thi JLPT 2026 chính thức</span>
+                      <ChevronRight size={12} className="text-slate-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playSelect();
+                        setSelectedCategory('Chính sách Visa');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between text-left font-semibold text-slate-700"
+                    >
+                      <span>Chính sách Visa Tokutei Ginou 2026</span>
+                      <ChevronRight size={12} className="text-slate-400" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        sounds.playSelect();
+                        setSelectedCategory('sitemap_explorer');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full mt-2 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs text-center cursor-pointer transition-all block"
+                    >
+                      Xem toàn bộ sơ đồ liên kết hệ thống
+                    </button>
+                  </div>
+                </div>
+
+                {/* WIDGET 4: KHẢO SÁT Ý KIẾN BẠN ĐỌC */}
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                  <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                    <Radio size={16} className="text-blue-600" />
+                    <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider mb-0">
+                      KHẢO SÁT Ý KIẾN BẠN ĐỌC
+                    </h4>
+                  </div>
+                  <p className="text-xs font-bold text-slate-800 mb-0">
+                    Mục tiêu kỳ thi JLPT năm 2026 của bạn là gì?
+                  </p>
+                  <div className="space-y-2">
+                    {['N5', 'N4', 'N3', 'N2', 'N1'].map((lvl) => {
+                      const count = voteStats[lvl] || 0;
+                      const totalVotes = Object.values(voteStats).reduce((a, b) => a + b, 0);
+                      const pct = Math.round((count / (totalVotes || 1)) * 100);
                       return (
-                        <div
-                          key={level}
-                          onClick={() => !hasVoted && setSelectedVote(level)}
-                          className={`p-2.5 rounded-xl border text-xs transition-all cursor-pointer ${
-                            selectedVote === level
-                              ? 'border-rose-500 bg-rose-50/60 font-bold text-rose-900'
-                              : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
-                          }`}
+                        <button
+                          key={lvl}
+                          type="button"
+                          onClick={() => handleVotePoll(lvl)}
+                          className="w-full p-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer transition-all"
                         >
-                          <div className="flex items-center justify-between mb-1">
-                            <span>JLPT {level}</span>
-                            {hasVoted && <span className="font-extrabold">{pct}%</span>}
-                          </div>
-                          {hasVoted && (
-                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                              <div
-                                className="bg-rose-600 h-full rounded-full transition-all duration-500"
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                          )}
-                        </div>
+                          <span>Chứng chỉ {lvl}</span>
+                          <span className="text-[11px] text-slate-500">{pct}%</span>
+                        </button>
                       );
                     })}
                   </div>
-
-                  {!hasVoted ? (
-                    <button
-                      type="button"
-                      onClick={handleVoteSubmit}
-                      className="w-full py-2 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs transition-all cursor-pointer"
-                    >
-                      Bình chọn ngay
-                    </button>
-                  ) : (
-                    <p className="text-[11px] text-emerald-600 font-bold text-center mb-0">
-                      Cảm ơn bạn đã tham gia khảo sát độc giả!
+                  {hasVoted && (
+                    <p className="text-[11px] text-emerald-600 font-bold mb-0 text-center">
+                      Cảm ơn bạn đã tham gia bình chọn!
                     </p>
                   )}
                 </div>
 
-                {/* QUẢNG CÁO WEB APP SỐ 5: EDITORIAL SIDEBAR AD CARD */}
+                {/* WIDGET 5: QUẢNG CÁO WEBAPP NATIVE CARD (CLEAN & MINIMAL) */}
                 <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
                   <div className="flex items-center gap-2">
-                    <img src="/hyper_logo.png" alt="HYPER" className="h-6 w-auto object-contain" />
-                    <span className="text-[9.5px] font-black uppercase text-slate-400 tracking-wider">
-                      QUẢNG CÁO TÀI TRỢ
-                    </span>
+                    <div className="w-8 h-8 rounded-lg bg-slate-50 p-1 border border-slate-200 flex items-center justify-center shrink-0">
+                      <img src="/hyper_logo.png" alt="HYPER" className="h-5 w-auto object-contain" />
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                        HỌC TẬP THỰC CHIẾN
+                      </span>
+                      <h5 className="text-xs font-black text-slate-900 mb-0">Luyện Đề Thi Thử Bấm Giờ</h5>
+                    </div>
                   </div>
-                  <h4 className="text-sm font-black text-slate-900 leading-snug mb-0">
-                    Flashcard 3D & AI Sensei Giải Đề Trắc Nghiệm JLPT
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed mb-0">
-                    Học tiếng Nhật thú vị hơn với âm thanh Tokyo sống động và trợ lý AI giải thích điểm yếu 24/7.
+                  <p className="text-xs text-slate-600 leading-relaxed mb-0">
+                    Làm quen với áp lực phòng thi thật, AI Sensei chấm điểm tức thì và phân tích lỗi sai ngữ pháp.
                   </p>
                   <button
                     type="button"
                     onClick={() => {
                       sounds.playFlip();
-                      setActiveTab('home');
+                      setActiveTab('quiz');
                     }}
-                    className="w-full py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-xs shadow-xs transition-all cursor-pointer"
+                    className="w-full py-2 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs text-center shadow-xs transition-all cursor-pointer block"
                   >
-                    Vào phòng học ngay
+                    Làm đề thi thử miễn phí ngay
                   </button>
-                </div>
-
-                {/* Reader Reviews */}
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-black text-rose-700 uppercase tracking-wider">
-                      <Star size={14} className="fill-rose-700 text-rose-700" />
-                      <span>Ý KIẾN BẠN ĐỌC</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 divide-y divide-slate-100 text-xs">
-                    {reviews.slice(0, 3).map((r) => (
-                      <div key={r.id} className="pt-2.5 first:pt-0 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-800">{r.author}</span>
-                          <div className="flex items-center gap-0.5 text-amber-400">
-                            {Array.from({ length: r.rating || 5 }).map((_, i) => (
-                              <Star key={i} size={10} className="fill-amber-400" />
-                            ))}
-                          </div>
-                        </div>
-                        <span className="text-[10px] text-rose-600 font-semibold block">{r.centerName}</span>
-                        <p className="text-slate-600 leading-relaxed mb-0 line-clamp-2">{r.content}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <form onSubmit={handleReviewSubmit} className="pt-2 space-y-2 border-t border-slate-100">
-                    <span className="text-[11px] font-bold text-slate-700 block">Viết cảm nhận của bạn:</span>
-                    <input
-                      type="text"
-                      placeholder="Tên của bạn..."
-                      value={reviewAuthor}
-                      onChange={(e) => setReviewAuthor(e.target.value)}
-                      className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
-                    />
-                    <textarea
-                      rows={2}
-                      placeholder="Cảm nhận về tin tức hoặc trung tâm..."
-                      value={reviewText}
-                      onChange={(e) => setReviewText(e.target.value)}
-                      className="w-full p-2 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 bg-slate-50"
-                    />
-                    <button
-                      type="submit"
-                      disabled={submittingReview || !reviewText.trim()}
-                      className="w-full py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors disabled:opacity-40 cursor-pointer"
-                    >
-                      {submittingReview ? 'Đang gửi...' : 'Gửi đánh giá'}
-                    </button>
-                    {reviewSuccess && (
-                      <span className="text-[10.5px] text-emerald-600 font-bold block text-center">
-                        Cảm ơn bạn đã gửi đánh giá!
-                      </span>
-                    )}
-                  </form>
                 </div>
               </div>
             </div>
@@ -1876,152 +1741,43 @@ export default function ForumPage() {
         )}
       </main>
 
-      {/* ── 6. FLOATING BOTTOM-RIGHT TOAST AD ── */}
-      {!floatingAdDismissed && (
-        <div className="fixed bottom-4 right-4 z-50 max-w-xs bg-white rounded-2xl shadow-xl border border-slate-200 p-3.5 animate-in slide-in-from-bottom-5 duration-300">
-          <div className="flex items-start justify-between gap-2 mb-1.5">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-rose-600 animate-ping" />
-              <span className="text-[10px] font-black uppercase text-rose-700 tracking-wider">
-                GỢI Ý HỌC TẬP
-              </span>
+      {/* ── 5. FLOATING SLIDE-IN SPONSOR TOAST (CLEAN & NON-INTRUSIVE) ── */}
+      {!floatingAdDismissed && !selectedArticle && (
+        <div className="fixed bottom-4 left-4 z-40 max-w-xs sm:max-w-sm p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+              <img src="/hyper_logo.png" alt="HYPER" className="h-5 w-auto object-contain" />
             </div>
+            <div className="space-y-0.5">
+              <span className="text-[9px] font-black uppercase text-rose-700">TÀI TRỢ BỞI HYPER JAPANESE</span>
+              <p className="text-xs font-bold text-slate-900 mb-0 leading-tight">
+                Lật Thẻ Flashcard 3D & Ôn Tập Từ Vựng Mỗi Ngày
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                sounds.playFlip();
+                setActiveTab('flashcard');
+              }}
+              className="px-2.5 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-800 text-white font-black text-[11px] shadow-xs cursor-pointer"
+            >
+              Học ngay
+            </button>
             <button
               type="button"
               onClick={() => setFloatingAdDismissed(true)}
-              className="p-1 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
               title="Đóng thông báo"
             >
-              <X size={13} />
+              <X size={14} />
             </button>
           </div>
-          <h5 className="text-xs font-black text-slate-900 mb-1 leading-snug">
-            Tự Học Tiếng Nhật N5 Cùng AI Sensei 24/7
-          </h5>
-          <p className="text-[11px] text-slate-500 leading-relaxed mb-2.5">
-            Miễn phí 100%, lật thẻ 3D và làm đề thi thử bấm giờ ngay trên điện thoại của bạn.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              sounds.playFlip();
-              setActiveTab('home');
-            }}
-            className="w-full py-1.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-xs shadow-xs transition-all cursor-pointer"
-          >
-            Vào WebApp học ngay
-          </button>
         </div>
       )}
-
-      {/* ── 7. EDITORIAL FOOTER (VNEXPRESS STYLE) ── */}
-      <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 mt-12 py-10 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <h4 className="text-white font-black text-base font-serif">
-              NHẬT BẢN <span className="text-rose-500">24H</span>
-            </h4>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              Cổng thông tin báo chí điện tử chuyên sâu về ngôn ngữ, văn hóa, khảo thí chứng chỉ JLPT và cơ hội việc làm tại Nhật Bản.
-            </p>
-            <div className="text-[11px] text-slate-500">
-              Giấy phép xuất bản số: 24/GP-BTTTT cấp bởi Bộ Thông tin & Truyền thông.
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h5 className="text-white font-black text-xs uppercase tracking-wider">CHUYÊN MỤC TRỌNG TÂM</h5>
-            <ul className="space-y-1.5 text-xs">
-              <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory('sitemap_explorer');
-                    setSelectedArticle(null);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
-                >
-                  <Network size={12} className="text-rose-400" />
-                  <span>Sơ đồ liên kết toàn hệ thống</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory('Kỳ thi & Lịch thi');
-                    setSelectedArticle(null);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  Lịch thi JLPT & NAT-TEST 2026
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory('centers');
-                    setSelectedArticle(null);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  Danh bạ Trung tâm Nhật ngữ uy tín toàn quốc
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedCategory('Du học & Việc làm');
-                    setSelectedArticle(null);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  Chính sách Visa Tokutei Ginou 2 mới
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <h5 className="text-white font-black text-xs uppercase tracking-wider">ĐƠN VỊ TÀI TRỢ</h5>
-            <div className="space-y-2">
-              <p className="text-xs text-slate-400 mb-0">
-                Nền tảng Học Tiếng Nhật Thông Minh HYPER Japanese NihongoHub Platform.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  sounds.playFlip();
-                  setActiveTab('home');
-                }}
-                className="inline-flex items-center gap-1.5 text-rose-400 hover:text-rose-300 font-bold hover:underline cursor-pointer"
-              >
-                <span>Vào Web App học tập</span>
-                <ExternalLink size={12} />
-              </button>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h5 className="text-white font-black text-xs uppercase tracking-wider">TÒA SOẠN & LIÊN HỆ</h5>
-            <p className="text-xs text-slate-400 leading-relaxed mb-0">
-              Hotline: 0345698251<br />
-              Email: thuatnguyen1204@gmail.com<br />
-              Văn phòng: Hà Nội, Đà Nẵng, TP.HCM & Tokyo
-            </p>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 mt-8 border-t border-slate-900 text-center text-[11px] text-slate-500">
-          © 2026 Nhật Bản 24h. Bảo lưu mọi quyền. Tài trợ học thuật bởi HYPER Japanese.
-        </div>
-      </footer>
     </div>
   );
 }

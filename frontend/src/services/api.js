@@ -289,6 +289,8 @@ export const forumService = {
   getReviews: () => api.get('/forum/reviews'),
   addReview: (data) => api.post('/forum/reviews', data),
   getCenters: (params) => api.get('/forum/centers', { params }),
+  crawlNews: (count = 3) => api.post('/forum/crawl', { count }),
+  getStatus: () => api.get('/forum/status'),
 };
 
 export const supportService = {
