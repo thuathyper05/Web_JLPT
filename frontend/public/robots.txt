@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /api/forum/
+Allow: /privacy
+Allow: /terms
+Allow: /data-deletion
+
+Sitemap: https://hyper-jlpt.onrender.com/sitemap.xml

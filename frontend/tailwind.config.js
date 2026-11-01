@@ -29,6 +29,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        serif: ['Merriweather', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
+        news: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         jp: ['Noto Sans JP', 'sans-serif'],
       },
       boxShadow: {

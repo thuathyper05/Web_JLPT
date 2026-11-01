@@ -1674,6 +1674,68 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// ── SEO Compliance: robots.txt & sitemap.xml ──
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`User-agent: *
+Allow: /
+Allow: /api/forum/
+Allow: /privacy
+Allow: /terms
+Allow: /data-deletion
+
+Sitemap: https://hyper-jlpt.onrender.com/sitemap.xml`);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum/trung-tam-tieng-nhat-da-nang</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum/trung-tam-tieng-nhat-ha-noi</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum/trung-tam-tieng-nhat-tp-ho-chi-minh</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum/trung-tam-tieng-nhat-quang-nam</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hyper-jlpt.onrender.com/forum/lich-thi-jlpt-2026-chinh-thuc</loc>
+    <lastmod>2026-11-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+</urlset>`);
+});
+
 // ── Meta Compliance: Privacy Policy ──
 app.get('/privacy', (req, res) => {
   res.send(`<!DOCTYPE html>
