@@ -39,7 +39,7 @@ export default function AuthModal() {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '463067556799-hd0134jctmmb6jitugkjed7qd78d3uqk.apps.googleusercontent.com';
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '748237463632-r05r0anh0lksjqmcn7uijb2i7cv3r7m6.apps.googleusercontent.com';
   const fbAppId = import.meta.env.VITE_FACEBOOK_APP_ID || '1293450782913049';
 
   useEffect(() => {
