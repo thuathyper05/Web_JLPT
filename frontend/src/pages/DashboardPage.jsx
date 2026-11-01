@@ -91,14 +91,14 @@ export default function DashboardPage() {
     const masteredCount = Object.values(guestProgress).filter(p => p.status === 'mastered').length;
     const needsReviewCount = Object.values(guestProgress).filter(p => p.status === 'needs_review').length;
 
-    const kanjiByLevel = { N5: 80, N4: 120, N3: 300, N2: 600, N1: 1000 };
+    const kanjiByLevel = { N5: 108, N4: 180, N3: 119, N2: 100, N1: 100 };
 
     setStats({
       studied: studiedCount,
       mastered: masteredCount,
       needsReview: needsReviewCount,
-      totalKanji: kanjiByLevel[currentLevel] || 80,
-      totalVocab: levelVocabs.length || 1512
+      totalKanji: kanjiByLevel[currentLevel] || 108,
+      totalVocab: levelVocabs.length || (currentLevel === 'N1' ? 3070 : currentLevel === 'N2' ? 1778 : currentLevel === 'N3' ? 1659 : currentLevel === 'N4' ? 1488 : 1589)
     });
   }, [guestProgress, currentLevel, levelVocabs]);
 
@@ -177,11 +177,11 @@ export default function DashboardPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-xs font-bold mb-4 backdrop-blur-md">
               <SakuraPulse size={14} />
               <span>
-                {currentLevel === 'N4' ? 'BÀI 26 - Cấu trúc んです và thể thông thường' :
-                 currentLevel === 'N3' ? 'BÀI 01 - Diễn đạt thời gian & mục đích' :
-                 currentLevel === 'N2' ? 'BÀI 01 - Thành ngữ & Văn phong báo chí' :
-                 currentLevel === 'N1' ? 'BÀI 01 - Cấu trúc học thuật thượng cấp' :
-                 `BÀI ${String(selectedLesson || 2).padStart(2, '0')} - Minna no Nihongo`}
+                {currentLevel === 'N4' ? `BÀI ${selectedLesson || 26} — Minna no Nihongo II` :
+                 currentLevel === 'N3' ? `BÀI ${String(selectedLesson || 1).padStart(2, '0')} — Soumatome & Shinkanzen N3` :
+                 currentLevel === 'N2' ? `BÀI ${String(selectedLesson || 1).padStart(2, '0')} — Soumatome & Shinkanzen N2` :
+                 currentLevel === 'N1' ? `BÀI ${String(selectedLesson || 1).padStart(2, '0')} — Thượng Cấp Bác Học N1` :
+                 `BÀI ${String(selectedLesson || 1).padStart(2, '0')} — Minna no Nihongo I`}
               </span>
             </div>
 

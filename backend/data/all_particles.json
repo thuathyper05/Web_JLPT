@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "level": "N5",
+    "particle": "は (wa)",
+    "role": "Phó trợ từ biểu thị chủ đề",
+    "meaning": "Xác định chủ đề câu chuyện: Nói về N thì...",
+    "example": "私［は］ベトナム人です。",
+    "translation": "Tôi là người Việt Nam.",
+    "notes": "Phát âm là wa khi làm trợ từ. Nhấn mạnh thông tin phía sau は."
+  },
+  {
+    "id": 2,
+    "level": "N5",
+    "particle": "が (ga)",
+    "role": "Cách trợ từ biểu thị chủ ngữ",
+    "meaning": "Chỉ chủ ngữ ngữ pháp, đối tượng của tính từ, thể khả năng, hiện tượng tự nhiên.",
+    "example": "雨［が］降っています。/ 私は 猫［が］好きです。",
+    "translation": "Trời đang mưa. / Tôi thích mèo.",
+    "notes": "Nhấn mạnh chủ ngữ phía trước が. Dùng trong câu miêu tả hiện tượng tự nhiên hoặc mệnh đề phụ."
+  },
+  {
+    "id": 3,
+    "level": "N5",
+    "particle": "を (wo/o)",
+    "role": "Cách trợ từ biểu thị tân ngữ",
+    "meaning": "Chỉ đối tượng trực tiếp của tha động từ, hoặc nơi chốn rời khỏi / băng qua.",
+    "example": "ご飯［を］食べます。/ 橋［を］渡ります。",
+    "translation": "Ăn cơm. / Băng qua cầu.",
+    "notes": "Đi với các động từ di chuyển (wataru, tooru, hashiru) chỉ nơi chốn băng qua."
+  },
+  {
+    "id": 4,
+    "level": "N5",
+    "particle": "に (ni) - Thời gian",
+    "role": "Cách trợ từ chỉ thời điểm",
+    "meaning": "Chỉ thời điểm cụ thể có con số xác định diễn ra hành động.",
+    "example": "毎朝 6時［に］起きます。",
+    "translation": "Mỗi sáng tôi thức dậy vào lúc 6 giờ.",
+    "notes": "Đi với mốc thời gian có số (6時, 10月). Không đi với kinou, kyou, ashita..."
+  },
+  {
+    "id": 5,
+    "level": "N5",
+    "particle": "に (ni) - Nơi đến & Tồn tại",
+    "role": "Cách trợ từ chỉ đích đến / nơi ở",
+    "meaning": "Chỉ điểm đến của di chuyển (iku, kuru, kaeru) hoặc nơi tồn tại của người/vật (iru, aru).",
+    "example": "日本［に］行きます。/ 部屋に 机が［に］あります。",
+    "translation": "Tôi đi đến Nhật. / Trong phòng có cái bàn.",
+    "notes": "Tồn tại ở đâu dùng [Nơi chốn + に + あります/います]."
+  },
+  {
+    "id": 6,
+    "level": "N5",
+    "particle": "で (de) - Nơi hành động",
+    "role": "Cách trợ từ chỉ địa điểm",
+    "meaning": "Chỉ địa điểm diễn ra một hành động, sự việc.",
+    "example": "図書館［で］本を 読みます。",
+    "translation": "Tôi đọc sách ở thư viện.",
+    "notes": "Phân biệt với に: で là nơi hành động diễn ra, に là nơi vật/người tồn tại hoặc đích đến."
+  },
+  {
+    "id": 7,
+    "level": "N5",
+    "particle": "で (de) - Phương tiện / Công cụ",
+    "role": "Cách trợ từ chỉ công cụ",
+    "meaning": "Bằng phương tiện giao thông, công cụ, ngôn ngữ, nguyên liệu.",
+    "example": "箸［で］食べます。/ 日本語［で］話します。",
+    "translation": "Ăn bằng đũa. / Nói chuyện bằng tiếng Nhật.",
+    "notes": "Nếu đi bộ thì dùng あるいて (không dùng で)."
+  },
+  {
+    "id": 8,
+    "level": "N5",
+    "particle": "へ (e)",
+    "role": "Cách trợ từ chỉ hướng di chuyển",
+    "meaning": "Chỉ phương hướng hướng tới của hành động di chuyển.",
+    "example": "京都［へ］旅行に 行きます。",
+    "translation": "Tôi đi du lịch về hướng Kyoto.",
+    "notes": "Đọc là e khi là trợ từ. Nhấn mạnh vào phương hướng nhiều hơn đích đến に."
+  },
+  {
+    "id": 9,
+    "level": "N5",
+    "particle": "と (to) - Và / Cùng với",
+    "role": "Liên từ / Cách trợ từ",
+    "meaning": "Liệt kê toàn bộ danh từ (và), hoặc làm gì cùng với ai.",
+    "example": "パン［と］卵を 買いました。/ 友達［と］映画を 見ます。",
+    "translation": "Tôi đã mua bánh mì và trứng. / Tôi xem phim cùng bạn.",
+    "notes": "Liệt kê đầy đủ (A và B). Nếu làm một mình dùng ひとりで."
+  },
+  {
+    "id": 10,
+    "level": "N5",
+    "particle": "から (kara) - Điểm xuất phát",
+    "role": "Cách trợ từ chỉ mốc bắt đầu",
+    "meaning": "Từ (thời gian bắt đầu, không gian bắt đầu, người gửi).",
+    "example": "9時［から］働きます。/ ベトナム［から］来ました。",
+    "translation": "Làm việc từ 9 giờ. / Tôi đến từ Việt Nam.",
+    "notes": "Thường đi thành cặp [から ... まで]."
+  },
+  {
+    "id": 11,
+    "level": "N5",
+    "particle": "まで (made) - Điểm kết thúc",
+    "role": "Cách trợ từ chỉ mốc kết thúc",
+    "meaning": "Đến, tới (thời gian kết thúc, địa điểm kết thúc).",
+    "example": "5時［まで］勉強します。/ 駅［まで］歩きます。",
+    "translation": "Học đến 5 giờ. / Đi bộ đến tận nhà ga.",
+    "notes": "Phân biệt với までに (hạn chót hoàn thành)."
+  },
+  {
+    "id": 12,
+    "level": "N5",
+    "particle": "より (yori)",
+    "role": "Trợ từ chỉ so sánh",
+    "meaning": "Hơn, so với (trong câu so sánh hơn kém).",
+    "example": "車は 自転車［より］速いです。",
+    "translation": "Ô tô thì nhanh hơn xe đạp.",
+    "notes": "Cấu trúc: A は B より Tính từ です."
+  },
+  {
+    "id": 13,
+    "level": "N5",
+    "particle": "も (mo)",
+    "role": "Phó trợ từ biểu thị sự đồng nhất",
+    "meaning": "Cũng (thay thế cho は, が, を).",
+    "example": "私も ベトナム人です。",
+    "translation": "Tôi cũng là người Việt Nam.",
+    "notes": "Đi với từ để hỏi + も + Phủ định = hoàn toàn không (doko mo ikimasen)."
+  },
+  {
+    "id": 14,
+    "level": "N5",
+    "particle": "の (no)",
+    "role": "Cách trợ từ chỉ sở hữu / thuộc tính",
+    "meaning": "Của, thuộc về, chỉ chủng loại, xuất xứ.",
+    "example": "私の 本です。/ 日本の 車です。",
+    "translation": "Sách của tôi. / Xe ô tô của Nhật.",
+    "notes": "Cấu trúc: N1 の N2 (N1 bổ nghĩa cho N2)."
+  },
+  {
+    "id": 15,
+    "level": "N5",
+    "particle": "や (ya)",
+    "role": "Liên từ liệt kê tượng trưng",
+    "meaning": "Và, ví dụ như... (liệt kê không hết, thường đi với など).",
+    "example": "机の 上に 本［や］ペンが あります。",
+    "translation": "Trên bàn có những thứ như sách và bút.",
+    "notes": "Phân biệt với と (to là liệt kê hết toàn bộ)."
+  },
+  {
+    "id": 16,
+    "level": "N4",
+    "particle": "だけ (dake)",
+    "role": "Phó trợ từ giới hạn",
+    "meaning": "Chỉ... (khẳng định phạm vi, không kèm sắc thái tiếc nuối).",
+    "example": "ひらがな［だけ］書けます。",
+    "translation": "Tôi chỉ có thể viết được chữ Hiragana.",
+    "notes": "Đi được với cả khẳng định và phủ định. Đơn thuần nêu mức độ."
+  },
+  {
+    "id": 17,
+    "level": "N4",
+    "particle": "しか (shika)",
+    "role": "Phó trợ từ giới hạn kèm tiếc nuối",
+    "meaning": "Chỉ... (luôn luôn đi kèm động từ ở thể PHỦ ĐỊNH).",
+    "example": "財布に 百円［しか］ありません。",
+    "translation": "Trong ví chỉ có mỗi 100 yên (tiếc nuối vì quá ít).",
+    "notes": "Luôn đi với câu phủ định: N + しか + ない."
+  },
+  {
+    "id": 18,
+    "level": "N4",
+    "particle": "ばかり (bakari) - N4",
+    "role": "Phó trợ từ biểu thị lặp lại/vừa mới",
+    "meaning": "Toàn là, chỉ toàn là / Vたばかり: vừa mới làm gì.",
+    "example": "テレビ［ばかり］見て います。/ 食べた［ばかり］です。",
+    "translation": "Chỉ toàn xem tivi thôi. / Tôi vừa mới ăn cơm xong.",
+    "notes": "Phê phán thói quen xấu hoặc cảm giác vừa mới hoàn thành."
+  },
+  {
+    "id": 19,
+    "level": "N4",
+    "particle": "でも (demo) - Đưa ra ví dụ",
+    "role": "Phó trợ từ gợi ý",
+    "meaning": "Ví dụ như... (đưa ra một gợi ý tiêu biểu khi rủ rê/đề nghị).",
+    "example": "お茶［でも］飲みませんか。",
+    "translation": "Bạn có muốn uống chút gì như trà chẳng hạn không?",
+    "notes": "Dùng trong câu rủ rê, không dùng trong câu khẳng định sự thật."
+  },
+  {
+    "id": 20,
+    "level": "N4",
+    "particle": "くらい / ぐらい (kurai/gurai)",
+    "role": "Phó trợ từ ước lượng",
+    "meaning": "Khoảng, chừng (ước lượng thời gian, số lượng, khoảng cách).",
+    "example": "1時間［くらい］かかります。",
+    "translation": "Mất khoảng chừng 1 tiếng.",
+    "notes": "Đứng sau số từ chỉ lượng."
+  },
+  {
+    "id": 21,
+    "level": "N4",
+    "particle": "ほど (hodo) - So sánh không bằng",
+    "role": "Phó trợ từ mức độ",
+    "meaning": "Không bằng... (trong câu phủ định so sánh).",
+    "example": "今年は 去年［ほど］寒くないです。",
+    "translation": "Năm nay trời không lạnh bằng năm ngoái.",
+    "notes": "Cấu trúc: A は B ほど Tính từ phủ định."
+  },
+  {
+    "id": 22,
+    "level": "N4",
+    "particle": "など (nado)",
+    "role": "Phó trợ từ liệt kê",
+    "meaning": "Vân vân, những thứ như là... (thường đi sau や).",
+    "example": "りんごや バナナ［など］を 買いました。",
+    "translation": "Tôi đã mua táo, chuối vân vân.",
+    "notes": "Thường kết hợp cụm [N1 や N2 など]."
+  },
+  {
+    "id": 23,
+    "level": "N4",
+    "particle": "までに (madeni)",
+    "role": "Trợ từ chỉ hạn chót",
+    "meaning": "Trước thời điểm... (chỉ kỳ hạn phải hoàn tất xong hành động).",
+    "example": "金曜日［までに］レポートを 出して ください。",
+    "translation": "Hãy nộp báo cáo trước thứ Sáu.",
+    "notes": "Phân biệt với まで (made là hành động diễn ra liên tục tới thời điểm đó)."
+  },
+  {
+    "id": 24,
+    "level": "N4",
+    "particle": "し (shi) - Nối câu liệt kê",
+    "role": "Tiếp từ nối câu",
+    "meaning": "Vừa... lại vừa... (liệt kê nhiều lý do dẫn đến kết luận).",
+    "example": "頭も 痛い［し］、熱も あります。",
+    "translation": "Đầu vừa đau, người lại vừa sốt.",
+    "notes": "Đi sau thể thông thường."
+  },
+  {
+    "id": 25,
+    "level": "N4",
+    "particle": "ても / でも (temo/demo)",
+    "role": "Tiếp từ nhượng bộ giả định",
+    "meaning": "Dù... đi chăng nữa thì vẫn...",
+    "example": "雨が 降っ［ても］、出かけます。",
+    "translation": "Dù trời có mưa đi nữa thì tôi vẫn đi ra ngoài.",
+    "notes": "V-te + mo, Tính từ -kute + mo, N + demo."
+  },
+  {
+    "id": 26,
+    "level": "N3",
+    "particle": "こそ (koso)",
+    "role": "Phó trợ từ nhấn mạnh",
+    "meaning": "Chính là, nhất định là... (nhấn mạnh ý chí hoặc cảm xúc mãnh liệt).",
+    "example": "今年［こそ］JLPT N3に 合格します。",
+    "translation": "Chính năm nay tôi nhất định sẽ đỗ JLPT N3.",
+    "notes": "Đứng sau danh từ hoặc dạng điều kiện (ba koso)."
+  },
+  {
+    "id": 27,
+    "level": "N3",
+    "particle": "さえ (sae)",
+    "role": "Phó trợ từ chỉ ví dụ cực đoan",
+    "meaning": "Ngay cả, thậm chí... (nêu ví dụ tối thiểu để suy ra cái khác).",
+    "example": "ひらがな［さえ］読めません。",
+    "translation": "Ngay cả chữ Hiragana cũng không đọc nổi.",
+    "notes": "Tương đương với demo nhưng mang sắc thái cực đoan, ngạc nhiên hơn."
+  },
+  {
+    "id": 28,
+    "level": "N3",
+    "particle": "について (ni tsuite)",
+    "role": "Cụm trợ từ chỉ chủ đề nội dung",
+    "meaning": "Về vấn đề gì, về nội dung gì (hỏi, nói, suy nghĩ, nghiên cứu).",
+    "example": "日本の 文化［について］研究しています。",
+    "translation": "Tôi đang nghiên cứu về văn hóa Nhật Bản.",
+    "notes": "N + について / N1 + についての + N2."
+  },
+  {
+    "id": 29,
+    "level": "N3",
+    "particle": "に関して (ni kanshite)",
+    "role": "Cụm trợ từ liên quan",
+    "meaning": "Liên quan đến, về... (trang trọng hơn ni tsuite, phạm vi rộng hơn).",
+    "example": "事件［に関して］調査が 行われている。",
+    "translation": "Cuộc điều tra liên quan đến vụ án đang được tiến hành.",
+    "notes": "Thường dùng trong văn viết, báo chí, thời sự."
+  },
+  {
+    "id": 30,
+    "level": "N3",
+    "particle": "に対して (ni taishite)",
+    "role": "Cụm trợ từ chỉ đối tượng / đối lập",
+    "meaning": "Đối với ai đó / Trái ngược lại với...",
+    "example": "目上の 人［に対して］敬語を 使う。",
+    "translation": "Đối với người bề trên thì phải sử dụng kính ngữ.",
+    "notes": "Có hai nghĩa: hướng về đối tượng, hoặc đối chiếu so sánh hai vế trái ngược."
+  },
+  {
+    "id": 31,
+    "level": "N3",
+    "particle": "にとって (ni totte)",
+    "role": "Cụm trợ từ chỉ góc nhìn đánh giá",
+    "meaning": "Đối với... (đứng trên lập trường của ai để đưa ra nhận xét, đánh giá).",
+    "example": "私［にとって］漢字は とても 難しいです。",
+    "translation": "Đối với tôi thì chữ Hán rất là khó.",
+    "notes": "Vế sau thường là câu đánh giá, nhận xét tính chất."
+  },
+  {
+    "id": 32,
+    "level": "N3",
+    "particle": "にかけて (ni kakete)",
+    "role": "Cụm trợ từ chỉ phạm vi xấp xỉ",
+    "meaning": "Từ khoảng... đến khoảng... (không gian hoặc thời gian không rõ ranh giới).",
+    "example": "昨夜から 今朝［にかけて］雨が 降った。",
+    "translation": "Từ đêm qua đến khoảng sáng nay trời đã mưa.",
+    "notes": "Khác với made (made có ranh giới rõ ràng, ni kakete là khoảng mờ)."
+  },
+  {
+    "id": 33,
+    "level": "N3",
+    "particle": "にわたって (ni watatte)",
+    "role": "Cụm trợ từ chỉ quy mô trải rộng",
+    "meaning": "Suốt, trải dài trên toàn bộ (thời gian dài, không gian rộng, số lần nhiều).",
+    "example": "3日間に［わたって］会議が 行われた。",
+    "translation": "Cuộc họp đã diễn ra suốt trong vòng 3 ngày.",
+    "notes": "Nhấn mạnh quy mô lớn, thời gian kéo dài của sự việc."
+  },
+  {
+    "id": 34,
+    "level": "N3",
+    "particle": "を通じて / を通して (wo tsuujite/tooshite)",
+    "role": "Cụm trợ từ phương tiện / suốt thời kỳ",
+    "meaning": "Thông qua (trung gian, phương tiện) / Suốt cả (thời gian).",
+    "example": "インターネットを［通して］知り合いました。",
+    "translation": "Chúng tôi quen biết nhau thông qua mạng internet.",
+    "notes": "Có thể chỉ cách thức gián tiếp hoặc suốt cả một năm/mùa."
+  },
+  {
+    "id": 35,
+    "level": "N3",
+    "particle": "につれて (ni tsurete)",
+    "role": "Cụm trợ từ biến đổi đồng thời",
+    "meaning": "Cùng với việc A thay đổi thì kéo theo B cũng biến đổi theo tự nhiên.",
+    "example": "時間が 経つ［につれて］、悲しみが 薄れた。",
+    "translation": "Cùng với thời gian trôi qua, nỗi buồn cũng dần vơi bớt.",
+    "notes": "Cả hai vế đều phải là động từ mang tính biến đổi tự nhiên."
+  },
+  {
+    "id": 36,
+    "level": "N2",
+    "particle": "どころか (dokoroka)",
+    "role": "Phó trợ từ tương phản mạnh mẽ",
+    "meaning": "Chẳng những không phải A mà thực tế còn tệ hơn / khác hẳn.",
+    "example": "貯金［どころか］、借金が 増えている。",
+    "translation": "Tiết kiệm đâu chẳng thấy, ngược lại nợ nần còn đang tăng lên.",
+    "notes": "Phủ định hoàn toàn vế trước và đưa ra thực tế tương phản ngỡ ngàng."
+  },
+  {
+    "id": 37,
+    "level": "N2",
+    "particle": "ばかりか / ばかりでなく (bakarika)",
+    "role": "Phó trợ từ tăng tiến",
+    "meaning": "Không chỉ A mà thậm chí còn cả B nữa.",
+    "example": "彼は 英語［ばかりか］、フランス語も 話せる。",
+    "translation": "Anh ấy không chỉ tiếng Anh mà ngay cả tiếng Pháp cũng nói được.",
+    "notes": "Văn phong trang trọng, tương đương với không những... mà còn..."
+  },
+  {
+    "id": 38,
+    "level": "N2",
+    "particle": "のみならず (nominarazu)",
+    "role": "Tiếp từ văn viết cao cấp (N1)",
+    "meaning": "Không chỉ... mà còn... (văn viết trang trọng, học thuật).",
+    "example": "日本［のみならず］、世界中で 問題に なっている。",
+    "translation": "Không chỉ ở Nhật Bản mà đang trở thành vấn đề trên toàn thế giới.",
+    "notes": "Thường gặp trong văn luận, tin tức báo chí chính luận."
+  },
+  {
+    "id": 39,
+    "level": "N2",
+    "particle": "に至るまで (ni itaru made)",
+    "role": "Cụm trợ từ phạm vi cực độ",
+    "meaning": "Đến tận cả, từ chi tiết nhỏ nhất đến tận...",
+    "example": "服装から 髪型［に至るまで］注意された。",
+    "translation": "Tôi bị nhắc nhở từ trang phục cho đến tận cả kiểu tóc.",
+    "notes": "Nhấn mạnh sự bao quát toàn bộ một cách triệt để không sót thứ gì."
+  },
+  {
+    "id": 40,
+    "level": "N2",
+    "particle": "をもとに (wo moto ni)",
+    "role": "Cụm trợ từ căn cứ nền tảng",
+    "meaning": "Dựa trên, lấy làm cơ sở / chất liệu để sáng tác, xây dựng.",
+    "example": "実話［をもとに］作られた 映画です。",
+    "translation": "Đây là bộ phim được làm dựa trên một câu chuyện có thật.",
+    "notes": "Đi với danh từ chỉ nguồn tài liệu, sự thật, ý tưởng."
+  },
+  {
+    "id": 41,
+    "level": "N2",
+    "particle": "を契機に / をきっかけに (wo keiki ni)",
+    "role": "Cụm trợ từ bước ngoặt thời cơ",
+    "meaning": "Nhân dịp, lấy sự kiện đó làm bước ngoặt để có sự thay đổi lớn.",
+    "example": "大学 入学［を契機に］一人暮らしを 始めた。",
+    "translation": "Nhân dịp vào đại học, tôi đã bắt đầu cuộc sống tự lập một mình.",
+    "notes": "Wo keiki ni thường dùng cho sự kiện có tính bước ngoặt tích cực."
+  },
+  {
+    "id": 42,
+    "level": "N2",
+    "particle": "に際して / にあたって (ni saishite)",
+    "role": "Cụm trợ từ thời điểm đặc biệt trang trọng",
+    "meaning": "Nhân dịp, trước khi bắt đầu một sự kiện trọng đại đặc biệt.",
+    "example": "新年を 迎える［に際して］、ご挨拶を 申し上げます。",
+    "translation": "Nhân dịp đón năm mới, tôi xin gửi lời chào trân trọng.",
+    "notes": "Dùng trong các bài phát biểu, nghi lễ, thông báo trang trọng."
+  },
+  {
+    "id": 43,
+    "level": "N2",
+    "particle": "を皮切りに (wo kawakiri ni)",
+    "role": "Cụm trợ từ khởi đầu chuỗi hành động",
+    "meaning": "Bắt đầu với A rồi sau đó hàng loạt hành động tương tự liên tiếp diễn ra.",
+    "example": "東京［を皮切りに］、全国ツアーが 始まった。",
+    "translation": "Khởi đầu từ Tokyo, chuyến lưu diễn toàn quốc đã bắt đầu.",
+    "notes": "Chỉ phát súng khởi đầu cho một chuỗi hoạt động cùng quy mô."
+  },
+  {
+    "id": 44,
+    "level": "N2",
+    "particle": "を余儀なくされる (wo yoginaku sareru)",
+    "role": "Cụm trợ từ rơi vào tình thế bất khả kháng (N1)",
+    "meaning": "Bị buộc phải, không còn cách nào khác đành phải...",
+    "example": "大雨のため、計画の 変更［を余儀なくされた］。",
+    "translation": "Do mưa lớn, chúng tôi buộc lòng phải thay đổi kế hoạch.",
+    "notes": "Chỉ tình huống khó khăn, hoàn cảnh ép buộc người trong cuộc."
+  },
+  {
+    "id": 45,
+    "level": "N2",
+    "particle": "と相まって (to aimatte)",
+    "role": "Cụm trợ từ cộng hưởng tương hỗ (N1)",
+    "meaning": "Kết hợp cùng với... tạo nên hiệu quả / kết quả nhân đôi.",
+    "example": "努力と 幸運［と相まって］、大成功を 収めた。",
+    "translation": "Sự nỗ lực cộng hưởng cùng với vận may đã mang lại thành công vang dội.",
+    "notes": "Chỉ sự kết hợp của hai yếu tố tạo nên sức mạnh tổng hợp."
+  }
+]

@@ -1,0 +1,782 @@
+[
+  {
+    "level": "N5",
+    "lesson_number": 1,
+    "title": "Chào hỏi, giới thiệu bản thân, quốc tịch, nghề nghiệp",
+    "description": "Giáo trình Minna no Nihongo I - Bài 1: Chào hỏi, giới thiệu bản thân, quốc tịch, nghề nghiệp"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 2,
+    "title": "Đồ vật quanh ta, sở hữu đồ vật",
+    "description": "Giáo trình Minna no Nihongo I - Bài 2: Đồ vật quanh ta, sở hữu đồ vật"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 3,
+    "title": "Địa điểm, vị trí, giá tiền",
+    "description": "Giáo trình Minna no Nihongo I - Bài 3: Địa điểm, vị trí, giá tiền"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 4,
+    "title": "Thời gian, ngày trong tuần, động từ chỉ hành động thường ngày",
+    "description": "Giáo trình Minna no Nihongo I - Bài 4: Thời gian, ngày trong tuần, động từ chỉ hành động thường ngày"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 5,
+    "title": "Phương tiện đi lại, địa điểm đến, đi với ai",
+    "description": "Giáo trình Minna no Nihongo I - Bài 5: Phương tiện đi lại, địa điểm đến, đi với ai"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 6,
+    "title": "Ăn uống, hành động tác động lên tân ngữ (Trợ từ を)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 6: Ăn uống, hành động tác động lên tân ngữ (Trợ từ を)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 7,
+    "title": "Công cụ, phương tiện (Trợ từ で), cho và nhận (あげます, もらいます)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 7: Công cụ, phương tiện (Trợ từ で), cho và nhận (あげます, もらいます)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 8,
+    "title": "Tính từ đuôi い và tính từ đuôi な",
+    "description": "Giáo trình Minna no Nihongo I - Bài 8: Tính từ đuôi い và tính từ đuôi な"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 9,
+    "title": "Sở thích, khả năng, lý do (から)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 9: Sở thích, khả năng, lý do (から)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 10,
+    "title": "Sự tồn tại của người và vật (います, あります)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 10: Sự tồn tại của người và vật (います, あります)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 11,
+    "title": "Số đếm, lượng từ, thời gian",
+    "description": "Giáo trình Minna no Nihongo I - Bài 11: Số đếm, lượng từ, thời gian"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 12,
+    "title": "So sánh hơn, so sánh nhất, thì quá khứ của tính từ/danh từ",
+    "description": "Giáo trình Minna no Nihongo I - Bài 12: So sánh hơn, so sánh nhất, thì quá khứ của tính từ/danh từ"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 13,
+    "title": "Mong muốn (欲しい, たい), mục đích hành động (に行きます)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 13: Mong muốn (欲しい, たい), mục đích hành động (に行きます)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 14,
+    "title": "Động từ thể て, yêu cầu lịch sự (てください), hành động đang diễn ra",
+    "description": "Giáo trình Minna no Nihongo I - Bài 14: Động từ thể て, yêu cầu lịch sự (てください), hành động đang diễn ra"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 15,
+    "title": "Xin phép (てもいいですか), điều cấm chỉ (てはいけません)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 15: Xin phép (てもいいですか), điều cấm chỉ (てはいけません)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 16,
+    "title": "Nối chuỗi hành động (て, から), miêu tả thuộc tính",
+    "description": "Giáo trình Minna no Nihongo I - Bài 16: Nối chuỗi hành động (て, から), miêu tả thuộc tính"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 17,
+    "title": "Động từ thể ない, yêu cầu không làm gì (ないでください)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 17: Động từ thể ない, yêu cầu không làm gì (ないでください)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 18,
+    "title": "Động từ thể từ điển (辞書形), khả năng, sở thích",
+    "description": "Giáo trình Minna no Nihongo I - Bài 18: Động từ thể từ điển (辞書形), khả năng, sở thích"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 19,
+    "title": "Động từ thể た, kinh nghiệm (たことがあります), liệt kê hành động (たり...たり)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 19: Động từ thể た, kinh nghiệm (たことがあります), liệt kê hành động (たり...たり)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 20,
+    "title": "Thể thông thường (Thể ngắn / 普通形)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 20: Thể thông thường (Thể ngắn / 普通形)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 21,
+    "title": "Bày tỏ ý kiến (と思います), trích dẫn gián tiếp (と言いました)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 21: Bày tỏ ý kiến (と思います), trích dẫn gián tiếp (と言いました)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 22,
+    "title": "Mệnh đề bổ ngữ cho danh từ (Định ngữ)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 22: Mệnh đề bổ ngữ cho danh từ (Định ngữ)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 23,
+    "title": "Khi... (とき), điều kiện hiển nhiên (と)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 23: Khi... (とき), điều kiện hiển nhiên (と)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 24,
+    "title": "Hành động cho và nhận nâng cao (くれます, てあげます, てもらいます)",
+    "description": "Giáo trình Minna no Nihongo I - Bài 24: Hành động cho và nhận nâng cao (くれます, てあげます, てもらいます)"
+  },
+  {
+    "level": "N5",
+    "lesson_number": 25,
+    "title": "Câu điều kiện たら, giả định tương lai",
+    "description": "Giáo trình Minna no Nihongo I - Bài 25: Câu điều kiện たら, giả định tương lai"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 26,
+    "title": "Giải thích lý do (～んです), nhờ vả lịch sự, xin lời khuyên",
+    "description": "Giáo trình Minna no Nihongo II - Bài 26: Giải thích lý do (～んです), nhờ vả lịch sự, xin lời khuyên"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 27,
+    "title": "Động từ thể khả năng (可能形), nhìn thấy, nghe thấy, hoàn thành",
+    "description": "Giáo trình Minna no Nihongo II - Bài 27: Động từ thể khả năng (可能形), nhìn thấy, nghe thấy, hoàn thành"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 28,
+    "title": "Hành động đồng thời (～ながら), thói quen, liệt kê nguyên nhân (～し)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 28: Hành động đồng thời (～ながら), thói quen, liệt kê nguyên nhân (～し)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 29,
+    "title": "Tự động từ & tha động từ, trạng thái kết quả, hoàn thành/hối tiếc",
+    "description": "Giáo trình Minna no Nihongo II - Bài 29: Tự động từ & tha động từ, trạng thái kết quả, hoàn thành/hối tiếc"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 30,
+    "title": "Trạng thái có chủ đích (～てあります), chuẩn bị trước (～ておきます)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 30: Trạng thái có chủ đích (～てあります), chuẩn bị trước (～ておきます)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 31,
+    "title": "Động từ thể ý chí (意向形), dự định (～つもり / ～予定)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 31: Động từ thể ý chí (意向形), dự định (～つもり / ～予定)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 32,
+    "title": "Lời khuyên nên làm gì (～ほうがいい), phỏng đoán (～でしょう / ～かも)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 32: Lời khuyên nên làm gì (～ほうがいい), phỏng đoán (～でしょう / ～かも)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 33,
+    "title": "Thể mệnh lệnh (命令形) & cấm đoán (禁止形), biển báo, truyền đạt",
+    "description": "Giáo trình Minna no Nihongo II - Bài 33: Thể mệnh lệnh (命令形) & cấm đoán (禁止形), biển báo, truyền đạt"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 34,
+    "title": "Làm việc theo hướng dẫn (～とおりに), làm sau khi, trạng thái",
+    "description": "Giáo trình Minna no Nihongo II - Bài 34: Làm việc theo hướng dẫn (～とおりに), làm sau khi, trạng thái"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 35,
+    "title": "Động từ thể điều kiện (条件形: ～ば), lời khuyên hoàn cảnh (～なら)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 35: Động từ thể điều kiện (条件形: ～ば), lời khuyên hoàn cảnh (～なら)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 36,
+    "title": "Cố gắng để (～ように), trở nên có thể, duy trì thói quen",
+    "description": "Giáo trình Minna no Nihongo II - Bài 36: Cố gắng để (～ように), trở nên có thể, duy trì thói quen"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 37,
+    "title": "Động từ thể bị động (受身形: ～られます), bị làm phiền, phát minh",
+    "description": "Giáo trình Minna no Nihongo II - Bài 37: Động từ thể bị động (受身形: ～られます), bị làm phiền, phát minh"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 38,
+    "title": "Danh từ hóa động từ (Vる＋のは/のが/のを), sở thích, kỹ năng",
+    "description": "Giáo trình Minna no Nihongo II - Bài 38: Danh từ hóa động từ (Vる＋のは/のが/のを), sở thích, kỹ năng"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 39,
+    "title": "Nguyên nhân, lý do khách quan (～て / ～で / ～ので)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 39: Nguyên nhân, lý do khách quan (～て / ～で / ～ので)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 40,
+    "title": "Câu hỏi lồng trong câu (～か / ～かどうか), thử làm việc gì (～てみる)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 40: Câu hỏi lồng trong câu (～か / ～かどうか), thử làm việc gì (～てみる)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 41,
+    "title": "Cho và nhận hành động theo thứ bậc (やる / いただく / くださる)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 41: Cho và nhận hành động theo thứ bậc (やる / いただく / くださる)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 42,
+    "title": "Mục đích hành động (～ために), dùng cho mục đích (～のに)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 42: Mục đích hành động (～ために), dùng cho mục đích (～のに)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 43,
+    "title": "Dự đoán biến đổi sắp xảy ra, vẻ bề ngoài (～そうです), đi rồi về",
+    "description": "Giáo trình Minna no Nihongo II - Bài 43: Dự đoán biến đổi sắp xảy ra, vẻ bề ngoài (～そうです), đi rồi về"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 44,
+    "title": "Quá mức (～すぎます), dễ/khó làm (～やすい/～にくい), biến đổi",
+    "description": "Giáo trình Minna no Nihongo II - Bài 44: Quá mức (～すぎます), dễ/khó làm (～やすい/～にくい), biến đổi"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 45,
+    "title": "Trong trường hợp (～場合は), mặc dù... thế mà... (～のに)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 45: Trong trường hợp (～場合は), mặc dù... thế mà... (～のに)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 46,
+    "title": "Thời điểm diễn ra (～ところ), vừa mới xong (～ばかり), chắc chắn",
+    "description": "Giáo trình Minna no Nihongo II - Bài 46: Thời điểm diễn ra (～ところ), vừa mới xong (～ばかり), chắc chắn"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 47,
+    "title": "Nghe nói là (～そうです), hình như là (～ようです)",
+    "description": "Giáo trình Minna no Nihongo II - Bài 47: Nghe nói là (～そうです), hình như là (～ようです)"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 48,
+    "title": "Động từ thể sai khiến (使役形: ～させます), bắt làm, cho phép làm",
+    "description": "Giáo trình Minna no Nihongo II - Bài 48: Động từ thể sai khiến (使役形: ～させます), bắt làm, cho phép làm"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 49,
+    "title": "Kính ngữ (敬語 - 尊敬語): Tôn kính ngữ, các động từ tôn kính đặc biệt",
+    "description": "Giáo trình Minna no Nihongo II - Bài 49: Kính ngữ (敬語 - 尊敬語): Tôn kính ngữ, các động từ tôn kính đặc biệt"
+  },
+  {
+    "level": "N4",
+    "lesson_number": 50,
+    "title": "Khiêm nhường ngữ (謙譲語 - 丁寧語): Khiêm tốn về bản thân, đối tác",
+    "description": "Giáo trình Minna no Nihongo II - Bài 50: Khiêm nhường ngữ (謙譲語 - 丁寧語): Khiêm tốn về bản thân, đối tác"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 1,
+    "title": "Gia đình, Quan hệ con người & Bạn bè (人間関係・家族・友人)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 01: Gia đình, Quan hệ con người & Bạn bè (人間関係・家族・友人)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 2,
+    "title": "Nhà ở, Nơi chốn & Đời sống hàng ngày (暮らし・住まい)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 02: Nhà ở, Nơi chốn & Đời sống hàng ngày (暮らし・住まい)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 3,
+    "title": "Đồ gia dụng, Thiết bị & Nấu nướng (家電・料理・家事)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 03: Đồ gia dụng, Thiết bị & Nấu nướng (家電・料理・家事)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 4,
+    "title": "Ăn uống, Thực phẩm & Nhà hàng (食事・外食・食材)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 04: Ăn uống, Thực phẩm & Nhà hàng (食事・外食・食材)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 5,
+    "title": "Mua sắm, Tiền tệ & Giá cả (買い物・お金・価格)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 05: Mua sắm, Tiền tệ & Giá cả (買い物・お金・価格)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 6,
+    "title": "Thời trang, Trang phục & Diện mạo (服装・ファッション・外見)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 06: Thời trang, Trang phục & Diện mạo (服装・ファッション・外見)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 7,
+    "title": "Sức khỏe, Thể chất & Cơ thể người (身体・健康・体調)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 07: Sức khỏe, Thể chất & Cơ thể người (身体・健康・体調)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 8,
+    "title": "Y tế, Bệnh tật & Thuốc men (医療・病気・病院)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 08: Y tế, Bệnh tật & Thuốc men (医療・病気・病院)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 9,
+    "title": "Giao thông, Phương tiện & Đi lại (交通・乗り物・移動)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 09: Giao thông, Phương tiện & Đi lại (交通・乗り物・移動)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 10,
+    "title": "Du lịch, Khách sạn & Điểm đến (旅行・宿泊・観光)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 10: Du lịch, Khách sạn & Điểm đến (旅行・宿泊・観光)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 11,
+    "title": "Thời tiết, Khí hậu & Bốn mùa (天気・気候・季節)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 11: Thời tiết, Khí hậu & Bốn mùa (天気・気候・季節)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 12,
+    "title": "Thiên nhiên, Động vật & Thực vật (自然・動植物・生物)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 12: Thiên nhiên, Động vật & Thực vật (自然・動植物・生物)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 13,
+    "title": "Môi trường, Tái chế & Xã hội (環境・リサイクル・社会)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 13: Môi trường, Tái chế & Xã hội (環境・リサイクル・社会)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 14,
+    "title": "Trường học, Giáo dục & Thi cử (学校・教育・試験)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 14: Trường học, Giáo dục & Thi cử (学校・教育・試験)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 15,
+    "title": "Nghề nghiệp, Xin việc & Phỏng vấn (就職・面接・仕事)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 15: Nghề nghiệp, Xin việc & Phỏng vấn (就職・面接・仕事)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 16,
+    "title": "Công sở, Đồng nghiệp & Văn phòng (会社・職場・同僚)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 16: Công sở, Đồng nghiệp & Văn phòng (会社・職場・同僚)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 17,
+    "title": "Kinh doanh, Thương mại & Khách hàng (ビジネス・取引・顧客)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 17: Kinh doanh, Thương mại & Khách hàng (ビジネス・取引・顧客)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 18,
+    "title": "Bưu điện, Ngân hàng & Thủ tục (郵便・銀行・手続き)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 18: Bưu điện, Ngân hàng & Thủ tục (郵便・銀行・手続き)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 19,
+    "title": "Công nghệ, Internet & Thiết bị số (IT・ネット・デジタル)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 19: Công nghệ, Internet & Thiết bị số (IT・ネット・デジタル)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 20,
+    "title": "Thể thao, Sở thích & Giải trí (スポーツ・趣味・娯楽)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 20: Thể thao, Sở thích & Giải trí (スポーツ・趣味・娯楽)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 21,
+    "title": "Nghệ thuật, Văn hóa & Lễ hội (芸術・文化・行事)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 21: Nghệ thuật, Văn hóa & Lễ hội (芸術・文化・行事)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 22,
+    "title": "Tâm trạng, Cảm xúc & Tính cách (感情・気分・性格)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 22: Tâm trạng, Cảm xúc & Tính cách (感情・気分・性格)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 23,
+    "title": "Hành vi, Thói quen & Thái độ (行動・習慣・態度)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 23: Hành vi, Thói quen & Thái độ (行動・習慣・態度)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 24,
+    "title": "Thời gian, Không gian & Trạng thái (時間・空間・様子)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 24: Thời gian, Không gian & Trạng thái (時間・空間・様子)"
+  },
+  {
+    "level": "N3",
+    "lesson_number": 25,
+    "title": "Phó từ, Liên từ & Quán dụng ngữ N3 (副詞・接続詞・慣用句)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N3 - Bài 25: Phó từ, Liên từ & Quán dụng ngữ N3 (副詞・接続詞・慣用句)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 1,
+    "title": "Kinh tế, Thị trường & Tiền tệ (経済・市場・金融)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 01: Kinh tế, Thị trường & Tiền tệ (経済・市場・金融)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 2,
+    "title": "Doanh nghiệp, Đầu tư & Tài chính (企業・投資・財務)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 02: Doanh nghiệp, Đầu tư & Tài chính (企業・投資・財務)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 3,
+    "title": "Thương mại, Xuất nhập khẩu & Hợp đồng (貿易・輸出入・契約)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 03: Thương mại, Xuất nhập khẩu & Hợp đồng (貿易・輸出入・契約)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 4,
+    "title": "Chính trị, Nhà nước & Thể chế (政治・国家・体制)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 04: Chính trị, Nhà nước & Thể chế (政治・国家・体制)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 5,
+    "title": "Pháp luật, Tư pháp & Trật tự (法律・司法・秩序)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 05: Pháp luật, Tư pháp & Trật tự (法律・司法・秩序)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 6,
+    "title": "Xã hội, Dân số & Phúc lợi (社会・人口・福祉)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 06: Xã hội, Dân số & Phúc lợi (社会・人口・福祉)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 7,
+    "title": "Lao động, Việc làm & Tuyển dụng (労働・雇用・採用)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 07: Lao động, Việc làm & Tuyển dụng (労働・雇用・採用)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 8,
+    "title": "Đàm phán, Giao dịch & Thương vụ (交渉・取引・商談)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 08: Đàm phán, Giao dịch & Thương vụ (交渉・取引・商談)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 9,
+    "title": "Khoa học kỹ thuật & Nghiên cứu (科学技術・研究・開発)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 09: Khoa học kỹ thuật & Nghiên cứu (科学技術・研究・開発)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 10,
+    "title": "Công nghệ thông tin & Bảo mật (IT・情報・セキュリティ)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 10: Công nghệ thông tin & Bảo mật (IT・情報・セキュリティ)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 11,
+    "title": "Môi trường sinh thái & Biến đổi khí hậu (環境・生態系・気候変動)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 11: Môi trường sinh thái & Biến đổi khí hậu (環境・生態系・気候変動)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 12,
+    "title": "Năng lượng, Tài nguyên & Khí thải (エネルギー・資源・脱炭素)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 12: Năng lượng, Tài nguyên & Khí thải (エネルギー・資源・脱炭素)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 13,
+    "title": "Y tế, Phòng dịch & Sức khỏe cộng đồng (医療・防疫・公衆衛生)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 13: Y tế, Phòng dịch & Sức khỏe cộng đồng (医療・防疫・公衆衛生)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 14,
+    "title": "Tâm lý học, Nhận thức & Tư duy (心理・認識・思考)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 14: Tâm lý học, Nhận thức & Tư duy (心理・認識・思考)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 15,
+    "title": "Cảm xúc vi tế & Giằng xé nội tâm (感情・葛藤・情緒)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 15: Cảm xúc vi tế & Giằng xé nội tâm (感情・葛藤・情緒)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 16,
+    "title": "Giáo dục, Đào tạo & Học thuật (教育・育成・学術)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 16: Giáo dục, Đào tạo & Học thuật (教育・育成・学術)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 17,
+    "title": "Báo chí, Truyền thông & Dư luận (報道・メディア・世論)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 17: Báo chí, Truyền thông & Dư luận (報道・メディア・世論)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 18,
+    "title": "Nghệ thuật, Văn hóa & Di sản (芸術・文化・遺産)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 18: Nghệ thuật, Văn hóa & Di sản (芸術・文化・遺産)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 19,
+    "title": "Đô thị, Quy hoạch & Hạ tầng (都市・計画・インフラ)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 19: Đô thị, Quy hoạch & Hạ tầng (都市・計画・インフラ)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 20,
+    "title": "Thiên tai, Khẩn cấp & An toàn (災害・緊急・安全)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 20: Thiên tai, Khẩn cấp & An toàn (災害・緊急・安全)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 21,
+    "title": "Mối quan hệ, Giao tiếp & Đối nhân xử thế (人間関係・対人・マナー)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 21: Mối quan hệ, Giao tiếp & Đối nhân xử thế (人間関係・対人・マナー)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 22,
+    "title": "Biến chuyển, Xu hướng & Thời đại (変化・傾向・トレンド)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 22: Biến chuyển, Xu hướng & Thời đại (変化・傾向・トレンド)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 23,
+    "title": "Nhận định, Đánh giá & Lập luận (評価・見解・論理)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 23: Nhận định, Đánh giá & Lập luận (評価・見解・論理)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 24,
+    "title": "Phó từ chỉ mức độ & Trạng thái N2 (副詞・程度・状態)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 24: Phó từ chỉ mức độ & Trạng thái N2 (副詞・程度・状態)"
+  },
+  {
+    "level": "N2",
+    "lesson_number": 25,
+    "title": "Thành ngữ 4 chữ & Quán dụng ngữ N2 (四字熟語・慣用句)",
+    "description": "Giáo trình Soumatome & Shinkanzen Master N2 - Bài 25: Thành ngữ 4 chữ & Quán dụng ngữ N2 (四字熟語・慣用句)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 1,
+    "title": "Chính trị đối ngoại & Bang giao quốc tế (外交・国際協調)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 01: Chính trị đối ngoại & Bang giao quốc tế (外交・国際協調)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 2,
+    "title": "Thể chế, Hiến pháp & Quyền lực nhà nước (憲法・統治・権力)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 02: Thể chế, Hiến pháp & Quyền lực nhà nước (憲法・統治・権力)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 3,
+    "title": "Kinh tế vĩ mô & Chính sách tài khóa (マクロ経済・財政政策)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 03: Kinh tế vĩ mô & Chính sách tài khóa (マクロ経済・財政政策)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 4,
+    "title": "Tài chính tiền tệ & Thị trường vốn (金融・為替・資本市場)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 04: Tài chính tiền tệ & Thị trường vốn (金融・為替・資本市場)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 5,
+    "title": "Tư pháp, Tố tụng & Tranh chấp pháp lý (司法・訴訟・法廷)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 05: Tư pháp, Tố tụng & Tranh chấp pháp lý (司法・訴訟・法廷)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 6,
+    "title": "Quyền công dân, Nhân quyền & Đạo lý (人権・市民権・正義)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 06: Quyền công dân, Nhân quyền & Đạo lý (人権・市民権・正義)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 7,
+    "title": "Triết học, Nhận thức luận & Hiện sinh (哲学・認識論・実存)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 07: Triết học, Nhận thức luận & Hiện sinh (哲学・認識論・実存)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 8,
+    "title": "Logic học, Biện chứng & Nghịch lý (論理学・弁証法・パラドックス)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 08: Logic học, Biện chứng & Nghịch lý (論理学・弁証法・パラドックス)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 9,
+    "title": "Khoa học tiên tiến, Lượng tử & Vũ trụ (先端科学・量子・宇宙)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 09: Khoa học tiên tiến, Lượng tử & Vũ trụ (先端科学・量子・宇宙)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 10,
+    "title": "Công nghệ sinh học & Đạo đức sinh học (バイオ・生命倫理)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 10: Công nghệ sinh học & Đạo đức sinh học (バイオ・生命倫理)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 11,
+    "title": "Mạng máy tính & Không gian số ảo (サイバー空間・デジタル主権)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 11: Mạng máy tính & Không gian số ảo (サイバー空間・デジタル主権)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 12,
+    "title": "Biến đổi khí hậu & Phát triển bền vững (地球規模課題・持続可能性)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 12: Biến đổi khí hậu & Phát triển bền vững (地球規模課題・持続可能性)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 13,
+    "title": "Xã hội học, Cơ cấu giai cấp & Dân số (社会学・格差・人口動態)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 13: Xã hội học, Cơ cấu giai cấp & Dân số (社会学・格差・人口動態)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 14,
+    "title": "Lao động, Tự động hóa & Thị trường việc làm (労働市場・自動化・雇用)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 14: Lao động, Tự động hóa & Thị trường việc làm (労働市場・自動化・雇用)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 15,
+    "title": "An sinh xã hội & Y tế cộng đồng chuyên sâu (社会保障・高度医療)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 15: An sinh xã hội & Y tế cộng đồng chuyên sâu (社会保障・高度医療)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 16,
+    "title": "Tâm lý học hành vi & Vô thức (行動心理・無意識・精神)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 16: Tâm lý học hành vi & Vô thức (行動心理・無意識・精神)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 17,
+    "title": "Cảm xúc phức hợp & Nhân cách con người (複雑な情動・人格)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 17: Cảm xúc phức hợp & Nhân cách con người (複雑な情動・人格)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 18,
+    "title": "Ngôn ngữ học, Ngữ nghĩa & Ký hiệu học (言語学・意味論・記号)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 18: Ngôn ngữ học, Ngữ nghĩa & Ký hiệu học (言語学・意味論・記号)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 19,
+    "title": "Văn học, Thi ca & Phê bình nghệ thuật (文学・詩歌・芸術批評)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 19: Văn học, Thi ca & Phê bình nghệ thuật (文学・詩歌・芸術批評)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 20,
+    "title": "Lịch sử, Di tích & Nền văn minh cổ đại (歴史・文明・史跡)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 20: Lịch sử, Di tích & Nền văn minh cổ đại (歴史・文明・史跡)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 21,
+    "title": "Tôn giáo, Tín ngưỡng & Phong tục tập quán (宗教・信仰・習俗)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 21: Tôn giáo, Tín ngưỡng & Phong tục tập quán (宗教・信仰・習俗)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 22,
+    "title": "Giao tiếp bác học & Ngoại giao công chúng (格調高い表現・対外発信)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 22: Giao tiếp bác học & Ngoại giao công chúng (格調高い表現・対外発信)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 23,
+    "title": "Tranh luận, Diễn thuyết & Hùng biện (討論・演説・修辞)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 23: Tranh luận, Diễn thuyết & Hùng biện (討論・演説・修辞)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 24,
+    "title": "Biến chuyển vĩ mô & Bất ổn toàn cầu (激動・構造変化・地政学)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 24: Biến chuyển vĩ mô & Bất ổn toàn cầu (激動・構造変化・地政学)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 25,
+    "title": "Phẩm hạnh, Khí chất & Đạo đức cá nhân (品格・気概・倫理)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 25: Phẩm hạnh, Khí chất & Đạo đức cá nhân (品格・気概・倫理)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 26,
+    "title": "Trạng thái, Cảnh tượng & Mô tả tinh tế (精緻な描写・様相)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 26: Trạng thái, Cảnh tượng & Mô tả tinh tế (精緻な描写・様相)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 27,
+    "title": "Hành vi cưỡng bức & Tác động xã hội (抑圧・推進・影響力)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 27: Hành vi cưỡng bức & Tác động xã hội (抑圧・推進・影響力)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 28,
+    "title": "Từ ngữ cổ điển, Văn phong bác học (雅語・古典的表現)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 28: Từ ngữ cổ điển, Văn phong bác học (雅語・古典的表現)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 29,
+    "title": "Phó từ & Quán ngữ biểu cảm đỉnh cao N1 (高度な副詞・慣用表現)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 29: Phó từ & Quán ngữ biểu cảm đỉnh cao N1 (高度な副詞・慣用表現)"
+  },
+  {
+    "level": "N1",
+    "lesson_number": 30,
+    "title": "Thành ngữ 4 chữ (Yojijukugo) N1 toàn tập (四字熟語マスター)",
+    "description": "Giáo trình Thượng Cấp Bác Học N1 - Bài 30: Thành ngữ 4 chữ (Yojijukugo) N1 toàn tập (四字熟語マスター)"
+  }
+]

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { quizService, speakJapanese } from '../services/api';
+import { quizService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import {
   CheckSquare,
@@ -20,12 +20,13 @@ import {
 import confetti from 'canvas-confetti';
 
 export default function QuizPage() {
-  const { selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [gameState, setGameState] = useState('setup'); // 'setup' | 'playing' | 'result'
   const [quizMode, setQuizMode] = useState('mixed'); // 'mixed' | 'jp_to_vi' | 'vi_to_jp' | 'kanji_to_reading'
   const [questionCount, setQuestionCount] = useState(10);
   const [timerSetting, setTimerSetting] = useState(20); // 10 | 20 | 30 | 0 (none)
+  const [lessonsList, setLessonsList] = useState([]);
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,12 +37,29 @@ export default function QuizPage() {
   const [timeLeft, setTimeLeft] = useState(20);
   const timerRef = useRef(null);
 
+  // Fetch lessons list for currentLevel
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        if (isMounted) {
+          setLessonsList(res.data || []);
+        }
+      } catch (err) {
+        console.error('Quiz fetch lessons error:', err);
+      }
+    };
+    fetchLessons();
+    return () => { isMounted = false; };
+  }, [currentLevel]);
+
   const modeCards = [
     {
       id: 'mixed',
       title: 'Đề thi tổng hợp',
       badge: 'Tổng hợp',
-      desc: 'Chuẩn format JLPT N5',
+      desc: `Chuẩn format JLPT ${currentLevel || 'N5'}`,
       icon: Shuffle,
     },
     {
@@ -74,6 +92,7 @@ export default function QuizPage() {
         lesson: selectedLesson === 'all' ? 'all' : selectedLesson,
         count: questionCount,
         mode: quizMode,
+        level: currentLevel || 'N5'
       });
 
       if (res.data?.success && res.data.questions?.length > 0) {
@@ -232,14 +251,22 @@ export default function QuizPage() {
                 <select
                   value={selectedLesson}
                   onChange={(e) => setSelectedLesson(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 bg-pink-50/40 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 bg-pink-50/40 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 truncate"
                 >
-                  <option value="all">Tất cả 25 bài (1,589 từ)</option>
-                  {Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
-                    <option key={n} value={n}>
-                      Bài {n < 10 ? `0${n}` : n}
-                    </option>
-                  ))}
+                  <option value="all">Toàn bộ giáo trình cấp độ {currentLevel || 'N5'}</option>
+                  {lessonsList.length > 0 ? (
+                    lessonsList.map((l) => (
+                      <option key={l.lesson_number} value={l.lesson_number}>
+                        Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}: {l.title}
+                      </option>
+                    ))
+                  ) : (
+                    Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>
+                        Bài {n < 10 ? `0${n}` : n}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
 

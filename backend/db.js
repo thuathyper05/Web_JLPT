@@ -3,61 +3,57 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-// Load fallback JSON datasets
-const lessonsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/n5_full_lessons.json'), 'utf8'));
-const grammarData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/n5_grammar_data.json'), 'utf8'));
-const kanjiData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/n5_kanji_data.json'), 'utf8'));
-const particlesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/n5_particles_data.json'), 'utf8'));
+// Load comprehensive multi-level JSON datasets with fallback
+const dataDir = path.join(__dirname, 'data');
 
-const LESSON_TITLES = {
-  1: "Chào hỏi, giới thiệu bản thân, quốc tịch, nghề nghiệp",
-  2: "Đồ vật quanh ta, sở hữu đồ vật",
-  3: "Địa điểm, vị trí, giá tiền",
-  4: "Thời gian, ngày trong tuần, động từ chỉ hành động thường ngày",
-  5: "Phương tiện đi lại, địa điểm đến, đi với ai",
-  6: "Ăn uống, hành động tác động lên tân ngữ (Trợ từ を)",
-  7: "Công cụ, phương tiện (Trợ từ で), cho và nhận (あげます, もらいます)",
-  8: "Tính từ đuôi い và tính từ đuôi な",
-  9: "Sở thích, khả năng, lý do (から)",
-  10: "Sự tồn tại của người và vật (います, あります)",
-  11: "Số đếm, lượng từ, thời gian",
-  12: "So sánh hơn, so sánh nhất, thì quá khứ của tính từ/danh từ",
-  13: "Mong muốn (欲しい, たい), mục đích hành động (に行きます)",
-  14: "Động từ thể て, yêu cầu lịch sự (てください), hành động đang diễn ra",
-  15: "Xin phép (てもいいですか), điều cấm chỉ (てはいけません)",
-  16: "Nối chuỗi hành động (て, から), miêu tả thuộc tính",
-  17: "Động từ thể ない, yêu cầu không làm gì (ないでください)",
-  18: "Động từ thể từ điển (辞書形), khả năng, sở thích",
-  19: "Động từ thể た, kinh nghiệm (たことがあります), liệt kê hành động (たり...たり)",
-  20: "Thể thông thường (Thể ngắn / 普通形)",
-  21: "Bày tỏ ý kiến (と思います), trích dẫn gián tiếp (と言いました)",
-  22: "Mệnh đề bổ ngữ cho danh từ (Định ngữ)",
-  23: "Khi... (とき), điều kiện hiển nhiên (と)",
-  24: "Hành động cho và nhận nâng cao (くれます, てあげます, てもらいます)",
-  25: "Câu điều kiện たら, giả định tương lai"
-};
+let allVocabularies = [];
+let allLessons = [];
+let allKanji = [];
+let allGrammar = [];
+let allParticles = [];
+let allParticleExercises = [];
 
-// Normalize lessons into flat vocabulary array with complete metadata
-let flatVocabularies = [];
-let vocabIdCounter = 1;
+try {
+  if (fs.existsSync(path.join(dataDir, 'all_vocabularies.json'))) {
+    allVocabularies = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_vocabularies.json'), 'utf8'));
+  }
+  if (fs.existsSync(path.join(dataDir, 'all_lessons.json'))) {
+    allLessons = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_lessons.json'), 'utf8'));
+  }
+  if (fs.existsSync(path.join(dataDir, 'all_kanji.json'))) {
+    allKanji = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_kanji.json'), 'utf8'));
+  }
+  if (fs.existsSync(path.join(dataDir, 'all_grammar.json'))) {
+    allGrammar = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_grammar.json'), 'utf8'));
+  }
+  if (fs.existsSync(path.join(dataDir, 'all_particles.json'))) {
+    allParticles = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_particles.json'), 'utf8'));
+  }
+  if (fs.existsSync(path.join(dataDir, 'all_particle_exercises.json'))) {
+    allParticleExercises = JSON.parse(fs.readFileSync(path.join(dataDir, 'all_particle_exercises.json'), 'utf8'));
+  }
+} catch (e) {
+  console.warn('[Data Engine] Warning reading all_* datasets:', e.message);
+}
 
-if (Array.isArray(lessonsRaw)) {
-  flatVocabularies = lessonsRaw;
-} else if (lessonsRaw && typeof lessonsRaw === 'object') {
-  Object.keys(lessonsRaw).forEach((lNumKey) => {
-    const lNum = parseInt(lNumKey);
-    const words = lessonsRaw[lNumKey];
+// Fallback to N5 files if all_* not yet generated
+if (allVocabularies.length === 0 && fs.existsSync(path.join(dataDir, 'n5_full_lessons.json'))) {
+  const n5Raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'n5_full_lessons.json'), 'utf8'));
+  let idC = 1;
+  Object.keys(n5Raw).forEach((lKey) => {
+    const lNum = parseInt(lKey);
+    const words = n5Raw[lKey];
     if (Array.isArray(words)) {
       words.forEach((w) => {
-        flatVocabularies.push({
-          id: vocabIdCounter++,
+        allVocabularies.push({
+          id: idC++,
+          level: 'N5',
           lesson_number: lNum,
-          lesson_title: LESSON_TITLES[lNum] || `Bài ${lNum}`,
           kanji: w.kanji || '',
-          kana: w.kana || w.clean_kana || '',
+          kana: w.kana || '',
           clean_kana: w.clean_kana || w.kana || '',
           romaji: w.romaji || '',
-          vietnamese: w.vietnamese || w.clean_vietnamese || '',
+          vietnamese: w.vietnamese || '',
           clean_vietnamese: w.clean_vietnamese || w.vietnamese || '',
           example_jp: w.example_jp || '',
           example_vi: w.example_vi || '',
@@ -95,17 +91,18 @@ if (process.env.DATABASE_URL || process.env.DB_HOST) {
     console.warn('[PostgreSQL] Pool initialization error, using in-memory engine:', e.message);
   }
 } else {
-  console.log(`[Data Engine] Running in Zero-Config In-Memory Mode with ${flatVocabularies.length} vocabularies, ${grammarData.length} grammar, ${kanjiData.length} kanji.`);
+  console.log(`[Data Engine] Running in In-Memory Mode with ${allVocabularies.length} vocabularies, ${allGrammar.length} grammar, ${allKanji.length} kanji.`);
 }
 
 module.exports = {
   pool,
   isDbConnected: () => isDbConnected,
-  lessonTitles: LESSON_TITLES,
   data: {
-    lessons: flatVocabularies,
-    grammar: grammarData,
-    kanji: kanjiData,
-    particles: particlesData
+    lessons: allVocabularies,
+    lessonList: allLessons,
+    grammar: allGrammar,
+    kanji: allKanji,
+    particles: allParticles,
+    particleExercises: allParticleExercises
   }
 };

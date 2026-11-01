@@ -1,0 +1,782 @@
+[
+  {
+    "id": 1,
+    "level": "N5",
+    "question": "毎朝 7時［？］起きます。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "は"
+    ],
+    "answer": "に",
+    "explanation": "Mỗi sáng tôi thức dậy vào lúc 7 giờ."
+  },
+  {
+    "id": 2,
+    "level": "N5",
+    "question": "私は 図書館［？］本を 借りました。",
+    "options": [
+      "で",
+      "に",
+      "を",
+      "へ"
+    ],
+    "answer": "で",
+    "explanation": "Tôi đã mượn sách ở thư viện."
+  },
+  {
+    "id": 3,
+    "level": "N5",
+    "question": "日曜日［？］どこも 行きませんでした。",
+    "options": [
+      "は",
+      "に",
+      "も",
+      "で"
+    ],
+    "answer": "は",
+    "explanation": "Chủ nhật tôi đã không đi đâu cả."
+  },
+  {
+    "id": 4,
+    "level": "N5",
+    "question": "箸［？］ご飯を 食べます。",
+    "options": [
+      "で",
+      "に",
+      "を",
+      "と"
+    ],
+    "answer": "で",
+    "explanation": "Ăn cơm bằng đũa."
+  },
+  {
+    "id": 5,
+    "level": "N5",
+    "question": "友達［？］日本へ 行きました。",
+    "options": [
+      "と",
+      "に",
+      "で",
+      "を"
+    ],
+    "answer": "と",
+    "explanation": "Tôi đã đi Nhật cùng với bạn."
+  },
+  {
+    "id": 6,
+    "level": "N5",
+    "question": "部屋に テレビ［？］あります。",
+    "options": [
+      "が",
+      "を",
+      "に",
+      "は"
+    ],
+    "answer": "が",
+    "explanation": "Trong phòng có cái tivi."
+  },
+  {
+    "id": 7,
+    "level": "N5",
+    "question": "明日 京都［？］行きます。",
+    "options": [
+      "へ",
+      "で",
+      "を",
+      "から"
+    ],
+    "answer": "へ",
+    "explanation": "Ngày mai tôi đi Kyoto."
+  },
+  {
+    "id": 8,
+    "level": "N5",
+    "question": "会社は 9時［？］5時までです。",
+    "options": [
+      "から",
+      "まで",
+      "に",
+      "で"
+    ],
+    "answer": "から",
+    "explanation": "Công ty làm từ 9 giờ đến 5 giờ."
+  },
+  {
+    "id": 9,
+    "level": "N5",
+    "question": "金曜日［？］レポートを 出してください。",
+    "options": [
+      "までに",
+      "まで",
+      "から",
+      "に"
+    ],
+    "answer": "までに",
+    "explanation": "Hãy nộp báo cáo trước thứ Sáu."
+  },
+  {
+    "id": 10,
+    "level": "N5",
+    "question": "財布に 千円［？］ありません。",
+    "options": [
+      "しか",
+      "だけ",
+      "ばかり",
+      "でも"
+    ],
+    "answer": "しか",
+    "explanation": "Trong ví chỉ có mỗi 1000 yên."
+  },
+  {
+    "id": 11,
+    "level": "N5",
+    "question": "ひらがな［？］書くことが できます。",
+    "options": [
+      "だけ",
+      "しか",
+      "でも",
+      "ほど"
+    ],
+    "answer": "だけ",
+    "explanation": "Tôi chỉ có thể viết được chữ Hiragana."
+  },
+  {
+    "id": 12,
+    "level": "N5",
+    "question": "お茶［？］飲みませんか。",
+    "options": [
+      "でも",
+      "しか",
+      "だけ",
+      "ほど"
+    ],
+    "answer": "でも",
+    "explanation": "Bạn có muốn uống chút gì như trà chẳng hạn không?"
+  },
+  {
+    "id": 13,
+    "level": "N5",
+    "question": "駅まで 歩いて 15分［？］かかります。",
+    "options": [
+      "ぐらい",
+      "しか",
+      "でも",
+      "まで"
+    ],
+    "answer": "ぐらい",
+    "explanation": "Đi bộ đến ga mất khoảng chừng 15 phút."
+  },
+  {
+    "id": 14,
+    "level": "N5",
+    "question": "今日は 昨日［？］寒くないです。",
+    "options": [
+      "ほど",
+      "より",
+      "くらい",
+      "だけ"
+    ],
+    "answer": "ほど",
+    "explanation": "Hôm nay không lạnh bằng hôm qua."
+  },
+  {
+    "id": 15,
+    "level": "N5",
+    "question": "車は 自転車［？］速いです。",
+    "options": [
+      "より",
+      "ほど",
+      "くらい",
+      "から"
+    ],
+    "answer": "より",
+    "explanation": "Ô tô thì nhanh hơn xe đạp."
+  },
+  {
+    "id": 16,
+    "level": "N4",
+    "question": "机の上に 本［？］ノートなどが あります。",
+    "options": [
+      "や",
+      "と",
+      "も",
+      "で"
+    ],
+    "answer": "や",
+    "explanation": "Trên bàn có những thứ như sách và vở."
+  },
+  {
+    "id": 17,
+    "level": "N4",
+    "question": "テレビ［？］見ていないで、勉強しなさい。",
+    "options": [
+      "ばかり",
+      "だけ",
+      "しか",
+      "でも"
+    ],
+    "answer": "ばかり",
+    "explanation": "Đừng có suốt ngày chỉ toàn xem tivi, hãy học bài đi."
+  },
+  {
+    "id": 18,
+    "level": "N4",
+    "question": "先生［？］褒められました。",
+    "options": [
+      "に",
+      "を",
+      "で",
+      "が"
+    ],
+    "answer": "に",
+    "explanation": "Tôi đã được thầy giáo khen ngợi."
+  },
+  {
+    "id": 19,
+    "level": "N4",
+    "question": "泥棒に お金［？］盗まれました。",
+    "options": [
+      "を",
+      "に",
+      "が",
+      "で"
+    ],
+    "answer": "を",
+    "explanation": "Tôi bị kẻ trộm lấy cắp mất tiền."
+  },
+  {
+    "id": 20,
+    "level": "N4",
+    "question": "外国語を 勉強する［？］は 面白いです。",
+    "options": [
+      "の",
+      "こと",
+      "もの",
+      "ところ"
+    ],
+    "answer": "の",
+    "explanation": "Việc học ngoại ngữ thì rất thú vị."
+  },
+  {
+    "id": 21,
+    "level": "N4",
+    "question": "ニュースを 聞いて びっくり［？］。",
+    "options": [
+      "しました",
+      "します",
+      "して",
+      "する"
+    ],
+    "answer": "しました",
+    "explanation": "Nghe tin tức xong tôi đã rất bất ngờ."
+  },
+  {
+    "id": 22,
+    "level": "N4",
+    "question": "雨［？］試合が 中止に なりました。",
+    "options": [
+      "で",
+      "に",
+      "を",
+      "が"
+    ],
+    "answer": "で",
+    "explanation": "Trận đấu bị hủy bỏ do trời mưa."
+  },
+  {
+    "id": 23,
+    "level": "N4",
+    "question": "時間がない［？］、急ぎましょう。",
+    "options": [
+      "ので",
+      "のに",
+      "から",
+      "けど"
+    ],
+    "answer": "ので",
+    "explanation": "Vì không có thời gian nên hãy khẩn trương lên."
+  },
+  {
+    "id": 24,
+    "level": "N4",
+    "question": "一生懸命 勉強した［？］、不合格でした。",
+    "options": [
+      "のに",
+      "ので",
+      "から",
+      "でも"
+    ],
+    "answer": "のに",
+    "explanation": "Mặc dù đã học hết sức chăm chỉ thế mà vẫn trượt."
+  },
+  {
+    "id": 25,
+    "level": "N4",
+    "question": "会議が 何時に 始まる［？］知っていますか。",
+    "options": [
+      "か",
+      "かどうか",
+      "の",
+      "と"
+    ],
+    "answer": "か",
+    "explanation": "Bạn có biết cuộc họp bắt đầu lúc mấy giờ không?"
+  },
+  {
+    "id": 26,
+    "level": "N4",
+    "question": "犬に えさを ［？］。",
+    "options": [
+      "やります",
+      "もらいます",
+      "くれます",
+      "いただきます"
+    ],
+    "answer": "やります",
+    "explanation": "Tôi cho chó ăn."
+  },
+  {
+    "id": 27,
+    "level": "N4",
+    "question": "社長に お土産を ［？］。",
+    "options": [
+      "いただきました",
+      "くれました",
+      "やりました",
+      "あげました"
+    ],
+    "answer": "いただきました",
+    "explanation": "Tôi đã nhận được quà lưu niệm từ giám đốc."
+  },
+  {
+    "id": 28,
+    "level": "N4",
+    "question": "部長が お菓子を ［？］。",
+    "options": [
+      "くださいました",
+      "いただきました",
+      "やりました",
+      "もらいました"
+    ],
+    "answer": "くださいました",
+    "explanation": "Trưởng phòng đã cho tôi bánh kẹo."
+  },
+  {
+    "id": 29,
+    "level": "N4",
+    "question": "家を 買う［？］に 貯金しています。",
+    "options": [
+      "ため",
+      "の",
+      "ほう",
+      "よう"
+    ],
+    "answer": "ため",
+    "explanation": "Tôi tiết kiệm tiền để mua nhà."
+  },
+  {
+    "id": 30,
+    "level": "N4",
+    "question": "このはさみは 紙を 切る［？］に 使います。",
+    "options": [
+      "の",
+      "ため",
+      "こと",
+      "もの"
+    ],
+    "answer": "の",
+    "explanation": "Cái kéo này dùng để cắt giấy."
+  },
+  {
+    "id": 31,
+    "level": "N3",
+    "question": "今年［？］合格してみせる。",
+    "options": [
+      "こそ",
+      "さえ",
+      "でも",
+      "しか"
+    ],
+    "answer": "こそ",
+    "explanation": "Chính năm nay tôi nhất định sẽ đỗ cho mà xem."
+  },
+  {
+    "id": 32,
+    "level": "N3",
+    "question": "ひらがな［？］読めない。",
+    "options": [
+      "さえ",
+      "こそ",
+      "でも",
+      "しか"
+    ],
+    "answer": "さえ",
+    "explanation": "Ngay cả chữ Hiragana cũng không đọc nổi."
+  },
+  {
+    "id": 33,
+    "level": "N3",
+    "question": "日本の 経済［？］ついて 論文を 書く。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Viết luận văn về kinh tế Nhật Bản."
+  },
+  {
+    "id": 34,
+    "level": "N3",
+    "question": "事件［？］関して 調査が 行われている。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Cuộc điều tra liên quan đến vụ án đang được tiến hành."
+  },
+  {
+    "id": 35,
+    "level": "N3",
+    "question": "先生［？］対して 礼儀正しく 接する。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Đối với thầy cô giáo thì phải ứng xử lễ phép."
+  },
+  {
+    "id": 36,
+    "level": "N3",
+    "question": "私［？］とって 家族は 最も 大切だ。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Đối với tôi gia đình là quan trọng nhất."
+  },
+  {
+    "id": 37,
+    "level": "N3",
+    "question": "関東から 関西［？］かけて 大雨が 降る見込みだ。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "まで"
+    ],
+    "answer": "に",
+    "explanation": "Dự kiến mưa lớn từ vùng Kanto đến khoảng vùng Kansai."
+  },
+  {
+    "id": 38,
+    "level": "N3",
+    "question": "3日間に［？］熱戦が 繰り広げられた。",
+    "options": [
+      "わたって",
+      "かけて",
+      "つれて",
+      "ともなって"
+    ],
+    "answer": "わたって",
+    "explanation": "Trận đấu nảy lửa đã diễn ra suốt trong vòng 3 ngày."
+  },
+  {
+    "id": 39,
+    "level": "N3",
+    "question": "友人を通じて 仕事を ［？］。",
+    "options": [
+      "見つけた",
+      "見える",
+      "見られる",
+      "見せる"
+    ],
+    "answer": "見つけた",
+    "explanation": "Thông qua người bạn, tôi đã tìm được việc làm."
+  },
+  {
+    "id": 40,
+    "level": "N3",
+    "question": "台風が 近づく［？］つれて 風が 強くなってきた。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Cùng với việc bão tiến lại gần, gió càng lúc càng mạnh."
+  },
+  {
+    "id": 41,
+    "level": "N3",
+    "question": "休む［？］か、残業が 続いている。",
+    "options": [
+      "どころ",
+      "ばかり",
+      "だけ",
+      "ほど"
+    ],
+    "answer": "どころ",
+    "explanation": "Nghỉ ngơi đâu chẳng thấy, ngược lại còn liên tục tăng ca."
+  },
+  {
+    "id": 42,
+    "level": "N3",
+    "question": "彼は 英語［？］か、中国語も 堪能だ。",
+    "options": [
+      "ばかり",
+      "どころ",
+      "のみ",
+      "だけ"
+    ],
+    "answer": "ばかり",
+    "explanation": "Anh ấy không chỉ tiếng Anh mà ngay cả tiếng Trung cũng rất thành thạo."
+  },
+  {
+    "id": 43,
+    "level": "N3",
+    "question": "日本国内［？］ならず、世界中で 絶賛された。",
+    "options": [
+      "のみ",
+      "ばかり",
+      "だけ",
+      "ほど"
+    ],
+    "answer": "のみ",
+    "explanation": "Không chỉ trong nước Nhật mà được khen ngợi trên toàn thế giới."
+  },
+  {
+    "id": 44,
+    "level": "N3",
+    "question": "爪の 先［？］至るまで 手入れが 行き届いている。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "まで"
+    ],
+    "answer": "に",
+    "explanation": "Được chăm sóc chu đáo đến tận từng đầu móng tay."
+  },
+  {
+    "id": 45,
+    "level": "N3",
+    "question": "アンケートの 結果［？］もとに 改善策を 考える。",
+    "options": [
+      "を",
+      "に",
+      "で",
+      "と"
+    ],
+    "answer": "を",
+    "explanation": "Nghĩ phương án cải tiến dựa trên kết quả khảo sát."
+  },
+  {
+    "id": 46,
+    "level": "N2",
+    "question": "病気［？］契機に 生活習慣を 改めた。",
+    "options": [
+      "を",
+      "に",
+      "で",
+      "と"
+    ],
+    "answer": "を",
+    "explanation": "Lấy đợt ốm làm bước ngoặt, tôi đã thay đổi thói quen sinh hoạt."
+  },
+  {
+    "id": 47,
+    "level": "N2",
+    "question": "契約締結［？］際して、書類を 確認する。",
+    "options": [
+      "に",
+      "で",
+      "を",
+      "と"
+    ],
+    "answer": "に",
+    "explanation": "Nhân dịp ký kết hợp đồng, chúng tôi kiểm tra lại giấy tờ."
+  },
+  {
+    "id": 48,
+    "level": "N2",
+    "question": "東京公演［？］皮切りに、全国ツアーが 始まる。",
+    "options": [
+      "を",
+      "に",
+      "で",
+      "と"
+    ],
+    "answer": "を",
+    "explanation": "Khởi đầu từ buổi diễn ở Tokyo, chuyến lưu diễn toàn quốc bắt đầu."
+  },
+  {
+    "id": 49,
+    "level": "N2",
+    "question": "悪天候のため、日程の 延期［？］余儀なくされた。",
+    "options": [
+      "を",
+      "に",
+      "で",
+      "と"
+    ],
+    "answer": "を",
+    "explanation": "Do thời tiết xấu, chúng tôi buộc lòng phải hoãn lại lịch trình."
+  },
+  {
+    "id": 50,
+    "level": "N2",
+    "question": "景気の 低迷と ［？］、失業率が 上昇した。",
+    "options": [
+      "相まって",
+      "ともなって",
+      "つれて",
+      "したがって"
+    ],
+    "answer": "相まって",
+    "explanation": "Cộng hưởng với sự trì trệ của nền kinh tế, tỷ lệ thất nghiệp gia tăng."
+  },
+  {
+    "id": 51,
+    "level": "N2",
+    "question": "法律の 定める ところに［？］処理する。",
+    "options": [
+      "即して",
+      "際して",
+      "面して",
+      "応じて"
+    ],
+    "answer": "即して",
+    "explanation": "Xử lý chiểu theo đúng như quy định của pháp luật."
+  },
+  {
+    "id": 52,
+    "level": "N2",
+    "question": "お客様の ご要望に［？］、柔軟に 対応いたします。",
+    "options": [
+      "応じて",
+      "即して",
+      "際して",
+      "わたって"
+    ],
+    "answer": "応じて",
+    "explanation": "Tùy ứng theo yêu cầu của quý khách, chúng tôi sẽ đáp ứng linh hoạt."
+  },
+  {
+    "id": 53,
+    "level": "N2",
+    "question": "マニュアルに［？］、機械を 操作してください。",
+    "options": [
+      "沿って",
+      "際して",
+      "即して",
+      "つれて"
+    ],
+    "answer": "沿って",
+    "explanation": "Hãy thao tác máy móc dọc theo đúng sách hướng dẫn."
+  },
+  {
+    "id": 54,
+    "level": "N2",
+    "question": "基本理念に［？］、新たな 方針を 打ち出す。",
+    "options": [
+      "基づいて",
+      "即して",
+      "応じて",
+      "際して"
+    ],
+    "answer": "基づいて",
+    "explanation": "Dựa trên triết lý nền tảng cơ bản, đưa ra phương châm mới."
+  },
+  {
+    "id": 55,
+    "level": "N2",
+    "question": "責任者の 辞任［？］めぐって、激しい 議論が 続いた。",
+    "options": [
+      "を",
+      "に",
+      "で",
+      "と"
+    ],
+    "answer": "を",
+    "explanation": "Xoay quanh việc từ chức của người chịu trách nhiệm, tranh luận gay gắt tiếp diễn."
+  },
+  {
+    "id": 56,
+    "level": "N2",
+    "question": "社長を［？］、全社員が 一丸となって 取り組む。",
+    "options": [
+      "はじめ",
+      "おいて",
+      "もとに",
+      "通して"
+    ],
+    "answer": "はじめ",
+    "explanation": "Đứng đầu là giám đốc, toàn thể nhân viên đồng lòng nỗ lực."
+  },
+  {
+    "id": 57,
+    "level": "N2",
+    "question": "彼を［？］ほかに、この 大役を 任せられる 人は いない。",
+    "options": [
+      "おいて",
+      "こめて",
+      "もとに",
+      "通して"
+    ],
+    "answer": "おいて",
+    "explanation": "Ngoại trừ anh ấy ra thì không có ai có thể gánh vác trọng trách này."
+  },
+  {
+    "id": 58,
+    "level": "N2",
+    "question": "感謝の 気持ちを［？］、花束を 贈る。",
+    "options": [
+      "こめて",
+      "おいて",
+      "とおして",
+      "はじめ"
+    ],
+    "answer": "こめて",
+    "explanation": "Gửi gắm trọn vẹn tấm lòng biết ơn, tôi tặng bó hoa tươi."
+  },
+  {
+    "id": 59,
+    "level": "N2",
+    "question": "汗［？］になって 走り抜いた。",
+    "options": [
+      "まみれ",
+      "ずくめ",
+      "だらけ",
+      "ぎみ"
+    ],
+    "answer": "まみれ",
+    "explanation": "Người ướt đẫm mồ hôi, tôi đã chạy hết sức về đích."
+  },
+  {
+    "id": 60,
+    "level": "N2",
+    "question": "黒［？］の 服を着た 男が 立っていた。",
+    "options": [
+      "ずくめ",
+      "まみれ",
+      "だらけ",
+      "っぽ"
+    ],
+    "answer": "ずくめ",
+    "explanation": "Một người đàn ông mặc nguyên cây đen toàn tập đang đứng đó."
+  }
+]

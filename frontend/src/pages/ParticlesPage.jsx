@@ -40,14 +40,23 @@ export default function ParticlesPage() {
     fetchParticles();
   }, [activeLevel]);
 
-  const filtered = particles.filter((p) => {
+  const normalizedParticles = particles.map(p => ({
+    ...p,
+    title: p.title || p.role || p.particle,
+    usage: p.usage || p.meaning || '',
+    formula: p.formula || (p.notes && p.notes.includes('Công thức') ? p.notes : ''),
+    examples: p.examples && p.examples.length > 0 ? p.examples : (p.example ? [{ jp: p.example, vi: p.translation }] : []),
+    romaji: p.romaji || (p.particle.includes('(') ? p.particle.replace(/.*\((.*)\).*/, '$1') : '')
+  }));
+
+  const filtered = normalizedParticles.filter((p) => {
     if (!search.trim()) return true;
     const q = search.toLowerCase().trim();
     return (
-      p.particle.includes(q) ||
-      p.romaji.toLowerCase().includes(q) ||
-      p.title.toLowerCase().includes(q) ||
-      p.usage.toLowerCase().includes(q)
+      (p.particle && p.particle.toLowerCase().includes(q)) ||
+      (p.romaji && p.romaji.toLowerCase().includes(q)) ||
+      (p.title && p.title.toLowerCase().includes(q)) ||
+      (p.usage && p.usage.toLowerCase().includes(q))
     );
   });
 

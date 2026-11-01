@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { vocabService, speakJapanese } from '../services/api';
+import { vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import FuriganaWord from '../components/FuriganaWord';
 import {
@@ -30,9 +30,27 @@ export default function WordMatchPage() {
   const { currentLevel, selectedLesson, recordWordProgress, askAi } = useApp();
 
   const [lessonFilter, setLessonFilter] = useState(selectedLesson ? String(selectedLesson) : '1');
+  const [lessonsList, setLessonsList] = useState([]);
   const [gameMode, setGameMode] = useState('relax'); // 'relax' | 'speed_60s' | 'survival'
   const [gameState, setGameState] = useState('setup'); // 'setup' | 'playing' | 'result'
   const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Fetch lessons list for currentLevel
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        if (isMounted) {
+          setLessonsList(res.data || []);
+        }
+      } catch (err) {
+        console.error('WordMatch fetch lessons error:', err);
+      }
+    };
+    fetchLessons();
+    return () => { isMounted = false; };
+  }, [currentLevel]);
 
   // Stats & Progress
   const [timeLeft, setTimeLeft] = useState(60);
@@ -384,21 +402,22 @@ export default function WordMatchPage() {
             <select
               value={lessonFilter}
               onChange={(e) => setLessonFilter(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-pink-500 truncate"
             >
               <option value="all">Tất cả bài học (Cấp độ {currentLevel || 'N5'})</option>
-              {(currentLevel === 'N4'
-                ? Array.from({ length: 25 }, (_, i) => i + 26)
-                : currentLevel === 'N3'
-                ? Array.from({ length: 20 }, (_, i) => i + 1)
-                : currentLevel === 'N2' || currentLevel === 'N1'
-                ? Array.from({ length: 15 }, (_, i) => i + 1)
-                : Array.from({ length: 25 }, (_, i) => i + 1)
-              ).map((n) => (
-                <option key={n} value={n}>
-                  Bài {n < 10 ? `0${n}` : n}
-                </option>
-              ))}
+              {lessonsList.length > 0 ? (
+                lessonsList.map((l) => (
+                  <option key={l.lesson_number} value={l.lesson_number}>
+                    Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}: {l.title}
+                  </option>
+                ))
+              ) : (
+                Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>
+                    Bài {n < 10 ? `0${n}` : n}
+                  </option>
+                ))
+              )}
             </select>
           </div>
 

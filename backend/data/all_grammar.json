@@ -1,0 +1,4694 @@
+[
+  {
+    "id": 1,
+    "level": "N5",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "N1 は N2 です",
+    "structure": "N1 は N2 です",
+    "meaning": "N1 là N2 (câu khẳng định cơ bản).",
+    "usage_notes": "Đáp án bài tập điền khuyết: は",
+    "examples": [
+      {
+        "jp": "わたし［？］マイク・ミラーです。",
+        "vi": "N1 là N2 (câu khẳng định cơ bản).",
+        "answer": "は"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "level": "N5",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "N1 は N2 じゃありません",
+    "structure": "N1 は N2 じゃありません / ではありません",
+    "meaning": "N1 không phải là N2 (phủ định).",
+    "usage_notes": "Đáp án bài tập điền khuyết: じゃ",
+    "examples": [
+      {
+        "jp": "サントスさんは 学生［？］ありません。",
+        "vi": "N1 không phải là N2 (phủ định).",
+        "answer": "じゃ"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "level": "N5",
+    "lesson_number": 1,
+    "order_num": 3,
+    "title": "N1 は N2 ですか",
+    "structure": "N1 は N2 ですか",
+    "meaning": "N1 có phải là N2 không? (câu hỏi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: か",
+    "examples": [
+      {
+        "jp": "ミラーさんは アメリカ人です［？］。",
+        "vi": "N1 có phải là N2 không? (câu hỏi).",
+        "answer": "か"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "level": "N5",
+    "lesson_number": 1,
+    "order_num": 4,
+    "title": "N も",
+    "structure": "N も",
+    "meaning": "Cũng là N (trợ từ も thay cho は).",
+    "usage_notes": "Đáp án bài tập điền khuyết: も",
+    "examples": [
+      {
+        "jp": "ミラーさんは 会社員です。グプタさん［？］会社員です。",
+        "vi": "Cũng là N (trợ từ も thay cho は).",
+        "answer": "も"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "level": "N5",
+    "lesson_number": 1,
+    "order_num": 5,
+    "title": "N1 の N2",
+    "structure": "N1 の N2",
+    "meaning": "N2 của N1 / N2 thuộc N1.",
+    "usage_notes": "Đáp án bài tập điền khuyết: の",
+    "examples": [
+      {
+        "jp": "ミラーさんは IMC［？］社員です。",
+        "vi": "N2 của N1 / N2 thuộc N1.",
+        "answer": "の"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "level": "N5",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "これ / それ / あれ は N です",
+    "structure": "これ / それ / あれ は N です",
+    "meaning": "Cái này / Cái đó / Cái kia là N.",
+    "usage_notes": "Đáp án bài tập điền khuyết: こ",
+    "examples": [
+      {
+        "jp": "［？］れは 辞書です。（ở gần người nói）",
+        "vi": "Cái này / Cái đó / Cái kia là N.",
+        "answer": "こ"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "level": "N5",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "この / その / あの N",
+    "structure": "この / その / あの + N は ...",
+    "meaning": "Cái N này / N đó / N kia...",
+    "usage_notes": "Đáp án bài tập điền khuyết: その",
+    "examples": [
+      {
+        "jp": "［？］の本は わたしのです。（quyển sách ở gần người nghe）",
+        "vi": "Cái N này / N đó / N kia...",
+        "answer": "その"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "level": "N5",
+    "lesson_number": 2,
+    "order_num": 3,
+    "title": "そうです / そうじゃありません",
+    "structure": "はい、そうです / いいえ、そうじゃありません",
+    "meaning": "Đúng vậy / Không phải như vậy.",
+    "usage_notes": "Đáp án bài tập điền khuyết: そう",
+    "examples": [
+      {
+        "jp": "それは テレホンカードですか。―はい、［？］です。",
+        "vi": "Đúng vậy / Không phải như vậy.",
+        "answer": "そう"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "level": "N5",
+    "lesson_number": 2,
+    "order_num": 4,
+    "title": "N1 ですか、N2 ですか",
+    "structure": "N1 ですか、N2 ですか",
+    "meaning": "Là N1 hay là N2? (câu hỏi lựa chọn).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 「７」",
+    "examples": [
+      {
+        "jp": "これは 「９」ですか、［？］ですか。",
+        "vi": "Là N1 hay là N2? (câu hỏi lựa chọn).",
+        "answer": "「７」"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "level": "N5",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "ここ / そこ / あそこ は N です",
+    "structure": "ここ / そこ / あそこ は N(địa điểm) です",
+    "meaning": "Chỗ này / Chỗ đó / Chỗ kia là...",
+    "usage_notes": "Đáp án bài tập điền khuyết: こ",
+    "examples": [
+      {
+        "jp": "［？］こは 事務所です。（nơi người nói đứng）",
+        "vi": "Chỗ này / Chỗ đó / Chỗ kia là...",
+        "answer": "こ"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "level": "N5",
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "N は どこ ですか",
+    "structure": "N は どこ / どちら ですか",
+    "meaning": "N ở đâu? (hỏi vị trí, địa điểm).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ど",
+    "examples": [
+      {
+        "jp": "お手洗いは ［？］こですか。",
+        "vi": "N ở đâu? (hỏi vị trí, địa điểm).",
+        "answer": "ど"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "level": "N5",
+    "lesson_number": 3,
+    "order_num": 3,
+    "title": "こちら / そちら / あちら",
+    "structure": "こちら / そちら / あちら / どちら",
+    "meaning": "Phía này / Phía đó / Phía kia / Hướng nào (lịch sự).",
+    "usage_notes": "Đáp án bài tập điền khuyết: あ",
+    "examples": [
+      {
+        "jp": "エレベーターは ［？］ちらです。",
+        "vi": "Phía này / Phía đó / Phía kia / Hướng nào (lịch sự).",
+        "answer": "あ"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "level": "N5",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "今～時～分です",
+    "structure": "今 ～時 ～分 です",
+    "meaning": "Bây giờ là mấy giờ mấy phút.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 何",
+    "examples": [
+      {
+        "jp": "今 ［？］時ですか。―４時です。",
+        "vi": "Bây giờ là mấy giờ mấy phút.",
+        "answer": "何"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "level": "N5",
+    "lesson_number": 4,
+    "order_num": 2,
+    "title": "Vます / Vません / Vました",
+    "structure": "Vます / ません / ました / ませんでした",
+    "meaning": "Thời và thể của động từ lịch sự.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ます",
+    "examples": [
+      {
+        "jp": "毎朝 ６時に 起き［？］。",
+        "vi": "Thời và thể của động từ lịch sự.",
+        "answer": "ます"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "level": "N5",
+    "lesson_number": 4,
+    "order_num": 3,
+    "title": "N(thời gian) に V",
+    "structure": "N(thời gian có số) に V",
+    "meaning": "Làm gì vào lúc mấy giờ / ngày nào.",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "毎晩 １１時［？］寝ます。",
+        "vi": "Làm gì vào lúc mấy giờ / ngày nào.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "level": "N5",
+    "lesson_number": 4,
+    "order_num": 4,
+    "title": "N1 から N2 まで",
+    "structure": "N1 から N2 まで",
+    "meaning": "Từ N1 đến N2 (thời gian, địa điểm).",
+    "usage_notes": "Đáp án bài tập điền khuyết: から",
+    "examples": [
+      {
+        "jp": "銀行は ９時［？］３時までです。",
+        "vi": "Từ N1 đến N2 (thời gian, địa điểm).",
+        "answer": "から"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "level": "N5",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "N(địa điểm) へ 行きます/来ます/帰ります",
+    "structure": "N(địa điểm) へ 行きます / 来ます / 帰ります",
+    "meaning": "Đi / Đến / Về đâu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: へ",
+    "examples": [
+      {
+        "jp": "わたしは 京都［？］行きます。",
+        "vi": "Đi / Đến / Về đâu.",
+        "answer": "へ"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "level": "N5",
+    "lesson_number": 5,
+    "order_num": 2,
+    "title": "どこ［へ］も 行きません",
+    "structure": "どこ［へ］も 行きません / 行きませんでした",
+    "meaning": "Không đi bất cứ đâu cả (phủ định hoàn toàn).",
+    "usage_notes": "Đáp án bài tập điền khuyết: へも",
+    "examples": [
+      {
+        "jp": "日曜日は どこ［？］行きませんでした。",
+        "vi": "Không đi bất cứ đâu cả (phủ định hoàn toàn).",
+        "answer": "へも"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "level": "N5",
+    "lesson_number": 5,
+    "order_num": 3,
+    "title": "N(phương tiện) で 行きます",
+    "structure": "N(phương tiện) で 行きます",
+    "meaning": "Đi bằng phương tiện gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "飛行機［？］国へ 帰ります。",
+        "vi": "Đi bằng phương tiện gì.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "level": "N5",
+    "lesson_number": 5,
+    "order_num": 4,
+    "title": "N(người) と V",
+    "structure": "N(người) と V",
+    "meaning": "Làm gì cùng với ai.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "家族［？］日本へ 来ました。",
+        "vi": "Làm gì cùng với ai.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "level": "N5",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "N を V(tha động từ)",
+    "structure": "N を Vます",
+    "meaning": "Làm hành động V tác động lên tân ngữ N.",
+    "usage_notes": "Đáp án bài tập điền khuyết: を",
+    "examples": [
+      {
+        "jp": "ご飯［？］食べます。",
+        "vi": "Làm hành động V tác động lên tân ngữ N.",
+        "answer": "を"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "level": "N5",
+    "lesson_number": 6,
+    "order_num": 2,
+    "title": "N(địa điểm) で V",
+    "structure": "N(địa điểm) で Vます",
+    "meaning": "Làm hành động V tại địa điểm N.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "駅［？］新聞を 買いました。",
+        "vi": "Làm hành động V tại địa điểm N.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "level": "N5",
+    "lesson_number": 6,
+    "order_num": 3,
+    "title": "Vませんか",
+    "structure": "V(bỏ ます) + ませんか",
+    "meaning": "Cùng làm gì với tôi nhé? (lời mời rủ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ません",
+    "examples": [
+      {
+        "jp": "いっしょに 京都へ 行き［？］か。",
+        "vi": "Cùng làm gì với tôi nhé? (lời mời rủ).",
+        "answer": "ません"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "level": "N5",
+    "lesson_number": 6,
+    "order_num": 4,
+    "title": "Vましょう",
+    "structure": "V(bỏ ます) + ましょう",
+    "meaning": "Chúng ta cùng làm thôi nào / Để tôi làm cho.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ましょう",
+    "examples": [
+      {
+        "jp": "ちょっと 休み［？］。",
+        "vi": "Chúng ta cùng làm thôi nào / Để tôi làm cho.",
+        "answer": "ましょう"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "level": "N5",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "N(công cụ) で V",
+    "structure": "N(dụng cụ, ngôn ngữ) で Vます",
+    "meaning": "Làm V bằng công cụ / ngôn ngữ gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "はし［？］ご飯を 食べます。",
+        "vi": "Làm V bằng công cụ / ngôn ngữ gì.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "level": "N5",
+    "lesson_number": 7,
+    "order_num": 2,
+    "title": "Từ/Câu は Tiếng X で 何ですか",
+    "structure": "Từ/Câu は Tiếng X で 何ですか",
+    "meaning": "Từ này tiếng X nói như thế nào.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "「ありがとう」は 英語［？］何ですか。",
+        "vi": "Từ này tiếng X nói như thế nào.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "level": "N5",
+    "lesson_number": 7,
+    "order_num": 3,
+    "title": "N(người) に あげます / もらいます",
+    "structure": "N に あげます / もらいます",
+    "meaning": "Tặng cho ai / Nhận từ ai.",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "山田さんは 木村さん［？］花を あげました。",
+        "vi": "Tặng cho ai / Nhận từ ai.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "level": "N5",
+    "lesson_number": 7,
+    "order_num": 4,
+    "title": "もう Vました",
+    "structure": "もう Vました",
+    "meaning": "Đã làm V xong rồi.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ました",
+    "examples": [
+      {
+        "jp": "もう 荷物を 送り［？］か。―はい、送りました。",
+        "vi": "Đã làm V xong rồi.",
+        "answer": "ました"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "level": "N5",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "N は A-な / A-い です",
+    "structure": "N は Aい / Aな です",
+    "meaning": "N thì mang đặc điểm tính từ A.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 高",
+    "examples": [
+      {
+        "jp": "富士山は ［？］いです。",
+        "vi": "N thì mang đặc điểm tính từ A.",
+        "answer": "高"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "level": "N5",
+    "lesson_number": 8,
+    "order_num": 2,
+    "title": "Tính từ bổ nghĩa cho danh từ",
+    "structure": "A-い N / A-な N",
+    "meaning": "Danh từ mang tính chất A.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "桜は きれい［？］花です。",
+        "vi": "Danh từ mang tính chất A.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "level": "N5",
+    "lesson_number": 8,
+    "order_num": 3,
+    "title": "とても / あまり",
+    "structure": "とても A (khẳng định) / あまり A (phủ định)",
+    "meaning": "Rất A / Không A lắm.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "日本の 食べ物は ［？］ても おいしいです。",
+        "vi": "Rất A / Không A lắm.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "level": "N5",
+    "lesson_number": 8,
+    "order_num": 4,
+    "title": "どうですか / どんな N",
+    "structure": "N は どうですか / どんな N ですか",
+    "meaning": "N như thế nào? / N là loại như thế nào?",
+    "usage_notes": "Đáp án bài tập điền khuyết: ど",
+    "examples": [
+      {
+        "jp": "日本の 生活は ［？］うですか。",
+        "vi": "N như thế nào? / N là loại như thế nào?",
+        "answer": "ど"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "level": "N5",
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "N が 好き / 嫌い / 上手 / 下手",
+    "structure": "N が 好きです / 嫌いです / 上手です / 下手です",
+    "meaning": "Thích / Ghét / Giỏi / Kém cái gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "わたしは イタリア料理［？］好きです。",
+        "vi": "Thích / Ghét / Giỏi / Kém cái gì.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "level": "N5",
+    "lesson_number": 9,
+    "order_num": 2,
+    "title": "N が あります / 分かります",
+    "structure": "N が あります / 分かります",
+    "meaning": "Có cái gì (sở hữu) / Hiểu rõ điều gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "わたしは 日本語［？］少し 分かります。",
+        "vi": "Có cái gì (sở hữu) / Hiểu rõ điều gì.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "level": "N5",
+    "lesson_number": 9,
+    "order_num": 3,
+    "title": "～から、～ (nguyên nhân)",
+    "structure": "Mệnh đề 1 から、Mệnh đề 2",
+    "meaning": "Vì... nên...",
+    "usage_notes": "Đáp án bài tập điền khuyết: から",
+    "examples": [
+      {
+        "jp": "時間が ありません［？］、タクシーで 行きます。",
+        "vi": "Vì... nên...",
+        "answer": "から"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "level": "N5",
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "N(địa điểm) に N が あります/います",
+    "structure": "N(địa điểm) に N(vật) が あります / N(người, con vật) が います",
+    "meaning": "Ở đâu có cái gì / con gì / ai.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "部屋に 机［？］あります。",
+        "vi": "Ở đâu có cái gì / con gì / ai.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "level": "N5",
+    "lesson_number": 10,
+    "order_num": 2,
+    "title": "N は N(địa điểm) に あります/います",
+    "structure": "N は N(địa điểm) に あります / います",
+    "meaning": "Cái N / Người N thì ở đâu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "ミラーさんは 事務所［？］います。",
+        "vi": "Cái N / Người N thì ở đâu.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "level": "N5",
+    "lesson_number": 10,
+    "order_num": 3,
+    "title": "Từ chỉ vị trí (上, 下, 前, 後ろ, 中, 隣)",
+    "structure": "N1 の Vị trí に N2 が あります",
+    "meaning": "Vị trí không gian của vật thể.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 上",
+    "examples": [
+      {
+        "jp": "机の ［？］に 本が あります。",
+        "vi": "Vị trí không gian của vật thể.",
+        "answer": "上"
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "level": "N5",
+    "lesson_number": 11,
+    "order_num": 1,
+    "title": "Lượng từ đếm đồ vật / người",
+    "structure": "N を Lượng từ Vます",
+    "meaning": "Làm V với số lượng bao nhiêu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: よっ",
+    "examples": [
+      {
+        "jp": "りんごを ［？］つ 買いました。（4 quả）",
+        "vi": "Làm V với số lượng bao nhiêu.",
+        "answer": "よっ"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "level": "N5",
+    "lesson_number": 11,
+    "order_num": 2,
+    "title": "Khoảng thời gian に ～回 V",
+    "structure": "Khoảng thời gian に ～回 Vます",
+    "meaning": "Tần suất làm việc gì trong một khoảng thời gian.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 回",
+    "examples": [
+      {
+        "jp": "１か月に ２［？］映画を 見ます。",
+        "vi": "Tần suất làm việc gì trong một khoảng thời gian.",
+        "answer": "回"
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "level": "N5",
+    "lesson_number": 11,
+    "order_num": 3,
+    "title": "どのくらい かかりますか",
+    "structure": "どのくらい かかりますか",
+    "meaning": "Mất bao lâu thời gian / bao nhiêu tiền.",
+    "usage_notes": "Đáp án bài tập điền khuyết: くらい",
+    "examples": [
+      {
+        "jp": "東京から 京都まで 新幹線で どの［？］かかりますか。",
+        "vi": "Mất bao lâu thời gian / bao nhiêu tiền.",
+        "answer": "くらい"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "level": "N5",
+    "lesson_number": 12,
+    "order_num": 1,
+    "title": "Quá khứ của Tính từ / Danh từ",
+    "structure": "A-かったです / Na/Nでした",
+    "meaning": "Đã từng như thế nào trong quá khứ.",
+    "usage_notes": "Đáp án bài tập điền khuyết: か",
+    "examples": [
+      {
+        "jp": "昨日は とても 暑［？］ったです。",
+        "vi": "Đã từng như thế nào trong quá khứ.",
+        "answer": "か"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "level": "N5",
+    "lesson_number": 12,
+    "order_num": 2,
+    "title": "N1 は N2 より A です",
+    "structure": "N1 は N2 より A です",
+    "meaning": "N1 thì tính chất A hơn N2 (so sánh hơn).",
+    "usage_notes": "Đáp án bài tập điền khuyết: より",
+    "examples": [
+      {
+        "jp": "新幹線は バス［？］速いです。",
+        "vi": "N1 thì tính chất A hơn N2 (so sánh hơn).",
+        "answer": "より"
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "level": "N5",
+    "lesson_number": 12,
+    "order_num": 3,
+    "title": "N1 と N2 と どちらが A ですか",
+    "structure": "N1 と N2 と どちらが A ですか",
+    "meaning": "Giữa N1 và N2 thì cái nào A hơn?",
+    "usage_notes": "Đáp án bài tập điền khuyết: ど",
+    "examples": [
+      {
+        "jp": "海と 山と ［？］ちらが 好きですか。",
+        "vi": "Giữa N1 và N2 thì cái nào A hơn?",
+        "answer": "ど"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "level": "N5",
+    "lesson_number": 12,
+    "order_num": 4,
+    "title": "N(phạm vi) で N が いちばん A です",
+    "structure": "N で N が いちばん A です",
+    "meaning": "Trong phạm vi N thì N này là A nhất.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 何",
+    "examples": [
+      {
+        "jp": "１年で ［？］月が いちばん 寒いですか。",
+        "vi": "Trong phạm vi N thì N này là A nhất.",
+        "answer": "何"
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "level": "N5",
+    "lesson_number": 13,
+    "order_num": 1,
+    "title": "N が 欲しいです",
+    "structure": "N が 欲しいです / 欲しくないです",
+    "meaning": "Tôi muốn có cái N.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "わたしは 新しい 車［？］欲しいです。",
+        "vi": "Tôi muốn có cái N.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "level": "N5",
+    "lesson_number": 13,
+    "order_num": 2,
+    "title": "Vたいです",
+    "structure": "V(bỏ ます) + たいです / たくないです",
+    "meaning": "Tôi muốn làm hành động V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: たい",
+    "examples": [
+      {
+        "jp": "日本へ 行き［？］です。",
+        "vi": "Tôi muốn làm hành động V.",
+        "answer": "たい"
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "level": "N5",
+    "lesson_number": 13,
+    "order_num": 3,
+    "title": "N(địa điểm) へ V(bỏ ます) に 行きます",
+    "structure": "N へ V(bỏ ます) / N に 行きます / 来ます",
+    "meaning": "Đi đến đâu để làm mục đích gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "デパートへ 買い物［？］行きます。",
+        "vi": "Đi đến đâu để làm mục đích gì.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "level": "N5",
+    "lesson_number": 14,
+    "order_num": 1,
+    "title": "Chia thể て (Động từ nhóm 1, 2, 3)",
+    "structure": "Vて",
+    "meaning": "Biến đổi động từ sang thể Te.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "ちょっと 待っ［？］ください。（待つ -> 待って）",
+        "vi": "Biến đổi động từ sang thể Te.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "level": "N5",
+    "lesson_number": 14,
+    "order_num": 2,
+    "title": "Vてください",
+    "structure": "Vて + ください",
+    "meaning": "Xin hãy làm V / Vui lòng làm V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "ここに お名前を 書い［？］ください。",
+        "vi": "Xin hãy làm V / Vui lòng làm V.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "level": "N5",
+    "lesson_number": 14,
+    "order_num": 3,
+    "title": "Vています (Đang tiếp diễn)",
+    "structure": "Vて + います",
+    "meaning": "Đang thực hiện hành động V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "今 雨が 降っ［？］います。",
+        "vi": "Đang thực hiện hành động V.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "level": "N5",
+    "lesson_number": 14,
+    "order_num": 4,
+    "title": "Vましょうか",
+    "structure": "V(bỏ ます) + ましょうか",
+    "meaning": "Để tôi làm giúp bạn nhé? (đề nghị giúp đỡ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ましょ",
+    "examples": [
+      {
+        "jp": "傘を 貸し［？］か。",
+        "vi": "Để tôi làm giúp bạn nhé? (đề nghị giúp đỡ).",
+        "answer": "ましょ"
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "level": "N5",
+    "lesson_number": 15,
+    "order_num": 1,
+    "title": "Vてもいいですか",
+    "structure": "Vて + もいいですか",
+    "meaning": "Làm V có được không? (xin phép).",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "写真を 撮っ［？］もいいですか。",
+        "vi": "Làm V có được không? (xin phép).",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "level": "N5",
+    "lesson_number": 15,
+    "order_num": 2,
+    "title": "Vてはいけません",
+    "structure": "Vて + はいけません",
+    "meaning": "Không được làm V (cấm đoán).",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "ここで タバコを 吸っ［？］はいけません。",
+        "vi": "Không được làm V (cấm đoán).",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "level": "N5",
+    "lesson_number": 15,
+    "order_num": 3,
+    "title": "Vています (Kết quả trạng thái duy trì)",
+    "structure": "Vて + います (住む, 知る, 持つ, 結婚する)",
+    "meaning": "Trạng thái đang duy trì (sống, biết, có, kết hôn).",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "わたしは ハノイに 住ん［？］います。",
+        "vi": "Trạng thái đang duy trì (sống, biết, có, kết hôn).",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "level": "N5",
+    "lesson_number": 16,
+    "order_num": 1,
+    "title": "Vて、Vて、Vます (Nối động từ)",
+    "structure": "V1て、V2て、V3ます",
+    "meaning": "Làm V1, rồi làm V2, rồi làm V3 theo trình tự.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 洗",
+    "examples": [
+      {
+        "jp": "朝 起きて、顔を ［？］って、ご飯を 食べます。",
+        "vi": "Làm V1, rồi làm V2, rồi làm V3 theo trình tự.",
+        "answer": "洗"
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "level": "N5",
+    "lesson_number": 16,
+    "order_num": 2,
+    "title": "Aくて / Naで (Nối tính từ)",
+    "structure": "A(bỏ い) + くて / Na + で",
+    "meaning": "Vừa... lại vừa... (nối tính từ cùng sắc thái).",
+    "usage_notes": "Đáp án bài tập điền khuyết: く",
+    "examples": [
+      {
+        "jp": "この 部屋は 広［？］て、明るいです。",
+        "vi": "Vừa... lại vừa... (nối tính từ cùng sắc thái).",
+        "answer": "く"
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "level": "N5",
+    "lesson_number": 16,
+    "order_num": 3,
+    "title": "V1てから、V2",
+    "structure": "V1て + から、V2",
+    "meaning": "Sau khi làm V1 xong thì mới làm V2.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "国へ 帰っ［？］から、父の 会社で 働きます。",
+        "vi": "Sau khi làm V1 xong thì mới làm V2.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "level": "N5",
+    "lesson_number": 16,
+    "order_num": 4,
+    "title": "N1 は N2 が A です",
+    "structure": "N1 は N2 が A です",
+    "meaning": "N1 có bộ phận N2 mang đặc điểm A.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "マリアさんは 髪［？］長いです。",
+        "vi": "N1 có bộ phận N2 mang đặc điểm A.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "level": "N5",
+    "lesson_number": 17,
+    "order_num": 1,
+    "title": "Vないでください",
+    "structure": "Vない + でください",
+    "meaning": "Xin đừng làm V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "ここで 写真を 撮ら［？］いでください。",
+        "vi": "Xin đừng làm V.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "level": "N5",
+    "lesson_number": 17,
+    "order_num": 2,
+    "title": "Vなければなりません",
+    "structure": "V(bỏ ない) + なければなりません",
+    "meaning": "Phải làm V (nghĩa vụ bắt buộc).",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "薬を 飲ま［？］ければなりません。",
+        "vi": "Phải làm V (nghĩa vụ bắt buộc).",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "level": "N5",
+    "lesson_number": 17,
+    "order_num": 3,
+    "title": "Vなくてもいいです",
+    "structure": "V(bỏ ない) + なくてもいいです",
+    "meaning": "Không cần phải làm V cũng được.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "明日は 来［？］くてもいいです。",
+        "vi": "Không cần phải làm V cũng được.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "level": "N5",
+    "lesson_number": 18,
+    "order_num": 1,
+    "title": "Vることができます (Khả năng)",
+    "structure": "V(thể từ điển) + ことができます",
+    "meaning": "Có thể làm hành động V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "ミラーさんは 漢字を 読む ことが ［？］きます。",
+        "vi": "Có thể làm hành động V.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "level": "N5",
+    "lesson_number": 18,
+    "order_num": 2,
+    "title": "私の趣味は Vることです",
+    "structure": "私の趣味は V(thể từ điển) + ことです",
+    "meaning": "Sở thích của tôi là việc làm V.",
+    "usage_notes": "Đáp án bài tập điền khuyết: こと",
+    "examples": [
+      {
+        "jp": "わたしの 趣味は 音楽を 聴く［？］です。",
+        "vi": "Sở thích của tôi là việc làm V.",
+        "answer": "こと"
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "level": "N5",
+    "lesson_number": 18,
+    "order_num": 3,
+    "title": "Vる / Nの / Thời gian 前に",
+    "structure": "Vる / Nの / Thời lượng + 前に",
+    "meaning": "Trước khi làm việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 前",
+    "examples": [
+      {
+        "jp": "寝る［？］に、本を 読みます。",
+        "vi": "Trước khi làm việc gì.",
+        "answer": "前"
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "level": "N5",
+    "lesson_number": 19,
+    "order_num": 1,
+    "title": "Vたことがあります (Kinh nghiệm)",
+    "structure": "Vた + ことがあります / ありません",
+    "meaning": "Đã từng làm V trong quá khứ.",
+    "usage_notes": "Đáp án bài tập điền khuyết: た",
+    "examples": [
+      {
+        "jp": "富士山に 登っ［？］ことが あります。",
+        "vi": "Đã từng làm V trong quá khứ.",
+        "answer": "た"
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "level": "N5",
+    "lesson_number": 19,
+    "order_num": 2,
+    "title": "Vたり、Vたりします",
+    "structure": "V1たり、V2たり します",
+    "meaning": "Lúc thì làm việc này, lúc thì làm việc kia.",
+    "usage_notes": "Đáp án bài tập điền khuyết: し",
+    "examples": [
+      {
+        "jp": "休みの 日は テニスを ［？］たり、映画を 見たり します。",
+        "vi": "Lúc thì làm việc này, lúc thì làm việc kia.",
+        "answer": "し"
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "level": "N5",
+    "lesson_number": 19,
+    "order_num": 3,
+    "title": "Aくなります / Na/Nになります",
+    "structure": "A(bỏ い) + く / Na/N + に なります",
+    "meaning": "Trở nên, biến đổi sang trạng thái mới.",
+    "usage_notes": "Đáp án bài tập điền khuyết: く",
+    "examples": [
+      {
+        "jp": "もうすぐ 暖か［？］なります。",
+        "vi": "Trở nên, biến đổi sang trạng thái mới.",
+        "answer": "く"
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "level": "N5",
+    "lesson_number": 20,
+    "order_num": 1,
+    "title": "Thể thông thường (普通形) động từ",
+    "structure": "Vる, Vない, Vた, Vなかった",
+    "meaning": "Cách nói thân mật giữa bạn bè, người thân.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 行く",
+    "examples": [
+      {
+        "jp": "明日 東京へ ［？］？―うん、行く。（行く？）",
+        "vi": "Cách nói thân mật giữa bạn bè, người thân.",
+        "answer": "行く"
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "level": "N5",
+    "lesson_number": 20,
+    "order_num": 2,
+    "title": "Thể thông thường tính từ và danh từ",
+    "structure": "Aい, Aくない / Na/Nだ, ではない, だった, ではなかった",
+    "meaning": "Nói thân mật với tính từ và danh từ.",
+    "usage_notes": "Đáp án bài tập điền khuyết: た",
+    "examples": [
+      {
+        "jp": "昨日の パーティーは 楽しかっ［？］？―うん、楽しかった。",
+        "vi": "Nói thân mật với tính từ và danh từ.",
+        "answer": "た"
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "level": "N5",
+    "lesson_number": 21,
+    "order_num": 1,
+    "title": "Thể thông thường + と思います",
+    "structure": "Thể thông thường + と思います",
+    "meaning": "Tôi nghĩ rằng...",
+    "usage_notes": "Đáp án bài tập điền khuyết: 思",
+    "examples": [
+      {
+        "jp": "明日は 雨が 降ると ［？］います。",
+        "vi": "Tôi nghĩ rằng...",
+        "answer": "思"
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "level": "N5",
+    "lesson_number": 21,
+    "order_num": 2,
+    "title": "Thể thông thường + と言いました",
+    "structure": "Thể thông thường / 「Câu」 + と言いました",
+    "meaning": "Ai đó đã nói rằng...",
+    "usage_notes": "Đáp án bài tập điền khuyết: 言",
+    "examples": [
+      {
+        "jp": "ミラーさんは 来週 日本へ 出張すると ［？］いました。",
+        "vi": "Ai đó đã nói rằng...",
+        "answer": "言"
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "level": "N5",
+    "lesson_number": 21,
+    "order_num": 3,
+    "title": "Thể thông thường + でしょう",
+    "structure": "Thể thông thường (Na/N bỏ だ) + でしょう",
+    "meaning": "Có đúng không nhỉ? (tìm kiếm sự đồng tình).",
+    "usage_notes": "Đáp án bài tập điền khuyết: でし",
+    "examples": [
+      {
+        "jp": "明日は 休み［？］ょう。―ええ、休みです。",
+        "vi": "Có đúng không nhỉ? (tìm kiếm sự đồng tình).",
+        "answer": "でし"
+      }
+    ]
+  },
+  {
+    "id": 74,
+    "level": "N5",
+    "lesson_number": 22,
+    "order_num": 1,
+    "title": "Mệnh đề bổ nghĩa cho danh từ",
+    "structure": "Mệnh đề bổ nghĩa (thể thông thường) + N",
+    "meaning": "Người/Vật mà làm hành động gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 人",
+    "examples": [
+      {
+        "jp": "あそこで 本を 読んでいる ［？］は ミラーさんです。",
+        "vi": "Người/Vật mà làm hành động gì.",
+        "answer": "人"
+      }
+    ]
+  },
+  {
+    "id": 75,
+    "level": "N5",
+    "lesson_number": 22,
+    "order_num": 2,
+    "title": "Vる / Vない / Vた + Danh từ",
+    "structure": "Vる時間 / Vる約束 / Vる用事",
+    "meaning": "Thời gian để làm gì / Lời hẹn làm gì...",
+    "usage_notes": "Đáp án bài tập điền khuyết: 時間",
+    "examples": [
+      {
+        "jp": "朝ご飯を 食べる ［？］が ありません。",
+        "vi": "Thời gian để làm gì / Lời hẹn làm gì...",
+        "answer": "時間"
+      }
+    ]
+  },
+  {
+    "id": 76,
+    "level": "N5",
+    "lesson_number": 23,
+    "order_num": 1,
+    "title": "Vる / Vない / Vた + とき",
+    "structure": "Vる / Vない / Vた / Aい / Naな / Nの + とき",
+    "meaning": "Khi, lúc làm gì...",
+    "usage_notes": "Đáp án bài tập điền khuyết: とき",
+    "examples": [
+      {
+        "jp": "道を 渡る［？］、車に 気を つけます。",
+        "vi": "Khi, lúc làm gì...",
+        "answer": "とき"
+      }
+    ]
+  },
+  {
+    "id": 77,
+    "level": "N5",
+    "lesson_number": 23,
+    "order_num": 2,
+    "title": "Vる + と、～ (Điều kiện tất nhiên)",
+    "structure": "Vる + と、mệnh đề kết quả tự nhiên",
+    "meaning": "Cứ hễ làm V thì việc kia tất yếu xảy ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "この ボタンを 押す［？］、お釣りが出ます。",
+        "vi": "Cứ hễ làm V thì việc kia tất yếu xảy ra.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 78,
+    "level": "N5",
+    "lesson_number": 24,
+    "order_num": 1,
+    "title": "N(người khác) が [わたしに] くれます",
+    "structure": "N が わたしに N を くれます",
+    "meaning": "Ai đó cho/tặng tôi cái gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: く",
+    "examples": [
+      {
+        "jp": "佐藤さんは わたしに 花を ［？］れました。",
+        "vi": "Ai đó cho/tặng tôi cái gì.",
+        "answer": "く"
+      }
+    ]
+  },
+  {
+    "id": 79,
+    "level": "N5",
+    "lesson_number": 24,
+    "order_num": 2,
+    "title": "Vてあげます / もらいます / くれます",
+    "structure": "Vてあげます / Vてもらいます / Vてくれます",
+    "meaning": "Làm giúp ai / Được ai làm giúp / Ai làm giúp mình.",
+    "usage_notes": "Đáp án bài tập điền khuyết: く",
+    "examples": [
+      {
+        "jp": "山田さんは わたしに 傘を 貸して ［？］れました。",
+        "vi": "Làm giúp ai / Được ai làm giúp / Ai làm giúp mình.",
+        "answer": "く"
+      }
+    ]
+  },
+  {
+    "id": 80,
+    "level": "N5",
+    "lesson_number": 25,
+    "order_num": 1,
+    "title": "～たら (Giả định trong tương lai)",
+    "structure": "Vたら / Aかったら / Na/Nだったら",
+    "meaning": "Nếu / Sau khi... thì...",
+    "usage_notes": "Đáp án bài tập điền khuyết: たら",
+    "examples": [
+      {
+        "jp": "雨が 降っ［？］、出かけません。",
+        "vi": "Nếu / Sau khi... thì...",
+        "answer": "たら"
+      }
+    ]
+  },
+  {
+    "id": 81,
+    "level": "N5",
+    "lesson_number": 25,
+    "order_num": 2,
+    "title": "～ても (Dù cho... vẫn cứ...)",
+    "structure": "Vても / Aくても / Na/Nでも",
+    "meaning": "Dù cho... thì cũng vẫn cứ...",
+    "usage_notes": "Đáp án bài tập điền khuyết: ても",
+    "examples": [
+      {
+        "jp": "雨が 降っ［？］、サッカーを します。",
+        "vi": "Dù cho... thì cũng vẫn cứ...",
+        "answer": "ても"
+      }
+    ]
+  },
+  {
+    "id": 82,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 1,
+    "title": "～んです",
+    "structure": "V/A/N (thể ngắn) + んです (Na/N + なんです)",
+    "meaning": "Nhấn mạnh lý do, giải thích hoàn cảnh, xác nhận thông tin tò mò.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tại sao bạn lại đến muộn? ― Vì xe buýt không đến.",
+    "examples": [
+      {
+        "jp": "どうして遅れたのですか。―バスが 来なかった［？］。",
+        "vi": "Nhấn mạnh lý do, giải thích hoàn cảnh, xác nhận thông tin tò mò.",
+        "answer": "Tại sao bạn lại đến muộn? ― Vì xe buýt không đến."
+      }
+    ]
+  },
+  {
+    "id": 83,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 2,
+    "title": "～ていただけませんか",
+    "structure": "Vて + いただけませんか",
+    "meaning": "Nhờ vả ai đó làm gì giúp mình một cách rất lịch sự (hơn te kudasai).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi đã viết thư bằng tiếng Nhật, bạn có thể xem giúp tôi được không?",
+    "examples": [
+      {
+        "jp": "日本語で 手紙を 書いたんですが、見て［？］。",
+        "vi": "Nhờ vả ai đó làm gì giúp mình một cách rất lịch sự (hơn te kudasai).",
+        "answer": "Tôi đã viết thư bằng tiếng Nhật, bạn có thể xem giúp tôi được không?"
+      }
+    ]
+  },
+  {
+    "id": 84,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 3,
+    "title": "Từ để hỏi + たらいいですか",
+    "structure": "Từ để hỏi + Vたら + いいですか",
+    "meaning": "Hỏi xin lời khuyên, hướng dẫn xem mình nên làm thế nào thì tốt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi nên vứt rác ở đâu thì tốt ạ?",
+    "examples": [
+      {
+        "jp": "ごみを どこに 捨て［？］いいですか。",
+        "vi": "Hỏi xin lời khuyên, hướng dẫn xem mình nên làm thế nào thì tốt.",
+        "answer": "Tôi nên vứt rác ở đâu thì tốt ạ?"
+      }
+    ]
+  },
+  {
+    "id": 85,
+    "level": "N4",
+    "lesson_number": 26,
+    "order_num": 4,
+    "title": "N は Tính từ/Động từ",
+    "structure": "N + は + Cụm vị ngữ",
+    "meaning": "Đưa danh từ lên đầu câu làm chủ đề để nhấn mạnh hoặc phân trần.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Hội thao thì tôi không tham gia.",
+    "examples": [
+      {
+        "jp": "運動会［？］参加しません。",
+        "vi": "Đưa danh từ lên đầu câu làm chủ đề để nhấn mạnh hoặc phân trần.",
+        "answer": "Hội thao thì tôi không tham gia."
+      }
+    ]
+  },
+  {
+    "id": 86,
+    "level": "N4",
+    "lesson_number": 27,
+    "order_num": 1,
+    "title": "Động từ thể khả năng",
+    "structure": "Nhóm 1: i -> e; Nhóm 2: + raremasu; Nhóm 3: dekiru, korareru",
+    "meaning": "Diễn tả năng lực có thể làm được việc gì, hoặc hoàn cảnh cho phép.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi có thể đọc được chữ Hán.",
+    "examples": [
+      {
+        "jp": "私は 漢字が 読め［？］。",
+        "vi": "Diễn tả năng lực có thể làm được việc gì, hoặc hoàn cảnh cho phép.",
+        "answer": "Tôi có thể đọc được chữ Hán."
+      }
+    ]
+  },
+  {
+    "id": 87,
+    "level": "N4",
+    "lesson_number": 27,
+    "order_num": 2,
+    "title": "N が thể khả năng",
+    "structure": "N + が + V-khả năng",
+    "meaning": "Tân ngữ trong câu khả năng thường chuyển từ trợ từ を sang が.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Bạn có thể nấu được món ăn Nhật không?",
+    "examples": [
+      {
+        "jp": "日本料理［？］作れますか。",
+        "vi": "Tân ngữ trong câu khả năng thường chuyển từ trợ từ を sang が.",
+        "answer": "Bạn có thể nấu được món ăn Nhật không?"
+      }
+    ]
+  },
+  {
+    "id": 88,
+    "level": "N4",
+    "lesson_number": 27,
+    "order_num": 3,
+    "title": "見えます vs 見られます",
+    "structure": "N が 見えます (tự nhiên) / N が 見られます (có điều kiện)",
+    "meaning": "Miemasu: tự nhiên đập vào mắt; Miraremasu: có điều kiện/cơ hội để xem.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Từ cửa sổ nhìn thấy núi Phú Sĩ.",
+    "examples": [
+      {
+        "jp": "窓から 富士山が ［？］。",
+        "vi": "Miemasu: tự nhiên đập vào mắt; Miraremasu: có điều kiện/cơ hội để xem.",
+        "answer": "Từ cửa sổ nhìn thấy núi Phú Sĩ."
+      }
+    ]
+  },
+  {
+    "id": 89,
+    "level": "N4",
+    "lesson_number": 27,
+    "order_num": 4,
+    "title": "～しか～ない",
+    "structure": "N + しか + V phủ định",
+    "meaning": "Chỉ có N (mang sắc thái tiếc nuối vì số lượng quá ít ỏi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trong ví chỉ có mỗi 1000 yên.",
+    "examples": [
+      {
+        "jp": "財布に 千円［？］ありません。",
+        "vi": "Chỉ có N (mang sắc thái tiếc nuối vì số lượng quá ít ỏi).",
+        "answer": "Trong ví chỉ có mỗi 1000 yên."
+      }
+    ]
+  },
+  {
+    "id": 90,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 1,
+    "title": "～ながら",
+    "structure": "V1 (bỏ masu) + ながら + V2",
+    "meaning": "Vừa làm V1 vừa làm V2 đồng thời cùng lúc (V2 là hành động chính).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi vừa nghe nhạc vừa học bài.",
+    "examples": [
+      {
+        "jp": "音楽を 聞き［？］勉強します。",
+        "vi": "Vừa làm V1 vừa làm V2 đồng thời cùng lúc (V2 là hành động chính).",
+        "answer": "Tôi vừa nghe nhạc vừa học bài."
+      }
+    ]
+  },
+  {
+    "id": 91,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 2,
+    "title": "Vています (thói quen)",
+    "structure": "Vて + います",
+    "meaning": "Diễn tả thói quen lặp đi lặp lại hàng ngày hoặc nghề nghiệp.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Mỗi sáng tôi đều chạy bộ.",
+    "examples": [
+      {
+        "jp": "毎朝 ジョギングを ［？］います。",
+        "vi": "Diễn tả thói quen lặp đi lặp lại hàng ngày hoặc nghề nghiệp.",
+        "answer": "Mỗi sáng tôi đều chạy bộ."
+      }
+    ]
+  },
+  {
+    "id": 92,
+    "level": "N4",
+    "lesson_number": 28,
+    "order_num": 3,
+    "title": "～し、～し",
+    "structure": "Thể thông thường + し、～し、～",
+    "meaning": "Liệt kê từ hai lý do, nguyên nhân trở lên để dẫn đến kết luận.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Quán này vừa rẻ, vừa ngon nên lúc nào cũng đông khách.",
+    "examples": [
+      {
+        "jp": "この店は 安い［？］、おいしい［？］、いつも混んでいます。",
+        "vi": "Liệt kê từ hai lý do, nguyên nhân trở lên để dẫn đến kết luận.",
+        "answer": "Quán này vừa rẻ, vừa ngon nên lúc nào cũng đông khách."
+      }
+    ]
+  },
+  {
+    "id": 93,
+    "level": "N4",
+    "lesson_number": 29,
+    "order_num": 1,
+    "title": "N が Tự động từ ています",
+    "structure": "N + が + V-tự động từ + ています",
+    "meaning": "Diễn tả trạng thái kết quả hiển hiện trước mắt của sự vật.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Cửa sổ đang mở.",
+    "examples": [
+      {
+        "jp": "窓が 開い［？］います。",
+        "vi": "Diễn tả trạng thái kết quả hiển hiện trước mắt của sự vật.",
+        "answer": "Cửa sổ đang mở."
+      }
+    ]
+  },
+  {
+    "id": 94,
+    "level": "N4",
+    "lesson_number": 29,
+    "order_num": 2,
+    "title": "Vて しまいました (hoàn thành)",
+    "structure": "Vて + しまいました",
+    "meaning": "Hành động đã hoàn tất toàn bộ xong xuôi.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Quyển sách này tôi đã đọc xong hết rồi.",
+    "examples": [
+      {
+        "jp": "この本は もう 読んで ［？］。",
+        "vi": "Hành động đã hoàn tất toàn bộ xong xuôi.",
+        "answer": "Quyển sách này tôi đã đọc xong hết rồi."
+      }
+    ]
+  },
+  {
+    "id": 95,
+    "level": "N4",
+    "lesson_number": 29,
+    "order_num": 3,
+    "title": "Vて しまいました (tiếc nuối)",
+    "structure": "Vて + しまいました / しまいました",
+    "meaning": "Lỡ làm điều gì đó không tốt, biểu thị sự hối hận tiếc nuối.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi lỡ để quên ô trên tàu mất rồi.",
+    "examples": [
+      {
+        "jp": "電車に 傘を 忘れて ［？］。",
+        "vi": "Lỡ làm điều gì đó không tốt, biểu thị sự hối hận tiếc nuối.",
+        "answer": "Tôi lỡ để quên ô trên tàu mất rồi."
+      }
+    ]
+  },
+  {
+    "id": 96,
+    "level": "N4",
+    "lesson_number": 30,
+    "order_num": 1,
+    "title": "N が Tha động từ てあります",
+    "structure": "N + が + V-tha động từ + てあります",
+    "meaning": "Trạng thái của đồ vật sau khi có người tác động với mục đích cụ thể.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trên tường có treo sẵn tờ lịch.",
+    "examples": [
+      {
+        "jp": "壁に カレンダーが 掛けて ［？］。",
+        "vi": "Trạng thái của đồ vật sau khi có người tác động với mục đích cụ thể.",
+        "answer": "Trên tường có treo sẵn tờ lịch."
+      }
+    ]
+  },
+  {
+    "id": 97,
+    "level": "N4",
+    "lesson_number": 30,
+    "order_num": 2,
+    "title": "Vて おきます (chuẩn bị)",
+    "structure": "Vて + おきます",
+    "meaning": "Làm sẵn việc gì đó trước để chuẩn bị cho lần sau.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trước chuyến đi tôi mua sẵn vé tàu.",
+    "examples": [
+      {
+        "jp": "旅行の 前に 切符を 買って ［？］。",
+        "vi": "Làm sẵn việc gì đó trước để chuẩn bị cho lần sau.",
+        "answer": "Trước chuyến đi tôi mua sẵn vé tàu."
+      }
+    ]
+  },
+  {
+    "id": 98,
+    "level": "N4",
+    "lesson_number": 30,
+    "order_num": 3,
+    "title": "Vて おきます (giữ nguyên)",
+    "structure": "Vて + おきます",
+    "meaning": "Cứ để nguyên hiện trạng như vậy, không thay đổi.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Vì vẫn đang dùng nên xin cứ để nguyên như thế.",
+    "examples": [
+      {
+        "jp": "まだ 使って いますから、そのままに して ［？］。",
+        "vi": "Cứ để nguyên hiện trạng như vậy, không thay đổi.",
+        "answer": "Vì vẫn đang dùng nên xin cứ để nguyên như thế."
+      }
+    ]
+  },
+  {
+    "id": 99,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 1,
+    "title": "Động từ thể ý chí",
+    "structure": "Nhóm 1: i -> o + u; Nhóm 2: + you; Nhóm 3: shiyou, koyou",
+    "meaning": "Thể ngắn của Mashou, dùng rủ rê thân mật hoặc tự nhủ bản thân.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Nghỉ một chút nào! (rủ rê)",
+    "examples": [
+      {
+        "jp": "ちょっと 休み［？］。",
+        "vi": "Thể ngắn của Mashou, dùng rủ rê thân mật hoặc tự nhủ bản thân.",
+        "answer": "Nghỉ một chút nào! (rủ rê)"
+      }
+    ]
+  },
+  {
+    "id": 100,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 2,
+    "title": "V-ý chí + と思っています",
+    "structure": "V-ý chí + と思っています",
+    "meaning": "Bày tỏ dự định của bản thân đã hình thành từ trước và đang tiếp diễn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Sau khi về nước, tôi dự định sẽ mở công ty.",
+    "examples": [
+      {
+        "jp": "国へ 帰ったら、会社を 作ろうと ［？］います。",
+        "vi": "Bày tỏ dự định của bản thân đã hình thành từ trước và đang tiếp diễn.",
+        "answer": "Sau khi về nước, tôi dự định sẽ mở công ty."
+      }
+    ]
+  },
+  {
+    "id": 101,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 3,
+    "title": "V-từ điển / V-nai + つもりです",
+    "structure": "Vる / Vない + つもりです",
+    "meaning": "Quyết định, dự định chắc chắn sẽ làm hoặc không làm việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Năm sau tôi dự định sẽ không về nước.",
+    "examples": [
+      {
+        "jp": "来年は 国へ 帰らない ［？］です。",
+        "vi": "Quyết định, dự định chắc chắn sẽ làm hoặc không làm việc gì.",
+        "answer": "Năm sau tôi dự định sẽ không về nước."
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "level": "N4",
+    "lesson_number": 31,
+    "order_num": 4,
+    "title": "V-từ điển / Nの + 予定です",
+    "structure": "Vる / Nの + 予定です",
+    "meaning": "Theo kế hoạch lịch trình định sẵn sẽ thực hiện việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Chuyến công tác dự kiến kéo dài 1 tuần.",
+    "examples": [
+      {
+        "jp": "出張は 1週間の ［？］です。",
+        "vi": "Theo kế hoạch lịch trình định sẵn sẽ thực hiện việc gì.",
+        "answer": "Chuyến công tác dự kiến kéo dài 1 tuần."
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "level": "N4",
+    "lesson_number": 32,
+    "order_num": 1,
+    "title": "Vた / Vない + ほうがいいです",
+    "structure": "Vた / Vない + ほうがいいです",
+    "meaning": "Nên / Không nên làm gì (lời khuyên bảo trực tiếp cho đối phương).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Vì bạn bị sốt nên ngủ sớm thì tốt hơn.",
+    "examples": [
+      {
+        "jp": "熱が ありますから、早く 寝た ［？］が いいです。",
+        "vi": "Nên / Không nên làm gì (lời khuyên bảo trực tiếp cho đối phương).",
+        "answer": "Vì bạn bị sốt nên ngủ sớm thì tốt hơn."
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "level": "N4",
+    "lesson_number": 32,
+    "order_num": 2,
+    "title": "～でしょう",
+    "structure": "Thể thông thường (bỏ da) + でしょう",
+    "meaning": "Phỏng đoán xác suất cao (chắc là, có lẽ là ~70-80%).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Ngày mai chắc là trời sẽ mưa.",
+    "examples": [
+      {
+        "jp": "明日は 雨が 降る［？］。",
+        "vi": "Phỏng đoán xác suất cao (chắc là, có lẽ là ~70-80%).",
+        "answer": "Ngày mai chắc là trời sẽ mưa."
+      }
+    ]
+  },
+  {
+    "id": 105,
+    "level": "N4",
+    "lesson_number": 32,
+    "order_num": 3,
+    "title": "～かもしれません",
+    "structure": "Thể thông thường (bỏ da) + かもしれません",
+    "meaning": "Phỏng đoán xác suất thấp (có thể, không biết chừng ~50%).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Có thể tôi sẽ không kịp giờ hẹn.",
+    "examples": [
+      {
+        "jp": "約束の 時間に 間に合わない［？］。",
+        "vi": "Phỏng đoán xác suất thấp (có thể, không biết chừng ~50%).",
+        "answer": "Có thể tôi sẽ không kịp giờ hẹn."
+      }
+    ]
+  },
+  {
+    "id": 106,
+    "level": "N4",
+    "lesson_number": 33,
+    "order_num": 1,
+    "title": "Thể mệnh lệnh (命令形)",
+    "structure": "Nhóm 1: i -> e; Nhóm 2: + ro; Nhóm 3: shiro, koi",
+    "meaning": "Ra lệnh dứt khoát (dùng trong quân ngũ, khẩn cấp, cổ vũ thể thao).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Chạy nhanh lên!",
+    "examples": [
+      {
+        "jp": "早く 走［？］！(Hãy chạy nhanh lên!)",
+        "vi": "Ra lệnh dứt khoát (dùng trong quân ngũ, khẩn cấp, cổ vũ thể thao).",
+        "answer": "Chạy nhanh lên!"
+      }
+    ]
+  },
+  {
+    "id": 107,
+    "level": "N4",
+    "lesson_number": 33,
+    "order_num": 2,
+    "title": "Thể cấm đoán (禁止形)",
+    "structure": "V-từ điển + な",
+    "meaning": "Tuyệt đối cấm không được làm hành động đó.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Cấm vứt rác ở đây!",
+    "examples": [
+      {
+        "jp": "ここに ごみを 捨てる［？］！",
+        "vi": "Tuyệt đối cấm không được làm hành động đó.",
+        "answer": "Cấm vứt rác ở đây!"
+      }
+    ]
+  },
+  {
+    "id": 108,
+    "level": "N4",
+    "lesson_number": 33,
+    "order_num": 3,
+    "title": "～という意味です",
+    "structure": "Từ / Câu + という 意味です",
+    "meaning": "Có ý nghĩa là... (dùng để giải thích biển báo, ký hiệu, từ ngữ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Biển 'Tachiiri Kinshi' có nghĩa là cấm vào.",
+    "examples": [
+      {
+        "jp": "「立入禁止」は 入るなと いう ［？］です。",
+        "vi": "Có ý nghĩa là... (dùng để giải thích biển báo, ký hiệu, từ ngữ).",
+        "answer": "Biển 'Tachiiri Kinshi' có nghĩa là cấm vào."
+      }
+    ]
+  },
+  {
+    "id": 109,
+    "level": "N4",
+    "lesson_number": 33,
+    "order_num": 4,
+    "title": "～と言っていました",
+    "structure": "Câu trích dẫn + と 言っていました",
+    "meaning": "Truyền đạt lại lời nhắn của người thứ ba.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Anh Tanaka nói là ngày mai anh ấy sẽ nghỉ.",
+    "examples": [
+      {
+        "jp": "田中さんは 明日 休むと ［？］いました。",
+        "vi": "Truyền đạt lại lời nhắn của người thứ ba.",
+        "answer": "Anh Tanaka nói là ngày mai anh ấy sẽ nghỉ."
+      }
+    ]
+  },
+  {
+    "id": 110,
+    "level": "N4",
+    "lesson_number": 34,
+    "order_num": 1,
+    "title": "～とおりに",
+    "structure": "V1-thể từ điển / V1-thể た / Nの + とおりに + V2",
+    "meaning": "Làm V2 theo đúng như V1 đã hướng dẫn / làm mẫu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Hãy viết đúng theo những gì tôi đã nói.",
+    "examples": [
+      {
+        "jp": "私が 言った ［？］に 書いて ください。",
+        "vi": "Làm V2 theo đúng như V1 đã hướng dẫn / làm mẫu.",
+        "answer": "Hãy viết đúng theo những gì tôi đã nói."
+      }
+    ]
+  },
+  {
+    "id": 111,
+    "level": "N4",
+    "lesson_number": 34,
+    "order_num": 2,
+    "title": "～あとで",
+    "structure": "V1-thể た / Nの + あとで + V2",
+    "meaning": "Làm V2 sau khi đã làm xong V1.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Sau khi công việc kết thúc, mình đi uống chút gì nhé?",
+    "examples": [
+      {
+        "jp": "仕事が 終わった ［？］で、飲みに行きませんか。",
+        "vi": "Làm V2 sau khi đã làm xong V1.",
+        "answer": "Sau khi công việc kết thúc, mình đi uống chút gì nhé?"
+      }
+    ]
+  },
+  {
+    "id": 112,
+    "level": "N4",
+    "lesson_number": 34,
+    "order_num": 3,
+    "title": "V1て / V1ないで + V2",
+    "structure": "V1-te / V1-naide + V2",
+    "meaning": "Làm V2 trong trạng thái có / không làm V1 đi kèm.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi uống cà phê mà không cho đường.",
+    "examples": [
+      {
+        "jp": "砂糖を 入れ［？］で コーヒーを 飲みます。",
+        "vi": "Làm V2 trong trạng thái có / không làm V1 đi kèm.",
+        "answer": "Tôi uống cà phê mà không cho đường."
+      }
+    ]
+  },
+  {
+    "id": 113,
+    "level": "N4",
+    "lesson_number": 35,
+    "order_num": 1,
+    "title": "Động từ thể điều kiện (条件形: ～ば)",
+    "structure": "Nhóm 1: i -> e + ba; Nhóm 2: + reba; Nhóm 3: sureba, kureba",
+    "meaning": "Nếu... thì... (điều kiện tất yếu, giả định cần thiết).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Nếu rẻ thì tôi sẽ mua.",
+    "examples": [
+      {
+        "jp": "安けれ［？］、買います。",
+        "vi": "Nếu... thì... (điều kiện tất yếu, giả định cần thiết).",
+        "answer": "Nếu rẻ thì tôi sẽ mua."
+      }
+    ]
+  },
+  {
+    "id": 114,
+    "level": "N4",
+    "lesson_number": 35,
+    "order_num": 2,
+    "title": "N + なら",
+    "structure": "N + なら",
+    "meaning": "Nếu là N thì... (đưa ra lời khuyên hoặc gợi ý theo phạm vi câu hỏi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Nếu mua máy tính thì Akihabara được đấy.",
+    "examples": [
+      {
+        "jp": "パソコン［？］、秋葉原が いいですよ。",
+        "vi": "Nếu là N thì... (đưa ra lời khuyên hoặc gợi ý theo phạm vi câu hỏi).",
+        "answer": "Nếu mua máy tính thì Akihabara được đấy."
+      }
+    ]
+  },
+  {
+    "id": 115,
+    "level": "N4",
+    "lesson_number": 35,
+    "order_num": 3,
+    "title": "～ば～ほど",
+    "structure": "V-ba + V-từ điển + ほど",
+    "meaning": "Càng... thì càng...",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tiếng Nhật càng học thì càng thấy thú vị.",
+    "examples": [
+      {
+        "jp": "日本語は 勉強すれ［？］勉強するほど 面白くなります。",
+        "vi": "Càng... thì càng...",
+        "answer": "Tiếng Nhật càng học thì càng thấy thú vị."
+      }
+    ]
+  },
+  {
+    "id": 116,
+    "level": "N4",
+    "lesson_number": 36,
+    "order_num": 1,
+    "title": "～ように (mục đích)",
+    "structure": "V1 (thể khả năng / tự V / nai) + ように + V2",
+    "meaning": "Làm V2 để cho V1 có thể xảy ra (hành động hướng tới mục tiêu).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Để không quên, tôi ghi chú sẵn lại.",
+    "examples": [
+      {
+        "jp": "忘れない ［？］に、メモを しておきます。",
+        "vi": "Làm V2 để cho V1 có thể xảy ra (hành động hướng tới mục tiêu).",
+        "answer": "Để không quên, tôi ghi chú sẵn lại."
+      }
+    ]
+  },
+  {
+    "id": 117,
+    "level": "N4",
+    "lesson_number": 36,
+    "order_num": 2,
+    "title": "～ようになりました",
+    "structure": "V-từ điển / V-nai + ようになりました",
+    "meaning": "Đã trở nên có thể / không còn làm gì (thay đổi trạng thái).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Nhờ luyện tập mỗi ngày, tôi đã bơi được rồi.",
+    "examples": [
+      {
+        "jp": "毎日 練習して、泳げる ［？］になりました。",
+        "vi": "Đã trở nên có thể / không còn làm gì (thay đổi trạng thái).",
+        "answer": "Nhờ luyện tập mỗi ngày, tôi đã bơi được rồi."
+      }
+    ]
+  },
+  {
+    "id": 118,
+    "level": "N4",
+    "lesson_number": 36,
+    "order_num": 3,
+    "title": "～ようにしています",
+    "structure": "V-từ điển / V-nai + ようにしています",
+    "meaning": "Luôn cố gắng nỗ lực duy trì một thói quen tốt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi luôn cố gắng ăn thật nhiều rau mỗi ngày.",
+    "examples": [
+      {
+        "jp": "毎日 野菜を たくさん 食べる ［？］に しています。",
+        "vi": "Luôn cố gắng nỗ lực duy trì một thói quen tốt.",
+        "answer": "Tôi luôn cố gắng ăn thật nhiều rau mỗi ngày."
+      }
+    ]
+  },
+  {
+    "id": 119,
+    "level": "N4",
+    "lesson_number": 37,
+    "order_num": 1,
+    "title": "Bị động trực tiếp",
+    "structure": "Người A は Người B に + V-bị động",
+    "meaning": "Người A được/bị người B tác động hành động.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi đã được thầy giáo khen ngợi.",
+    "examples": [
+      {
+        "jp": "私は 先生［？］褒められました。",
+        "vi": "Người A được/bị người B tác động hành động.",
+        "answer": "Tôi đã được thầy giáo khen ngợi."
+      }
+    ]
+  },
+  {
+    "id": 120,
+    "level": "N4",
+    "lesson_number": 37,
+    "order_num": 2,
+    "title": "Bị động gián tiếp (phiền toái)",
+    "structure": "Người A は Người B に Vật を + V-bị động",
+    "meaning": "Người A bị người B làm phiền, thiệt hại về tài sản/thân thể.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trên tàu tôi bị người bên cạnh giẫm lên chân.",
+    "examples": [
+      {
+        "jp": "電車で 隣の人に 足［？］踏まれました。",
+        "vi": "Người A bị người B làm phiền, thiệt hại về tài sản/thân thể.",
+        "answer": "Trên tàu tôi bị người bên cạnh giẫm lên chân."
+      }
+    ]
+  },
+  {
+    "id": 121,
+    "level": "N4",
+    "lesson_number": 37,
+    "order_num": 3,
+    "title": "Đồ vật + によって + V-bị động",
+    "structure": "Đồ vật + は + Tác giả + によって + V-bị động",
+    "meaning": "Đồ vật, tác phẩm được phát minh, sáng tác bởi ai.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Điện thoại được phát minh bởi Bell.",
+    "examples": [
+      {
+        "jp": "電話は ベル［？］よって 発明されました。",
+        "vi": "Đồ vật, tác phẩm được phát minh, sáng tác bởi ai.",
+        "answer": "Điện thoại được phát minh bởi Bell."
+      }
+    ]
+  },
+  {
+    "id": 122,
+    "level": "N4",
+    "lesson_number": 38,
+    "order_num": 1,
+    "title": "Vる + のは + Tính từ",
+    "structure": "V-từ điển + のは + Tính từ (thú vị, khó, nguy hiểm...)",
+    "meaning": "Danh từ hóa động từ: Việc làm V thì...",
+    "usage_notes": "Đáp án bài tập điền khuyết: Việc học ngoại ngữ thì rất thú vị.",
+    "examples": [
+      {
+        "jp": "外国語を 勉強する［？］は 面白いです。",
+        "vi": "Danh từ hóa động từ: Việc làm V thì...",
+        "answer": "Việc học ngoại ngữ thì rất thú vị."
+      }
+    ]
+  },
+  {
+    "id": 123,
+    "level": "N4",
+    "lesson_number": 38,
+    "order_num": 2,
+    "title": "Vる + のが + Tính từ",
+    "structure": "V-từ điển + のが + Tính từ (thích, giỏi, ghét, kém...)",
+    "meaning": "Thích / giỏi / kém trong việc làm gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi thích việc vẽ tranh.",
+    "examples": [
+      {
+        "jp": "私は 絵を 描く［？］が 好きです。",
+        "vi": "Thích / giỏi / kém trong việc làm gì.",
+        "answer": "Tôi thích việc vẽ tranh."
+      }
+    ]
+  },
+  {
+    "id": 124,
+    "level": "N4",
+    "lesson_number": 38,
+    "order_num": 3,
+    "title": "Vる + のを + 忘れました",
+    "structure": "V-từ điển + のを + 忘れました",
+    "meaning": "Quên mất việc làm gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi quên mất việc khóa cửa.",
+    "examples": [
+      {
+        "jp": "鍵を 掛ける［？］を 忘れました。",
+        "vi": "Quên mất việc làm gì.",
+        "answer": "Tôi quên mất việc khóa cửa."
+      }
+    ]
+  },
+  {
+    "id": 125,
+    "level": "N4",
+    "lesson_number": 39,
+    "order_num": 1,
+    "title": "～て / ～で (nguyên nhân)",
+    "structure": "Vて / A-i くて / A-na で + Mệnh đề chỉ cảm xúc, bất khả kháng",
+    "meaning": "Vì... nên... (nguyên nhân mang tính khách quan, tự nhiên).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Nghe tin tức xong tôi đã rất bất ngờ.",
+    "examples": [
+      {
+        "jp": "ニュースを 聞いて、びっくり［？］。",
+        "vi": "Vì... nên... (nguyên nhân mang tính khách quan, tự nhiên).",
+        "answer": "Nghe tin tức xong tôi đã rất bất ngờ."
+      }
+    ]
+  },
+  {
+    "id": 126,
+    "level": "N4",
+    "lesson_number": 39,
+    "order_num": 2,
+    "title": "N + で (biến cố)",
+    "structure": "N (động đất, tai nạn, bão) + で",
+    "meaning": "Do, vì biến cố thiên tai sự cố gây ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tòa nhà bị sụp đổ do động đất.",
+    "examples": [
+      {
+        "jp": "地震［？］ビルが 倒れました。",
+        "vi": "Do, vì biến cố thiên tai sự cố gây ra.",
+        "answer": "Tòa nhà bị sụp đổ do động đất."
+      }
+    ]
+  },
+  {
+    "id": 127,
+    "level": "N4",
+    "lesson_number": 39,
+    "order_num": 3,
+    "title": "～ので (bởi vì)",
+    "structure": "Thể thông thường (Na/N + な) + ので",
+    "meaning": "Vì... nên... (trình bày nguyên nhân lịch sự, khách quan, nhẹ nhàng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Vì có chút việc bận nên tôi xin phép về trước.",
+    "examples": [
+      {
+        "jp": "用事が ある［？］、お先に 失礼します。",
+        "vi": "Vì... nên... (trình bày nguyên nhân lịch sự, khách quan, nhẹ nhàng).",
+        "answer": "Vì có chút việc bận nên tôi xin phép về trước."
+      }
+    ]
+  },
+  {
+    "id": 128,
+    "level": "N4",
+    "lesson_number": 40,
+    "order_num": 1,
+    "title": "Nghi vấn từ + ～か",
+    "structure": "Từ để hỏi + Thể thông thường (bỏ da) + か + Động từ",
+    "meaning": "Lồng một câu hỏi có từ để hỏi vào trong câu chính.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Bạn có biết cuộc họp bắt đầu lúc mấy giờ không?",
+    "examples": [
+      {
+        "jp": "会議が 何時に 始まる［？］知っていますか。",
+        "vi": "Lồng một câu hỏi có từ để hỏi vào trong câu chính.",
+        "answer": "Bạn có biết cuộc họp bắt đầu lúc mấy giờ không?"
+      }
+    ]
+  },
+  {
+    "id": 129,
+    "level": "N4",
+    "lesson_number": 40,
+    "order_num": 2,
+    "title": "～かどうか",
+    "structure": "Thể thông thường (bỏ da) + かどうか + Động từ",
+    "meaning": "Có hay không... (lồng câu hỏi Có/Không vào câu chính).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Hãy kiểm tra xem có lỗi sai hay không.",
+    "examples": [
+      {
+        "jp": "間違いが ない［？］どうか、確かめてください。",
+        "vi": "Có hay không... (lồng câu hỏi Có/Không vào câu chính).",
+        "answer": "Hãy kiểm tra xem có lỗi sai hay không."
+      }
+    ]
+  },
+  {
+    "id": 130,
+    "level": "N4",
+    "lesson_number": 40,
+    "order_num": 3,
+    "title": "Vて + みます",
+    "structure": "Vて + みます",
+    "meaning": "Thử làm việc gì đó xem sao.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi đi thử đôi giày này có được không?",
+    "examples": [
+      {
+        "jp": "この靴を 履いて ［？］も いいですか。",
+        "vi": "Thử làm việc gì đó xem sao.",
+        "answer": "Tôi đi thử đôi giày này có được không?"
+      }
+    ]
+  },
+  {
+    "id": 131,
+    "level": "N4",
+    "lesson_number": 41,
+    "order_num": 1,
+    "title": "やる",
+    "structure": "Người dưới / Động vật / Cây cỏ + に + やります",
+    "meaning": "Cho, tặng (dành cho bề dưới, thú cưng, tưới cây).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi cho chó ăn.",
+    "examples": [
+      {
+        "jp": "犬に えさを ［？］。",
+        "vi": "Cho, tặng (dành cho bề dưới, thú cưng, tưới cây).",
+        "answer": "Tôi cho chó ăn."
+      }
+    ]
+  },
+  {
+    "id": 132,
+    "level": "N4",
+    "lesson_number": 41,
+    "order_num": 2,
+    "title": "いただきます",
+    "structure": "Bề trên に / から + いただきます",
+    "meaning": "Nhận từ bề trên (khiêm nhường ngữ của moraimasu).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi đã nhận được quà lưu niệm từ giám đốc.",
+    "examples": [
+      {
+        "jp": "社長に お土産を ［？］。",
+        "vi": "Nhận từ bề trên (khiêm nhường ngữ của moraimasu).",
+        "answer": "Tôi đã nhận được quà lưu niệm từ giám đốc."
+      }
+    ]
+  },
+  {
+    "id": 133,
+    "level": "N4",
+    "lesson_number": 41,
+    "order_num": 3,
+    "title": "くださいます",
+    "structure": "Bề trên が + くださいます",
+    "meaning": "Bề trên cho tôi/người nhà tôi (tôn kính ngữ của kuremasu).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Phu nhân trưởng phòng đã cho tôi bánh kẹo.",
+    "examples": [
+      {
+        "jp": "部長の 奥さんが お菓子を ［？］。",
+        "vi": "Bề trên cho tôi/người nhà tôi (tôn kính ngữ của kuremasu).",
+        "answer": "Phu nhân trưởng phòng đã cho tôi bánh kẹo."
+      }
+    ]
+  },
+  {
+    "id": 134,
+    "level": "N4",
+    "lesson_number": 41,
+    "order_num": 4,
+    "title": "Vて いただけませんか",
+    "structure": "Vて + いただけませんか",
+    "meaning": "Làm ơn giúp tôi việc này được không (lời nhờ vả lịch thiệp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Làm ơn chỉ giúp tôi cách photo được không ạ?",
+    "examples": [
+      {
+        "jp": "コピーの やり方を 教えて ［？］。",
+        "vi": "Làm ơn giúp tôi việc này được không (lời nhờ vả lịch thiệp).",
+        "answer": "Làm ơn chỉ giúp tôi cách photo được không ạ?"
+      }
+    ]
+  },
+  {
+    "id": 135,
+    "level": "N4",
+    "lesson_number": 42,
+    "order_num": 1,
+    "title": "～ために (mục đích)",
+    "structure": "V-từ điển / Nの + ために",
+    "meaning": "Để, vì mục đích gì đó (chủ ngữ hai vế phải đồng nhất).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Để mua nhà riêng, tôi đang tiết kiệm tiền.",
+    "examples": [
+      {
+        "jp": "自分の 家を 買う［？］に、貯金しています。",
+        "vi": "Để, vì mục đích gì đó (chủ ngữ hai vế phải đồng nhất).",
+        "answer": "Để mua nhà riêng, tôi đang tiết kiệm tiền."
+      }
+    ]
+  },
+  {
+    "id": 136,
+    "level": "N4",
+    "lesson_number": 42,
+    "order_num": 2,
+    "title": "～のに (công dụng)",
+    "structure": "V-từ điển + のに + 使います / 役に立ちます / 時間がかかります",
+    "meaning": "Dùng vào việc gì, có ích cho việc gì, mất bao lâu vào việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Cái kéo này dùng để cắt giấy.",
+    "examples": [
+      {
+        "jp": "この はさみは 紙を 切る［？］に 使います。",
+        "vi": "Dùng vào việc gì, có ích cho việc gì, mất bao lâu vào việc gì.",
+        "answer": "Cái kéo này dùng để cắt giấy."
+      }
+    ]
+  },
+  {
+    "id": 137,
+    "level": "N4",
+    "lesson_number": 43,
+    "order_num": 1,
+    "title": "～そうです (sắp sửa)",
+    "structure": "V (bỏ masu) + そうです",
+    "meaning": "Trông có vẻ sắp sửa xảy ra ngay trước mắt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trời trông có vẻ sắp mưa đến nơi rồi.",
+    "examples": [
+      {
+        "jp": "今にも 雨が 降り［？］です。",
+        "vi": "Trông có vẻ sắp sửa xảy ra ngay trước mắt.",
+        "answer": "Trời trông có vẻ sắp mưa đến nơi rồi."
+      }
+    ]
+  },
+  {
+    "id": 138,
+    "level": "N4",
+    "lesson_number": 43,
+    "order_num": 2,
+    "title": "～そうです (vẻ ngoài)",
+    "structure": "A-i (bỏ i) / A-na (bỏ na) + そうです",
+    "meaning": "Trông có vẻ (phán đoán qua trực giác thị giác).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Cái bánh này trông có vẻ ngon.",
+    "examples": [
+      {
+        "jp": "この ケーキは おいし［？］です。",
+        "vi": "Trông có vẻ (phán đoán qua trực giác thị giác).",
+        "answer": "Cái bánh này trông có vẻ ngon."
+      }
+    ]
+  },
+  {
+    "id": 139,
+    "level": "N4",
+    "lesson_number": 43,
+    "order_num": 3,
+    "title": "Vて + きます",
+    "structure": "Vて + きます",
+    "meaning": "Đi đâu làm gì đó rồi quay trở lại vị trí ban đầu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi đi mua bao thuốc một lát rồi về.",
+    "examples": [
+      {
+        "jp": "ちょっと たばこを 買って ［？］。",
+        "vi": "Đi đâu làm gì đó rồi quay trở lại vị trí ban đầu.",
+        "answer": "Tôi đi mua bao thuốc một lát rồi về."
+      }
+    ]
+  },
+  {
+    "id": 140,
+    "level": "N4",
+    "lesson_number": 44,
+    "order_num": 1,
+    "title": "～すぎます",
+    "structure": "V (bỏ masu) / A-i (bỏ i) / A-na (bỏ na) + すぎます",
+    "meaning": "Quá mức bình thường, mang hàm ý tiêu cực, không tốt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tối qua tôi đã uống quá nhiều rượu.",
+    "examples": [
+      {
+        "jp": "昨夜 お酒を 飲み［？］ました。",
+        "vi": "Quá mức bình thường, mang hàm ý tiêu cực, không tốt.",
+        "answer": "Tối qua tôi đã uống quá nhiều rượu."
+      }
+    ]
+  },
+  {
+    "id": 141,
+    "level": "N4",
+    "lesson_number": 44,
+    "order_num": 2,
+    "title": "～やすい / ～にくい",
+    "structure": "V (bỏ masu) + やすいです / にくいです",
+    "meaning": "Dễ làm / khó làm việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Thuốc này không đắng nên rất dễ uống.",
+    "examples": [
+      {
+        "jp": "この 薬は 苦くなくて、飲み［？］です。",
+        "vi": "Dễ làm / khó làm việc gì.",
+        "answer": "Thuốc này không đắng nên rất dễ uống."
+      }
+    ]
+  },
+  {
+    "id": 142,
+    "level": "N4",
+    "lesson_number": 44,
+    "order_num": 3,
+    "title": "～く / ～に します",
+    "structure": "A-i (bỏ i -> ku) / A-na / N + ni + shimasu",
+    "meaning": "Làm cho trở nên... (tác động chủ ý làm thay đổi trạng thái).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi dọn dẹp cho căn phòng trở nên sạch sẽ.",
+    "examples": [
+      {
+        "jp": "部屋を きれいに ［？］。",
+        "vi": "Làm cho trở nên... (tác động chủ ý làm thay đổi trạng thái).",
+        "answer": "Tôi dọn dẹp cho căn phòng trở nên sạch sẽ."
+      }
+    ]
+  },
+  {
+    "id": 143,
+    "level": "N4",
+    "lesson_number": 45,
+    "order_num": 1,
+    "title": "～場合は",
+    "structure": "Thể thông thường (A-na / N + な) + 場合は",
+    "meaning": "Trong trường hợp... thì phải làm gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Trong trường hợp hỏa hoạn, xin đừng sử dụng thang máy.",
+    "examples": [
+      {
+        "jp": "火事の ［？］は、エレベーターを 使わないでください。",
+        "vi": "Trong trường hợp... thì phải làm gì.",
+        "answer": "Trong trường hợp hỏa hoạn, xin đừng sử dụng thang máy."
+      }
+    ]
+  },
+  {
+    "id": 144,
+    "level": "N4",
+    "lesson_number": 45,
+    "order_num": 2,
+    "title": "～のに (thế mà)",
+    "structure": "Thể thông thường (A-na / N + な) + のに",
+    "meaning": "Mặc dù... thế mà... (bất mãn, ngạc nhiên, trái kỳ vọng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Mặc dù đã học hết sức chăm chỉ thế mà vẫn bị trượt.",
+    "examples": [
+      {
+        "jp": "一生懸命 勉強した［？］、不合格でした。",
+        "vi": "Mặc dù... thế mà... (bất mãn, ngạc nhiên, trái kỳ vọng).",
+        "answer": "Mặc dù đã học hết sức chăm chỉ thế mà vẫn bị trượt."
+      }
+    ]
+  },
+  {
+    "id": 145,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 1,
+    "title": "V-từ điển + ところです",
+    "structure": "Vる + ところです",
+    "meaning": "Chuẩn bị làm gì ngay bây giờ (ngay trước thời điểm bắt đầu).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Bây giờ tôi chuẩn bị ăn cơm đây.",
+    "examples": [
+      {
+        "jp": "これから ご飯を 食べる ［？］です。",
+        "vi": "Chuẩn bị làm gì ngay bây giờ (ngay trước thời điểm bắt đầu).",
+        "answer": "Bây giờ tôi chuẩn bị ăn cơm đây."
+      }
+    ]
+  },
+  {
+    "id": 146,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 2,
+    "title": "Vて + いるところです",
+    "structure": "Vている + ところです",
+    "meaning": "Đang trong đúng lúc làm gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Bây giờ tôi đang trong lúc soạn tài liệu.",
+    "examples": [
+      {
+        "jp": "今 資料を 作って いる ［？］です。",
+        "vi": "Đang trong đúng lúc làm gì.",
+        "answer": "Bây giờ tôi đang trong lúc soạn tài liệu."
+      }
+    ]
+  },
+  {
+    "id": 147,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 3,
+    "title": "Vた + ところです",
+    "structure": "Vた + ところです",
+    "meaning": "Vừa mới làm xong trong gang tấc.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi vừa mới về đến nơi xong tức thì.",
+    "examples": [
+      {
+        "jp": "たった今 帰って 来た ［？］です。",
+        "vi": "Vừa mới làm xong trong gang tấc.",
+        "answer": "Tôi vừa mới về đến nơi xong tức thì."
+      }
+    ]
+  },
+  {
+    "id": 148,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 4,
+    "title": "Vた + ばかりです",
+    "structure": "Vた + ばかりです",
+    "meaning": "Vừa mới làm gì xong (theo cảm nhận tâm lý của người nói).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Chiếc máy tính này tôi mới mua tháng trước thôi.",
+    "examples": [
+      {
+        "jp": "この パソコンは 先月 買った ［？］です。",
+        "vi": "Vừa mới làm gì xong (theo cảm nhận tâm lý của người nói).",
+        "answer": "Chiếc máy tính này tôi mới mua tháng trước thôi."
+      }
+    ]
+  },
+  {
+    "id": 149,
+    "level": "N4",
+    "lesson_number": 46,
+    "order_num": 5,
+    "title": "～はずです",
+    "structure": "Thể thông thường (Na + な / N + の) + はずです",
+    "meaning": "Chắc chắn là... (phán đoán có căn cứ xác thực gần như tuyệt đối).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Anh Tanaka chắc chắn hôm nay sẽ đến.",
+    "examples": [
+      {
+        "jp": "田中さんは 今日 来る［？］です。",
+        "vi": "Chắc chắn là... (phán đoán có căn cứ xác thực gần như tuyệt đối).",
+        "answer": "Anh Tanaka chắc chắn hôm nay sẽ đến."
+      }
+    ]
+  },
+  {
+    "id": 150,
+    "level": "N4",
+    "lesson_number": 47,
+    "order_num": 1,
+    "title": "～そうです (nghe nói)",
+    "structure": "Thể thông thường + そうです",
+    "meaning": "Nghe nói là... (truyền đạt lại thông tin nghe từ nguồn khác).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Theo dự báo thời tiết thì nghe nói ngày mai trời sẽ trở lạnh.",
+    "examples": [
+      {
+        "jp": "天気予報に よると、明日は 寒くなる［？］です。",
+        "vi": "Nghe nói là... (truyền đạt lại thông tin nghe từ nguồn khác).",
+        "answer": "Theo dự báo thời tiết thì nghe nói ngày mai trời sẽ trở lạnh."
+      }
+    ]
+  },
+  {
+    "id": 151,
+    "level": "N4",
+    "lesson_number": 47,
+    "order_num": 2,
+    "title": "～ようです (hình như)",
+    "structure": "Thể thông thường (Na + な / N + の) + ようです",
+    "meaning": "Hình như là... (suy đoán dựa trên quan sát gián tiếp hoặc cảm nhận).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Hình như bên ngoài gió rất mạnh.",
+    "examples": [
+      {
+        "jp": "外は 風が 強い［？］です。",
+        "vi": "Hình như là... (suy đoán dựa trên quan sát gián tiếp hoặc cảm nhận).",
+        "answer": "Hình như bên ngoài gió rất mạnh."
+      }
+    ]
+  },
+  {
+    "id": 152,
+    "level": "N4",
+    "lesson_number": 47,
+    "order_num": 3,
+    "title": "N が します",
+    "structure": "N (tiếng, mùi, vị) + が します",
+    "meaning": "Có âm thanh, có mùi, có vị...",
+    "usage_notes": "Đáp án bài tập điền khuyết: Có mùi thơm quá nhỉ.",
+    "examples": [
+      {
+        "jp": "いい におい［？］しますね。",
+        "vi": "Có âm thanh, có mùi, có vị...",
+        "answer": "Có mùi thơm quá nhỉ."
+      }
+    ]
+  },
+  {
+    "id": 153,
+    "level": "N4",
+    "lesson_number": 48,
+    "order_num": 1,
+    "title": "Động từ thể sai khiến",
+    "structure": "Nhóm 1: i -> a + semasu; Nhóm 2: + sasemasu; Nhóm 3: sasemasu, kosasemasu",
+    "meaning": "Bắt ai làm / cho phép ai làm việc gì.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Thầy giáo đã bắt học sinh đọc sách.",
+    "examples": [
+      {
+        "jp": "先生は 学生に 本を 読ま［？］ました。",
+        "vi": "Bắt ai làm / cho phép ai làm việc gì.",
+        "answer": "Thầy giáo đã bắt học sinh đọc sách."
+      }
+    ]
+  },
+  {
+    "id": 154,
+    "level": "N4",
+    "lesson_number": 48,
+    "order_num": 2,
+    "title": "V-sai khiến + ていただけませんか",
+    "structure": "V-sai khiến (te) + いただけませんか",
+    "meaning": "Làm ơn cho phép tôi được làm việc này có được không?",
+    "usage_notes": "Đáp án bài tập điền khuyết: Vì đau đầu nên xin phép cho tôi được về sớm có được không ạ?",
+    "examples": [
+      {
+        "jp": "頭が 痛いので、早く 帰ら［？］て いただけませんか。",
+        "vi": "Làm ơn cho phép tôi được làm việc này có được không?",
+        "answer": "Vì đau đầu nên xin phép cho tôi được về sớm có được không ạ?"
+      }
+    ]
+  },
+  {
+    "id": 155,
+    "level": "N4",
+    "lesson_number": 49,
+    "order_num": 1,
+    "title": "Động từ bị động làm tôn kính",
+    "structure": "Nhóm 1: i -> aremasu; Nhóm 2: + raremasu; Nhóm 3: saremasu, koraremasu",
+    "meaning": "Tôn kính ngữ dạng bị động (mức độ kính trọng vừa phải).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Giám đốc đã về rồi ạ.",
+    "examples": [
+      {
+        "jp": "社長は もう 帰ら［？］ました。",
+        "vi": "Tôn kính ngữ dạng bị động (mức độ kính trọng vừa phải).",
+        "answer": "Giám đốc đã về rồi ạ."
+      }
+    ]
+  },
+  {
+    "id": 156,
+    "level": "N4",
+    "lesson_number": 49,
+    "order_num": 2,
+    "title": "お + V (bỏ masu) + になります",
+    "structure": "お + V (bỏ masu) + に なります",
+    "meaning": "Tôn kính ngữ tiêu chuẩn (trang trọng hơn dạng bị động).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Giám đốc đã đọc báo ạ.",
+    "examples": [
+      {
+        "jp": "社長は 新聞を お読み［？］なりました。",
+        "vi": "Tôn kính ngữ tiêu chuẩn (trang trọng hơn dạng bị động).",
+        "answer": "Giám đốc đã đọc báo ạ."
+      }
+    ]
+  },
+  {
+    "id": 157,
+    "level": "N4",
+    "lesson_number": 49,
+    "order_num": 3,
+    "title": "Động từ tôn kính đặc biệt",
+    "structure": "いらっしゃいます / おっしゃいます / なさいます / ご覧になります...",
+    "meaning": "Các động từ tôn kính đặc biệt có mức độ kính trọng cao nhất.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Ngài có dùng rượu không ạ?",
+    "examples": [
+      {
+        "jp": "お酒を 召し［？］ますか。(Ngài có dùng rượu không ạ?)",
+        "vi": "Các động từ tôn kính đặc biệt có mức độ kính trọng cao nhất.",
+        "answer": "Ngài có dùng rượu không ạ?"
+      }
+    ]
+  },
+  {
+    "id": 158,
+    "level": "N4",
+    "lesson_number": 49,
+    "order_num": 4,
+    "title": "お / ご + ください",
+    "structure": "お + V (bỏ masu) / ご + N + ください",
+    "meaning": "Kính mời quý khách làm việc gì đó.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Xin kính mời quý khách vào trong ạ.",
+    "examples": [
+      {
+        "jp": "どうぞ お入り［？］。",
+        "vi": "Kính mời quý khách làm việc gì đó.",
+        "answer": "Xin kính mời quý khách vào trong ạ."
+      }
+    ]
+  },
+  {
+    "id": 159,
+    "level": "N4",
+    "lesson_number": 50,
+    "order_num": 1,
+    "title": "お + V (bỏ masu) + します",
+    "structure": "お + V (bỏ masu) / ご + N + します",
+    "meaning": "Tôi xin phép làm hành động gì đó cho người bề trên / khách hàng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi xin phép xách giúp ngài hành lý nặng này ạ.",
+    "examples": [
+      {
+        "jp": "重い 荷物を お持ち［？］。",
+        "vi": "Tôi xin phép làm hành động gì đó cho người bề trên / khách hàng.",
+        "answer": "Tôi xin phép xách giúp ngài hành lý nặng này ạ."
+      }
+    ]
+  },
+  {
+    "id": 160,
+    "level": "N4",
+    "lesson_number": 50,
+    "order_num": 2,
+    "title": "Động từ khiêm nhường đặc biệt",
+    "structure": "参ります / おります / 申します / いたします / 拝見します...",
+    "meaning": "Khiêm nhường về bản thân hoặc người cùng phe (công ty mình, người nhà mình).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Tôi tên là Tanaka ạ.",
+    "examples": [
+      {
+        "jp": "私は 田中と ［？］。(Tôi tên là Tanaka ạ.)",
+        "vi": "Khiêm nhường về bản thân hoặc người cùng phe (công ty mình, người nhà mình).",
+        "answer": "Tôi tên là Tanaka ạ."
+      }
+    ]
+  },
+  {
+    "id": 161,
+    "level": "N4",
+    "lesson_number": 50,
+    "order_num": 3,
+    "title": "で ございます",
+    "structure": "N + で ございます",
+    "meaning": "Lịch sự ngữ của です (dùng khi giao tiếp trang trọng với khách hàng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: Đây là sản phẩm mới của công ty chúng tôi ạ.",
+    "examples": [
+      {
+        "jp": "こちらは 新製品［？］ございます。",
+        "vi": "Lịch sự ngữ của です (dùng khi giao tiếp trang trọng với khách hàng).",
+        "answer": "Đây là sản phẩm mới của công ty chúng tôi ạ."
+      }
+    ]
+  },
+  {
+    "id": 162,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "最中に",
+    "structure": "Vている / Nの + 最中に",
+    "meaning": "Đúng vào lúc đang làm gì thì có sự việc bất ngờ xảy ra chen ngang.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 最中",
+    "examples": [
+      {
+        "jp": "食事の［？］に、電話が 鳴った。",
+        "vi": "Đúng vào lúc đang ăn cơm thì điện thoại reo vang.",
+        "answer": "最中"
+      }
+    ]
+  },
+  {
+    "id": 163,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "たとたん",
+    "structure": "Vた + とたんに",
+    "meaning": "Vừa mới làm V xong thì ngay lập tức có sự việc xảy ra ngoài ý muốn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: とたん",
+    "examples": [
+      {
+        "jp": "窓を 開けた［？］、冷たい 風が 入ってきた。",
+        "vi": "Vừa mở cửa sổ ra thì ngay lập tức một làn gió lạnh ùa vào.",
+        "answer": "とたん"
+      }
+    ]
+  },
+  {
+    "id": 164,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 3,
+    "title": "てからでないと",
+    "structure": "Vて + からでないと / からでなければ",
+    "meaning": "Nếu chưa làm V1 thì không thể làm được V2.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "手を 洗っ［？］からでないと、ご飯を 食べてはいけない。",
+        "vi": "Nếu chưa rửa tay thì không được ăn cơm.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 165,
+    "level": "N3",
+    "lesson_number": 1,
+    "order_num": 4,
+    "title": "ついでに",
+    "structure": "Vる / Vた / Nの + ついでに",
+    "meaning": "Nhân tiện, tiện thể làm việc A thì làm luôn việc B.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ついで",
+    "examples": [
+      {
+        "jp": "買い物の［？］に、郵便局へ 行ってきた。",
+        "vi": "Nhân tiện đi mua sắm tôi ghé qua bưu điện luôn.",
+        "answer": "ついで"
+      }
+    ]
+  },
+  {
+    "id": 166,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "わけだ",
+    "structure": "Thể thông thường (Na + な / N + の) + わけだ",
+    "meaning": "Thảo nào, hèn chi... (hiểu ra lý do tất nhiên sau khi biết sự thật).",
+    "usage_notes": "Đáp án bài tập điền khuyết: わけ",
+    "examples": [
+      {
+        "jp": "熱が 39度も ある。体が だるい［？］だ。",
+        "vi": "Sốt tận 39 độ, thảo nào người uể oải thế này.",
+        "answer": "わけ"
+      }
+    ]
+  },
+  {
+    "id": 167,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "わけではない",
+    "structure": "Thể thông thường (Na + な / N + な) + わけではない",
+    "meaning": "Không hẳn là, không có nghĩa là... (phủ định một phần).",
+    "usage_notes": "Đáp án bài tập điền khuyết: わけ",
+    "examples": [
+      {
+        "jp": "嫌いな［？］ではないが、あまり 食べたくない。",
+        "vi": "Không hẳn là tôi ghét món này, nhưng không muốn ăn lắm.",
+        "answer": "わけ"
+      }
+    ]
+  },
+  {
+    "id": 168,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 3,
+    "title": "せいで",
+    "structure": "Thể thông thường (Na + な / N + の) + せいで",
+    "meaning": "Chỉ tại, do... (nguyên nhân dẫn đến kết quả xấu, đổ lỗi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: せい",
+    "examples": [
+      {
+        "jp": "寝不足の［？］で、頭が 痛い。",
+        "vi": "Chỉ tại thiếu ngủ mà tôi bị đau đầu.",
+        "answer": "せい"
+      }
+    ]
+  },
+  {
+    "id": 169,
+    "level": "N3",
+    "lesson_number": 2,
+    "order_num": 4,
+    "title": "おかげで",
+    "structure": "Thể thông thường (Na + な / N + の) + おかげで",
+    "meaning": "Nhờ có, nhờ ơn... (nguyên nhân mang lại kết quả tốt đẹp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: おかげ",
+    "examples": [
+      {
+        "jp": "先生の［？］で、合格できました。",
+        "vi": "Nhờ có thầy cô mà tôi đã thi đỗ.",
+        "answer": "おかげ"
+      }
+    ]
+  },
+  {
+    "id": 170,
+    "level": "N3",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "さえ～ば",
+    "structure": "Nさえ + V-ba / A-ba",
+    "meaning": "Chỉ cần... là đủ (điều kiện duy nhất để đạt được kết quả).",
+    "usage_notes": "Đáp án bài tập điền khuyết: さえ",
+    "examples": [
+      {
+        "jp": "お金［？］あれば、何でも 買えるわけではない。",
+        "vi": "Chỉ cần có tiền không có nghĩa là mua được tất cả.",
+        "answer": "さえ"
+      }
+    ]
+  },
+  {
+    "id": 171,
+    "level": "N3",
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "としたら / とすれば",
+    "structure": "Thể thông thường + としたら / とすれば",
+    "meaning": "Giả sử nếu như... thì... (giả định tình huống tưởng tượng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "明日 地球が 滅びる［？］したら、何を しますか。",
+        "vi": "Giả sử ngày mai trái đất diệt vong thì bạn sẽ làm gì?",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 172,
+    "level": "N3",
+    "lesson_number": 3,
+    "order_num": 3,
+    "title": "にしても",
+    "structure": "Thể thông thường + にしても",
+    "meaning": "Ngay cả khi, cho dù là... đi nữa thì vẫn...",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "忙しい［？］しても、連絡くらいは できるだろう。",
+        "vi": "Cho dù bận rộn đi nữa thì ít nhất cũng liên lạc được chứ.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 173,
+    "level": "N3",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "わりに",
+    "structure": "Thể thông thường (Na + な / N + の) + わりに（は）",
+    "meaning": "So với mức độ bình thường thì... (kết quả trái ngược so với kỳ vọng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: わり",
+    "examples": [
+      {
+        "jp": "この店は 値段の［？］に、とても おいしい。",
+        "vi": "Quán này so với giá tiền thì ăn ngon bất ngờ.",
+        "answer": "わり"
+      }
+    ]
+  },
+  {
+    "id": 174,
+    "level": "N3",
+    "lesson_number": 4,
+    "order_num": 2,
+    "title": "にしては",
+    "structure": "Thể thông thường (Na/N bỏ da) + にしては",
+    "meaning": "Tuy là... thế mà... (tiêu chuẩn đánh giá cụ thể có thực tế khác biệt).",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "彼は 日本人［？］しては、背が とても 高い。",
+        "vi": "Anh ấy tuy là người Nhật thế mà dáng người rất cao.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 175,
+    "level": "N3",
+    "lesson_number": 4,
+    "order_num": 3,
+    "title": "くせに",
+    "structure": "Thể thông thường (Na + な / N + の) + くせに",
+    "meaning": "Thế mà lại, vậy mà... (thể hiện sự mỉa mai, khinh bỉ, trách móc).",
+    "usage_notes": "Đáp án bài tập điền khuyết: くせ",
+    "examples": [
+      {
+        "jp": "何も 知らない［？］に、知っているふりを する。",
+        "vi": "Chẳng biết cái gì vậy mà cứ làm như biết tuốt.",
+        "answer": "くせ"
+      }
+    ]
+  },
+  {
+    "id": 176,
+    "level": "N3",
+    "lesson_number": 4,
+    "order_num": 4,
+    "title": "ものの",
+    "structure": "Thể thông thường (Na + な) + ものの",
+    "meaning": "Tuy là... nhưng mà... (văn viết nhượng bộ thực tế).",
+    "usage_notes": "Đáp án bài tập điền khuyết: もの",
+    "examples": [
+      {
+        "jp": "申し込んだ［？］の、行くかどうか 迷っている。",
+        "vi": "Tuy đã đăng ký rồi nhưng tôi vẫn phân vân có đi hay không.",
+        "answer": "もの"
+      }
+    ]
+  },
+  {
+    "id": 177,
+    "level": "N3",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "くらいなら",
+    "structure": "V-từ điển + くらいなら",
+    "meaning": "Nếu phải làm A thì thà làm B còn hơn (thể hiện sự chán ghét A).",
+    "usage_notes": "Đáp án bài tập điền khuyết: くらい",
+    "examples": [
+      {
+        "jp": "諦める［？］なら、死んだほうが ましだ。",
+        "vi": "Nếu phải bỏ cuộc thì thà chết còn sướng hơn.",
+        "answer": "くらい"
+      }
+    ]
+  },
+  {
+    "id": 178,
+    "level": "N3",
+    "lesson_number": 5,
+    "order_num": 2,
+    "title": "ほど～はない",
+    "structure": "N + ほど + [Tính từ] + はない",
+    "meaning": "Không có gì bằng... (khẳng định N là số một trong phạm trù).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ほど",
+    "examples": [
+      {
+        "jp": "健康［？］大切な ものは ない。",
+        "vi": "Không có gì quý giá bằng sức khỏe.",
+        "answer": "ほど"
+      }
+    ]
+  },
+  {
+    "id": 179,
+    "level": "N3",
+    "lesson_number": 5,
+    "order_num": 3,
+    "title": "に限る",
+    "structure": "Vる / Vない / N + に限る",
+    "meaning": "Tốt nhất là, nên làm nhất là... (đưa ra ý kiến chủ quan tối ưu).",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "暑い 日は ビール［？］限る。",
+        "vi": "Ngày nóng nực thì uống bia là tuyệt nhất.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 180,
+    "level": "N3",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "に違いない",
+    "structure": "Thể thông thường (Na/N bỏ da) + に違いない",
+    "meaning": "Chắc chắn là... (tin tưởng vững chắc dựa trên trực giác cá nhân).",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "犯人は あの男［？］違いない。",
+        "vi": "Thủ phạm chắc chắn là người đàn ông đó.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 181,
+    "level": "N3",
+    "lesson_number": 6,
+    "order_num": 2,
+    "title": "おそれがある",
+    "structure": "V-từ điển / Nの + おそれがある",
+    "meaning": "E rằng, có nguy cơ sẽ dẫn đến hậu quả xấu (tin tức thời sự).",
+    "usage_notes": "Đáp án bài tập điền khuyết: おそれ",
+    "examples": [
+      {
+        "jp": "大雨で 洪水が 起こる［？］が ある。",
+        "vi": "E rằng mưa lớn sẽ gây ra lũ lụt.",
+        "answer": "おそれ"
+      }
+    ]
+  },
+  {
+    "id": 182,
+    "level": "N3",
+    "lesson_number": 6,
+    "order_num": 3,
+    "title": "かねない",
+    "structure": "V (bỏ masu) + かねない",
+    "meaning": "Có khả năng sẽ xảy ra chuyện xấu (cảnh báo nguy cơ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: かね",
+    "examples": [
+      {
+        "jp": "スピードの 出しすぎは 事故を 起こし［？］ない。",
+        "vi": "Chạy xe quá tốc độ có khả năng gây tai nạn.",
+        "answer": "かね"
+      }
+    ]
+  },
+  {
+    "id": 183,
+    "level": "N3",
+    "lesson_number": 6,
+    "order_num": 4,
+    "title": "かねる",
+    "structure": "V (bỏ masu) + かねる",
+    "meaning": "Khó lòng mà, không thể làm được (từ chối lịch sự trong kinh doanh).",
+    "usage_notes": "Đáp án bài tập điền khuyết: かね",
+    "examples": [
+      {
+        "jp": "その ご要望には お応え 致し［？］ます。",
+        "vi": "Yêu cầu đó của quý khách chúng tôi khó lòng đáp ứng được ạ.",
+        "answer": "かね"
+      }
+    ]
+  },
+  {
+    "id": 184,
+    "level": "N3",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "一方だ",
+    "structure": "V-từ điển + 一方だ",
+    "meaning": "Càng ngày càng có xu hướng... (thường là biến đổi tiêu cực một chiều).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 一方",
+    "examples": [
+      {
+        "jp": "物価は 上がる［？］だ。",
+        "vi": "Giá cả càng ngày càng tăng phi mã.",
+        "answer": "一方"
+      }
+    ]
+  },
+  {
+    "id": 185,
+    "level": "N3",
+    "lesson_number": 7,
+    "order_num": 2,
+    "title": "にしたがって",
+    "structure": "V-từ điển / N + にしたがって",
+    "meaning": "Cùng với việc A biến đổi thì kéo theo B cũng thay đổi theo tỉ lệ thuận.",
+    "usage_notes": "Đáp án bài tập điền khuyết: に",
+    "examples": [
+      {
+        "jp": "標高が 高くなる［？］したがって、気温が 下がる。",
+        "vi": "Càng lên cao thì nhiệt độ càng hạ thấp.",
+        "answer": "に"
+      }
+    ]
+  },
+  {
+    "id": 186,
+    "level": "N3",
+    "lesson_number": 7,
+    "order_num": 3,
+    "title": "ばかりだ",
+    "structure": "V-từ điển + ばかりだ",
+    "meaning": "Càng ngày càng trở nên... (diễn biến xấu đi dần đều).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ばかり",
+    "examples": [
+      {
+        "jp": "祖父の 病気は 悪くなる［？］だ。",
+        "vi": "Bệnh tình của ông tôi cứ ngày một xấu đi.",
+        "answer": "ばかり"
+      }
+    ]
+  },
+  {
+    "id": 187,
+    "level": "N3",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "たまらない",
+    "structure": "Vて / A-i くて / A-na で + たまらない",
+    "meaning": "Rất... đến mức không chịu nổi (cảm xúc bản thân cực độ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: たまら",
+    "examples": [
+      {
+        "jp": "合格できて、嬉しくて［？］ない。",
+        "vi": "Thi đỗ rồi, tôi vui sướng đến mức không kìm lại được.",
+        "answer": "たまら"
+      }
+    ]
+  },
+  {
+    "id": 188,
+    "level": "N3",
+    "lesson_number": 8,
+    "order_num": 2,
+    "title": "てならない",
+    "structure": "Vて / A-i くて / A-na で + ならない",
+    "meaning": "Hết sức... không nguôi (cảm xúc tự nhiên dâng trào từ đáy lòng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: なら",
+    "examples": [
+      {
+        "jp": "故郷の 家族の ことが 心配で［？］ない。",
+        "vi": "Tôi lo lắng không nguôi cho gia đình ở quê nhà.",
+        "answer": "なら"
+      }
+    ]
+  },
+  {
+    "id": 189,
+    "level": "N3",
+    "lesson_number": 8,
+    "order_num": 3,
+    "title": "しょうがない / 仕方がない",
+    "structure": "Vて / A-i くて / A-na で + しょうがない",
+    "meaning": "Không biết làm sao, vô cùng... (không thể cưỡng lại cảm xúc).",
+    "usage_notes": "Đáp án bài tập điền khuyết: しょうが",
+    "examples": [
+      {
+        "jp": "昨夜 徹夜したので、眠くて［？］ない。",
+        "vi": "Tối qua thức trắng đêm nên buồn ngủ không chịu được.",
+        "answer": "しょうが"
+      }
+    ]
+  },
+  {
+    "id": 190,
+    "level": "N3",
+    "lesson_number": 9,
+    "order_num": 1,
+    "title": "っぱなし",
+    "structure": "V (bỏ masu) + っぱなし",
+    "meaning": "Cứ để nguyên trạng thái xấu như thế mà không xử lý (bỏ mặc).",
+    "usage_notes": "Đáp án bài tập điền khuyết: っぱなし",
+    "examples": [
+      {
+        "jp": "電気を つけ［？］で 出かけてしまった。",
+        "vi": "Tôi đã để nguyên đèn sáng bật suốt mà đi ra ngoài mất.",
+        "answer": "っぱなし"
+      }
+    ]
+  },
+  {
+    "id": 191,
+    "level": "N3",
+    "lesson_number": 9,
+    "order_num": 2,
+    "title": "だらけ",
+    "structure": "N + だらけ",
+    "meaning": "Đầy rẫy toàn là... (bao phủ bởi thứ dơ bẩn, lỗi sai, tiêu cực).",
+    "usage_notes": "Đáp án bài tập điền khuyết: だらけ",
+    "examples": [
+      {
+        "jp": "この レポートは 間違い［？］だ。",
+        "vi": "Bản báo cáo này đầy rẫy những lỗi sai.",
+        "answer": "だらけ"
+      }
+    ]
+  },
+  {
+    "id": 192,
+    "level": "N3",
+    "lesson_number": 9,
+    "order_num": 3,
+    "title": "がち",
+    "structure": "V (bỏ masu) / N + がち",
+    "meaning": "Thường hay có xu hướng... (khuynh hướng tiêu cực dễ xảy ra).",
+    "usage_notes": "Đáp án bài tập điền khuyết: がち",
+    "examples": [
+      {
+        "jp": "冬は 風邪を 引き［？］になる。",
+        "vi": "Mùa đông người ta thường rất dễ bị cảm cúm.",
+        "answer": "がち"
+      }
+    ]
+  },
+  {
+    "id": 193,
+    "level": "N3",
+    "lesson_number": 9,
+    "order_num": 4,
+    "title": "ざるを得ない",
+    "structure": "V-nai (bỏ nai -> zaru) + を得ない (suru -> sezaruoenai)",
+    "meaning": "Đành phải, buộc lòng phải làm dù bản thân không muốn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ざる",
+    "examples": [
+      {
+        "jp": "台風のため、旅行は 中止せ［？］を得ない。",
+        "vi": "Vì bão nên chúng tôi buộc lòng phải hủy chuyến du lịch.",
+        "answer": "ざる"
+      }
+    ]
+  },
+  {
+    "id": 194,
+    "level": "N3",
+    "lesson_number": 10,
+    "order_num": 1,
+    "title": "お/ご～いただく",
+    "structure": "お + V (bỏ masu) / ご + N + いただく",
+    "meaning": "Khiêm nhường ngữ: Được bề trên / đối tác làm điều gì đó cho mình.",
+    "usage_notes": "Đáp án bài tập điền khuyết: いただき",
+    "examples": [
+      {
+        "jp": "先生に ご指導［？］ました。",
+        "vi": "Tôi đã được thầy giáo tận tình chỉ dẫn.",
+        "answer": "いただき"
+      }
+    ]
+  },
+  {
+    "id": 195,
+    "level": "N3",
+    "lesson_number": 10,
+    "order_num": 2,
+    "title": "～ていらっしゃる",
+    "structure": "Vて + いらっしゃる",
+    "meaning": "Tôn kính ngữ của ている (đang làm gì, trong trạng thái gì).",
+    "usage_notes": "Đáp án bài tập điền khuyết: いらっしゃい",
+    "examples": [
+      {
+        "jp": "社長は 今 会議を して［？］ます。",
+        "vi": "Giám đốc hiện đang trong phòng họp ạ.",
+        "answer": "いらっしゃい"
+      }
+    ]
+  },
+  {
+    "id": 196,
+    "level": "N3",
+    "lesson_number": 10,
+    "order_num": 3,
+    "title": "～させていただく",
+    "structure": "V-sai khiến (te) + いただく",
+    "meaning": "Xin phép được làm gì (khiêm nhường lịch sự cao cấp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: いただき",
+    "examples": [
+      {
+        "jp": "自己紹介を させて［？］ます。",
+        "vi": "Tôi xin phép được tự giới thiệu bản thân ạ.",
+        "answer": "いただき"
+      }
+    ]
+  },
+  {
+    "id": 197,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "～際（に）",
+    "structure": "Vる / Vた / Nの + 際（に）",
+    "meaning": "Khi, nhân dịp... (trang trọng, dùng nhiều trong văn viết, thông báo chính thức).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 際",
+    "examples": [
+      {
+        "jp": "お帰りの［？］は、忘れ物のないよう ご注意ください。",
+        "vi": "Khi, nhân dịp... (trang trọng, dùng nhiều trong văn viết, thông báo chính thức).",
+        "answer": "際"
+      }
+    ]
+  },
+  {
+    "id": 198,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "～に際して",
+    "structure": "Vる / N + に際して / にあたって",
+    "meaning": "Nhân dịp, nhân cơ hội trọng đại bắt đầu một việc lớn (lễ cưới, khai trương, tốt nghiệp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 際",
+    "examples": [
+      {
+        "jp": "新事業を 始めるに［？］して、多くの 専門家に 意見を 聞いた。",
+        "vi": "Nhân dịp, nhân cơ hội trọng đại bắt đầu một việc lớn (lễ cưới, khai trương, tốt nghiệp).",
+        "answer": "際"
+      }
+    ]
+  },
+  {
+    "id": 199,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 3,
+    "title": "～折（に）",
+    "structure": "Vる / Vた / Nの + 折（に）",
+    "meaning": "Vào dịp, cơ hội tốt (thường dùng trong thư từ kính ngữ, giao thiệp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 折",
+    "examples": [
+      {
+        "jp": "こちらへ お越しの［？］には、ぜひ 弊社にも お立ち寄りください。",
+        "vi": "Vào dịp, cơ hội tốt (thường dùng trong thư từ kính ngữ, giao thiệp).",
+        "answer": "折"
+      }
+    ]
+  },
+  {
+    "id": 200,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 4,
+    "title": "～を契機に（して）",
+    "structure": "N + を契機に（して） / を契機として",
+    "meaning": "Nhân cơ hội, lấy việc gì làm bước ngoặt/đòn bẩy cho sự thay đổi lớn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 契機",
+    "examples": [
+      {
+        "jp": "病気を［？］にして、健康的な 生活習慣に 改めた。",
+        "vi": "Nhân cơ hội, lấy việc gì làm bước ngoặt/đòn bẩy cho sự thay đổi lớn.",
+        "answer": "契機"
+      }
+    ]
+  },
+  {
+    "id": 201,
+    "level": "N2",
+    "lesson_number": 1,
+    "order_num": 5,
+    "title": "～を皮切りに（して）",
+    "structure": "N + を皮切りに（して） / を皮切りとして",
+    "meaning": "Khởi đầu bằng..., mở đầu cho một chuỗi sự kiện tương tự liên tiếp diễn ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 皮切り",
+    "examples": [
+      {
+        "jp": "東京公演を［？］に、全国10か所で コンサートが 行われる。",
+        "vi": "Khởi đầu bằng..., mở đầu cho một chuỗi sự kiện tương tự liên tiếp diễn ra.",
+        "answer": "皮切り"
+      }
+    ]
+  },
+  {
+    "id": 202,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "～次第で（は）",
+    "structure": "N + 次第だ / 次第で（は）",
+    "meaning": "Tùy thuộc vào... mà kết quả sẽ thay đổi / có trường hợp xảy ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 次第",
+    "examples": [
+      {
+        "jp": "物事は 考え方［？］で、楽しくも つらくも なる。",
+        "vi": "Tùy thuộc vào... mà kết quả sẽ thay đổi / có trường hợp xảy ra.",
+        "answer": "次第"
+      }
+    ]
+  },
+  {
+    "id": 203,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "～につき",
+    "structure": "N + につき",
+    "meaning": "Vì lý do... (dùng trong thông báo ngắn gọn, biển báo trang trọng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: につき",
+    "examples": [
+      {
+        "jp": "店内 改装工事中［？］、本日 休業と させていただきます。",
+        "vi": "Vì lý do... (dùng trong thông báo ngắn gọn, biển báo trang trọng).",
+        "answer": "につき"
+      }
+    ]
+  },
+  {
+    "id": 204,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 3,
+    "title": "～をもとに（して）",
+    "structure": "N + をもとに（して）",
+    "meaning": "Dựa trên, lấy làm nền tảng/chất liệu để tạo ra cái mới.",
+    "usage_notes": "Đáp án bài tập điền khuyết: もと",
+    "examples": [
+      {
+        "jp": "この 映画は、実話を［？］にして 作られました。",
+        "vi": "Dựa trên, lấy làm nền tảng/chất liệu để tạo ra cái mới.",
+        "answer": "もと"
+      }
+    ]
+  },
+  {
+    "id": 205,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 4,
+    "title": "～に基づいて",
+    "structure": "N + に基づいて / に基づき",
+    "meaning": "Dựa trên căn cứ tiêu chuẩn, luật lệ, dữ liệu, phương châm chính xác.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 基づ",
+    "examples": [
+      {
+        "jp": "調査結果に［？］いて、新しい 開発計画を 立てる。",
+        "vi": "Dựa trên căn cứ tiêu chuẩn, luật lệ, dữ liệu, phương châm chính xác.",
+        "answer": "基づ"
+      }
+    ]
+  },
+  {
+    "id": 206,
+    "level": "N2",
+    "lesson_number": 2,
+    "order_num": 5,
+    "title": "～を踏まえて",
+    "structure": "N + を踏まえて",
+    "meaning": "Dựa trên tiền đề, tiếp thu kinh nghiệm, kết quả bài học trước đó.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 踏ま",
+    "examples": [
+      {
+        "jp": "前回の 反省点を［？］えて、次の プレゼンに 臨む。",
+        "vi": "Dựa trên tiền đề, tiếp thu kinh nghiệm, kết quả bài học trước đó.",
+        "answer": "踏ま"
+      }
+    ]
+  },
+  {
+    "id": 207,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "～を巡って",
+    "structure": "N + を巡って / をめぐるN",
+    "meaning": "Xoay quanh (vấn đề tranh cãi, thảo luận sôi nổi giữa nhiều phía).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 巡",
+    "examples": [
+      {
+        "jp": "親の 遺産を［？］って、兄弟で 激しい 争いが 起きた。",
+        "vi": "Xoay quanh (vấn đề tranh cãi, thảo luận sôi nổi giữa nhiều phía).",
+        "answer": "巡"
+      }
+    ]
+  },
+  {
+    "id": 208,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "～にかけては",
+    "structure": "N + にかけては",
+    "meaning": "Riêng về mặt..., nếu nói về sở trường/lĩnh vực đó thì không ai bằng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: かけ",
+    "examples": [
+      {
+        "jp": "足の 速さに［？］ては、クラスの 誰にも 負けない。",
+        "vi": "Riêng về mặt..., nếu nói về sở trường/lĩnh vực đó thì không ai bằng.",
+        "answer": "かけ"
+      }
+    ]
+  },
+  {
+    "id": 209,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 3,
+    "title": "～に応えて",
+    "structure": "N + に応えて / にこたえ",
+    "meaning": "Đáp lại (kỳ vọng, mong mỏi, yêu cầu của mọi người).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 応",
+    "examples": [
+      {
+        "jp": "ファンの 熱い 要望に［？］えて、アンコール公演が 決定した。",
+        "vi": "Đáp lại (kỳ vọng, mong mỏi, yêu cầu của mọi người).",
+        "answer": "応"
+      }
+    ]
+  },
+  {
+    "id": 210,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 4,
+    "title": "～に沿って",
+    "structure": "N + に沿って / に沿い",
+    "meaning": "Theo đúng, tuân thủ theo (phương châm, kế hoạch, dòng sông, con đường).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 沿",
+    "examples": [
+      {
+        "jp": "政府の ガイドラインに［？］って、感染対策を 徹底する。",
+        "vi": "Theo đúng, tuân thủ theo (phương châm, kế hoạch, dòng sông, con đường).",
+        "answer": "沿"
+      }
+    ]
+  },
+  {
+    "id": 211,
+    "level": "N2",
+    "lesson_number": 3,
+    "order_num": 5,
+    "title": "～を問わず",
+    "structure": "N + を問わず",
+    "meaning": "Không phân biệt, bất kể (tuổi tác, giới tính, quốc tịch, thời gian).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 問",
+    "examples": [
+      {
+        "jp": "この 職種は、経験の 有無を［？］わず 応募できます。",
+        "vi": "Không phân biệt, bất kể (tuổi tác, giới tính, quốc tịch, thời gian).",
+        "answer": "問"
+      }
+    ]
+  },
+  {
+    "id": 212,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "～ないことには",
+    "structure": "Vないことには...ない",
+    "meaning": "Nếu không... thì không thể nào...",
+    "usage_notes": "Đáp án bài tập điền khuyết: み",
+    "examples": [
+      {
+        "jp": "実際に やって［？］ないことには、できるかどうか 分からない。",
+        "vi": "Nếu không... thì không thể nào...",
+        "answer": "み"
+      }
+    ]
+  },
+  {
+    "id": 213,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 2,
+    "title": "～ものなら",
+    "structure": "V(khả năng) + ものなら",
+    "meaning": "Nếu có thể... (thực tế rất khó hoặc không thể, thể hiện mong ước tột cùng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: もの",
+    "examples": [
+      {
+        "jp": "戻れる［？］なら、あの 楽しかった 青春時代に 戻りたい。",
+        "vi": "Nếu có thể... (thực tế rất khó hoặc không thể, thể hiện mong ước tột cùng).",
+        "answer": "もの"
+      }
+    ]
+  },
+  {
+    "id": 214,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 3,
+    "title": "～としたら",
+    "structure": "Thể thông thường + としたら / とすれば",
+    "meaning": "Giả sử nếu như... thì...",
+    "usage_notes": "Đáp án bài tập điền khuyết: し",
+    "examples": [
+      {
+        "jp": "もし 生まれ変われると［？］たら、鳥に なりたい。",
+        "vi": "Giả sử nếu như... thì...",
+        "answer": "し"
+      }
+    ]
+  },
+  {
+    "id": 215,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 4,
+    "title": "～抜きにしては",
+    "structure": "N + 抜きにしては / 抜きでは...ない",
+    "meaning": "Nếu không có / bỏ qua... thì không thể hoàn thành được.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ぬ",
+    "examples": [
+      {
+        "jp": "皆様の ご協力［？］きにしては、この 成功は あり得ませんでした。",
+        "vi": "Nếu không có / bỏ qua... thì không thể hoàn thành được.",
+        "answer": "ぬ"
+      }
+    ]
+  },
+  {
+    "id": 216,
+    "level": "N2",
+    "lesson_number": 4,
+    "order_num": 5,
+    "title": "～なくしては",
+    "structure": "N + なくしては...ない",
+    "meaning": "Nếu không có... thì tuyệt đối không thể có kết quả tốt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "努力［？］くしては、JLPT N2合格は 望めない。",
+        "vi": "Nếu không có... thì tuyệt đối không thể có kết quả tốt.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 217,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "～にもかかわらず",
+    "structure": "Thể thông thường (N / Na + である) + にもかかわらず",
+    "meaning": "Mặc dù... thế nhưng lại... (bất ngờ, trái ngược với dự đoán thông thường).",
+    "usage_notes": "Đáp án bài tập điền khuyết: かか",
+    "examples": [
+      {
+        "jp": "雨が 激しく 降っているにも［？］わらず、大勢の 客が 集まった。",
+        "vi": "Mặc dù... thế nhưng lại... (bất ngờ, trái ngược với dự đoán thông thường).",
+        "answer": "かか"
+      }
+    ]
+  },
+  {
+    "id": 218,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 2,
+    "title": "～ものの",
+    "structure": "Thể thông thường (Na + な / である) + ものの",
+    "meaning": "Tuy là... thật đấy nhưng thực tế thì... (vế sau hạn chế vế trước).",
+    "usage_notes": "Đáp án bài tập điền khuyết: もの",
+    "examples": [
+      {
+        "jp": "車を 買った［？］の、ペーパードライバーで 運転できない。",
+        "vi": "Tuy là... thật đấy nhưng thực tế thì... (vế sau hạn chế vế trước).",
+        "answer": "もの"
+      }
+    ]
+  },
+  {
+    "id": 219,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 3,
+    "title": "～反面",
+    "structure": "Thể thông thường (Na + な / である) + 反面",
+    "meaning": "Mặt này thì thế... nhưng mặt khác lại trái ngược (hai mặt của một vấn đề).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 反",
+    "examples": [
+      {
+        "jp": "一人暮らしは 自由な［？］面、寂しさを 感じることも 多い。",
+        "vi": "Mặt này thì thế... nhưng mặt khác lại trái ngược (hai mặt của một vấn đề).",
+        "answer": "反"
+      }
+    ]
+  },
+  {
+    "id": 220,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 4,
+    "title": "～つつ（も）",
+    "structure": "V(bỏ ます) + つつ（も）",
+    "meaning": "Dù biết là... thế nhưng vẫn cứ làm (mâu thuẫn giữa lý trí và hành động).",
+    "usage_notes": "Đáp án bài tập điền khuyết: つつ",
+    "examples": [
+      {
+        "jp": "体に 悪いと 知り［？］も、タバコが やめられない。",
+        "vi": "Dù biết là... thế nhưng vẫn cứ làm (mâu thuẫn giữa lý trí và hành động).",
+        "answer": "つつ"
+      }
+    ]
+  },
+  {
+    "id": 221,
+    "level": "N2",
+    "lesson_number": 5,
+    "order_num": 5,
+    "title": "～といえども",
+    "structure": "Thể thông thường / N + といえども",
+    "meaning": "Dù là... đi chăng nữa thì cũng không được ngoại lệ / không thể xem thường.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "いくら 親しい 友人［？］いえども、礼儀は 守るべきだ。",
+        "vi": "Dù là... đi chăng nữa thì cũng không được ngoại lệ / không thể xem thường.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 222,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "～ばかりか",
+    "structure": "Thể thông thường (Na + な / N + の) + ばかりか / ばかりでなく",
+    "meaning": "Không chỉ A mà ngay cả B cũng... (mức độ tăng thêm, ngoài dự đoán).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ばか",
+    "examples": [
+      {
+        "jp": "彼は 英語が 話せる［？］りか、中国語も ペラペラだ。",
+        "vi": "Không chỉ A mà ngay cả B cũng... (mức độ tăng thêm, ngoài dự đoán).",
+        "answer": "ばか"
+      }
+    ]
+  },
+  {
+    "id": 223,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 2,
+    "title": "～どころか",
+    "structure": "Thể thông thường / N + どころか",
+    "meaning": "Đâu chỉ có thế, trái lại còn tệ hơn / khác xa thực tế rất nhiều.",
+    "usage_notes": "Đáp án bài tập điền khuyết: どこ",
+    "examples": [
+      {
+        "jp": "貯金［？］ろか、借金で 首が 回らない。",
+        "vi": "Đâu chỉ có thế, trái lại còn tệ hơn / khác xa thực tế rất nhiều.",
+        "answer": "どこ"
+      }
+    ]
+  },
+  {
+    "id": 224,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 3,
+    "title": "～のみならず",
+    "structure": "Thể thông thường / N + のみならず",
+    "meaning": "Không chỉ... mà còn... (trang trọng, dùng nhiều trong văn viết, báo chí).",
+    "usage_notes": "Đáp án bài tập điền khuyết: の",
+    "examples": [
+      {
+        "jp": "この 問題は 国内［？］みならず、世界中で 議論されている。",
+        "vi": "Không chỉ... mà còn... (trang trọng, dùng nhiều trong văn viết, báo chí).",
+        "answer": "の"
+      }
+    ]
+  },
+  {
+    "id": 225,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 4,
+    "title": "～はおろか",
+    "structure": "N + はおろか",
+    "meaning": "Ngay cả... còn chưa được thì huống chi là việc lớn hơn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: お",
+    "examples": [
+      {
+        "jp": "彼は 忙しすぎて、休日は［？］ろか 睡眠時間も 取れない。",
+        "vi": "Ngay cả... còn chưa được thì huống chi là việc lớn hơn.",
+        "answer": "お"
+      }
+    ]
+  },
+  {
+    "id": 226,
+    "level": "N2",
+    "lesson_number": 6,
+    "order_num": 5,
+    "title": "～にとどまらず",
+    "structure": "Vる / N + にとどまらず",
+    "meaning": "Không dừng lại ở phạm vi..., mà còn lan rộng ra phạm vi lớn hơn nhiều.",
+    "usage_notes": "Đáp án bài tập điền khuyết: とど",
+    "examples": [
+      {
+        "jp": "アニメの人気は 日本国内に［？］まらず、世界へと 広がっている。",
+        "vi": "Không dừng lại ở phạm vi..., mà còn lan rộng ra phạm vi lớn hơn nhiều.",
+        "answer": "とど"
+      }
+    ]
+  },
+  {
+    "id": 227,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "～に相違ない",
+    "structure": "Thể thông thường (Na / N bỏ だ) + に相違ない",
+    "meaning": "Chắc chắn là, không thể sai được (sự phán đoán với độ tin cậy tuyệt đối).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 相",
+    "examples": [
+      {
+        "jp": "犯人は この 男に［？］違いない。",
+        "vi": "Chắc chắn là, không thể sai được (sự phán đoán với độ tin cậy tuyệt đối).",
+        "answer": "相"
+      }
+    ]
+  },
+  {
+    "id": 228,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 2,
+    "title": "～ざるを得ない",
+    "structure": "Vない(bỏ ない) + ざるを得ない (する -> せざるを得ない)",
+    "meaning": "Đành phải, buộc phải làm V dù bản thân không hề muốn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ざ",
+    "examples": [
+      {
+        "jp": "証拠が 揃っている以上、罪を 認め［？］るを得ない。",
+        "vi": "Đành phải, buộc phải làm V dù bản thân không hề muốn.",
+        "answer": "ざ"
+      }
+    ]
+  },
+  {
+    "id": 229,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 3,
+    "title": "～にすぎない",
+    "structure": "Thể thông thường / N + にすぎない",
+    "meaning": "Chẳng qua chỉ là... không hơn không kém (đánh giá mức độ thấp, khiêm tốn).",
+    "usage_notes": "Đáp án bài tập điền khuyết: す",
+    "examples": [
+      {
+        "jp": "私は 自分の 義務を 果たしたに［？］ぎない。",
+        "vi": "Chẳng qua chỉ là... không hơn không kém (đánh giá mức độ thấp, khiêm tốn).",
+        "answer": "す"
+      }
+    ]
+  },
+  {
+    "id": 230,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 4,
+    "title": "～にほかならない",
+    "structure": "N + にほかならない",
+    "meaning": "Chính là..., không gì khác ngoài... (khẳng định nguyên nhân cốt lõi duy nhất).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ほ",
+    "examples": [
+      {
+        "jp": "成功したのは、チーム全員の 努力の 賜物に［？］かならない。",
+        "vi": "Chính là..., không gì khác ngoài... (khẳng định nguyên nhân cốt lõi duy nhất).",
+        "answer": "ほ"
+      }
+    ]
+  },
+  {
+    "id": 231,
+    "level": "N2",
+    "lesson_number": 7,
+    "order_num": 5,
+    "title": "～かねない",
+    "structure": "V(bỏ ます) + かねない",
+    "meaning": "Có nguy cơ, có thể dẫn tới kết quả xấu tiêu cực.",
+    "usage_notes": "Đáp án bài tập điền khuyết: かね",
+    "examples": [
+      {
+        "jp": "そんな スピードを 出すと、大事故を 起こし［？］ない。",
+        "vi": "Có nguy cơ, có thể dẫn tới kết quả xấu tiêu cực.",
+        "answer": "かね"
+      }
+    ]
+  },
+  {
+    "id": 232,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "～てたまらない",
+    "structure": "Aくて / Naで / Vたくて + たまらない",
+    "meaning": "... không chịu nổi, vô cùng (cảm xúc, cảm giác tự nhiên không kìm nén được).",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "合格の 知らせを 聞いて、嬉しく［？］たまらない。",
+        "vi": "... không chịu nổi, vô cùng (cảm xúc, cảm giác tự nhiên không kìm nén được).",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 233,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 2,
+    "title": "～てならない",
+    "structure": "Aくて / Naで / Vて + ならない",
+    "meaning": "Rất, không hiểu sao cứ cảm thấy... khôn nguôi (cảm xúc tự phát sâu kín).",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "故郷の 両親の 体調が 心配で［？］らない。",
+        "vi": "Rất, không hiểu sao cứ cảm thấy... khôn nguôi (cảm xúc tự phát sâu kín).",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 234,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 3,
+    "title": "～てやまない",
+    "structure": "Vて + やまない (祈る, 願う, 期待する...)",
+    "meaning": "Luôn luôn, không ngừng cầu chúc/hy vọng từ tận đáy lòng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "二人の 幸せを 心より 祈っ［？］やまない。",
+        "vi": "Luôn luôn, không ngừng cầu chúc/hy vọng từ tận đáy lòng.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 235,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 4,
+    "title": "～に耐えない",
+    "structure": "Vる / N + に耐えない",
+    "meaning": "Không thể chịu nổi / vô cùng tràn ngập (nghe, nhìn, biết ơn, hối hận).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 耐",
+    "examples": [
+      {
+        "jp": "皆様からの 温かい ご支援には、感謝に［？］えません。",
+        "vi": "Không thể chịu nổi / vô cùng tràn ngập (nghe, nhìn, biết ơn, hối hận).",
+        "answer": "耐"
+      }
+    ]
+  },
+  {
+    "id": 236,
+    "level": "N2",
+    "lesson_number": 8,
+    "order_num": 5,
+    "title": "～を禁じ得ない",
+    "structure": "N + を禁じ得ない",
+    "meaning": "Không thể kìm nén được (nỗi buồn, sự phẫn nộ, nước mắt).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 禁",
+    "examples": [
+      {
+        "jp": "理不尽な 事件の ニュースを 聞いて、怒りを［？］じ得ない。",
+        "vi": "Không thể kìm nén được (nỗi buồn, sự phẫn nộ, nước mắt).",
+        "answer": "禁"
+      }
+    ]
+  },
+  {
+    "id": 237,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 1,
+    "title": "～を皮切りに（して）",
+    "structure": "N + を皮切りに（して） / を皮切りとして",
+    "meaning": "Khởi đầu bằng..., mở đầu cho một chuỗi sự kiện tương tự liên tiếp diễn ra khắp nơi.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 皮切り",
+    "examples": [
+      {
+        "jp": "東京公演を［？］に、全国ツアーが 華々しく スタートした。",
+        "vi": "Khởi đầu bằng..., mở đầu cho một chuỗi sự kiện tương tự liên tiếp diễn ra khắp nơi.",
+        "answer": "皮切り"
+      }
+    ]
+  },
+  {
+    "id": 238,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 2,
+    "title": "～にあって",
+    "structure": "N + にあって",
+    "meaning": "Chính trong hoàn cảnh đặc biệt, tình huống hiểm nghèo hoặc thời kỳ then chốt.",
+    "usage_notes": "Đáp án bài tập điền khuyết: あっ",
+    "examples": [
+      {
+        "jp": "未曾有の 危機的 状況に［？］も、彼は 冷静さを 失わなかった。",
+        "vi": "Chính trong hoàn cảnh đặc biệt, tình huống hiểm nghèo hoặc thời kỳ then chốt.",
+        "answer": "あっ"
+      }
+    ]
+  },
+  {
+    "id": 239,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 3,
+    "title": "～を機に（して）",
+    "structure": "N + を機に（して） / を機として",
+    "meaning": "Nhân cơ hội, lấy đó làm bước ngoặt chuyển đổi quan trọng của cuộc đời hay sự nghiệp.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 機",
+    "examples": [
+      {
+        "jp": "定年 退職を［？］に、田舎へ 移住して 農業を 始めた。",
+        "vi": "Nhân cơ hội, lấy đó làm bước ngoặt chuyển đổi quan trọng của cuộc đời hay sự nghiệp.",
+        "answer": "機"
+      }
+    ]
+  },
+  {
+    "id": 240,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 4,
+    "title": "～拍子に",
+    "structure": "Vた / Nの + 拍子に",
+    "meaning": "Đúng vào khoảnh khắc vừa làm gì đó thì vô tình gây ra sự việc bất ngờ ngoài ý muốn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 拍子",
+    "examples": [
+      {
+        "jp": "くしゃみを した［？］に、腰を 痛めてしまった。",
+        "vi": "Đúng vào khoảnh khắc vừa làm gì đó thì vô tình gây ra sự việc bất ngờ ngoài ý muốn.",
+        "answer": "拍子"
+      }
+    ]
+  },
+  {
+    "id": 241,
+    "level": "N1",
+    "lesson_number": 1,
+    "order_num": 5,
+    "title": "～が早いか",
+    "structure": "Vる + が早いか",
+    "meaning": "Vừa mới... xong là ngay tức khắc hành động tiếp theo diễn ra chớp nhoáng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "ベルが 鳴る［？］早いか、生徒たちは 教室を 飛び出した。",
+        "vi": "Vừa mới... xong là ngay tức khắc hành động tiếp theo diễn ra chớp nhoáng.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 242,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 1,
+    "title": "～とあって",
+    "structure": "Thể thông thường / N + とあって",
+    "meaning": "Chính vì trong một hoàn cảnh đặc biệt như vậy nên kết quả đương nhiên diễn ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "人気アイドルの 初来日［？］あって、空港は 熱狂的な ファンで 埋め尽くされた。",
+        "vi": "Chính vì trong một hoàn cảnh đặc biệt như vậy nên kết quả đương nhiên diễn ra.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 243,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 2,
+    "title": "～こととて",
+    "structure": "Thể thông thường (Na + な / N + の) + こととて",
+    "meaning": "Vì lý do... nên kính mong quý vị thông cảm lượng thứ bỏ qua cho sơ suất.",
+    "usage_notes": "Đáp án bài tập điền khuyết: こと",
+    "examples": [
+      {
+        "jp": "不慣れな 新入社員の した［？］とて、何卒 ご容赦ください。",
+        "vi": "Vì lý do... nên kính mong quý vị thông cảm lượng thứ bỏ qua cho sơ suất.",
+        "answer": "こと"
+      }
+    ]
+  },
+  {
+    "id": 244,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 3,
+    "title": "～手前",
+    "structure": "Vる / Vた / Nの + 手前",
+    "meaning": "Chính vì thể diện trước mặt người khác nên buộc lòng phải hành động giữ chữ tín.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 手前",
+    "examples": [
+      {
+        "jp": "必ず やると 宣言した［？］、途中で 投げ出す わけには いかない。",
+        "vi": "Chính vì thể diện trước mặt người khác nên buộc lòng phải hành động giữ chữ tín.",
+        "answer": "手前"
+      }
+    ]
+  },
+  {
+    "id": 245,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 4,
+    "title": "～ゆえ（に）",
+    "structure": "Thể thông thường (Na / N + である) + ゆえ（に）",
+    "meaning": "Chính vì lẽ đó... (văn phong trang trọng cổ kính, dùng trong văn học triết học).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ゆえ",
+    "examples": [
+      {
+        "jp": "若さの［？］の 過ちだと、今となっては 悔やまれる。",
+        "vi": "Chính vì lẽ đó... (văn phong trang trọng cổ kính, dùng trong văn học triết học).",
+        "answer": "ゆえ"
+      }
+    ]
+  },
+  {
+    "id": 246,
+    "level": "N1",
+    "lesson_number": 2,
+    "order_num": 5,
+    "title": "～にかこつけて",
+    "structure": "N + にかこつけて",
+    "meaning": "Lấy cớ, viện cớ danh nghĩa một việc tốt đẹp để làm một mục đích cá nhân khác.",
+    "usage_notes": "Đáp án bài tập điền khuyết: かこつ",
+    "examples": [
+      {
+        "jp": "出張に［？］けて、現地の 有名な 観光地を 巡った。",
+        "vi": "Lấy cớ, viện cớ danh nghĩa một việc tốt đẹp để làm một mục đích cá nhân khác.",
+        "answer": "かこつ"
+      }
+    ]
+  },
+  {
+    "id": 247,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 1,
+    "title": "～といえども",
+    "structure": "Thể thông thường / N + といえども",
+    "meaning": "Dù là bậc cao quý hay chuyên gia cừ khôi đi chăng nữa thì cũng không được xem nhẹ.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "いかに 専門家［？］いえども、未来を 完璧に 予見することは できない。",
+        "vi": "Dù là bậc cao quý hay chuyên gia cừ khôi đi chăng nữa thì cũng không được xem nhẹ.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 248,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 2,
+    "title": "～であれ",
+    "structure": "N + であれ / であろうと",
+    "meaning": "Dù cho có là ai hay bất kể điều gì thì quy định vẫn phải tuân thủ tuyệt đối.",
+    "usage_notes": "Đáp án bài tập điền khuyết: で",
+    "examples": [
+      {
+        "jp": "大統領［？］あれ、法の下の 平等には 従わねばならない。",
+        "vi": "Dù cho có là ai hay bất kể điều gì thì quy định vẫn phải tuân thủ tuyệt đối.",
+        "answer": "で"
+      }
+    ]
+  },
+  {
+    "id": 249,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 3,
+    "title": "～ものを",
+    "structure": "Thể thông thường (Na + な) + ものを",
+    "meaning": "Thế mà lại... giá mà làm thế thì đã có kết cục tốt đẹp hơn nhiều (tiếc nuối trách móc).",
+    "usage_notes": "Đáp án bài tập điền khuyết: もの",
+    "examples": [
+      {
+        "jp": "一言 相談して くれれば よかった［？］を、一人で 抱え込むなんて。",
+        "vi": "Thế mà lại... giá mà làm thế thì đã có kết cục tốt đẹp hơn nhiều (tiếc nuối trách móc).",
+        "answer": "もの"
+      }
+    ]
+  },
+  {
+    "id": 250,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 4,
+    "title": "～とはいえ",
+    "structure": "Thể thông thường / N + とはいえ",
+    "meaning": "Tuy công nhận là như vậy thật đấy, thế nhưng thực tế vẫn còn nhiều hạn chế.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "景気回復の 兆しが 見える［？］はいえ、家計は 依然として 厳しい。",
+        "vi": "Tuy công nhận là như vậy thật đấy, thế nhưng thực tế vẫn còn nhiều hạn chế.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 251,
+    "level": "N1",
+    "lesson_number": 3,
+    "order_num": 5,
+    "title": "～とて",
+    "structure": "N / Thể thông thường + とて",
+    "meaning": "Ngay cả... cũng thế, dù là... thì cũng không thể khác đi được.",
+    "usage_notes": "Đáp án bài tập điền khuyết: と",
+    "examples": [
+      {
+        "jp": "私［？］て、同じ 人間だ。悲しい 時は 涙を 流す。",
+        "vi": "Ngay cả... cũng thế, dù là... thì cũng không thể khác đi được.",
+        "answer": "と"
+      }
+    ]
+  },
+  {
+    "id": 252,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 1,
+    "title": "～を限りに",
+    "structure": "N(thời gian) + を限りに",
+    "meaning": "Lấy hết ngày hôm nay/thời điểm này làm hạn chót dứt khoát kết thúc một sự việc.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 限",
+    "examples": [
+      {
+        "jp": "本日を［？］りに、長年 勤めた この 会社を 退職いたします。",
+        "vi": "Lấy hết ngày hôm nay/thời điểm này làm hạn chót dứt khoát kết thúc một sự việc.",
+        "answer": "限"
+      }
+    ]
+  },
+  {
+    "id": 253,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 2,
+    "title": "～限りだ",
+    "structure": "Aい / Naな + 限りだ",
+    "meaning": "Vô cùng, hết sức... (cảm xúc trào dâng tột bậc: vui sướng, đau buồn, ghen tị).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 限",
+    "examples": [
+      {
+        "jp": "長年の 夢が ついに 叶い、嬉しい［？］りです。",
+        "vi": "Vô cùng, hết sức... (cảm xúc trào dâng tột bậc: vui sướng, đau buồn, ghen tị).",
+        "answer": "限"
+      }
+    ]
+  },
+  {
+    "id": 254,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 3,
+    "title": "～に至るまで",
+    "structure": "N + に至るまで",
+    "meaning": "Đến tận cả những chi tiết nhỏ nhặt/mức độ cùng cực nhất.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 至",
+    "examples": [
+      {
+        "jp": "服装から 髪型、持ち物に［？］るまで、厳しく チェックされた。",
+        "vi": "Đến tận cả những chi tiết nhỏ nhặt/mức độ cùng cực nhất.",
+        "answer": "至"
+      }
+    ]
+  },
+  {
+    "id": 255,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 4,
+    "title": "～をもって",
+    "structure": "N + をもって",
+    "meaning": "Vào thời điểm chính thức kết thúc / Lấy cái gì làm phương tiện thực thi trang trọng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: も",
+    "examples": [
+      {
+        "jp": "本日の 営業を［？］って、当店は 閉店と させていただきます。",
+        "vi": "Vào thời điểm chính thức kết thúc / Lấy cái gì làm phương tiện thực thi trang trọng.",
+        "answer": "も"
+      }
+    ]
+  },
+  {
+    "id": 256,
+    "level": "N1",
+    "lesson_number": 4,
+    "order_num": 5,
+    "title": "～ならでは",
+    "structure": "N + ならでは / ならではのN",
+    "meaning": "Chỉ có thể là... mới có được giá trị đặc biệt độc đáo tuyệt vời như thế này.",
+    "usage_notes": "Đáp án bài tập điền khuyết: なら",
+    "examples": [
+      {
+        "jp": "京都［？］ではの 伝統的な 街並みを 楽しむ。",
+        "vi": "Chỉ có thể là... mới có được giá trị đặc biệt độc đáo tuyệt vời như thế này.",
+        "answer": "なら"
+      }
+    ]
+  },
+  {
+    "id": 257,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 1,
+    "title": "～ないことには",
+    "structure": "Vないことには...ない",
+    "meaning": "Nếu không làm V1 thì tuyệt đối không thể nào đạt được kết quả V2.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "本人の 承諾を 得［？］いことには、契約を 進めることは できない。",
+        "vi": "Nếu không làm V1 thì tuyệt đối không thể nào đạt được kết quả V2.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 258,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 2,
+    "title": "～なくしては",
+    "structure": "N + なくしては...ない",
+    "meaning": "Nếu không có sự hy sinh hay yếu tố then chốt đó thì thành công không thể xảy ra.",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "国民の 信頼［？］くしては、いかなる 改革も 成し遂げられない。",
+        "vi": "Nếu không có sự hy sinh hay yếu tố then chốt đó thì thành công không thể xảy ra.",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 259,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 3,
+    "title": "～なしには",
+    "structure": "N + なしには...ない",
+    "meaning": "Nếu thiếu vắng... thì không thể nào có được...",
+    "usage_notes": "Đáp án bài tập điền khuyết: な",
+    "examples": [
+      {
+        "jp": "過去の 反省［？］しには、明るい 未来は 築けない。",
+        "vi": "Nếu thiếu vắng... thì không thể nào có được...",
+        "answer": "な"
+      }
+    ]
+  },
+  {
+    "id": 260,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 4,
+    "title": "～を余儀なくされる",
+    "structure": "N + を余儀なくされる",
+    "meaning": "Bị rơi vào tình thế bắt buộc phải chịu đựng/hủy bỏ dù bản thân không hề mong muốn.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 余",
+    "examples": [
+      {
+        "jp": "台風の 直撃により、イベントの 中止を［？］儀なくされた。",
+        "vi": "Bị rơi vào tình thế bắt buộc phải chịu đựng/hủy bỏ dù bản thân không hề mong muốn.",
+        "answer": "余"
+      }
+    ]
+  },
+  {
+    "id": 261,
+    "level": "N1",
+    "lesson_number": 5,
+    "order_num": 5,
+    "title": "～を余儀なくさせる",
+    "structure": "N + を余儀なくさせる",
+    "meaning": "Sự việc khách quan đẩy ai đó vào hoàn cảnh phải thay đổi bắt buộc.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 余",
+    "examples": [
+      {
+        "jp": "突然の 経営危機が、大規模な 人員削減を［？］儀なくさせた。",
+        "vi": "Sự việc khách quan đẩy ai đó vào hoàn cảnh phải thay đổi bắt buộc.",
+        "answer": "余"
+      }
+    ]
+  },
+  {
+    "id": 262,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 1,
+    "title": "～極まりない",
+    "structure": "Na + 極まりない / 極まる",
+    "meaning": "Vô cùng, cực kỳ... (thái độ vô lễ, nguy hiểm, mạo hiểm đến tột độ).",
+    "usage_notes": "Đáp án bài tập điền khuyết: 極",
+    "examples": [
+      {
+        "jp": "そのような 暴言を 吐くとは、無礼［？］まりない。",
+        "vi": "Vô cùng, cực kỳ... (thái độ vô lễ, nguy hiểm, mạo hiểm đến tột độ).",
+        "answer": "極"
+      }
+    ]
+  },
+  {
+    "id": 263,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 2,
+    "title": "～にたえない",
+    "structure": "Vる / N + にたえない",
+    "meaning": "Không thể kìm nén được cảm xúc dâng trào / Không nỡ nghe nhìn sự việc đau lòng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: た",
+    "examples": [
+      {
+        "jp": "長年にわたる 皆様の 温かい ご支援に対し、感謝に［？］えません。",
+        "vi": "Không thể kìm nén được cảm xúc dâng trào / Không nỡ nghe nhìn sự việc đau lòng.",
+        "answer": "た"
+      }
+    ]
+  },
+  {
+    "id": 264,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 3,
+    "title": "～を禁じ得ない",
+    "structure": "N + を禁じ得ない",
+    "meaning": "Không sao kiềm chế nổi nước mắt, sự phẫn nộ hay niềm xót xa trong tim.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 禁",
+    "examples": [
+      {
+        "jp": "戦争で 傷ついた 子供たちの 姿を 見て、涙を［？］じ得ない。",
+        "vi": "Không sao kiềm chế nổi nước mắt, sự phẫn nộ hay niềm xót xa trong tim.",
+        "answer": "禁"
+      }
+    ]
+  },
+  {
+    "id": 265,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 4,
+    "title": "～に値する",
+    "structure": "Vる / N + に値する",
+    "meaning": "Xứng đáng được đánh giá cao, xứng danh để khen ngợi hay nghiên cứu.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 値",
+    "examples": [
+      {
+        "jp": "彼の 勇気ある 行動は、称賛に［？］いする。",
+        "vi": "Xứng đáng được đánh giá cao, xứng danh để khen ngợi hay nghiên cứu.",
+        "answer": "値"
+      }
+    ]
+  },
+  {
+    "id": 266,
+    "level": "N1",
+    "lesson_number": 6,
+    "order_num": 5,
+    "title": "～てやまない",
+    "structure": "Vて + やまない",
+    "meaning": "Luôn luôn, không ngừng cầu chúc từ tận đáy lòng sâu thẳm.",
+    "usage_notes": "Đáp án bài tập điền khuyết: て",
+    "examples": [
+      {
+        "jp": "被災地の一日も 早い 復興を、心から 願っ［？］やまない。",
+        "vi": "Luôn luôn, không ngừng cầu chúc từ tận đáy lòng sâu thẳm.",
+        "answer": "て"
+      }
+    ]
+  },
+  {
+    "id": 267,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 1,
+    "title": "～と相まって",
+    "structure": "N + と相まって",
+    "meaning": "Kết hợp cùng với... tạo nên hiệu quả cộng hưởng nhân lên gấp bội.",
+    "usage_notes": "Đáp án bài tập điền khuyết: 相",
+    "examples": [
+      {
+        "jp": "素晴らしい 歌声が 壮大な オーケストラと［？］まって、深い 感動を 呼んだ。",
+        "vi": "Kết hợp cùng với... tạo nên hiệu quả cộng hưởng nhân lên gấp bội.",
+        "answer": "相"
+      }
+    ]
+  },
+  {
+    "id": 268,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 2,
+    "title": "～かたがた",
+    "structure": "N + かたがた",
+    "meaning": "Tiện thể thực hiện hai mục đích lớn cùng lúc (thường là thăm hỏi, cảm ơn, chúc mừng).",
+    "usage_notes": "Đáp án bài tập điền khuyết: か",
+    "examples": [
+      {
+        "jp": "ご挨拶［？］たがた、新居の お祝いに 伺いました。",
+        "vi": "Tiện thể thực hiện hai mục đích lớn cùng lúc (thường là thăm hỏi, cảm ơn, chúc mừng).",
+        "answer": "か"
+      }
+    ]
+  },
+  {
+    "id": 269,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 3,
+    "title": "～かたわら",
+    "structure": "Vる / Nの + かたわら",
+    "meaning": "Bên cạnh công việc chính kiếm sống, vẫn tiếp tục duy trì hoạt động phụ bền bỉ.",
+    "usage_notes": "Đáp án bài tập điền khuyết: か",
+    "examples": [
+      {
+        "jp": "大学で 教授として 教鞭を 執る［？］たわら、小説を 執筆している。",
+        "vi": "Bên cạnh công việc chính kiếm sống, vẫn tiếp tục duy trì hoạt động phụ bền bỉ.",
+        "answer": "か"
+      }
+    ]
+  },
+  {
+    "id": 270,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 4,
+    "title": "～つ～つ",
+    "structure": "V(bỏ ます) + つ + V(bỏ ます) + つ",
+    "meaning": "Lúc thì thế này lúc thì thế kia đan xen lặp đi lặp lại nhịp nhàng.",
+    "usage_notes": "Đáp án bài tập điền khuyết: つ",
+    "examples": [
+      {
+        "jp": "二人の ランナーは 抜き［？］抜かれつ、激しい デッドヒートを 繰り広げた。",
+        "vi": "Lúc thì thế này lúc thì thế kia đan xen lặp đi lặp lại nhịp nhàng.",
+        "answer": "つ"
+      }
+    ]
+  },
+  {
+    "id": 271,
+    "level": "N1",
+    "lesson_number": 7,
+    "order_num": 5,
+    "title": "～がてら",
+    "structure": "V(bỏ ます) / N + がてら",
+    "meaning": "Nhân tiện làm việc gì thì kết hợp đi dạo, mua sắm giải khuây.",
+    "usage_notes": "Đáp án bài tập điền khuyết: が",
+    "examples": [
+      {
+        "jp": "散歩［？］てら、近所の パン屋まで 朝食を 買いに 行った。",
+        "vi": "Nhân tiện làm việc gì thì kết hợp đi dạo, mua sắm giải khuây.",
+        "answer": "が"
+      }
+    ]
+  },
+  {
+    "id": 272,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 1,
+    "title": "～まじき",
+    "structure": "Vる + まじき + N (する -> すまじき)",
+    "meaning": "Không thể nào chấp nhận được đối với một người mang cương vị/thiên chức đó.",
+    "usage_notes": "Đáp án bài tập điền khuyết: ま",
+    "examples": [
+      {
+        "jp": "患者の 秘密を 漏らすなど、医師として ある［？］じき 行為だ。",
+        "vi": "Không thể nào chấp nhận được đối với một người mang cương vị/thiên chức đó.",
+        "answer": "ま"
+      }
+    ]
+  },
+  {
+    "id": 273,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 2,
+    "title": "～べからず",
+    "structure": "Vる + べからず / べからざるN",
+    "meaning": "Cấm tuyệt đối, không được phép làm (biển cấm quy định nghiêm ngặt).",
+    "usage_notes": "Đáp án bài tập điền khuyết: べ",
+    "examples": [
+      {
+        "jp": "芝生に 立ち入る［？］からず。",
+        "vi": "Cấm tuyệt đối, không được phép làm (biển cấm quy định nghiêm ngặt).",
+        "answer": "べ"
+      }
+    ]
+  },
+  {
+    "id": 274,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 3,
+    "title": "～べくもない",
+    "structure": "Vる + べくもない (する -> すべくもない)",
+    "meaning": "Làm sao mà có thể nghĩ đến hay hy vọng được (chuyện hoàn toàn bất khả thi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: べ",
+    "examples": [
+      {
+        "jp": "彼のような 大天才の 思考は、凡人の 私には 測り知る［？］くもない。",
+        "vi": "Làm sao mà có thể nghĩ đến hay hy vọng được (chuyện hoàn toàn bất khả thi).",
+        "answer": "べ"
+      }
+    ]
+  },
+  {
+    "id": 275,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 4,
+    "title": "～にほかならない",
+    "structure": "N + にほかならない",
+    "meaning": "Chính là... không gì khác ngoài... (khẳng định bản chất duy nhất không tranh cãi).",
+    "usage_notes": "Đáp án bài tập điền khuyết: ほ",
+    "examples": [
+      {
+        "jp": "今回の 成功は、全員の たゆまぬ 努力の 成果に［？］かならない。",
+        "vi": "Chính là... không gì khác ngoài... (khẳng định bản chất duy nhất không tranh cãi).",
+        "answer": "ほ"
+      }
+    ]
+  },
+  {
+    "id": 276,
+    "level": "N1",
+    "lesson_number": 8,
+    "order_num": 5,
+    "title": "～にすぎない",
+    "structure": "Thể thông thường / N + にすぎない",
+    "meaning": "Chẳng qua chỉ là... không hơn không kém (khiêm tốn hoặc đánh giá mức độ thấp).",
+    "usage_notes": "Đáp án bài tập điền khuyết: す",
+    "examples": [
+      {
+        "jp": "今の 科学技術も、自然界の 偉大さの前には ほんの 一端に［？］ぎない。",
+        "vi": "Chẳng qua chỉ là... không hơn không kém (khiêm tốn hoặc đánh giá mức độ thấp).",
+        "answer": "す"
+      }
+    ]
+  }
+]

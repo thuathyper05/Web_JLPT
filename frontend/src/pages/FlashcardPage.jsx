@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
-import { vocabService, speakJapanese } from '../services/api';
+import { vocabService, lessonService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import FuriganaWord from '../components/FuriganaWord';
 import {
@@ -22,6 +22,7 @@ export default function FlashcardPage() {
   const { currentLevel, selectedLesson, setSelectedLesson, recordWordProgress, askAi } = useApp();
 
   const [cards, setCards] = useState([]);
+  const [lessonsList, setLessonsList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [direction, setDirection] = useState('jp_to_vi'); // 'jp_to_vi' | 'vi_to_jp'
@@ -30,6 +31,27 @@ export default function FlashcardPage() {
   const [masteredCount, setMasteredCount] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+
+  // Fetch lessons list for currentLevel
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        const list = res.data || [];
+        if (isMounted) {
+          setLessonsList(list);
+          if (list.length > 0 && !list.some(l => l.lesson_number === selectedLesson)) {
+            setSelectedLesson(list[0].lesson_number);
+          }
+        }
+      } catch (err) {
+        console.error('Flashcard fetch lessons error:', err);
+      }
+    };
+    fetchLessons();
+    return () => { isMounted = false; };
+  }, [currentLevel]);
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -136,14 +158,20 @@ export default function FlashcardPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <Layers size={13} className="text-pink-600" />
-            <span>THẺ NHỚ 3D - MINNA NO NIHONGO</span>
+            <span>
+              {currentLevel === 'N4' ? 'MINNA NO NIHONGO II' :
+               currentLevel === 'N3' ? 'SOUMATOME & SHINKANZEN N3' :
+               currentLevel === 'N2' ? 'SOUMATOME & SHINKANZEN N2' :
+               currentLevel === 'N1' ? 'THƯỢNG CẤP BÁC HỌC N1' :
+               'MINNA NO NIHONGO I'} — BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
+            </span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Thẻ Nhớ Flashcard 3D
+            Thẻ Nhớ Flashcard 3D ({currentLevel})
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
-            Lật thẻ phản xạ hai chiều Nhật – Việt, tự động phát âm giọng Tokyo.
+            Lật thẻ phản xạ hai chiều Nhật – Việt, tự động phát âm giọng Tokyo chuẩn xác.
           </p>
 
           {/* Controls Bar */}
@@ -179,20 +207,19 @@ export default function FlashcardPage() {
               <select
                 value={selectedLesson}
                 onChange={(e) => setSelectedLesson(parseInt(e.target.value))}
-                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 max-w-[200px] truncate"
               >
-                {(currentLevel === 'N4'
-                  ? Array.from({ length: 25 }, (_, i) => i + 26)
-                  : currentLevel === 'N3'
-                  ? Array.from({ length: 20 }, (_, i) => i + 1)
-                  : currentLevel === 'N2' || currentLevel === 'N1'
-                  ? Array.from({ length: 15 }, (_, i) => i + 1)
-                  : Array.from({ length: 25 }, (_, i) => i + 1)
-                ).map((n) => (
-                  <option key={n} value={n}>
-                    Bài {n < 10 ? `0${n}` : n}
+                {lessonsList.length > 0 ? (
+                  lessonsList.map((l) => (
+                    <option key={l.lesson_number} value={l.lesson_number}>
+                      Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}: {l.title}
+                    </option>
+                  ))
+                ) : (
+                  <option value={selectedLesson}>
+                    Bài {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
                   </option>
-                ))}
+                )}
               </select>
 
               <button

@@ -23,12 +23,37 @@ export default function LessonsPage() {
   const { currentLevel, selectedLesson, setSelectedLesson, setActiveTab, guestProgress, recordWordProgress, askAi } = useApp();
 
   const [lessonInfo, setLessonInfo] = useState(null);
+  const [lessonsList, setLessonsList] = useState([]);
   const [vocabularies, setVocabularies] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewMode, setViewMode] = useState('single'); // 'single' | 'list'
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState({});
+
+  // Fetch all lessons for current level
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        const list = res.data || [];
+        if (isMounted) {
+          setLessonsList(list);
+          if (list.length > 0) {
+            const hasCurrent = list.some(l => l.lesson_number === selectedLesson);
+            if (!hasCurrent) {
+              setSelectedLesson(list[0].lesson_number);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Fetch lessons list error:', err);
+      }
+    };
+    fetchLessons();
+    return () => { isMounted = false; };
+  }, [currentLevel]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,14 +137,20 @@ export default function LessonsPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <BookOpen size={13} className="text-pink-600" />
-            <span>MINNA NO NIHONGO - BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}</span>
+            <span>
+              {currentLevel === 'N4' ? 'MINNA NO NIHONGO II' :
+               currentLevel === 'N3' ? 'SOUMATOME & SHINKANZEN N3' :
+               currentLevel === 'N2' ? 'SOUMATOME & SHINKANZEN N2' :
+               currentLevel === 'N1' ? 'THƯỢNG CẤP BÁC HỌC N1' :
+               'MINNA NO NIHONGO I'} — BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
+            </span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
             Bài {selectedLesson}: {lessonInfo?.title || 'Từ vựng & Mẫu câu'}
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-5">
-            Trọn bộ {vocabularies.length} từ vựng Minna no Nihongo tích hợp phát âm chuẩn Tokyo và giải thích AI.
+            {lessonInfo?.description || `Trọn bộ ${vocabularies.length} từ vựng cấp độ ${currentLevel} tích hợp phát âm chuẩn Tokyo và giải thích AI.`}
           </p>
 
           {/* Controls Bar: Lesson Dropdown + Mode Switch + Quick Links */}
@@ -133,20 +164,19 @@ export default function LessonsPage() {
                   sounds.playFlip();
                   setSelectedLesson(parseInt(e.target.value));
                 }}
-                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer max-w-[280px] sm:max-w-md truncate"
               >
-                {(currentLevel === 'N4'
-                  ? Array.from({ length: 25 }, (_, i) => i + 26)
-                  : currentLevel === 'N3'
-                  ? Array.from({ length: 20 }, (_, i) => i + 1)
-                  : currentLevel === 'N2' || currentLevel === 'N1'
-                  ? Array.from({ length: 15 }, (_, i) => i + 1)
-                  : Array.from({ length: 25 }, (_, i) => i + 1)
-                ).map((num) => (
-                  <option key={num} value={num}>
-                    Bài {num < 10 ? `0${num}` : num}
+                {lessonsList.length > 0 ? (
+                  lessonsList.map((l) => (
+                    <option key={l.lesson_number} value={l.lesson_number}>
+                      Bài {l.lesson_number < 10 ? `0${l.lesson_number}` : l.lesson_number}: {l.title} ({l.vocab_count || 0} từ)
+                    </option>
+                  ))
+                ) : (
+                  <option value={selectedLesson}>
+                    Bài {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
                   </option>
-                ))}
+                )}
               </select>
             </div>
 

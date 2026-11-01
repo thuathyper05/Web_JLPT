@@ -267,6 +267,7 @@ export const grammarService = {
 
 export const particlesService = {
   getParticles: (params) => api.get('/particles', { params }),
+  getExercises: (params) => api.get('/particles/exercises', { params }),
 };
 
 export const quizService = {

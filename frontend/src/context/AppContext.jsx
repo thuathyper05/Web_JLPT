@@ -7,7 +7,13 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [activeTab, setActiveTabState] = useState('home');
   const [selectedLesson, setSelectedLesson] = useState(1);
-  const [currentLevel, setCurrentLevel] = useState('N5');
+  const [currentLevel, setCurrentLevel] = useState(() => {
+    try {
+      return localStorage.getItem('nihongo_current_level') || 'N5';
+    } catch {
+      return 'N5';
+    }
+  });
   const [user, setUser] = useState(() => {
     try {
       const saved = localStorage.getItem('nihongo_cached_user');
@@ -256,6 +262,9 @@ export const AppProvider = ({ children }) => {
   const changeLevel = (level) => {
     sounds.playLevelUp();
     setCurrentLevel(level);
+    try {
+      localStorage.setItem('nihongo_current_level', level);
+    } catch {}
     if (level === 'N4') {
       setSelectedLesson(26);
     } else {

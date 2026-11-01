@@ -585,29 +585,26 @@ app.get('/api/lessons', async (req, res) => {
   }
 
   // Fallback in-memory
-  const allVocabs = db.data.lessons;
-  const lessonMap = {};
-  for (let i = 1; i <= 25; i++) {
-    lessonMap[i] = {
-      id: i,
-      lesson_number: i,
-      title: `Bài ${i}`,
-      description: `Từ vựng Minna no Nihongo Bài ${i}`,
-      vocab_count: 0
-    };
-  }
-
-  allVocabs.forEach(v => {
-    const lNum = v.lesson_number;
-    if (lessonMap[lNum]) {
-      lessonMap[lNum].vocab_count++;
-      if (v.lesson_title && lessonMap[lNum].title === `Bài ${lNum}`) {
-        lessonMap[lNum].title = v.lesson_title;
+  let lessonList = (db.data.lessonList || []).filter(l => l.level === level);
+  if (lessonList.length === 0) {
+    const allVocabs = (db.data.lessons || []).filter(v => v.level === level);
+    const lessonMap = {};
+    allVocabs.forEach(v => {
+      const lNum = v.lesson_number;
+      if (!lessonMap[lNum]) {
+        lessonMap[lNum] = {
+          id: lNum,
+          lesson_number: lNum,
+          level: level,
+          title: `Bài ${lNum}`,
+          description: `Từ vựng cấp độ ${level} Bài ${lNum}`,
+          vocab_count: 0
+        };
       }
-    }
-  });
-
-  const lessonList = Object.values(lessonMap);
+      lessonMap[lNum].vocab_count++;
+    });
+    lessonList = Object.values(lessonMap).sort((a, b) => a.lesson_number - b.lesson_number);
+  }
   res.json(lessonList);
 });
 
@@ -796,28 +793,108 @@ app.get('/api/grammar', async (req, res) => {
 });
 
 // ── 5. PARTICLES ──
-app.get('/api/particles', (req, res) => {
+app.get('/api/particles', async (req, res) => {
   const { level } = req.query;
-  let list = db.data.particles;
-  if (level) {
-    list = list.filter(p => p.level === level.toUpperCase());
+  const upperLevel = level ? level.toUpperCase() : null;
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let query = 'SELECT * FROM particles';
+      const params = [];
+      if (upperLevel) {
+        if (upperLevel === 'N1') {
+          query += " WHERE level IN ('N2', 'N1')";
+        } else {
+          params.push(upperLevel);
+          query += ' WHERE level = $1';
+        }
+      }
+      query += ' ORDER BY id ASC';
+      const r = await db.pool.query(query, params);
+      if (r.rows.length > 0) {
+        return res.json(r.rows);
+      }
+    } catch (err) {
+      console.error('Database particles query error:', err);
+    }
+  }
+
+  let list = db.data.particles || [];
+  if (upperLevel) {
+    if (upperLevel === 'N1') {
+      list = list.filter(p => p.level === 'N1' || p.level === 'N2');
+    } else {
+      list = list.filter(p => p.level === upperLevel);
+    }
   }
   res.json(list);
 });
 
-// ── 6. QUIZ GENERATOR ──
-app.get('/api/quiz/generate', (req, res) => {
-  const { lesson = 'all', count = 10, mode = 'mixed' } = req.query;
-  const numQuestions = Math.min(parseInt(count) || 10, 50);
+app.get('/api/particles/exercises', async (req, res) => {
+  const { level } = req.query;
+  const upperLevel = level ? level.toUpperCase() : null;
 
-  let pool = db.data.lessons;
-  if (lesson !== 'all') {
-    const lNum = parseInt(lesson);
-    pool = pool.filter(v => v.lesson_number === lNum);
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let query = 'SELECT * FROM particle_exercises';
+      const params = [];
+      if (upperLevel) {
+        params.push(upperLevel);
+        query += ' WHERE level = $1';
+      }
+      query += ' ORDER BY id ASC';
+      const r = await db.pool.query(query, params);
+      if (r.rows.length > 0) {
+        return res.json(r.rows);
+      }
+    } catch (err) {
+      console.error('Database particle exercises query error:', err);
+    }
+  }
+
+  let list = db.data.particleExercises || [];
+  if (upperLevel) {
+    list = list.filter(p => p.level === upperLevel);
+  }
+  res.json(list);
+});
+
+// ── 6. QUIZ GENERATOR (Multi-Level N5-N1) ──
+app.get('/api/quiz/generate', async (req, res) => {
+  const { lesson = 'all', count = 10, mode = 'mixed', level = 'N5' } = req.query;
+  const numQuestions = Math.min(parseInt(count) || 10, 50);
+  const upperLevel = level.toUpperCase();
+
+  let pool = [];
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let qText = 'SELECT * FROM vocabularies WHERE level = $1';
+      const params = [upperLevel];
+      if (lesson !== 'all') {
+        params.push(parseInt(lesson));
+        qText += ' AND lesson_number = $2';
+      }
+      const r = await db.pool.query(qText, params);
+      pool = r.rows;
+    } catch (err) {
+      console.error('Database quiz pool error:', err);
+    }
+  }
+
+  if (pool.length === 0) {
+    pool = (db.data.lessons || []).filter(v => v.level === upperLevel);
+    if (lesson !== 'all') {
+      const lNum = parseInt(lesson);
+      pool = pool.filter(v => v.lesson_number === lNum);
+    }
   }
 
   if (pool.length < 4) {
-    pool = db.data.lessons; // Fallback to all if pool too small
+    pool = (db.data.lessons || []).filter(v => v.level === upperLevel);
+    if (pool.length < 4) {
+      pool = db.data.lessons || [];
+    }
   }
 
   // Shuffle pool
