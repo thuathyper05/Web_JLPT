@@ -68,6 +68,19 @@ export default function App() {
     }
   };
 
+  // When viewing forum as a standalone external-style news portal
+  if (activeTab === 'forum') {
+    return (
+      <div className="min-h-screen bg-[#fcfcfd] text-slate-900 font-sans antialiased">
+        {pageLoading && <SignatureLoader message={loadingMessage} />}
+        <ForumPage />
+        <AiChatBubble />
+        <AiExplainModal />
+        <AuthModal />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-appbg text-slate-800 flex relative">
       {/* ── BESPOKE TRANSITION / PAGE LOADER ── */}

@@ -21,10 +21,31 @@ export const stopSpeaking = () => {
   }
 };
 
+// Voice cache to ensure browser has loaded voice list
+let cachedVoices = [];
+const loadVoices = () => {
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    cachedVoices = window.speechSynthesis.getVoices();
+  }
+};
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
 // Splits AI pedagogical text into bilingual segments: Japanese and Vietnamese
 export const splitBilingualText = (raw) => {
   if (!raw) return [];
-  const lines = raw.toString().split(/\r?\n/);
+  // Clean markdown bold, asterisks, hashtags and symbols that confuse TTS
+  const cleanRaw = raw
+    .toString()
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/[`~]/g, '')
+    .replace(/[\u2022\u2605\u2713]/g, '');
+
+  const lines = cleanRaw.split(/\r?\n/);
   const segments = [];
 
   const isJapaneseText = (str) => /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/.test(str);
@@ -63,25 +84,42 @@ export const splitBilingualText = (raw) => {
       continue;
     }
 
-    // Line with Japanese quotes
-    const parts = line.split(/([「『][^」』]+[」』])/g);
+    // Line with Japanese quotes or parentheses
+    const parts = line.split(/([「『][^」』]+[」』]|\([^\)]*[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+[^\)]*\))/g);
     for (const part of parts) {
       const p = part.trim();
       if (!p) continue;
       if (p.startsWith('「') || p.startsWith('『')) {
         const inner = p.slice(1, -1).trim();
-        if (isJapaneseText(inner)) {
+        if (isJapaneseText(inner) && !hasViAccents(inner)) {
+          segments.push({ lang: 'ja-JP', text: inner });
+        } else {
+          segments.push({ lang: 'vi-VN', text: inner });
+        }
+      } else if (p.startsWith('(') && p.endsWith(')')) {
+        const inner = p.slice(1, -1).trim();
+        if (isJapaneseText(inner) && !hasViAccents(inner)) {
           segments.push({ lang: 'ja-JP', text: inner });
         } else {
           segments.push({ lang: 'vi-VN', text: inner });
         }
       } else {
-        segments.push({ lang: 'vi-VN', text: p });
+        // If part contains standalone Japanese words interspersed with Vietnamese
+        const subTokens = p.split(/([\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]{2,})/g);
+        for (const sub of subTokens) {
+          const s = sub.trim();
+          if (!s) continue;
+          if (isJapaneseText(s) && !hasViAccents(s)) {
+            segments.push({ lang: 'ja-JP', text: s });
+          } else {
+            segments.push({ lang: 'vi-VN', text: s });
+          }
+        }
       }
     }
   }
 
-  // Merge adjacent same-language segments to ensure smooth playback
+  // Merge adjacent same-language segments to ensure smooth, natural playback
   const merged = [];
   for (const s of segments) {
     const cleanText = s.text.replace(/[\*#]/g, '').trim();
@@ -102,9 +140,12 @@ export const speakBilingualText = (text, onEndCallback = null) => {
   try {
     window.speechSynthesis.cancel();
     const segments = splitBilingualText(text);
-    if (segments.length === 0) return;
+    if (segments.length === 0) {
+      if (onEndCallback) onEndCallback();
+      return;
+    }
 
-    const voices = window.speechSynthesis.getVoices();
+    const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
     const jaVoices = voices.filter((v) => v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja'));
     const viVoices = voices.filter((v) => v.lang === 'vi-VN' || v.lang === 'vi_VN' || v.lang.startsWith('vi'));
 
@@ -247,6 +288,10 @@ export const forumService = {
   addComment: (id, data) => api.post(`/forum/articles/${id}/comments`, data),
   getReviews: () => api.get('/forum/reviews'),
   addReview: (data) => api.post('/forum/reviews', data),
+};
+
+export const supportService = {
+  sendFeedback: (data) => api.post('/support/feedback', data),
 };
 
 export default api;

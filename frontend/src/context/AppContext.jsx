@@ -111,8 +111,29 @@ export const AppProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Check current auth status on mount
+  // Check current auth status and daily streak on mount
   useEffect(() => {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+    setGamification((prev) => {
+      if (!prev.last_active_date) {
+        return { ...prev, last_active_date: todayStr, today_words_count: 0 };
+      }
+      if (prev.last_active_date !== todayStr) {
+        let streak = prev.current_streak || 1;
+        if (prev.last_active_date !== yesterdayStr) {
+          streak = 1;
+        }
+        return {
+          ...prev,
+          current_streak: streak,
+          today_words_count: 0
+        };
+      }
+      return prev;
+    });
+
     const initAuth = async () => {
       const token = localStorage.getItem('nihongo_token');
       if (token) {
@@ -233,7 +254,7 @@ export const AppProvider = ({ children }) => {
     setUser(null);
   };
 
-  // Record word progress
+  // Record word progress with real streak and daily target tracking
   const recordWordProgress = (wordId, status) => {
     setGuestProgress((prev) => ({
       ...prev,
@@ -243,13 +264,36 @@ export const AppProvider = ({ children }) => {
       }
     }));
 
-    // Award XP
     const xpGained = status === 'mastered' ? 15 : 5;
-    setGamification((prev) => ({
-      ...prev,
-      total_xp: prev.total_xp + xpGained,
-      today_words_count: prev.today_words_count + 1
-    }));
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+    setGamification((prev) => {
+      let streak = prev.current_streak || 1;
+      let todayCount = prev.today_words_count || 0;
+
+      if (prev.last_active_date !== todayStr) {
+        if (prev.last_active_date === yesterdayStr) {
+          streak += 1;
+        } else if (prev.last_active_date) {
+          streak = 1;
+        }
+        todayCount = 1;
+      } else {
+        todayCount += 1;
+      }
+
+      const longest = Math.max(prev.longest_streak || 1, streak);
+
+      return {
+        ...prev,
+        total_xp: (prev.total_xp || 0) + xpGained,
+        current_streak: streak,
+        longest_streak: longest,
+        today_words_count: todayCount,
+        last_active_date: todayStr
+      };
+    });
 
     // Sync to backend if available
     progressService.recordTick({ vocabId: wordId, status, xp: xpGained }).catch(() => {});

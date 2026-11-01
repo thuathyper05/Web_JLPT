@@ -12,6 +12,7 @@ import {
   VolumeX,
   CheckCircle2,
   RotateCcw,
+  RotateCw,
   Bot,
   User,
   HelpCircle,
@@ -45,16 +46,50 @@ export default function AiSenseiPage() {
   const [roadmapResult, setRoadmapResult] = useState(null);
   const [roadmapLoading, setRoadmapLoading] = useState(false);
 
-  // Send Chat message with real Gemini AI and personalized context
-  const handleSendChat = async (e) => {
-    e?.preventDefault();
-    if (!chatInput.trim() || chatLoading) return;
+  // Quick Prompts Rotating State
+  const [promptOffset, setPromptOffset] = useState(0);
 
-    const userText = chatInput.trim();
-    setMessages((prev) => [...prev, { sender: 'user', text: userText }]);
-    setChatInput('');
+  const allQuickPrompts = [
+    'Phân biệt trợ từ に và で thế nào?',
+    'Mẹo nhớ cách chia thể て (Te) Minna no Nihongo',
+    'Cách chào hỏi khách hàng chuẩn văn hóa công sở Nhật',
+    'Cấu trúc ngữ pháp V-masu chuyển sang V-te kudasai',
+    'Khi nào dùng は (Wa) và khi nào dùng が (Ga)?',
+    'Cách phân biệt あげます, もらいます và くれます',
+    'Mẹo nhớ âm On và âm Kun của chữ Hán Kanji',
+    'Cách đếm đồ vật và con vật trong tiếng Nhật',
+    'Làm thế nào để nghe hiểu phần đàm thoại kỳ thi JLPT?',
+    'Phân biệt thể thông thường (普通形) và thể lịch sự (丁寧形)',
+    'Cách dùng cấu trúc ～たことがあります để kể kinh nghiệm',
+    'Ý nghĩa và cách dùng trợ từ へ, を, に chỉ phương hướng',
+    'Đặt 3 câu ví dụ giao tiếp hàng ngày với từ vựng mới',
+    'Những lỗi sai người Việt hay mắc phải khi nói tiếng Nhật',
+    'Làm sao để nhớ từ vựng lâu mà không bị quên sau 1 tuần?',
+    'Phân biệt cách dùng của います và あります'
+  ];
+
+  const displayedPrompts = [
+    allQuickPrompts[(promptOffset * 4 + 0) % allQuickPrompts.length],
+    allQuickPrompts[(promptOffset * 4 + 1) % allQuickPrompts.length],
+    allQuickPrompts[(promptOffset * 4 + 2) % allQuickPrompts.length],
+    allQuickPrompts[(promptOffset * 4 + 3) % allQuickPrompts.length]
+  ];
+
+  // Send Chat message with real Gemini AI and personalized context
+  const handleSendChat = async (e, overrideText = null) => {
+    e?.preventDefault();
+    const textToSend = (overrideText || chatInput).trim();
+    if (!textToSend || chatLoading) return;
+
+    setMessages((prev) => [...prev, { sender: 'user', text: textToSend }]);
+    if (!overrideText) {
+      setChatInput('');
+    }
     setChatLoading(true);
     sounds.playFlip();
+
+    // Auto rotate prompt suggestions
+    setPromptOffset((prev) => prev + 1);
 
     try {
       const masteredCount = Object.values(guestProgress || {}).filter((p) => p.status === 'mastered').length;
@@ -62,7 +97,7 @@ export default function AiSenseiPage() {
 
       const res = await aiService.query({
         action: 'chat',
-        prompt: userText,
+        prompt: textToSend,
         userProgress: {
           masteredCount,
           reviewWords,
@@ -148,13 +183,6 @@ export default function AiSenseiPage() {
       setRoadmapLoading(false);
     }
   };
-
-  const quickPrompts = [
-    'Phân biệt trợ từ に và で thế nào?',
-    'Mẹo nhớ thể て (Te) Minna no Nihongo',
-    'Cách chào hỏi khách hàng chuẩn văn hóa Nhật',
-    'Cấu trúc ngữ pháp V-masu sang V-te kudasai'
-  ];
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-in fade-in duration-300">
@@ -321,26 +349,41 @@ export default function AiSenseiPage() {
           {/* Quick Prompts Panel */}
           <div className="space-y-4">
             <div className="p-5 rounded-3xl bg-white border border-pink-100 shadow-sm space-y-3">
-              <h3 className="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <HelpCircle size={15} className="text-pink-600" />
-                <span>GỢI Ý CÂU HỎI NHANH</span>
-              </h3>
-              <p className="text-[11px] text-slate-500">
-                Nhấp vào câu hỏi bất kỳ để gửi ngay cho AI Sensei:
+              <div className="flex items-center justify-between pb-1 border-b border-pink-50">
+                <h3 className="font-extrabold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-2 mb-0">
+                  <HelpCircle size={15} className="text-pink-600" />
+                  <span>GỢI Ý CÂU HỎI NHANH</span>
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sounds.playFlip();
+                    setPromptOffset((prev) => prev + 1);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold text-[11px] flex items-center gap-1 transition-colors cursor-pointer"
+                  title="Nhấn để đổi các câu hỏi gợi ý khác"
+                >
+                  <RotateCw size={12} />
+                  <span>Đổi câu hỏi</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] text-slate-500 mb-0">
+                Nhấp vào câu hỏi bất kỳ để gửi ngay cho AI Sensei giải đáp tức thì:
               </p>
 
-              <div className="space-y-2">
-                {quickPrompts.map((q, idx) => (
+              <div className="space-y-2 pt-1">
+                {displayedPrompts.map((q, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => {
-                      setChatInput(q);
+                      handleSendChat(null, q);
                     }}
-                    className="w-full text-left p-3 rounded-xl border border-pink-100 bg-pink-50/30 hover:bg-pink-50 hover:border-pink-300 text-xs font-semibold text-slate-700 transition-all cursor-pointer flex items-center justify-between group"
+                    className="w-full text-left p-3 rounded-2xl border border-pink-100 bg-pink-50/30 hover:bg-pink-50 hover:border-pink-300 text-xs font-semibold text-slate-700 transition-all cursor-pointer flex items-center justify-between group active:scale-[0.98]"
                   >
-                    <span>{q}</span>
-                    <Sparkles size={13} className="text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="leading-relaxed">{q}</span>
+                    <Sparkles size={14} className="text-pink-500 opacity-60 group-hover:opacity-100 shrink-0 ml-2 group-hover:scale-110 transition-all" />
                   </button>
                 ))}
               </div>

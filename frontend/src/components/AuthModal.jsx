@@ -383,70 +383,71 @@ export default function AuthModal() {
         </button>
 
         {/* ── LEFT COLUMN: BRANDING & SYSTEM IDENTITY ── */}
-        <div className="hidden md:flex md:w-5/12 bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white p-8 flex-col justify-between relative overflow-hidden">
-          {/* Decorative Japanese Calligraphy Background */}
-          <div className="absolute right-2 top-10 text-white/5 font-jp font-black text-9xl pointer-events-none select-none">
-            夢
+        <div className="hidden md:flex md:w-5/12 bg-gradient-to-b from-rose-50/70 via-pink-50/30 to-white text-slate-800 p-8 flex-col justify-between relative overflow-hidden border-r border-pink-100/80">
+          {/* Subtle Cherry Blossom Calligraphy Watermark */}
+          <div className="absolute right-3 top-8 text-pink-200/20 font-jp font-black text-9xl pointer-events-none select-none">
+            桜
           </div>
-          <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-pink-500/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-44 h-44 rounded-full bg-pink-200/30 blur-3xl pointer-events-none" />
 
           {/* Top Brand Logo */}
-          <div className="relative z-10 space-y-2">
+          <div className="relative z-10 space-y-3">
             <div className="flex items-center">
-              <div className="bg-white/95 px-3 py-1.5 rounded-2xl shadow-lotus inline-block">
+              <div className="bg-white px-3 py-1.5 rounded-2xl shadow-sm border border-pink-200/60 inline-flex items-center gap-2">
                 <img
                   src="/hyper_logo.png"
                   alt="HYPER"
                   className="h-8 w-auto object-contain"
                 />
+                <span className="font-black text-sm text-slate-900 tracking-tight">HYPER JAPANESE</span>
               </div>
             </div>
 
-            <p className="text-xs text-pink-200/80 font-medium pt-1">
-              Hệ thống Web App học tiếng Nhật thông minh với công nghệ AI và cơ sở dữ liệu PostgreSQL chuẩn mực.
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Nền tảng học và luyện thi tiếng Nhật thông minh với giáo trình N5 đến N1, trợ lý AI Sensei và đồng bộ tiến độ an toàn.
             </p>
           </div>
 
           {/* Middle Value Props */}
-          <div className="relative z-10 space-y-3.5 my-6">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 border border-pink-400/30">
+          <div className="relative z-10 space-y-4 my-6">
+            <div className="flex items-start gap-3 bg-white/70 p-3 rounded-2xl border border-pink-100/70 shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-pink-100/80 text-pink-600 flex items-center justify-center shrink-0">
                 <BookOpen size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">Giáo trình chuẩn Minna no Nihongo</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Hơn 1.500 từ vựng N5 và bộ đề phát triển N4 tới N1.</p>
+                <h4 className="font-extrabold text-xs text-slate-900 mb-0.5">Giáo trình Minna no Nihongo chuẩn</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Hơn 1.500 từ vựng và bài tập từ N5 phát triển tới N1.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 border border-pink-400/30">
+            <div className="flex items-start gap-3 bg-white/70 p-3 rounded-2xl border border-pink-100/70 shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-rose-100/80 text-rose-600 flex items-center justify-center shrink-0">
                 <Sparkles size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">Trợ lý AI Sensei thông minh</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Tự động phân tích điểm yếu cá nhân và đề xuất bài tập tối ưu.</p>
+                <h4 className="font-extrabold text-xs text-slate-900 mb-0.5">Trợ lý gia sư AI Sensei 24/7</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Giải đáp ngữ pháp, luyện đàm thoại và phân tích câu thông minh.</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 border border-pink-400/30">
+            <div className="flex items-start gap-3 bg-white/70 p-3 rounded-2xl border border-pink-100/70 shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-purple-100/80 text-purple-600 flex items-center justify-center shrink-0">
                 <Zap size={16} />
               </div>
               <div>
-                <h4 className="font-bold text-xs text-white">Đồng bộ tiến độ tức thời</h4>
-                <p className="text-[11px] text-slate-400 mb-0">Lưu dữ liệu học tập an toàn trên đám mây PostgreSQL.</p>
+                <h4 className="font-extrabold text-xs text-slate-900 mb-0.5">Đồng bộ tiến độ học tập thực tế</h4>
+                <p className="text-[11px] text-slate-500 mb-0">Lưu trữ đám mây, không bao giờ bị mất chuỗi ngày và từ đã học.</p>
               </div>
             </div>
           </div>
 
-          {/* Bottom Quote */}
-          <div className="relative z-10 pt-4 border-t border-white/10">
-            <p className="text-[11.5px] italic text-pink-200/90 leading-relaxed mb-1">
-              "初志貫徹 (Shoshi Kantetsu) - Giữ vững ý chí ban đầu để đi đến ngày hái quả ngọt."
+          {/* Bottom Proverb */}
+          <div className="relative z-10 pt-3 border-t border-pink-100">
+            <p className="text-[11px] font-medium text-slate-500 italic leading-relaxed mb-0.5">
+              "七転び八起き (Nana korobi ya oki) - Ngã bảy lần, đứng dậy tám lần."
             </p>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider block">
-              Cộng đồng hơn 12.000 học viên tin cậy
+            <span className="text-[10px] text-pink-600 font-bold uppercase tracking-wider block">
+              Đồng hành cùng hơn 12.000 học viên
             </span>
           </div>
         </div>
@@ -457,8 +458,8 @@ export default function AuthModal() {
             {/* Header Title */}
             <div className="mb-6">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2 border border-pink-100">
-                <ShieldCheck size={13} className="text-pink-600" />
-                <span>BẢO MẬT HỌC VIÊN HYPER</span>
+                <User size={13} className="text-pink-600" />
+                <span>TÀI KHOẢN HỌC VIÊN HYPER</span>
               </div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 {authMode === 'login' && 'Đăng nhập vào hệ thống'}
