@@ -229,7 +229,7 @@ function verifyGoogleAccessToken(accessToken) {
 // Helper to verify Facebook Access Token directly with Facebook Graph API
 function verifyFacebookAccessToken(accessToken) {
   return new Promise((resolve) => {
-    https.get(`https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`, (res) => {
+    https.get(`https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${accessToken}`, (res) => {
       let data = '';
       res.on('data', (chunk) => (data += chunk));
       res.on('end', () => {

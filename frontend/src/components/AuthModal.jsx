@@ -318,25 +318,31 @@ export default function AuthModal() {
     sounds.playFlip();
     setError('');
 
-    if (typeof window.FB === 'undefined') {
-      setError('Facebook SDK chưa tải xong hoặc bị chặn bởi tiện ích mở rộng trình duyệt (AdBlock/Brave). Vui lòng tắt chặn và thử lại.');
+    const fallbackToOAuthRedirect = () => {
+      const redirectUri = window.location.origin + window.location.pathname;
+      const oauthUrl = `https://www.facebook.com/v21.0/dialog/oauth?client_id=${fbAppId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=public_profile`;
+      window.location.href = oauthUrl;
+    };
+
+    if (typeof window.FB === 'undefined' || !window.FB.login) {
+      fallbackToOAuthRedirect();
       return;
     }
 
     try {
       window.FB.login((response) => {
-        if (response.authResponse?.accessToken) {
+        if (response?.authResponse?.accessToken) {
           setLoading(true);
           const accessToken = response.authResponse.accessToken;
 
-          window.FB.api('/me', { fields: 'id,name,email,picture.type(large)' }, async (fbUser) => {
+          window.FB.api('/me', { fields: 'id,name,picture.type(large)' }, async (fbUser) => {
             try {
               const res = await authService.socialLogin({
                 provider: 'Facebook',
                 accessToken,
-                email: fbUser.email || `fb_${fbUser.id}@facebook.hyperjapan.vn`,
-                name: fbUser.name || 'Học viên Facebook',
-                avatar: fbUser.picture?.data?.url || ''
+                email: (fbUser && fbUser.id) ? `fb_${fbUser.id}@facebook.hyperjapan.vn` : undefined,
+                name: fbUser?.name || 'Học viên Facebook',
+                avatar: fbUser?.picture?.data?.url || ''
               });
 
               if (res.data?.success) {
@@ -355,13 +361,16 @@ export default function AuthModal() {
             }
           });
         } else {
-          if (response.status === 'not_authorized') {
+          if (response?.status === 'not_authorized') {
             setError('Ứng dụng chưa được bạn cấp quyền đăng nhập trên Facebook.');
+          } else {
+            fallbackToOAuthRedirect();
           }
         }
       }, { scope: 'public_profile' });
     } catch (err) {
-      setError('Không thể mở cửa sổ đăng nhập Facebook: ' + (err.message || ''));
+      console.warn('FB.login error, redirecting to OAuth dialog:', err);
+      fallbackToOAuthRedirect();
     }
   };
 

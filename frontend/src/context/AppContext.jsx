@@ -136,6 +136,37 @@ export const AppProvider = ({ children }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Handle Facebook OAuth Dialog hash redirect response (#access_token=...)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token=')) {
+      const params = new URLSearchParams(hash.substring(1));
+      const accessToken = params.get('access_token');
+      if (accessToken) {
+        window.history.replaceState(null, '', window.location.pathname);
+        setPageLoading(true);
+        setLoadingMessage('Đang đăng nhập bằng Facebook...');
+
+        authService.socialLogin({
+          provider: 'Facebook',
+          accessToken
+        }).then((res) => {
+          if (res.data?.success) {
+            sounds.playLevelUp();
+            localStorage.setItem('nihongo_token', res.data.token);
+            try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
+            setUser(res.data.user);
+          }
+        }).catch((err) => {
+          console.error('Facebook OAuth hash login error:', err);
+        }).finally(() => {
+          setPageLoading(false);
+        });
+      }
+    }
+  }, []);
+
   // Check current auth status and daily streak on mount
   useEffect(() => {
     const todayStr = new Date().toISOString().slice(0, 10);
