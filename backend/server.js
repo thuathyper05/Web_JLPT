@@ -3,6 +3,9 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const https = require('https');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const db = require('./db');
 const { generateAiResponse } = require('./services/aiService');
@@ -10,6 +13,7 @@ const { generateAiResponse } = require('./services/aiService');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'hyper_nihongohub_secret_2026';
+const SERVER_START_TIME = Date.now();
 
 // Middleware
 app.use(cors());
@@ -1883,12 +1887,15 @@ app.post('/api/support/feedback', async (req, res) => {
   });
 });
 
-// Health check
+// Health check & Keep-alive endpoint
 app.get('/api/health', (req, res) => {
+  const uptimeSeconds = Math.floor((Date.now() - SERVER_START_TIME) / 1000);
   res.json({
     status: 'online',
-    platform: 'NihongoHub V3',
+    platform: 'HYPER Japanese NihongoHub V3',
+    uptime_seconds: uptimeSeconds,
     db_mode: db.isDbConnected() ? 'PostgreSQL' : 'In-Memory Engine',
+    keep_alive: process.env.RENDER_EXTERNAL_URL || process.env.KEEP_ALIVE_URL ? 'active' : 'idle',
     timestamp: new Date().toISOString()
   });
 });
@@ -2115,6 +2122,50 @@ app.get('/data-deletion', (req, res) => {
 </body>
 </html>`);
 });
+
+// ── Production Frontend Serving (Unified Full-Stack Deployment on Render) ──
+const distPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(distPath)) {
+  console.log(`[Static Serving] Serving compiled frontend from ${distPath}`);
+  app.use(express.static(distPath));
+
+  // SPA Catch-All fallback for client routes
+  app.get('*', (req, res, next) => {
+    if (
+      req.path.startsWith('/api') ||
+      req.path === '/robots.txt' ||
+      req.path === '/sitemap.xml' ||
+      req.path === '/privacy' ||
+      req.path === '/terms' ||
+      req.path === '/data-deletion'
+    ) {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
+// ── Render 24/7 Keep-Alive Self-Ping Engine ──
+// Render Free Web Services sleep after 15 minutes of inactivity.
+// Pinging /api/health every 10 minutes keeps the webapp awake 24/7.
+const RENDER_EXTERNAL_URL = process.env.RENDER_EXTERNAL_URL || process.env.KEEP_ALIVE_URL;
+if (RENDER_EXTERNAL_URL) {
+  const pingUrl = `${RENDER_EXTERNAL_URL.replace(/\/+$/, '')}/api/health`;
+  console.log(`[Keep-Alive Engine] Active for ${pingUrl}. Pinging every 10 minutes.`);
+
+  setInterval(() => {
+    try {
+      const client = pingUrl.startsWith('https') ? https : http;
+      client.get(pingUrl, (res) => {
+        console.log(`[Keep-Alive Ping] OK (${res.statusCode}) at ${new Date().toISOString()}`);
+      }).on('error', (err) => {
+        console.warn(`[Keep-Alive Ping] Warning: ${err.message}`);
+      });
+    } catch (e) {
+      console.warn(`[Keep-Alive Ping] Error: ${e.message}`);
+    }
+  }, 10 * 60 * 1000); // 10 minutes
+}
 
 app.listen(PORT, () => {
   console.log(`[NihongoHub API] Server running on port ${PORT} (http://localhost:${PORT})`);

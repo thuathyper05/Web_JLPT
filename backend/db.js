@@ -2,6 +2,7 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const { autoInitDatabase } = require('./init_db');
 
 // Load comprehensive multi-level JSON datasets with fallback
 const dataDir = path.join(__dirname, 'data');
@@ -67,22 +68,51 @@ if (allVocabularies.length === 0 && fs.existsSync(path.join(dataDir, 'n5_full_le
 let pool = null;
 let isDbConnected = false;
 
-if (process.env.DATABASE_URL || process.env.DB_HOST) {
+if (process.env.DATABASE_URL) {
   try {
     pool = new Pool({
       connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 5000
+    });
+
+    pool.query('SELECT 1', async (err) => {
+      if (!err) {
+        isDbConnected = true;
+        console.log('[PostgreSQL] Connected to Cloud database successfully via DATABASE_URL.');
+        try {
+          await autoInitDatabase(pool);
+        } catch (initErr) {
+          console.warn('[PostgreSQL Auto-Init] Warning:', initErr.message);
+        }
+      } else {
+        console.warn('[PostgreSQL] Database not reachable. Operating in High-Speed In-Memory Mode.');
+      }
+    });
+  } catch (e) {
+    console.warn('[PostgreSQL] Cloud Pool initialization error, using in-memory engine:', e.message);
+  }
+} else if (process.env.DB_HOST) {
+  try {
+    pool = new Pool({
       host: process.env.DB_HOST || '127.0.0.1',
       port: parseInt(process.env.DB_PORT || '5432'),
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || '123456',
       database: process.env.DB_NAME || 'jlpt_n5',
-      connectionTimeoutMillis: 3000
+      connectionTimeoutMillis: 5000,
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
     });
 
-    pool.query('SELECT 1', (err) => {
+    pool.query('SELECT 1', async (err) => {
       if (!err) {
         isDbConnected = true;
         console.log('[PostgreSQL] Connected to database successfully.');
+        try {
+          await autoInitDatabase(pool);
+        } catch (initErr) {
+          console.warn('[PostgreSQL Auto-Init] Warning:', initErr.message);
+        }
       } else {
         console.warn('[PostgreSQL] Database not reachable. Operating in High-Speed In-Memory Mode.');
       }
