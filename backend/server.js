@@ -1910,11 +1910,55 @@ app.get('/api/health', (req, res) => {
   const uptimeSeconds = Math.floor((Date.now() - SERVER_START_TIME) / 1000);
   res.json({
     status: 'online',
-    platform: 'HYPER Japanese NihongoHub V3',
+    platform: 'HYPER JP NihongoHub V3',
     uptime_seconds: uptimeSeconds,
     db_mode: db.isDbConnected() ? 'PostgreSQL' : 'In-Memory Engine',
     keep_alive: process.env.RENDER_EXTERNAL_URL || process.env.KEEP_ALIVE_URL ? 'active' : 'idle',
     timestamp: new Date().toISOString()
+  });
+});
+
+// App Version & Live Deploy Detection
+const APP_VERSION = '3.3.0';
+app.get('/api/version', (req, res) => {
+  res.json({
+    success: true,
+    version: APP_VERSION,
+    buildTime: SERVER_START_TIME,
+    platform: 'HYPER JP',
+    timestamp: Date.now()
+  });
+});
+
+// Native Studio-Quality Tokyo Japanese & Bilingual Speech Synthesis Proxy
+// Streams official Google TTS audio with native pitch accent, natural pronunciation and zero clipping
+app.get('/api/tts', (req, res) => {
+  const rawText = (req.query.text || '').toString().trim().slice(0, 400);
+  const lang = (req.query.lang || 'ja').toString().trim();
+  if (!rawText) return res.status(400).send('Text is required');
+
+  // Pre-clean text to ensure only speakable phonetic characters are passed
+  const cleanText = rawText
+    .replace(/[［\[］\]()（）\/／・·\-\*~_]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!cleanText) return res.status(400).send('Empty speakable text');
+
+  const encoded = encodeURIComponent(cleanText);
+  const googleTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encoded}`;
+
+  https.get(googleTtsUrl, (ttsRes) => {
+    if (ttsRes.statusCode === 200) {
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+      ttsRes.pipe(res);
+    } else {
+      res.status(ttsRes.statusCode).send('TTS upstream error');
+    }
+  }).on('error', (err) => {
+    console.error('TTS upstream error:', err);
+    res.status(500).send(err.message);
   });
 });
 

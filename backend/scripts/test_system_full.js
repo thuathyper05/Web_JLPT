@@ -192,6 +192,16 @@ async function runAllTests() {
     assert('Auth Login API status 200', loginRes.status === 200);
     assert('Auth Login returns user data', loginRes.body.user && loginRes.body.user.email === testEmail);
 
+    // 14. App Version & Live Deploy Check
+    const versionRes = await request({ hostname: 'localhost', port: 5000, path: '/api/version', method: 'GET' });
+    assert('Version API status 200', versionRes.status === 200);
+    assert('Version API returns buildTime & platform', versionRes.body.buildTime && versionRes.body.platform === 'HYPER JP');
+
+    // 15. Native Google Tokyo TTS Audio Stream
+    const ttsRes = await request({ hostname: 'localhost', port: 5000, path: '/api/tts?text=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF&lang=ja', method: 'GET' });
+    assert('TTS Audio API status 200', ttsRes.status === 200);
+    assert('TTS Audio returns audio/mpeg stream', ttsRes.headers['content-type'] && ttsRes.headers['content-type'].includes('audio/mpeg'));
+
   } catch (err) {
     console.error('Fatal testing error:', err);
     failed++;

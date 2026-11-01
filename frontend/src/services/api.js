@@ -14,10 +14,24 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Stop any active speech synthesis
+// Active audio stream and utterance references to prevent GC cutoff
+let activeAudio = null;
+let currentUtterance = null;
+
+// Stop any active speech or audio playback
 export const stopSpeaking = () => {
+  if (activeAudio) {
+    try {
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
+    } catch {}
+    activeAudio = null;
+  }
   if (typeof window !== 'undefined' && window.speechSynthesis) {
-    window.speechSynthesis.cancel();
+    try {
+      window.speechSynthesis.cancel();
+    } catch {}
+    currentUtterance = null;
   }
 };
 
@@ -195,10 +209,12 @@ export const speakBilingualText = (text, onEndCallback = null) => {
   }
 };
 
-// Native High-Quality Tokyo Japanese Speech Synthesis Engine
-// Prioritizes clean phonetic Kana reading first to eliminate Kanji mispronunciation
-export const speakJapanese = (text, kanaAlternative = null, rate = 0.88) => {
-  if (typeof window === 'undefined' || !window.speechSynthesis) return;
+// Native Studio-Quality Tokyo Japanese Audio & Speech Synthesis Engine
+// Combines official Google Tokyo MP3 audio stream with robust offline Web Speech fallback
+export const speakJapanese = (text, kanaAlternative = null, rate = 1.0) => {
+  if (typeof window === 'undefined') return;
+
+  stopSpeaking();
 
   let actualKana = kanaAlternative;
   let actualRate = rate;
@@ -208,43 +224,99 @@ export const speakJapanese = (text, kanaAlternative = null, rate = 0.88) => {
     actualKana = null;
   }
 
-  // Use pure Hiragana/Katakana phonetic reading first for 100% accurate Tokyo pronunciation
-  const toSpeak = (actualKana || text || '')
-    .toString()
-    .replace(/[［\[］\]()（）／/・·\-\*]/g, '')
+  // Pre-process and clean text
+  let raw = (actualKana || text || '').toString().trim();
+  if (!raw) return;
+
+  // If text is a full sentence with Kanji, prefer sentence context for natural intonation
+  if (text && (text.includes('。') || text.includes('、') || text.length > 15)) {
+    raw = text.toString().trim();
+  }
+
+  // Clean brackets, parentheses, notes and markdown
+  let clean = raw
+    .replace(/[［\[］\]]/g, '')
+    .replace(/\([^\)]*\)/g, '')
+    .replace(/（[^）]*）/g, '')
+    .replace(/[\/／]/g, '。 ')
+    .replace(/[*_~`#]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 
-  if (!toSpeak) return;
+  // Handle special isolated grammatical particle readings
+  if (clean === 'は') clean = 'わ';
+  else if (clean === 'へ') clean = 'え';
+  else if (clean === 'を') clean = 'お';
+
+  if (!clean) return;
+
+  // Primary: Native Studio Tokyo Japanese Audio via /api/tts
+  try {
+    const audioUrl = `/api/tts?text=${encodeURIComponent(clean)}&lang=ja`;
+    const audio = new Audio(audioUrl);
+    activeAudio = audio;
+
+    if (actualRate && actualRate !== 1.0) {
+      audio.playbackRate = Math.max(0.7, Math.min(1.5, actualRate));
+    }
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        // Fallback to Web Speech API if audio stream blocked or device is offline
+        fallbackSpeechSynthesis(clean, actualRate);
+      });
+    }
+  } catch (err) {
+    fallbackSpeechSynthesis(clean, actualRate);
+  }
+};
+
+// Robust Web Speech API fallback with garbage collection protection
+function fallbackSpeechSynthesis(text, rate = 0.9) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
   try {
-    window.speechSynthesis.cancel(); // Stop any pending speech
-    const utterance = new SpeechSynthesisUtterance(toSpeak);
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    currentUtterance = utterance; // Prevent garbage collection mid-speech in Chrome
+
     utterance.lang = 'ja-JP';
-    utterance.rate = rate; // Clear, natural listening pace
+    utterance.rate = rate || 0.9;
     utterance.pitch = 1.0;
 
-    // Pick top-tier standard Tokyo Japanese voice if available
-    const voices = window.speechSynthesis.getVoices();
-    const jaVoices = voices.filter(v => v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja'));
-    const preferredVoice = jaVoices.find(v => 
-      v.name.includes('Natural') || 
-      v.name.includes('Google') || 
-      v.name.includes('Nanami') || 
-      v.name.includes('Kyoko') || 
-      v.name.includes('Ayumi') ||
-      v.name.includes('Haruka') ||
-      v.name.includes('Otoya')
-    ) || jaVoices[0];
+    const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
+    const jaVoices = voices.filter(
+      (v) => v.lang === 'ja-JP' || v.lang === 'ja_JP' || v.lang.startsWith('ja')
+    );
+    const preferredVoice =
+      jaVoices.find(
+        (v) =>
+          v.name.includes('Natural') ||
+          v.name.includes('Google') ||
+          v.name.includes('Nanami') ||
+          v.name.includes('Kyoko') ||
+          v.name.includes('Ayumi') ||
+          v.name.includes('Haruka') ||
+          v.name.includes('Otoya')
+      ) || jaVoices[0];
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
     }
 
+    utterance.onend = () => {
+      currentUtterance = null;
+    };
+    utterance.onerror = () => {
+      currentUtterance = null;
+    };
+
     window.speechSynthesis.speak(utterance);
-  } catch (err) {
-    console.warn('Speech synthesis warning:', err);
+  } catch (e) {
+    console.warn('SpeechSynthesis fallback error:', e);
   }
-};
+}
 
 export const authService = {
   login: (data) => api.post('/auth/login', data),

@@ -102,12 +102,12 @@ export default function Sidebar({
               <div
                 onClick={() => handleNav({ id: 'home' })}
                 className="cursor-pointer group hover:scale-105 transition-transform"
-                title="HYPER - Về trang chủ"
+                title="HYPER JP - Về trang chủ"
               >
                 <img
                   src="/hyper_logo.png"
-                  alt="HYPER"
-                  className="h-7 w-auto object-contain drop-shadow-sm"
+                  alt="HYPER JP"
+                  className="h-8 w-auto object-contain rounded-lg drop-shadow-sm"
                 />
               </div>
               <button
@@ -130,14 +130,14 @@ export default function Sidebar({
               <div
                 onClick={() => handleNav({ id: 'home' })}
                 className="flex-1 flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
-                title="HYPER - Về trang chủ"
+                title="HYPER JP - Về trang chủ"
               >
                 <div className="relative flex items-center justify-center">
                   <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <img
                     src="/hyper_logo.png"
-                    alt="HYPER"
-                    className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                    alt="HYPER JP"
+                    className="h-10 sm:h-11 w-auto object-contain relative z-10 rounded-xl drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
                   />
                 </div>
               </div>

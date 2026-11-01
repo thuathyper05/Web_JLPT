@@ -7,6 +7,7 @@ import AuthModal from './components/AuthModal';
 import AiExplainModal from './components/AiExplainModal';
 import AiChatBubble from './components/AiChatBubble';
 import SignatureLoader from './components/SignatureLoader';
+import AppUpdateBanner from './components/AppUpdateBanner';
 
 import DashboardPage from './pages/DashboardPage';
 import LessonsPage from './pages/LessonsPage';
@@ -114,6 +115,9 @@ export default function App() {
 
       {/* ── 6. AUTHENTICATION MODAL ── */}
       <AuthModal />
+
+      {/* ── 7. LIVE APP UPDATE NOTIFICATION BANNER ── */}
+      <AppUpdateBanner />
     </div>
   );
 }

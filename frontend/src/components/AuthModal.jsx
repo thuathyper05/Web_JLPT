@@ -404,8 +404,8 @@ export default function AuthModal() {
               <div className="bg-white p-2 rounded-2xl shadow-xs border border-pink-200/60 inline-flex items-center justify-center">
                 <img
                   src="/hyper_logo.png"
-                  alt="Logo"
-                  className="h-10 w-auto object-contain"
+                  alt="HYPER JP"
+                  className="h-10 w-auto object-contain rounded-xl"
                 />
               </div>
             </div>
@@ -467,8 +467,8 @@ export default function AuthModal() {
               <div className="bg-white p-2 rounded-2xl shadow-xs border border-pink-200/60 inline-flex items-center justify-center">
                 <img
                   src="/hyper_logo.png"
-                  alt="Logo"
-                  className="h-9 w-auto object-contain"
+                  alt="HYPER JP"
+                  className="h-9 w-auto object-contain rounded-xl"
                 />
               </div>
             </div>

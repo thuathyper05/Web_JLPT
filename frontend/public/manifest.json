@@ -1,23 +1,29 @@
 {
-  "short_name": "HYPER",
-  "name": "HYPER — Học Tiếng Nhật",
+  "short_name": "HYPER JP",
+  "name": "HYPER JP — Nền Tảng Học Tiếng Nhật Thông Minh",
   "description": "Nền tảng Web App học tiếng Nhật thông minh với AI, Flashcard 3D và Furigana động",
   "icons": [
     {
-      "src": "/hyper_logo.png",
+      "src": "/icon-192.png",
       "type": "image/png",
-      "sizes": "192x192 512x512",
+      "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/facebook_app_icon_1024x1024.png",
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/hyper_logo.png",
       "type": "image/png",
       "sizes": "1024x1024",
       "purpose": "any"
     }
   ],
   "start_url": "/",
-  "background_color": "#ffffff",
+  "background_color": "#0f172a",
   "theme_color": "#db2777",
   "display": "standalone",
   "orientation": "portrait"
