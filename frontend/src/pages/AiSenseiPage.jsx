@@ -340,7 +340,7 @@ export default function AiSenseiPage() {
                     className="w-full text-left p-3 rounded-xl border border-pink-100 bg-pink-50/30 hover:bg-pink-50 hover:border-pink-300 text-xs font-semibold text-slate-700 transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <span>{q}</span>
-                    <ArrowRight size={13} className="text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Sparkles size={13} className="text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </button>
                 ))}
               </div>
@@ -391,7 +391,7 @@ export default function AiSenseiPage() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => speakJapanese(sentenceResult.original)}
+                  onClick={() => speakBilingualText(sentenceResult.original || sentenceInput)}
                   className="px-3 py-1 rounded-full bg-white text-pink-700 border border-pink-200 text-xs font-bold flex items-center gap-1.5 hover:bg-pink-50 transition-colors cursor-pointer"
                 >
                   <Volume2 size={14} />
@@ -400,29 +400,41 @@ export default function AiSenseiPage() {
               </div>
 
               <h3 className="text-2xl font-black font-jp text-slate-900">
-                {sentenceResult.original}
+                {sentenceResult.original || sentenceInput}
               </h3>
 
-              <div className="p-3.5 rounded-xl bg-white border border-pink-100 font-bold text-xs text-slate-800">
-                {sentenceResult.translation}
-              </div>
+              {sentenceResult.translation && (
+                <div className="p-3.5 rounded-xl bg-white border border-pink-100 font-bold text-xs text-slate-800">
+                  {sentenceResult.translation}
+                </div>
+              )}
 
               {/* Breakdown Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {sentenceResult.breakdown?.map((b, idx) => (
-                  <div key={idx} className="p-3.5 rounded-xl bg-white border border-pink-100 shadow-sm">
-                    <span className="text-[10px] font-black text-pink-600 uppercase block mb-1">
-                      {b.part}
-                    </span>
-                    <p className="text-xs font-bold text-slate-800 mb-1">{b.text}</p>
-                    <span className="text-[11px] text-slate-500">{b.note}</span>
-                  </div>
-                ))}
-              </div>
+              {sentenceResult.breakdown && sentenceResult.breakdown.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {sentenceResult.breakdown.map((b, idx) => (
+                    <div key={idx} className="p-3.5 rounded-xl bg-white border border-pink-100 shadow-sm">
+                      <span className="text-[10px] font-black text-pink-600 uppercase block mb-1">
+                        {b.part}
+                      </span>
+                      <p className="text-xs font-bold text-slate-800 mb-1">{b.text}</p>
+                      <span className="text-[11px] text-slate-500">{b.note}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-              <p className="text-xs text-slate-600 italic border-l-4 border-pink-500 pl-3 py-1">
-                {sentenceResult.advice}
-              </p>
+              {sentenceResult.explanation && (
+                <div className="p-4 rounded-xl bg-white border border-pink-100 text-xs text-slate-700 leading-relaxed whitespace-pre-line">
+                  {sentenceResult.explanation}
+                </div>
+              )}
+
+              {sentenceResult.advice && (
+                <p className="text-xs text-slate-600 italic border-l-4 border-pink-500 pl-3 py-1 mb-0">
+                  {sentenceResult.advice}
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -478,28 +490,40 @@ export default function AiSenseiPage() {
             <div className="p-6 rounded-2xl bg-pink-50/40 border border-pink-200 space-y-4 animate-in fade-in">
               <div>
                 <h3 className="text-xl font-black text-slate-900 mb-1">
-                  {roadmapResult.title}
+                  {roadmapResult.title || 'Lộ Trình Học Cá Nhân Hóa'}
                 </h3>
-                <p className="text-xs text-pink-700 font-bold">{roadmapResult.target}</p>
+                <p className="text-xs text-pink-700 font-bold">{roadmapResult.target || `Mục tiêu ${targetDays} ngày (mỗi ngày ${targetHours}h)`}</p>
               </div>
 
-              <div className="space-y-3">
-                {roadmapResult.phases?.map((p, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-white border border-pink-100 flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-pink-100 text-pink-700 font-black text-xs flex items-center justify-center shrink-0">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-xs text-slate-900">{p.phase}: {p.focus}</h4>
-                      <p className="text-xs text-slate-600 mt-0.5 mb-0">{p.goal}</p>
-                    </div>
+              {(roadmapResult.aiAdvice || roadmapResult.explanation) && (
+                <div className="p-4 rounded-xl bg-white border border-pink-100 text-xs text-slate-700 leading-relaxed whitespace-pre-line">
+                  <div className="font-extrabold text-xs text-pink-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                    <Sparkles size={14} />
+                    <span>Đánh Giá Của AI Sensei Dành Riêng Cho Bạn</span>
                   </div>
-                ))}
-              </div>
+                  {roadmapResult.aiAdvice || roadmapResult.explanation}
+                </div>
+              )}
+
+              {roadmapResult.phases && roadmapResult.phases.length > 0 && (
+                <div className="space-y-3">
+                  {roadmapResult.phases.map((p, idx) => (
+                    <div key={idx} className="p-4 rounded-xl bg-white border border-pink-100 flex items-start gap-3">
+                      <div className="w-7 h-7 rounded-lg bg-pink-100 text-pink-700 font-black text-xs flex items-center justify-center shrink-0">
+                        {idx + 1}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs text-slate-900">{p.phase}: {p.focus}</h4>
+                        <p className="text-xs text-slate-600 mt-0.5 mb-0">{p.goal}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="p-4 rounded-xl bg-white border border-emerald-200 flex items-center gap-3 text-xs text-emerald-800 font-semibold">
                 <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                <span>Thói quen mỗi ngày: {roadmapResult.daily_routine}</span>
+                <span>Thói quen mỗi ngày: {roadmapResult.daily_routine || 'Duy trì học 1 bài Minna và ôn 10 từ vựng mỗi ngày.'}</span>
               </div>
             </div>
           )}

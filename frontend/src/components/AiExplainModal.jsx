@@ -229,15 +229,15 @@ export default function AiExplainModal() {
             </div>
           ) : activeTab === 'analysis' ? (
             <>
-              {/* Nuance / Core Concept */}
-              {(data?.nuance || data?.core_concept || data?.why_correct) && (
+              {/* Nuance / Core Concept / Full Explanation */}
+              {(data?.explanation || data?.nuance || data?.core_concept || data?.why_correct) && (
                 <div className="p-4 rounded-2xl bg-pink-50/60 border border-pink-100">
                   <div className="flex items-center gap-2 text-pink-700 font-bold text-xs uppercase tracking-wider mb-1.5">
                     <BookOpen size={15} />
                     <span>Bản chất ngữ nghĩa & Ngữ cảnh chuẩn Nhật</span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed mb-0 whitespace-pre-line">
-                    {data.nuance || data.core_concept || data.why_correct}
+                    {data.explanation || data.nuance || data.core_concept || data.why_correct}
                   </p>
                 </div>
               )}

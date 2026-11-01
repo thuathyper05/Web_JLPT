@@ -286,8 +286,9 @@ export const AppProvider = ({ children }) => {
     });
 
     try {
-      const masteredCount = Object.values(guestProgress).filter((p) => p.status === 'mastered').length;
-      const reviewWords = Object.keys(guestProgress).filter((k) => guestProgress[k].status === 'needs_review');
+      const safeProgress = guestProgress && typeof guestProgress === 'object' ? guestProgress : {};
+      const masteredCount = Object.values(safeProgress).filter((p) => p && typeof p === 'object' && p.status === 'mastered').length;
+      const reviewWords = Object.keys(safeProgress).filter((k) => safeProgress[k] && typeof safeProgress[k] === 'object' && safeProgress[k].status === 'needs_review');
       const userProgress = {
         masteredCount,
         reviewWords,
@@ -308,10 +309,12 @@ export const AppProvider = ({ children }) => {
           data: res.data.data,
           loading: false
         });
+        return res.data;
       } else {
         throw new Error('API return unsuccessful');
       }
-    } catch {
+    } catch (err) {
+      console.warn('askAi query failed:', err);
       setAiModal({
         isOpen: true,
         title: defaultTitle,

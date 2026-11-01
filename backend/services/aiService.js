@@ -228,6 +228,78 @@ async function callGemini(promptText, modelName = PRIMARY_MODEL) {
   throw new Error(lastError ? lastError.message : 'Tất cả API keys đều tạm thời hết hạn mức quota.');
 }
 
+// Parses sentence grammar breakdown from AI output
+function parseSentenceAnalysis(text, original) {
+  let translation = '';
+  const breakdown = [];
+  let advice = '';
+
+  const transMatch = text.match(/(?:Dịch nghĩa|Nghĩa là|Dịch):\s*([^\n]+)/i);
+  if (transMatch) translation = transMatch[1].trim();
+
+  const adviceMatch = text.match(/(?:Lời khuyên(?: của Sensei)?|Lưu ý):\s*([^\n]+(?:\n[^\n]+)?)/i);
+  if (adviceMatch) advice = adviceMatch[1].trim();
+
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const bMatch = line.match(/^[-*]\s*([^(:]+)(?:\(([^)]+)\))?:\s*(.+)$/);
+    if (bMatch) {
+      breakdown.push({
+        part: bMatch[1].trim(),
+        text: bMatch[2] ? bMatch[2].trim() : bMatch[1].trim(),
+        note: bMatch[3].trim()
+      });
+    }
+  }
+
+  return {
+    original: original || 'Câu tiếng Nhật',
+    translation: translation || 'Dịch nghĩa chuẩn tiếng Việt',
+    breakdown: breakdown.length > 0 ? breakdown : [
+      { part: 'Ngữ pháp', text: original || 'Câu tiếng Nhật', note: 'Phân tích thành phần câu hoàn chỉnh' }
+    ],
+    advice: advice || 'Chú ý chia đuôi động từ và chọn trợ từ chính xác theo ngữ cảnh.',
+    explanation: text
+  };
+}
+
+// Parses study roadmap phases and diagnosis
+function parseRoadmapDiagnosis(text, targetDays = 30, targetHours = 0.5) {
+  const phases = [];
+  let dailyRoutine = `Dành ${targetHours} giờ mỗi ngày luyện 1 bài Minna và 10 từ vựng phản xạ.`;
+
+  const routineMatch = text.match(/(?:Thói quen mỗi ngày|Luyện tập hàng ngày|Mỗi ngày):\s*([^\n]+)/i);
+  if (routineMatch) dailyRoutine = routineMatch[1].trim();
+
+  const lines = text.split('\n');
+  for (const line of lines) {
+    const pMatch = line.match(/(?:Giai đoạn|Tuần|Chặng)\s*(\d+|[1-4]|I|II|III):\s*([^:\-]+)(?:[:\-]\s*(.+))?/i);
+    if (pMatch) {
+      phases.push({
+        phase: `Giai đoạn ${pMatch[1]}`,
+        focus: pMatch[2].trim(),
+        goal: pMatch[3] ? pMatch[3].trim() : 'Nắm vững kiến thức trọng tâm bài học'
+      });
+    }
+  }
+
+  if (phases.length === 0) {
+    phases.push(
+      { phase: 'Giai đoạn 1 (Khởi động)', focus: 'Từ vựng & Trợ từ nền tảng', goal: 'Thuộc từ vựng cốt lõi và các trợ từ cơ bản qua flashcard' },
+      { phase: 'Giai đoạn 2 (Bứt phá)', focus: 'Chia động từ & Mẫu câu Minna', goal: 'Luyện gõ Romaji và thuộc làu các thể Te, Nai, Ta' },
+      { phase: 'Giai đoạn 3 (Về đích)', focus: 'Luyện nghe Choukai & Thi thử', goal: 'Tự tin đạt điểm tối đa phần nghe hiểu và ngữ pháp' }
+    );
+  }
+
+  return {
+    title: `Lộ trình chinh phục JLPT (${targetDays} Ngày)`,
+    target: `Mục tiêu: Hoàn thành trong ${targetDays} ngày (mỗi ngày ${targetHours} giờ)`,
+    phases,
+    daily_routine: dailyRoutine,
+    aiAdvice: text
+  };
+}
+
 /**
  * Builds system prompt and context for Gemini based on action and user progress
  */
@@ -249,7 +321,6 @@ QUY TẮC TRẢ LỜI BẮT BUỘC:
   let userPrompt = '';
 
   if (normalizedAction === 'user_diagnosis') {
-    // Personalized AI analysis of THIS specific user's learning data
     const masteredCount = userProgress?.masteredCount || 0;
     const reviewWords = userProgress?.reviewWords || [];
     const streak = userProgress?.streak || 0;
@@ -266,6 +337,22 @@ Hãy tự phân tích và phản hồi ngắn gọn:
 1. Nhận xét chân thực về phong độ phản xạ hiện tại (1-2 câu).
 2. Lời khuyên cụ thể để khắc phục các từ hay quên ở trên.
 3. Bài tập phản xạ 10 phút phù hợp cho hôm nay.`;
+  } else if (normalizedAction === 'analyze_sentence') {
+    const sentence = prompt || context?.sentence || '';
+    userPrompt = `${baseInstruction}
+Nhiệm vụ: Phân tích chi tiết cấu trúc ngữ pháp câu tiếng Nhật: "${sentence}"
+Yêu cầu phân tích:
+1. Dịch nghĩa tiếng Việt chuẩn xác.
+2. Phân tích ngữ pháp từng thành phần trong câu (trình bày theo từng dòng gạch đầu dòng dạng: - [Thành phần] ([Cách đọc]): [Giải thích chức năng]).
+3. Lời khuyên của Sensei về ngữ cảnh sử dụng và lỗi người học hay gặp.`;
+  } else if (normalizedAction === 'free_question') {
+    const wordTitle = context?.word_title || context?.word || '';
+    const q = context?.question || prompt;
+    userPrompt = `${baseInstruction}
+Học viên đang học về 「${wordTitle}」 và đặt câu hỏi cho AI Sensei:
+Câu hỏi của học viên: "${q}"
+
+Nhiệm vụ: Hãy trả lời câu hỏi của học viên một cách chính xác, ngắn gọn, súc tích, đi thẳng vào trọng tâm, nêu rõ ngữ cảnh giao tiếp thực tế và ví dụ minh họa nếu cần (trình bày ví dụ xuống dòng rõ ràng: Câu tiếng Nhật, Cách đọc, Dịch nghĩa).`;
   } else if (normalizedAction === 'explain_vocab') {
     const word = context?.kanji || context?.word || context?.clean_kana || prompt;
     const kana = context?.clean_kana || context?.kana || '';
@@ -334,26 +421,38 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
     const { text: rawAiText, modelUsed, keyIndex } = await callGemini(userPrompt);
     const sanitizedText = sanitizeAiText(rawAiText);
 
+    let extraData = {};
+    if (normalizedAction === 'analyze_sentence') {
+      extraData = parseSentenceAnalysis(sanitizedText, prompt || context?.sentence);
+    } else if (normalizedAction === 'user_diagnosis') {
+      extraData = parseRoadmapDiagnosis(sanitizedText);
+    }
+
     return {
       success: true,
       data: {
-        title: `AI Sensei: ${context?.word || context?.kanji || context?.title || 'Phân Tích Chuyên Sâu'}`,
+        title: `AI Sensei: ${context?.word || context?.kanji || context?.title || context?.word_title || 'Phân Tích Chuyên Sâu'}`,
         explanation: sanitizedText,
         nuance: sanitizedText,
+        answer: sanitizedText,
+        reply: sanitizedText,
         aiGenerated: true,
         model: modelUsed,
-        keyIndex
+        keyIndex,
+        ...extraData
       }
     };
   } catch (error) {
     console.error('Gemini API pool call failed:', error.message);
-    const wordKey = context?.kanji || context?.word || prompt;
+    const wordKey = context?.kanji || context?.word || context?.word_title || prompt;
     return {
       success: true,
       data: {
         title: `AI Sensei: ${wordKey || 'Hỗ Trợ Học Tập'}`,
         explanation: `AI Sensei hướng dẫn:\nKhi học từ vựng 「${wordKey}」, bí quyết ghi nhớ bền vững là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào câu hoàn chỉnh mỗi ngày.\n\nCâu tiếng Nhật: 「${wordKey}」を毎日使います。\nCách đọc: Mainichi tsukaimasu.\nDịch nghĩa: Tôi sử dụng hàng ngày.`,
         nuance: 'Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.',
+        answer: `AI Sensei ghi nhận thắc mắc về 「${wordKey}」. Hãy kết hợp luyện nghe và nhắc lại theo phương pháp Shadowing nhé!`,
+        reply: `AI Sensei ghi nhận thắc mắc về 「${wordKey}」. Hãy kết hợp luyện nghe và nhắc lại theo phương pháp Shadowing nhé!`,
         aiGenerated: false,
         error: error.message
       }
