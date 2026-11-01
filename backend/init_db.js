@@ -17,6 +17,7 @@ async function autoInitDatabase(pool) {
         password_hash VARCHAR(255) NOT NULL,
         auth_provider VARCHAR(50) DEFAULT 'local',
         role VARCHAR(50) DEFAULT 'user',
+        avatar_url TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
 
@@ -26,8 +27,7 @@ async function autoInitDatabase(pool) {
         lesson_number INT NOT NULL,
         title VARCHAR(255) NOT NULL,
         description TEXT,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(level, lesson_number)
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
 
       CREATE TABLE IF NOT EXISTS vocabularies (
@@ -197,19 +197,57 @@ async function autoInitDatabase(pool) {
       );
     `);
 
-    // Ensure kanji unique index
+    // 2. Safe schema migrations for existing un-upgraded databases (e.g. Supabase jlpt-n5)
     await client.query(`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS auth_provider VARCHAR(50) DEFAULT 'local';
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(50) DEFAULT 'user';
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+
+      ALTER TABLE lessons ADD COLUMN IF NOT EXISTS level VARCHAR(10) DEFAULT 'N5';
+      ALTER TABLE lessons DROP CONSTRAINT IF EXISTS lessons_lesson_number_key;
+      ALTER TABLE lessons DROP CONSTRAINT IF EXISTS uq_lessons_lesson_number;
+      CREATE UNIQUE INDEX IF NOT EXISTS uq_lessons_level_lesson ON lessons (level, lesson_number);
+
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS level VARCHAR(10) DEFAULT 'N5';
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS lesson_number INT DEFAULT 1;
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS order_num INT DEFAULT 1;
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS clean_kana VARCHAR(200);
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS clean_vietnamese TEXT;
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS example_jp TEXT;
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS example_vi TEXT;
+      ALTER TABLE vocabularies ADD COLUMN IF NOT EXISTS usage_note TEXT;
+
+      ALTER TABLE kanji ADD COLUMN IF NOT EXISTS level VARCHAR(10) DEFAULT 'N5';
+      ALTER TABLE kanji ADD COLUMN IF NOT EXISTS lesson_number INT DEFAULT 1;
+      ALTER TABLE kanji ADD COLUMN IF NOT EXISTS stroke_count INT DEFAULT 5;
+      ALTER TABLE kanji ADD COLUMN IF NOT EXISTS examples JSONB DEFAULT '[]'::jsonb;
+      ALTER TABLE kanji DROP CONSTRAINT IF EXISTS kanji_kanji_key;
+      ALTER TABLE kanji DROP CONSTRAINT IF EXISTS uq_kanji_character;
       CREATE UNIQUE INDEX IF NOT EXISTS uq_kanji_level_char ON kanji (level, kanji);
+
       CREATE INDEX IF NOT EXISTS idx_vocab_level_lesson ON vocabularies (level, lesson_number);
       CREATE INDEX IF NOT EXISTS idx_lessons_level ON lessons (level);
     `);
 
-    // 2. Check if vocabularies table has data
+    // 3. Check if full educational dataset exists
     const vocabCountRes = await client.query('SELECT COUNT(*) FROM vocabularies');
     const totalVocab = parseInt(vocabCountRes.rows[0].count, 10);
 
-    if (totalVocab === 0) {
-      console.log('[Auto Seed] Empty database detected on cloud/local. Seeding complete JLPT dataset (N5 - N1)...');
+    const kanjiCountRes = await client.query('SELECT COUNT(*) FROM kanji');
+    const totalKanji = parseInt(kanjiCountRes.rows[0].count, 10);
+
+    const grammarCountRes = await client.query('SELECT COUNT(*) FROM grammar_points');
+    const totalGrammar = parseInt(grammarCountRes.rows[0].count, 10);
+
+    // If database has fewer than 9000 vocabularies (e.g. old N5 database with ~1500 words), upgrade dataset
+    if (totalVocab < 9000 || totalKanji < 500 || totalGrammar < 200) {
+      console.log(`[Auto Seed] Multi-level dataset upgrade required. Current status: vocabularies (${totalVocab}/9584), kanji (${totalKanji}/607), grammar (${totalGrammar}/276).`);
+      console.log('[Auto Seed] Refreshing educational tables to complete full N5 - N1 library...');
+
+      // Truncate educational tables cleanly with cascade
+      await client.query(`
+        TRUNCATE TABLE particle_exercises, particles, grammar_points, kanji, vocabularies, lessons RESTART IDENTITY CASCADE;
+      `);
 
       // Seed Lessons
       const lessonsFile = path.join(DATA_DIR, 'all_lessons.json');
@@ -228,8 +266,8 @@ async function autoInitDatabase(pool) {
       // Build lesson map
       const lessonRows = await client.query('SELECT id, level, lesson_number FROM lessons');
       const lessonIdMap = {};
-      lessonRows.rows.forEach(r => {
-        lessonIdMap[`${r.level}_${r.lesson_number}`] = r.id;
+      lessonRows.rows.forEach(function(r) {
+        lessonIdMap[r.level + '_' + r.lesson_number] = r.id;
       });
 
       // Seed Vocabularies
@@ -244,7 +282,7 @@ async function autoInitDatabase(pool) {
           let paramIdx = 1;
 
           for (const v of batch) {
-            const lessonId = lessonIdMap[`${v.level}_${v.lesson_number}`] || null;
+            const lessonId = lessonIdMap[v.level + '_' + v.lesson_number] || null;
             placeholders.push(`($${paramIdx}, $${paramIdx+1}, $${paramIdx+2}, $${paramIdx+3}, $${paramIdx+4}, $${paramIdx+5}, $${paramIdx+6}, $${paramIdx+7}, $${paramIdx+8}, $${paramIdx+9}, $${paramIdx+10}, $${paramIdx+11}, $${paramIdx+12})`);
             values.push(
               lessonId,
@@ -350,10 +388,11 @@ async function autoInitDatabase(pool) {
 
       console.log('[Auto Seed] Complete! All tables and JLPT datasets ready.');
     } else {
-      console.log(`[PostgreSQL Schema] Database verified healthy with ${totalVocab} vocabularies.`);
+      console.log(`[PostgreSQL Schema] Database verified healthy with ${totalVocab} vocabularies, ${totalKanji} kanji, ${totalGrammar} grammar points.`);
     }
   } catch (err) {
     console.error('[Database Auto-Init] Error:', err.message);
+    throw err;
   } finally {
     client.release();
   }
