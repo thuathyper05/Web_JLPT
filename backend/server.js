@@ -928,24 +928,38 @@ app.get('/api/quiz/generate', async (req, res) => {
     let correctAnswer = '';
     let distractors = [];
 
+    const getSafeJpText = (w) => {
+      if (!w) return '';
+      if (w.kanji && /[\u4E00-\u9FAF\u3040-\u309F\u30A0-\u30FF]/.test(w.kanji)) {
+        return w.kanji.trim();
+      }
+      return w.clean_kana || w.kana || '';
+    };
+
+    const getSafeViText = (w) => {
+      if (!w) return '';
+      return w.clean_vietnamese || w.vietnamese || '';
+    };
+
     if (qMode === 'jp_to_vi') {
       prompt = 'Chọn ý nghĩa tiếng Việt chính xác:';
-      questionText = item.kanji || item.clean_kana || item.kana;
-      correctAnswer = item.clean_vietnamese || item.vietnamese;
-      distractors = otherWords.slice(0, 3).map(w => w.clean_vietnamese || w.vietnamese);
+      questionText = getSafeJpText(item);
+      correctAnswer = getSafeViText(item);
+      distractors = otherWords.map(w => getSafeViText(w)).filter(t => t && t !== correctAnswer);
     } else if (qMode === 'vi_to_jp') {
       prompt = 'Chọn từ vựng tiếng Nhật tương ứng:';
-      questionText = item.clean_vietnamese || item.vietnamese;
-      correctAnswer = item.kanji || item.clean_kana || item.kana;
-      distractors = otherWords.slice(0, 3).map(w => w.kanji || w.clean_kana || w.kana);
+      questionText = getSafeViText(item);
+      correctAnswer = getSafeJpText(item);
+      distractors = otherWords.map(w => getSafeJpText(w)).filter(t => t && t !== correctAnswer);
     } else {
       prompt = 'Chọn cách đọc Hiragana đúng của chữ Hán:';
       questionText = item.kanji;
       correctAnswer = item.clean_kana || item.kana;
-      distractors = otherWords.slice(0, 3).map(w => w.clean_kana || w.kana);
+      distractors = otherWords.map(w => w.clean_kana || w.kana).filter(t => t && t !== correctAnswer);
     }
 
-    const options = [correctAnswer, ...distractors].sort(() => Math.random() - 0.5);
+    const uniqueDistractors = [...new Set(distractors)].slice(0, 3);
+    const options = [correctAnswer, ...uniqueDistractors].sort(() => Math.random() - 0.5);
 
     return {
       id: idx + 1,
@@ -955,8 +969,8 @@ app.get('/api/quiz/generate', async (req, res) => {
       question: questionText,
       correct_answer: correctAnswer,
       options,
-      audio_text: item.clean_kana || item.kana || item.kanji,
-      explanation: `Từ 「${item.kanji || item.kana}」 có nghĩa là "${item.clean_vietnamese || item.vietnamese}". ${item.usage_note ? `Lưu ý: ${item.usage_note}` : ''}`
+      audio_text: item.clean_kana || item.kana || (item.kanji !== '-' ? item.kanji : ''),
+      explanation: `Từ 「${getSafeJpText(item)}」 có nghĩa là "${getSafeViText(item)}". ${item.usage_note ? `Lưu ý: ${item.usage_note}` : ''}`
     };
   });
 

@@ -8,13 +8,11 @@ import {
   Volume2,
   VolumeX,
   Shuffle,
-  RotateCw,
   Sparkles,
   Check,
   X,
-  ChevronLeft,
-  ChevronRight,
-  Trophy
+  Trophy,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -32,13 +30,15 @@ export default function FlashcardPage() {
   const [reviewCount, setReviewCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Fetch lessons list for currentLevel
+  const activeLevel = currentLevel || 'N5';
+
+  // Fetch lessons list for activeLevel
   useEffect(() => {
     let isMounted = true;
     const fetchLessons = async () => {
       try {
-        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
-        const list = res.data || [];
+        const res = await lessonService.getLessons({ level: activeLevel });
+        const list = Array.isArray(res.data) ? res.data : [];
         if (isMounted) {
           setLessonsList(list);
           if (list.length > 0 && !list.some(l => l.lesson_number === selectedLesson)) {
@@ -51,38 +51,42 @@ export default function FlashcardPage() {
     };
     fetchLessons();
     return () => { isMounted = false; };
-  }, [currentLevel]);
+  }, [activeLevel]);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchCards = async () => {
+      if (!selectedLesson) return;
       setLoading(true);
       try {
-        const res = await vocabService.getVocabularies({ lesson: selectedLesson, level: currentLevel || 'N5' });
-        const list = res.data?.data || [];
-        setCards(list);
-        setCurrentIndex(0);
-        setIsFlipped(false);
-        setMasteredCount(0);
-        setReviewCount(0);
-        setIsCompleted(false);
+        const res = await vocabService.getVocabularies({ lesson: selectedLesson, level: activeLevel });
+        const list = Array.isArray(res.data?.data) ? res.data.data : [];
+        if (isMounted) {
+          setCards(list);
+          setCurrentIndex(0);
+          setIsFlipped(false);
+          setMasteredCount(0);
+          setReviewCount(0);
+          setIsCompleted(false);
+        }
       } catch (err) {
         console.error('Flashcard fetch error:', err);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
     fetchCards();
-  }, [selectedLesson, currentLevel]);
+    return () => { isMounted = false; };
+  }, [selectedLesson, activeLevel]);
 
-  const currentCard = cards[currentIndex];
+  const currentCard = cards[currentIndex] || cards[0] || null;
 
   const handleFlip = useCallback(() => {
     sounds.playFlip();
     setIsFlipped((prev) => {
       const nextState = !prev;
       if (nextState && currentCard) {
-        // Automatically pronounce vocabulary when flipping over with authentic Tokyo Kana phonetics
-        speakJapanese(currentCard.kanji, currentCard.kana || currentCard.clean_kana);
+        speakJapanese(currentCard.kanji, currentCard.clean_kana || currentCard.kana);
       }
       return nextState;
     });
@@ -108,7 +112,7 @@ export default function FlashcardPage() {
       if (autoAudio && direction === 'jp_to_vi') {
         setTimeout(() => {
           const nextWord = cards[currentIndex + 1];
-          if (nextWord) speakJapanese(nextWord.kanji, nextWord.kana || nextWord.clean_kana);
+          if (nextWord) speakJapanese(nextWord.kanji, nextWord.clean_kana || nextWord.kana);
         }, 300);
       }
     } else {
@@ -147,9 +151,13 @@ export default function FlashcardPage() {
     setIsFlipped(false);
   };
 
+  const fallbackLessons = activeLevel === 'N4'
+    ? Array.from({ length: 25 }, (_, i) => i + 26)
+    : Array.from({ length: 25 }, (_, i) => i + 1);
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300">
-      {/* ── 1. HEADER (MATCHES IMAGE 4) ── */}
+      {/* ── 1. HEADER ── */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden">
         <div className="absolute right-4 top-2 text-pink-100/50 font-jp font-black text-8xl pointer-events-none select-none">
           学
@@ -159,16 +167,16 @@ export default function FlashcardPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <Layers size={13} className="text-pink-600" />
             <span>
-              {currentLevel === 'N4' ? 'MINNA NO NIHONGO II' :
-               currentLevel === 'N3' ? 'SOUMATOME & SHINKANZEN N3' :
-               currentLevel === 'N2' ? 'SOUMATOME & SHINKANZEN N2' :
-               currentLevel === 'N1' ? 'THƯỢNG CẤP BÁC HỌC N1' :
+              {activeLevel === 'N4' ? 'MINNA NO NIHONGO II' :
+               activeLevel === 'N3' ? 'SOUMATOME & SHINKANZEN N3' :
+               activeLevel === 'N2' ? 'SOUMATOME & SHINKANZEN N2' :
+               activeLevel === 'N1' ? 'THƯỢNG CẤP BÁC HỌC N1' :
                'MINNA NO NIHONGO I'} — BÀI {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
             </span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Thẻ Nhớ Flashcard 3D ({currentLevel})
+            Thẻ Nhớ Flashcard 3D ({activeLevel})
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
             Lật thẻ phản xạ hai chiều Nhật – Việt, tự động phát âm giọng Tokyo chuẩn xác.
@@ -181,7 +189,7 @@ export default function FlashcardPage() {
               <button
                 type="button"
                 onClick={() => { sounds.playFlip(); setDirection('jp_to_vi'); }}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   direction === 'jp_to_vi'
                     ? 'bg-white text-pink-600 shadow-sm'
                     : 'text-slate-500 hover:text-slate-900'
@@ -192,7 +200,7 @@ export default function FlashcardPage() {
               <button
                 type="button"
                 onClick={() => { sounds.playFlip(); setDirection('vi_to_jp'); }}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   direction === 'vi_to_jp'
                     ? 'bg-white text-pink-600 shadow-sm'
                     : 'text-slate-500 hover:text-slate-900'
@@ -206,8 +214,8 @@ export default function FlashcardPage() {
             <div className="flex items-center gap-2">
               <select
                 value={selectedLesson}
-                onChange={(e) => setSelectedLesson(parseInt(e.target.value))}
-                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 max-w-[200px] truncate"
+                onChange={(e) => setSelectedLesson(parseInt(e.target.value, 10))}
+                className="px-3 py-1.5 rounded-xl border border-pink-200 bg-pink-50/50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 max-w-[200px] truncate cursor-pointer"
               >
                 {lessonsList.length > 0 ? (
                   lessonsList.map((l) => (
@@ -216,16 +224,18 @@ export default function FlashcardPage() {
                     </option>
                   ))
                 ) : (
-                  <option value={selectedLesson}>
-                    Bài {selectedLesson < 10 ? `0${selectedLesson}` : selectedLesson}
-                  </option>
+                  fallbackLessons.map((n) => (
+                    <option key={n} value={n}>
+                      Bài {n < 10 ? `0${n}` : n}
+                    </option>
+                  ))
                 )}
               </select>
 
               <button
                 type="button"
                 onClick={() => setAutoAudio(!autoAudio)}
-                className={`p-2 rounded-xl border transition-colors ${
+                className={`p-2 rounded-xl border transition-colors cursor-pointer ${
                   autoAudio ? 'bg-pink-100 text-pink-600 border-pink-200' : 'bg-white text-slate-400 border-slate-200'
                 }`}
                 title={autoAudio ? 'Tự động phát âm' : 'Tắt phát âm'}
@@ -236,7 +246,7 @@ export default function FlashcardPage() {
               <button
                 type="button"
                 onClick={handleShuffle}
-                className="p-2 rounded-xl border border-slate-200 bg-white text-slate-500 hover:text-pink-600 hover:bg-pink-50 transition-colors"
+                className="p-2 rounded-xl border border-slate-200 bg-white text-slate-500 hover:text-pink-600 hover:bg-pink-50 transition-colors cursor-pointer"
                 title="Xáo trộn thứ tự thẻ"
               >
                 <Shuffle size={16} />
@@ -248,8 +258,8 @@ export default function FlashcardPage() {
 
       {/* ── 2. FLASHCARD VIEW ── */}
       {loading ? (
-        <div className="py-20 text-center">
-          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto mb-3" />
+        <div className="py-20 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
+          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />
           <p className="text-xs font-bold text-slate-400">Đang chuẩn bị bộ thẻ Flashcard 3D...</p>
         </div>
       ) : isCompleted ? (
@@ -280,10 +290,27 @@ export default function FlashcardPage() {
               setReviewCount(0);
               setIsCompleted(false);
             }}
-            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-sm shadow-lotus hover:scale-105 transition-transform"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-sm shadow-lotus hover:scale-105 transition-transform cursor-pointer"
           >
             Học lại bài này
           </button>
+        </div>
+      ) : cards.length === 0 ? (
+        <div className="p-12 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-4 max-w-lg mx-auto">
+          <AlertCircle size={36} className="mx-auto text-pink-500" />
+          <div className="space-y-1">
+            <h3 className="text-base font-bold text-slate-800">Chưa có thẻ Flashcard cho bài học này</h3>
+            <p className="text-xs text-slate-500">Hãy chọn bài học khác từ danh sách để bắt đầu ôn tập thẻ nhớ 3D.</p>
+          </div>
+          {lessonsList.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setSelectedLesson(lessonsList[0].lesson_number)}
+              className="px-5 py-2.5 rounded-2xl bg-pink-600 text-white font-bold text-xs shadow-lotus hover:bg-pink-700 transition-colors cursor-pointer"
+            >
+              Học Bài {lessonsList[0].lesson_number}: {lessonsList[0].title}
+            </button>
+          )}
         </div>
       ) : currentCard ? (
         <div className="space-y-4 max-w-2xl mx-auto">
@@ -328,7 +355,7 @@ export default function FlashcardPage() {
                       e.stopPropagation();
                       askAi('explain_vocab', currentCard, `AI: ${currentCard.kanji || currentCard.kana}`);
                     }}
-                    className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors"
+                    className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
                     title="Hỏi AI"
                   >
                     <Sparkles size={16} />
@@ -374,7 +401,7 @@ export default function FlashcardPage() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      speakJapanese(currentCard.kanji, currentCard.kana || currentCard.clean_kana);
+                      speakJapanese(currentCard.kanji, currentCard.clean_kana || currentCard.kana);
                     }}
                     className="p-1.5 rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors cursor-pointer"
                     title="Nghe lại phát âm"
@@ -404,7 +431,7 @@ export default function FlashcardPage() {
                       )}
                   </div>
 
-                  {direction === 'jp_to_vi' && currentCard.kanji && (
+                  {direction === 'jp_to_vi' && currentCard.kanji && currentCard.kanji !== '-' && (
                     <div className="flex flex-col items-center justify-center gap-1">
                       <FuriganaWord
                         kanji={currentCard.kanji}
@@ -435,12 +462,12 @@ export default function FlashcardPage() {
             </div>
           </div>
 
-          {/* ── 3. BOTTOM EVALUATION BUTTONS (MATCHES IMAGE 4) ── */}
+          {/* ── 3. BOTTOM EVALUATION BUTTONS ── */}
           <div className="grid grid-cols-2 gap-3 pt-2">
             <button
               type="button"
               onClick={() => handleAnswer('needs_review')}
-              className="py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95"
+              className="py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
               <X size={18} />
               <span>Cần ôn lại</span>
@@ -450,7 +477,7 @@ export default function FlashcardPage() {
             <button
               type="button"
               onClick={() => handleAnswer('mastered')}
-              className="py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95"
+              className="py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
               <Check size={18} />
               <span>Đã thành thạo</span>

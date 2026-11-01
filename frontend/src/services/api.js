@@ -200,8 +200,16 @@ export const speakBilingualText = (text, onEndCallback = null) => {
 export const speakJapanese = (text, kanaAlternative = null, rate = 0.88) => {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
+  let actualKana = kanaAlternative;
+  let actualRate = rate;
+
+  if (typeof kanaAlternative === 'number') {
+    actualRate = kanaAlternative;
+    actualKana = null;
+  }
+
   // Use pure Hiragana/Katakana phonetic reading first for 100% accurate Tokyo pronunciation
-  const toSpeak = (kanaAlternative || text || '')
+  const toSpeak = (actualKana || text || '')
     .toString()
     .replace(/[［\[］\]()（）／/・·\-\*]/g, '')
     .trim();

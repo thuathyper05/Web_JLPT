@@ -9,7 +9,8 @@ import {
   Sparkles,
   X,
   BookOpen,
-  Info
+  Info,
+  RotateCcw
 } from 'lucide-react';
 
 export default function KanjiPage() {
@@ -19,26 +20,34 @@ export default function KanjiPage() {
   const [loading, setLoading] = useState(true);
   const [selectedKanji, setSelectedKanji] = useState(null);
 
+  const activeLevel = currentLevel || 'N5';
+
   useEffect(() => {
+    let isMounted = true;
     const fetchKanji = async () => {
       setLoading(true);
       try {
-        const res = await kanjiService.getKanji({ level: currentLevel || 'N5' });
-        setKanjiList(res.data || []);
+        const res = await kanjiService.getKanji({ level: activeLevel });
+        const list = Array.isArray(res.data) ? res.data : [];
+        if (isMounted) {
+          setKanjiList(list);
+        }
       } catch (err) {
         console.error('Fetch kanji error:', err);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
     fetchKanji();
-  }, [currentLevel]);
+    return () => { isMounted = false; };
+  }, [activeLevel]);
 
   const filtered = kanjiList.filter((item) => {
+    if (!item) return false;
     if (!search.trim()) return true;
     const q = search.toLowerCase().trim();
     return (
-      item.kanji.includes(q) ||
+      (item.kanji && item.kanji.includes(q)) ||
       (item.han_viet && item.han_viet.toLowerCase().includes(q)) ||
       (item.meaning && item.meaning.toLowerCase().includes(q)) ||
       (item.onyomi && item.onyomi.toLowerCase().includes(q)) ||
@@ -54,7 +63,7 @@ export default function KanjiPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-16 animate-in fade-in duration-300">
-      {/* ── 1. HEADER (MATCHES IMAGE 2) ── */}
+      {/* ── 1. HEADER ── */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden">
         {/* Background Japanese Watermark */}
         <div className="absolute right-4 top-2 text-pink-100/50 font-jp font-black text-8xl pointer-events-none select-none">
@@ -64,14 +73,14 @@ export default function KanjiPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
             <PenTool size={13} className="text-pink-600" />
-            <span>CHỮ HÁN KANJI - JLPT {currentLevel || 'N5'}</span>
+            <span>CHỮ HÁN KANJI - JLPT {activeLevel}</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Bảng Chữ Hán Kanji N5
+            Bảng Chữ Hán Kanji {activeLevel}
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
-            Tra cứu Hán tự N5 cơ bản với âm Hán Việt, cách đọc On/Kun và số nét.
+            Tra cứu Hán tự {activeLevel} với âm Hán Việt, cách đọc On/Kun và số nét chuẩn xác.
           </p>
 
           {/* Search Row */}
@@ -88,17 +97,35 @@ export default function KanjiPage() {
             </div>
 
             <div className="px-3.5 py-1.5 rounded-xl bg-pink-50 border border-pink-200/80 text-pink-700 font-extrabold text-xs">
-              {filtered.length} Kanji
+              {filtered.length} Kanji {activeLevel}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 2. KANJI GRID (MATCHES IMAGE 2 CARDS) ── */}
+      {/* ── 2. KANJI GRID ── */}
       {loading ? (
-        <div className="py-20 text-center">
-          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-bold text-slate-400">Đang tải bảng Chữ Hán Kanji...</p>
+        <div className="py-20 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
+          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />
+          <p className="text-xs font-bold text-slate-400">Đang tải bảng Chữ Hán Kanji {activeLevel}...</p>
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="p-12 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
+          <PenTool size={36} className="mx-auto text-slate-300" />
+          <h3 className="text-base font-bold text-slate-700">Không tìm thấy Chữ Hán phù hợp</h3>
+          <p className="text-xs text-slate-400">
+            {search ? `Không có kết quả nào cho "${search}".` : `Hiện chưa có chữ Hán nào cho cấp độ ${activeLevel}.`}
+          </p>
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch('')}
+              className="px-4 py-2 rounded-xl bg-pink-50 text-pink-600 font-bold text-xs inline-flex items-center gap-1.5 hover:bg-pink-100 transition-colors"
+            >
+              <RotateCcw size={14} />
+              <span>Xóa bộ lọc</span>
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -121,12 +148,12 @@ export default function KanjiPage() {
 
                 {/* Hán Việt Pill */}
                 <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-extrabold text-[11px] mb-1.5">
-                  {item.han_viet}
+                  {item.han_viet || '—'}
                 </span>
 
                 {/* Meaning */}
                 <div className="text-xs font-bold text-slate-800 truncate px-1">
-                  {item.meaning}
+                  {item.meaning || '—'}
                 </div>
               </div>
 
@@ -157,7 +184,7 @@ export default function KanjiPage() {
             <button
               type="button"
               onClick={() => setSelectedKanji(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-full"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-full cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -165,7 +192,7 @@ export default function KanjiPage() {
             {/* Top Char */}
             <div className="text-center pt-2">
               <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-xs">
-                Kanji N5 - {selectedKanji.stroke || selectedKanji.stroke_count || 1} nét
+                Kanji {activeLevel} - {selectedKanji.stroke || selectedKanji.stroke_count || 1} nét
               </span>
               <h2 className="text-7xl font-black font-jp text-slate-900 my-2">
                 {selectedKanji.kanji}
@@ -181,7 +208,7 @@ export default function KanjiPage() {
                 <button
                   type="button"
                   onClick={() => speakJapanese(selectedKanji.kanji)}
-                  className="px-4 py-1.5 rounded-full bg-pink-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lotus-sm hover:bg-pink-700 transition-colors"
+                  className="px-4 py-1.5 rounded-full bg-pink-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lotus-sm hover:bg-pink-700 transition-colors cursor-pointer"
                 >
                   <Volume2 size={15} />
                   <span>Nghe phát âm</span>
@@ -190,7 +217,7 @@ export default function KanjiPage() {
                 <button
                   type="button"
                   onClick={() => askAi('explain_kanji', selectedKanji, `AI: Chữ Hán ${selectedKanji.kanji}`)}
-                  className="px-4 py-1.5 rounded-full border border-pink-200 text-pink-700 bg-pink-50 font-bold text-xs flex items-center gap-1.5 hover:bg-pink-100 transition-colors"
+                  className="px-4 py-1.5 rounded-full border border-pink-200 text-pink-700 bg-pink-50 font-bold text-xs flex items-center gap-1.5 hover:bg-pink-100 transition-colors cursor-pointer"
                 >
                   <Sparkles size={15} className="text-pink-600" />
                   <span>AI mẹo nhớ tượng hình</span>
@@ -235,7 +262,7 @@ export default function KanjiPage() {
                       <button
                         type="button"
                         onClick={() => speakJapanese(ex.k || ex.w)}
-                        className="text-pink-600 hover:text-pink-700 p-1"
+                        className="text-pink-600 hover:text-pink-700 p-1 cursor-pointer"
                       >
                         <Volume2 size={14} />
                       </button>

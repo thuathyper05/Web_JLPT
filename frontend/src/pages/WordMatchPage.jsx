@@ -9,8 +9,6 @@ import {
   RotateCcw,
   Trophy,
   Flame,
-  CheckCircle2,
-  Sparkles,
   Volume2,
   VolumeX,
   HelpCircle,
@@ -18,31 +16,37 @@ import {
   Heart,
   Coffee,
   Check,
-  X,
   Lightbulb,
-  Award,
-  Star,
-  Shuffle
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function WordMatchPage() {
   const { currentLevel, selectedLesson, recordWordProgress, askAi } = useApp();
+  const activeLevel = currentLevel || 'N5';
 
-  const [lessonFilter, setLessonFilter] = useState(selectedLesson ? String(selectedLesson) : '1');
+  const defaultFilter = activeLevel === 'N4' ? '26' : (selectedLesson ? String(selectedLesson) : '1');
+  const [lessonFilter, setLessonFilter] = useState(defaultFilter);
   const [lessonsList, setLessonsList] = useState([]);
   const [gameMode, setGameMode] = useState('relax'); // 'relax' | 'speed_60s' | 'survival'
   const [gameState, setGameState] = useState('setup'); // 'setup' | 'playing' | 'result'
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [startLoading, setStartLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  // Fetch lessons list for currentLevel
+  // Synchronize lessonFilter when level changes
+  useEffect(() => {
+    setLessonFilter(activeLevel === 'N4' ? '26' : '1');
+  }, [activeLevel]);
+
+  // Fetch lessons list for activeLevel
   useEffect(() => {
     let isMounted = true;
     const fetchLessons = async () => {
       try {
-        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        const res = await lessonService.getLessons({ level: activeLevel });
         if (isMounted) {
-          setLessonsList(res.data || []);
+          setLessonsList(Array.isArray(res.data) ? res.data : []);
         }
       } catch (err) {
         console.error('WordMatch fetch lessons error:', err);
@@ -50,7 +54,7 @@ export default function WordMatchPage() {
     };
     fetchLessons();
     return () => { isMounted = false; };
-  }, [currentLevel]);
+  }, [activeLevel]);
 
   // Stats & Progress
   const [timeLeft, setTimeLeft] = useState(60);
@@ -89,7 +93,7 @@ export default function WordMatchPage() {
       kanji: w.kanji,
       kana: w.clean_kana || w.kana,
       romaji: w.romaji,
-      audio: w.clean_kana || w.kana || w.kanji,
+      audio: w.clean_kana || w.kana || (w.kanji !== '-' ? w.kanji : ''),
       fullWord: w
     })).sort(() => Math.random() - 0.5);
 
@@ -112,13 +116,25 @@ export default function WordMatchPage() {
 
   const startGame = async () => {
     sounds.playFlip();
+    setStartLoading(true);
+    setErrorMsg('');
     try {
       const params = lessonFilter === 'all'
-        ? { level: currentLevel || 'N5' }
-        : { lesson: parseInt(lessonFilter), level: currentLevel || 'N5' };
-      const res = await vocabService.getVocabularies(params);
-      const allWords = res.data?.data || [];
-      if (allWords.length < 5) return;
+        ? { level: activeLevel }
+        : { lesson: parseInt(lessonFilter, 10), level: activeLevel };
+      let res = await vocabService.getVocabularies(params);
+      let allWords = Array.isArray(res.data?.data) ? res.data.data : [];
+
+      // If specific lesson has fewer than 5 words, fallback to entire level pool
+      if (allWords.length < 5) {
+        res = await vocabService.getVocabularies({ level: activeLevel });
+        allWords = Array.isArray(res.data?.data) ? res.data.data : [];
+      }
+
+      if (allWords.length < 5) {
+        setErrorMsg(`Cần tối thiểu 5 từ vựng để mở đấu trường nối từ cấp độ ${activeLevel}. Vui lòng thử lại sau.`);
+        return;
+      }
 
       setPoolWords(allWords);
       setScore(0);
@@ -135,6 +151,9 @@ export default function WordMatchPage() {
       setGameState('playing');
     } catch (err) {
       console.error('Start word match error:', err);
+      setErrorMsg('Lỗi kết nối khi nạp danh sách từ vựng. Vui lòng kiểm tra lại mạng.');
+    } finally {
+      setStartLoading(false);
     }
   };
 
@@ -298,6 +317,10 @@ export default function WordMatchPage() {
     }, 2000);
   };
 
+  const fallbackLessons = activeLevel === 'N4'
+    ? Array.from({ length: 25 }, (_, i) => i + 26)
+    : Array.from({ length: 25 }, (_, i) => i + 1);
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300">
       {/* ── 1. HEADER BANNER ── */}
@@ -309,17 +332,24 @@ export default function WordMatchPage() {
         <div className="relative z-10 space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 font-extrabold text-[11px] uppercase tracking-wider border border-pink-400/30 backdrop-blur-md">
             <Zap size={13} className="text-pink-400" />
-            <span>ĐẤU TRƯỜNG PHẢN XẠ - NỐI TỪ NHẬT VIỆT THẾ HỆ MỚI</span>
+            <span>ĐẤU TRƯỜNG PHẢN XẠ - NỐI TỪ NHẬT VIỆT ({activeLevel})</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-            Đấu Trường Nối Từ Tiếng Nhật
+            Đấu Trường Nối Từ Tiếng Nhật {activeLevel}
           </h1>
           <p className="text-xs sm:text-sm text-pink-100/80 max-w-2xl mb-0 leading-relaxed">
             Thiết kế 2 cột trực quan: Chạm từ tiếng Nhật ở cột trái và chọn nghĩa tiếng Việt ở cột phải. Trải nghiệm mượt mà, rèn luyện phản xạ không bao giờ nhàm chán.
           </p>
         </div>
       </div>
+
+      {errorMsg && (
+        <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+          <AlertCircle size={16} className="shrink-0" />
+          <span>{errorMsg}</span>
+        </div>
+      )}
 
       {/* ── 2. SETUP SCREEN (EASY & WELCOMING) ── */}
       {gameState === 'setup' && (
@@ -330,7 +360,7 @@ export default function WordMatchPage() {
 
           <div className="space-y-1.5">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Chọn Chế Độ Chơi Hứng Thú
+              Chọn Chế Độ Chơi Hứng Thú ({activeLevel})
             </h2>
             <p className="text-xs text-slate-500 leading-relaxed max-w-md mx-auto">
               Chỉ cần nối đúng từ tiếng Nhật với nghĩa tiếng Việt tương ứng. Chuỗi nối chuẩn liên tiếp kích hoạt Combo điểm số!
@@ -397,14 +427,14 @@ export default function WordMatchPage() {
           {/* Lesson Scope Selector */}
           <div className="max-w-xs mx-auto text-left">
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
-              Phạm vi bài học:
+              Phạm vi bài học ({activeLevel}):
             </label>
             <select
               value={lessonFilter}
               onChange={(e) => setLessonFilter(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl border border-pink-200 text-xs font-bold text-slate-800 bg-white cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-pink-500 truncate"
             >
-              <option value="all">Tất cả bài học (Cấp độ {currentLevel || 'N5'})</option>
+              <option value="all">Tất cả bài học (Cấp độ {activeLevel})</option>
               {lessonsList.length > 0 ? (
                 lessonsList.map((l) => (
                   <option key={l.lesson_number} value={l.lesson_number}>
@@ -412,7 +442,7 @@ export default function WordMatchPage() {
                   </option>
                 ))
               ) : (
-                Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                fallbackLessons.map((n) => (
                   <option key={n} value={n}>
                     Bài {n < 10 ? `0${n}` : n}
                   </option>
@@ -423,11 +453,16 @@ export default function WordMatchPage() {
 
           <button
             type="button"
+            disabled={startLoading}
             onClick={startGame}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-black text-sm shadow-lotus hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 text-white font-black text-sm shadow-lotus hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            <Play size={18} fill="white" />
-            <span>Vào đấu trường ngay</span>
+            {startLoading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Play size={18} fill="white" />
+            )}
+            <span>{startLoading ? 'Đang nạp trường đấu...' : 'Vào đấu trường ngay'}</span>
           </button>
         </div>
       )}
@@ -531,7 +566,7 @@ export default function WordMatchPage() {
                         isMatched
                           ? 'opacity-30 scale-95 bg-emerald-50 border-emerald-300 text-emerald-800 pointer-events-none'
                           : isWrong
-                          ? 'bg-rose-100 border-rose-500 text-rose-800 animate-shake ring-4 ring-rose-200 shadow-sm'
+                          ? 'bg-rose-100 border-rose-500 text-rose-800 ring-4 ring-rose-200 shadow-sm'
                           : isHinted
                           ? 'bg-amber-50 border-amber-400 ring-4 ring-amber-200/80 animate-pulse text-amber-900'
                           : isSelected
@@ -599,7 +634,7 @@ export default function WordMatchPage() {
                         isMatched
                           ? 'opacity-30 scale-95 bg-emerald-50 border-emerald-300 text-emerald-800 pointer-events-none'
                           : isWrong
-                          ? 'bg-rose-100 border-rose-500 text-rose-800 animate-shake ring-4 ring-rose-200 shadow-sm'
+                          ? 'bg-rose-100 border-rose-500 text-rose-800 ring-4 ring-rose-200 shadow-sm'
                           : isHinted
                           ? 'bg-amber-50 border-amber-400 ring-4 ring-amber-200/80 animate-pulse text-amber-900'
                           : isSelected
@@ -639,7 +674,7 @@ export default function WordMatchPage() {
         </div>
       )}
 
-      {/* ── 4. RESULT SCREEN (HIGH-END REWARD & REVIEW) ── */}
+      {/* ── 4. RESULT SCREEN ── */}
       {gameState === 'result' && (
         <div className="p-6 sm:p-10 rounded-3xl bg-white border border-pink-100 shadow-lotus text-center space-y-6 max-w-xl mx-auto animate-in zoom-in-95">
           <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-3xl bg-amber-50 text-amber-500 border border-amber-200 flex items-center justify-center shadow-sm">
@@ -648,7 +683,7 @@ export default function WordMatchPage() {
 
           <div className="space-y-1.5">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              KẾT QUẢ VÁN ĐẤU NỐI TỪ
+              KẾT QUẢ VÁN ĐẤU NỐI TỪ ({activeLevel})
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Tổng Điểm: <span className="text-pink-600">{score} điểm</span>
@@ -669,7 +704,7 @@ export default function WordMatchPage() {
                 {missedWords.slice(0, 4).map((w) => (
                   <div key={w.id} className="p-2.5 bg-white rounded-xl border border-pink-100 flex items-center justify-between text-xs">
                     <div>
-                      <span className="font-jp font-black text-slate-900 mr-2">{w.kanji || w.kana}</span>
+                      <span className="font-jp font-black text-slate-900 mr-2">{w.kanji && w.kanji !== '-' ? w.kanji : (w.clean_kana || w.kana)}</span>
                       <span className="text-slate-600">{w.clean_vietnamese || w.vietnamese}</span>
                     </div>
                     <button

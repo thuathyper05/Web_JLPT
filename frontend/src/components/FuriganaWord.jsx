@@ -227,6 +227,7 @@ function parseFuriganaSegments(kanjiStr, kanaStr) {
  * FuriganaWord
  * Displays Japanese Kanji with small, elegant Furigana (Hiragana) ONLY directly above the Kanji glyph.
  * Okurigana (Kana suffixes like 'ます' in '探します') and pure Kana words remain plain text without furigana above.
+ * Uses robust flexbox architecture to ensure furigana is 100% centered and fits neatly within the Kanji boundaries.
  */
 export default function FuriganaWord({
   kanji = '',
@@ -242,52 +243,52 @@ export default function FuriganaWord({
   const sizeClasses = {
     xs: {
       kanji: 'text-xs',
-      furigana: 'text-[8px] -mb-0.5',
+      furigana: 'text-[8px]',
       romaji: 'text-[9px]'
     },
     sm: {
       kanji: 'text-sm',
-      furigana: 'text-[8.5px] -mb-0.5',
+      furigana: 'text-[8.5px]',
       romaji: 'text-[10px]'
     },
     base: {
       kanji: 'text-base sm:text-lg',
-      furigana: 'text-[9.5px] sm:text-[10.5px] -mb-0.5 font-bold',
+      furigana: 'text-[9.5px] sm:text-[10px]',
       romaji: 'text-[11px]'
     },
     lg: {
       kanji: 'text-lg sm:text-xl',
-      furigana: 'text-[10.5px] sm:text-[11.5px] -mb-0.5 font-bold',
+      furigana: 'text-[10px] sm:text-[11px]',
       romaji: 'text-xs'
     },
     xl: {
       kanji: 'text-xl sm:text-2xl',
-      furigana: 'text-xs sm:text-[13px] -mb-0.5 font-bold',
+      furigana: 'text-xs sm:text-[12.5px]',
       romaji: 'text-xs'
     },
     '2xl': {
       kanji: 'text-2xl sm:text-3xl',
-      furigana: 'text-xs sm:text-sm -mb-1 font-bold',
+      furigana: 'text-xs sm:text-[13px]',
       romaji: 'text-xs'
     },
     '3xl': {
       kanji: 'text-3xl sm:text-4xl',
-      furigana: 'text-xs sm:text-sm -mb-1 font-bold',
+      furigana: 'text-xs sm:text-sm',
       romaji: 'text-sm'
     },
     '4xl': {
       kanji: 'text-4xl sm:text-5xl',
-      furigana: 'text-sm sm:text-base -mb-1 font-bold',
+      furigana: 'text-sm sm:text-base',
       romaji: 'text-sm sm:text-base'
     },
     '5xl': {
       kanji: 'text-5xl sm:text-6xl',
-      furigana: 'text-base sm:text-lg -mb-1.5 font-bold',
+      furigana: 'text-sm sm:text-base',
       romaji: 'text-base'
     },
     '6xl': {
       kanji: 'text-6xl sm:text-7xl',
-      furigana: 'text-lg sm:text-xl -mb-2 font-bold',
+      furigana: 'text-base sm:text-lg',
       romaji: 'text-lg'
     }
   };
@@ -301,22 +302,58 @@ export default function FuriganaWord({
       <span className="inline-flex items-end justify-center font-jp select-text leading-none flex-wrap">
         {segments.map((seg, idx) => {
           if (seg.type === 'ruby') {
+            const kLen = (seg.kanji || '').length;
+            const fLen = (seg.furigana || '').length;
+
+            let fontRatio = 'text-[0.40em]';
+            let trackingClass = 'tracking-tight';
+            let scaleClass = '';
+
+            if (kLen === 1) {
+              if (fLen === 1) {
+                fontRatio = 'text-[0.48em]';
+                trackingClass = 'tracking-normal';
+              } else if (fLen === 2) {
+                // Exactly 2 kana on 1 kanji: fits cleanly without spilling over
+                fontRatio = 'text-[0.38em]';
+                trackingClass = 'tracking-tighter';
+              } else if (fLen >= 3) {
+                // 3 or more kana on 1 kanji (e.g. こころ on 心)
+                fontRatio = 'text-[0.30em]';
+                trackingClass = 'tracking-tighter';
+                scaleClass = 'scale-x-95';
+              }
+            } else {
+              const ratio = fLen / kLen;
+              if (ratio <= 1.2) {
+                fontRatio = 'text-[0.45em]';
+                trackingClass = 'tracking-normal';
+              } else if (ratio <= 2) {
+                fontRatio = 'text-[0.38em]';
+                trackingClass = 'tracking-tight';
+              } else {
+                fontRatio = 'text-[0.32em]';
+                trackingClass = 'tracking-tighter';
+                scaleClass = 'scale-x-95';
+              }
+            }
+
             return (
-              <ruby
+              <span
                 key={idx}
-                className="inline-flex flex-col items-center justify-end leading-none align-bottom px-[1px]"
+                className="inline-flex flex-col items-center justify-end align-bottom leading-none mx-[0.5px]"
               >
-                <rt
-                  className={`font-jp font-bold text-pink-600 tracking-tighter leading-none select-none text-center block w-full whitespace-nowrap ${currentSize.furigana} ${furiganaClassName}`}
+                <span
+                  className={`font-jp font-bold text-pink-600 select-none text-center block w-full leading-none whitespace-nowrap mb-0.5 ${currentSize.furigana} ${fontRatio} ${trackingClass} ${scaleClass} ${furiganaClassName}`}
                 >
                   {seg.furigana}
-                </rt>
+                </span>
                 <span
-                  className={`font-black text-slate-900 leading-tight tracking-normal block text-center whitespace-nowrap ${currentSize.kanji} ${kanjiClassName}`}
+                  className={`font-black text-slate-900 leading-none block text-center whitespace-nowrap ${currentSize.kanji} ${kanjiClassName}`}
                 >
                   {seg.kanji}
                 </span>
-              </ruby>
+              </span>
             );
           }
 
@@ -324,7 +361,7 @@ export default function FuriganaWord({
             return (
               <span
                 key={idx}
-                className={`font-medium text-slate-400 leading-tight tracking-normal self-end align-bottom text-[0.8em] pb-0.5 ${kanjiClassName}`}
+                className={`font-medium text-slate-400 leading-none tracking-normal self-end align-bottom text-[0.8em] pb-0.5 ${kanjiClassName}`}
               >
                 {seg.text}
               </span>
@@ -334,7 +371,7 @@ export default function FuriganaWord({
           return (
             <span
               key={idx}
-              className={`font-black text-slate-900 leading-tight tracking-normal self-end align-bottom ${currentSize.kanji} ${kanjiClassName}`}
+              className={`font-black text-slate-900 leading-none tracking-normal self-end align-bottom whitespace-nowrap ${currentSize.kanji} ${kanjiClassName}`}
             >
               {seg.text}
             </span>

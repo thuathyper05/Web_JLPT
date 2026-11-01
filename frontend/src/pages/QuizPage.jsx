@@ -9,13 +9,11 @@ import {
   PenTool,
   Sparkles,
   Clock,
-  RotateCcw,
   Volume2,
-  CheckCircle2,
-  XCircle,
   Trophy,
   Flame,
-  ArrowRight
+  ArrowRight,
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -27,6 +25,8 @@ export default function QuizPage() {
   const [questionCount, setQuestionCount] = useState(10);
   const [timerSetting, setTimerSetting] = useState(20); // 10 | 20 | 30 | 0 (none)
   const [lessonsList, setLessonsList] = useState([]);
+  const [quizLoading, setQuizLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,14 +37,23 @@ export default function QuizPage() {
   const [timeLeft, setTimeLeft] = useState(20);
   const timerRef = useRef(null);
 
-  // Fetch lessons list for currentLevel
+  const activeLevel = currentLevel || 'N5';
+
+  // Fetch lessons list for activeLevel
   useEffect(() => {
     let isMounted = true;
     const fetchLessons = async () => {
       try {
-        const res = await lessonService.getLessons({ level: currentLevel || 'N5' });
+        const res = await lessonService.getLessons({ level: activeLevel });
         if (isMounted) {
-          setLessonsList(res.data || []);
+          const list = Array.isArray(res.data) ? res.data : [];
+          setLessonsList(list);
+          if (list.length > 0 && selectedLesson !== 'all') {
+            const hasCurrent = list.some(l => l.lesson_number === selectedLesson);
+            if (!hasCurrent) {
+              setSelectedLesson(list[0].lesson_number);
+            }
+          }
         }
       } catch (err) {
         console.error('Quiz fetch lessons error:', err);
@@ -52,14 +61,14 @@ export default function QuizPage() {
     };
     fetchLessons();
     return () => { isMounted = false; };
-  }, [currentLevel]);
+  }, [activeLevel]);
 
   const modeCards = [
     {
       id: 'mixed',
       title: 'Đề thi tổng hợp',
       badge: 'Tổng hợp',
-      desc: `Chuẩn format JLPT ${currentLevel || 'N5'}`,
+      desc: `Chuẩn format JLPT ${activeLevel}`,
       icon: Shuffle,
     },
     {
@@ -87,13 +96,25 @@ export default function QuizPage() {
 
   const startQuiz = async () => {
     sounds.playFlip();
+    setQuizLoading(true);
+    setErrorMsg('');
     try {
-      const res = await quizService.generateQuiz({
+      let res = await quizService.generateQuiz({
         lesson: selectedLesson === 'all' ? 'all' : selectedLesson,
         count: questionCount,
         mode: quizMode,
-        level: currentLevel || 'N5'
+        level: activeLevel
       });
+
+      // If specific lesson returned no questions, fallback to entire level
+      if ((!res.data?.success || !res.data.questions?.length) && selectedLesson !== 'all') {
+        res = await quizService.generateQuiz({
+          lesson: 'all',
+          count: questionCount,
+          mode: quizMode,
+          level: activeLevel
+        });
+      }
 
       if (res.data?.success && res.data.questions?.length > 0) {
         setQuestions(res.data.questions);
@@ -104,13 +125,18 @@ export default function QuizPage() {
         setIsAnswerSubmitted(false);
         setGameState('playing');
         setTimeLeft(timerSetting > 0 ? timerSetting : 999);
+      } else {
+        setErrorMsg(`Chưa có đủ từ vựng cấp độ ${activeLevel} để tạo bài thi trắc nghiệm. Vui lòng chọn phạm vi khác.`);
       }
     } catch (err) {
       console.error('Quiz start error:', err);
+      setErrorMsg('Lỗi kết nối khi nạp đề thi. Vui lòng thử lại.');
+    } finally {
+      setQuizLoading(false);
     }
   };
 
-  const currentQ = questions[currentIndex];
+  const currentQ = questions[currentIndex] || questions[0] || null;
 
   // Timer Countdown
   useEffect(() => {
@@ -131,7 +157,7 @@ export default function QuizPage() {
   }, [gameState, currentIndex, isAnswerSubmitted, timerSetting]);
 
   const handleSelectOption = (opt) => {
-    if (isAnswerSubmitted) return;
+    if (isAnswerSubmitted || !currentQ) return;
 
     clearInterval(timerRef.current);
     setSelectedOption(opt);
@@ -142,11 +168,11 @@ export default function QuizPage() {
       sounds.playCorrect();
       setScore((prev) => prev + 1);
       setStreak((prev) => prev + 1);
-      recordWordProgress(currentQ.id, 'mastered');
+      if (currentQ.id) recordWordProgress(currentQ.id, 'mastered');
     } else {
       sounds.playWrong();
       setStreak(0);
-      recordWordProgress(currentQ.id, 'needs_review');
+      if (currentQ.id) recordWordProgress(currentQ.id, 'needs_review');
     }
   };
 
@@ -164,9 +190,13 @@ export default function QuizPage() {
     }
   };
 
+  const fallbackLessons = activeLevel === 'N4'
+    ? Array.from({ length: 25 }, (_, i) => i + 26)
+    : Array.from({ length: 25 }, (_, i) => i + 1);
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-16 animate-in fade-in duration-300">
-      {/* ── 1. SETUP STATE (MATCHES IMAGE 5) ── */}
+      {/* ── 1. SETUP STATE ── */}
       {gameState === 'setup' && (
         <>
           {/* Header Banner */}
@@ -178,17 +208,24 @@ export default function QuizPage() {
             <div className="relative z-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2.5">
                 <CheckSquare size={13} className="text-pink-600" />
-                <span>TRẮC NGHIỆM ABCD - JLPT N5</span>
+                <span>TRẮC NGHIỆM ABCD - JLPT {activeLevel}</span>
               </div>
 
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-                Trắc Nghiệm JLPT N5
+                Trắc Nghiệm JLPT {activeLevel}
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-0">
                 Hệ thống 4 lựa chọn ABCD chuẩn format kỳ thi năng lực tiếng Nhật, tích hợp bấm giờ phản xạ.
               </p>
             </div>
           </div>
+
+          {errorMsg && (
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2 animate-in fade-in">
+              <AlertCircle size={16} className="shrink-0" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
 
           {/* CHỌN DẠNG CÂU HỎI */}
           <div className="space-y-3">
@@ -246,14 +283,14 @@ export default function QuizPage() {
               {/* Scope of lesson */}
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-2">
-                  Phạm vi bài học
+                  Phạm vi bài học ({activeLevel})
                 </label>
                 <select
                   value={selectedLesson}
-                  onChange={(e) => setSelectedLesson(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 bg-pink-50/40 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 truncate"
+                  onChange={(e) => setSelectedLesson(e.target.value === 'all' ? 'all' : parseInt(e.target.value, 10))}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-pink-200 bg-pink-50/40 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-pink-500 truncate cursor-pointer"
                 >
-                  <option value="all">Toàn bộ giáo trình cấp độ {currentLevel || 'N5'}</option>
+                  <option value="all">Toàn bộ giáo trình cấp độ {activeLevel}</option>
                   {lessonsList.length > 0 ? (
                     lessonsList.map((l) => (
                       <option key={l.lesson_number} value={l.lesson_number}>
@@ -261,7 +298,7 @@ export default function QuizPage() {
                       </option>
                     ))
                   ) : (
-                    Array.from({ length: 25 }, (_, i) => i + 1).map((n) => (
+                    fallbackLessons.map((n) => (
                       <option key={n} value={n}>
                         Bài {n < 10 ? `0${n}` : n}
                       </option>
@@ -281,7 +318,7 @@ export default function QuizPage() {
                       key={num}
                       type="button"
                       onClick={() => setQuestionCount(num)}
-                      className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all ${
+                      className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
                         questionCount === num
                           ? 'bg-pink-600 text-white border-pink-600 shadow-sm'
                           : 'bg-white text-slate-700 border-pink-100 hover:bg-pink-50'
@@ -303,13 +340,13 @@ export default function QuizPage() {
                     { val: 10, label: '10s' },
                     { val: 20, label: '20s' },
                     { val: 30, label: '30s' },
-                    { val: 0, label: '∞' }
+                    { val: 0, label: 'Tự do' }
                   ].map((t) => (
                     <button
                       key={t.val}
                       type="button"
                       onClick={() => setTimerSetting(t.val)}
-                      className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all ${
+                      className={`flex-1 py-2 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
                         timerSetting === t.val
                           ? 'bg-pink-600 text-white border-pink-600 shadow-sm'
                           : 'bg-white text-slate-700 border-pink-100 hover:bg-pink-50'
@@ -325,11 +362,16 @@ export default function QuizPage() {
             {/* Start Button */}
             <button
               type="button"
+              disabled={quizLoading}
               onClick={startQuiz}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lotus hover:shadow-lotus-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-sm shadow-lotus hover:shadow-lotus-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50 cursor-pointer"
             >
-              <Sparkles size={18} />
-              <span>Bắt đầu làm bài thi ngay</span>
+              {quizLoading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Sparkles size={18} />
+              )}
+              <span>{quizLoading ? 'Đang tạo bộ đề thi chuẩn...' : 'Bắt đầu làm bài thi ngay'}</span>
             </button>
           </div>
         </>
@@ -381,14 +423,15 @@ export default function QuizPage() {
             </span>
 
             <div className="flex items-center justify-center gap-3">
-              <h2 className="text-4xl sm:text-5xl font-black font-jp text-slate-900 tracking-wide">
+              <h2 className="text-3xl sm:text-5xl font-black font-jp text-slate-900 tracking-wide break-words">
                 {currentQ.question}
               </h2>
               {currentQ.audio_text && (
                 <button
                   type="button"
                   onClick={() => speakJapanese(currentQ.audio_text)}
-                  className="w-9 h-9 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center justify-center transition-colors"
+                  className="w-9 h-9 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                  title="Nghe phát âm"
                 >
                   <Volume2 size={18} />
                 </button>
@@ -416,7 +459,7 @@ export default function QuizPage() {
                     type="button"
                     disabled={isAnswerSubmitted}
                     onClick={() => handleSelectOption(opt)}
-                    className={`p-4 rounded-2xl border font-bold text-sm text-left flex items-center justify-between transition-all active:scale-95 ${btnStyle}`}
+                    className={`p-4 rounded-2xl border font-bold text-sm text-left flex items-center justify-between transition-all active:scale-95 cursor-pointer ${btnStyle}`}
                   >
                     <span className="truncate pr-2">{opt}</span>
                     <span className="w-6 h-6 rounded-lg bg-black/5 flex items-center justify-center text-xs font-black shrink-0">
@@ -435,7 +478,7 @@ export default function QuizPage() {
                   <button
                     type="button"
                     onClick={() => askAi('explain_quiz', currentQ, `AI Giải Thích: ${currentQ.question}`)}
-                    className="px-2.5 py-1 rounded-lg bg-white border border-pink-200 text-pink-700 text-xs font-bold flex items-center gap-1 hover:bg-pink-50 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-white border border-pink-200 text-pink-700 text-xs font-bold flex items-center gap-1 hover:bg-pink-50 transition-colors cursor-pointer"
                   >
                     <Sparkles size={13} className="text-pink-600" />
                     <span>Hỏi AI chi tiết</span>
@@ -454,7 +497,7 @@ export default function QuizPage() {
               <button
                 type="button"
                 onClick={handleNextQuestion}
-                className="px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm shadow-lotus flex items-center gap-2 transition-all hover:scale-105"
+                className="px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm shadow-lotus flex items-center gap-2 transition-all hover:scale-105 cursor-pointer"
               >
                 <span>{currentIndex === questions.length - 1 ? 'Xem kết quả' : 'Câu tiếp theo'}</span>
                 <ArrowRight size={16} />
@@ -476,14 +519,14 @@ export default function QuizPage() {
               Hoàn Thành Bài Thi!
             </h2>
             <p className="text-xs text-slate-500">
-              Bạn đã hoàn thành bài kiểm tra trắc nghiệm format JLPT N5.
+              Bạn đã hoàn thành bài kiểm tra trắc nghiệm format JLPT {activeLevel}.
             </p>
           </div>
 
           <div className="p-5 rounded-2xl bg-pink-50/50 border border-pink-100 flex justify-around">
             <div>
               <span className="text-3xl font-black text-pink-600">
-                {Math.round((score / questions.length) * 100)}%
+                {questions.length > 0 ? Math.round((score / questions.length) * 100) : 0}%
               </span>
               <span className="text-xs text-slate-400 block font-bold mt-0.5">Tỷ lệ đúng</span>
             </div>
@@ -500,14 +543,14 @@ export default function QuizPage() {
             <button
               type="button"
               onClick={() => setGameState('setup')}
-              className="flex-1 py-3 rounded-2xl border border-pink-200 text-slate-700 font-bold text-xs hover:bg-pink-50 transition-colors"
+              className="flex-1 py-3 rounded-2xl border border-pink-200 text-slate-700 font-bold text-xs hover:bg-pink-50 transition-colors cursor-pointer"
             >
               Đổi thông số đề thi
             </button>
             <button
               type="button"
               onClick={startQuiz}
-              className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-xs shadow-lotus hover:scale-105 transition-transform"
+              className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold text-xs shadow-lotus hover:scale-105 transition-transform cursor-pointer"
             >
               Làm lại đề mới
             </button>
