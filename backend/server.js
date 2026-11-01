@@ -991,6 +991,393 @@ Trang Vườn Cây trên WebApp của chúng ta mô phỏng chính xác quá tr�
 4. Phân biệt rõ vợ chồng của người khác: Nhớ dùng 「奥さん」(Okusan) khi hỏi thăm vợ đồng nghiệp, và 「妻」(Tsuma) khi nói về vợ mình.
 5. Luôn xác nhận lại bằng văn bản hoặc email sau các cuộc trao đổi quan trọng.`,
     comments: []
+  },
+  {
+    id: 6,
+    title: 'Lịch thi JLPT 2026 chính thức: Thời hạn nộp hồ sơ, địa điểm thi và lệ phí tại Hà Nội, Đà Nẵng, Huế, TP.HCM',
+    slug: 'lich-thi-jlpt-2026-chinh-thuc-han-nop-ho-so',
+    summary: 'Cập nhật từ Quỹ Giao lưu Quốc tế Nhật Bản (Japan Foundation): Lịch thi JLPT đợt 1 (Chủ Nhật đầu tháng 7) và đợt 2 (Chủ Nhật đầu tháng 12), quy trình mua hồ sơ và tra cứu kết quả trực tuyến.',
+    category: 'Kỳ thi & Lịch thi',
+    readTime: '6 phút đọc',
+    views: 24500,
+    author: 'Ban Thư Ký Kỳ Thi JLPT Việt Nam',
+    authorRole: 'Cổng thông tin khảo thí',
+    publishedAt: '2026-10-30',
+    featured: true,
+    tags: ['JLPT 2026', 'Lịch thi', 'Địa điểm thi', 'Lệ phí thi'],
+    content: `Kỳ thi Năng lực Tiếng Nhật (JLPT) năm 2026 được tổ chức định kỳ 2 lần vào ngày Chủ Nhật đầu tiên của tháng 7 và tháng 12 trên toàn cầu.
+
+1. Lịch thi cụ thể:
+- Đợt 1: Chủ Nhật, ngày 05/07/2026. Hạn nộp hồ sơ từ đầu tháng 3 đến giữa tháng 4.
+- Đợt 2: Chủ Nhật, ngày 06/12/2026. Hạn nộp hồ sơ từ đầu tháng 8 đến giữa tháng 9.
+
+2. Địa điểm tiếp nhận hồ sơ và tổ chức thi tại Việt Nam:
+- Hà Nội: Trường Đại học Ngoại ngữ - Đại học Quốc gia Hà Nội (N1, N2) và Trường Đại học Hà Nội (N3, N4, N5).
+- Đà Nẵng: Trường Đại học Ngoại ngữ - Đại học Đà Nẵng (131 Lương Nhữ Hộc, Cẩm Lệ).
+- Huế: Trường Đại học Ngoại ngữ - Đại học Huế (57 Nguyễn Khoa Chiêm, An Cựu).
+- TP. Hồ Chí Minh: Trường Đại học Khoa học Xã hội và Nhân văn - ĐHQG TP.HCM và Trường Đại học Sư phạm TP.HCM.
+
+3. Lệ phí thi tham khảo năm 2026:
+- Cấp độ N5, N4: 650.000 VNĐ / thí sinh.
+- Cấp độ N3, N2, N1: 700.000 VNĐ / thí sinh.
+
+Học viên lưu ý chuẩn bị 2 ảnh thẻ 3x4 chụp trong vòng 6 tháng, bản photo Căn cước công dân và điền chính xác thông tin cá nhân để nhận chứng chỉ đúng hẹn.`,
+    comments: [
+      {
+        id: 601,
+        author: 'Lê Bảo Anh',
+        rating: 5,
+        content: 'Bài viết cập nhật rất đúng lúc. Mình đang chuẩn bị đăng ký thi đợt tới ở điểm Đại học Ngoại ngữ Đà Nẵng!',
+        createdAt: '1 ngày trước',
+        likes: 31
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: 'Nhật Bản mở rộng chính sách Visa Tokutei Ginou 2026: Đón 820.000 lao động và cơ hội vĩnh trú',
+    slug: 'nhat-ban-mo-rong-chinh-sach-visa-tokutei-ginou-2026',
+    summary: 'Chính phủ Nhật Bản chính thức nới lỏng diện Kỹ năng đặc định số 2 lên 16 khối ngành, cho phép lao động được cấp quyền cư trú dài hạn và bảo lãnh người thân sang Nhật định cư.',
+    category: 'Du học & Việc làm',
+    readTime: '7 phút đọc',
+    views: 18900,
+    author: 'Văn Phòng Cố Vấn Định Cư Tokyo',
+    authorRole: 'Chuyên gia Luật Pháp & Thị Thực',
+    publishedAt: '2026-10-27',
+    featured: false,
+    tags: ['Tokutei Ginou', 'Visa Nhật', 'Vĩnh trú', 'Việc làm'],
+    content: `Theo thông báo mới nhất từ Bộ Tư pháp Nhật Bản, chỉ tiêu tiếp nhận lao động kỹ năng đặc định (Tokutei Ginou) giai đoạn 2024 - 2029 được nâng lên 820.000 người, gấp đôi so với giai đoạn trước.
+
+Các điểm mới đột phá người lao động cần nắm rõ:
+1. Mở rộng diện Kỹ năng đặc định số 2: Trước đây chỉ áp dụng cho ngành xây dựng và đóng tàu, nay đã mở rộng thêm 14 ngành khác gồm: chế tạo máy, nông nghiệp, dịch vụ ăn uống, khách sạn, vệ sinh tòa nhà, bảo dưỡng ô tô.
+2. Quyền lợi vượt trội của Tokutei số 2:
+- Không giới hạn thời gian lưu trú tại Nhật Bản (có thể gia hạn liên tục đến khi xin visa Vĩnh trú).
+- Được quyền đón vợ/chồng và con cái sang sinh sống tại Nhật Bản.
+3. Yêu cầu tiếng Nhật:
+- Tokutei số 1: Tối thiểu JLPT N4 hoặc JFT-Basic A2.
+- Tokutei số 2: Khuyến khích đạt trình độ JLPT N3 trở lên để vượt qua bài kiểm tra chuyên môn cấp cao.`,
+    comments: []
+  },
+  {
+    id: 8,
+    title: 'Kỳ thi NAT-TEST và TOPJ 2026: Giải pháp thay thế hoàn hảo khi lỡ kỳ thi JLPT',
+    slug: 'ky-thi-nat-test-va-topj-2026-cam-nang',
+    summary: 'Không cần chờ đợi 6 tháng một lần như JLPT: Kỳ thi NAT-TEST tổ chức 6 lần một năm vào các tháng chẵn, cấp chứng chỉ giá trị tương đương để xin visa du học và kỹ năng đặc định.',
+    category: 'Kỳ thi & Lịch thi',
+    readTime: '5 phút đọc',
+    views: 13200,
+    author: 'Ban Tư Vấn Du Học Đông Du',
+    authorRole: 'Cố vấn khảo thí quốc tế',
+    publishedAt: '2026-10-24',
+    featured: false,
+    tags: ['NAT-TEST', 'TOPJ', 'Chứng chỉ tiếng Nhật', 'Du học'],
+    content: `Rất nhiều học viên bị lỡ hạn nộp hồ sơ JLPT hoặc cần chứng chỉ gấp để nộp hồ sơ Cục Xuất Nhập Cảnh (COE). NAT-TEST và TOPJ chính là phương án cứu cánh lý tưởng nhất.
+
+1. Ưu điểm vượt trội của NAT-TEST:
+- Tổ chức 6 đợt thi mỗi năm: Vào các tháng 2, 4, 6, 8, 10, 12.
+- Thời gian biết kết quả nhanh chóng: Chỉ sau 2 đến 3 tuần thi là có kết quả online và chứng chỉ gốc.
+- Cấu trúc đề thi bám sát 100% format của JLPT, chia làm 5 cấp độ từ 5Q (tương đương N5) đến 1Q (tương đương N1).
+
+2. Quy đổi trình độ:
+- NAT-TEST 5Q = JLPT N5 (Yêu cầu khoảng 700 - 800 từ vựng và 100 chữ Kanji).
+- NAT-TEST 4Q = JLPT N4.
+- NAT-TEST 3Q = JLPT N3.
+
+Luyện từ vựng và làm trắc nghiệm phản xạ trên WebApp HYPER mỗi ngày sẽ giúp bạn tự tin vượt qua cả hai kỳ thi này với điểm số vượt trội.`,
+    comments: []
+  }
+];
+
+// Comprehensive Directory of Reputable Japanese Language Centers in Vietnam
+const japaneseCenters = [
+  // Đà Nẵng
+  {
+    id: 1,
+    name: 'Trung tâm Nhật ngữ Đông Du Đà Nẵng',
+    city: 'Đà Nẵng',
+    rating: 4.9,
+    reviewsCount: 312,
+    address: '130 Nguyễn Chí Thanh, Phường Hải Châu 1, Quận Hải Châu, TP. Đà Nẵng',
+    phone: '0236 3843 782',
+    website: 'https://dongdudanang.edu.vn',
+    strengths: ['Phương pháp dạy Kanji chiết tự đỉnh cao', 'Luyện thi JLPT N5 đến N2', 'Giảng viên lâu năm tâm huyết'],
+    tuitionRange: '1.800.000đ - 3.500.000đ / khóa',
+    badge: 'Top 1 Đào tạo Kanji',
+    description: 'Chi nhánh chính thức của hệ thống Đông Du danh tiếng tại miền Trung. Nổi bật với phương pháp giảng dạy Kanji bài bản và rèn luyện tác phong kỷ luật chuẩn Nhật.'
+  },
+  {
+    id: 2,
+    name: 'Trung tâm Nhật ngữ Sakura Đà Nẵng',
+    city: 'Đà Nẵng',
+    rating: 4.8,
+    reviewsCount: 245,
+    address: '125 Hoàng Diệu, Phường Phước Ninh, Quận Hải Châu, TP. Đà Nẵng',
+    phone: '0236 3562 155',
+    website: 'https://sakuradanang.edu.vn',
+    strengths: ['100% giáo viên bản xứ đứng lớp giao tiếp', 'Cơ sở vật chất chuẩn phong cách Nhật', 'CLB giao lưu văn hóa hàng tuần'],
+    tuitionRange: '2.400.000đ - 4.500.000đ / khóa',
+    badge: 'Giao tiếp Bản xứ',
+    description: 'Địa chỉ hàng đầu tại Đà Nẵng cho các bạn muốn rèn luyện phản xạ giao tiếp tự nhiên và tìm hiểu sâu sắc về văn hóa trà đạo, thư pháp Nhật Bản.'
+  },
+  {
+    id: 3,
+    name: 'Jellyfish Education Đà Nẵng',
+    city: 'Đà Nẵng',
+    rating: 4.8,
+    reviewsCount: 180,
+    address: 'Tầng 3, Tòa nhà Fhome, 16 Lý Thường Kiệt, Quận Hải Châu, TP. Đà Nẵng',
+    phone: '096 110 6466',
+    website: 'https://jellyfish.edu.vn',
+    strengths: ['Tỉ lệ đỗ visa du học 99%', 'Đào tạo tiếng Nhật Tokutei Ginou', 'Kết nối việc làm doanh nghiệp Nhật'],
+    tuitionRange: '2.200.000đ - 4.200.000đ / khóa',
+    badge: 'Chuyên Gia Du Học',
+    description: 'Trực thuộc tập đoàn Jellyfish Nhật Bản, chuyên đào tạo tiếng Nhật mục tiêu du học và cung ứng nhân lực kỹ sư chất lượng cao sang Nhật làm việc.'
+  },
+  {
+    id: 4,
+    name: 'Trung tâm Nhật ngữ EIKOH Đà Nẵng',
+    city: 'Đà Nẵng',
+    rating: 4.7,
+    reviewsCount: 142,
+    address: 'Phan Châu Trinh, Quận Hải Châu, TP. Đà Nẵng',
+    phone: '0236 3822 411',
+    website: 'https://eikohvietnam.com',
+    strengths: ['Quy mô lớp nhỏ 10-15 bạn', 'Cam kết đầu ra JLPT rõ ràng', 'Giáo trình chuẩn quốc tế'],
+    tuitionRange: '1.900.000đ - 3.600.000đ / khóa',
+    badge: 'Lớp Học Tiêu Chuẩn',
+    description: 'Thừa hưởng phương pháp sư phạm tiên tiến từ Eikoh Nhật Bản, chú trọng kèm cặp từng học viên để nắm chắc nền tảng từ vựng và ngữ pháp.'
+  },
+
+  // Hà Nội
+  {
+    id: 5,
+    name: 'Trung tâm Giao lưu Văn hóa Nhật Bản (Japan Foundation)',
+    city: 'Hà Nội',
+    rating: 5.0,
+    reviewsCount: 620,
+    address: '27 Quang Trung, Quận Hoàn Kiếm, TP. Hà Nội',
+    phone: '024 3944 7419',
+    website: 'https://jpf.org.vn',
+    strengths: ['Cơ quan chính phủ Nhật Bản', 'Thư viện tiếng Nhật lớn nhất VN', 'Tổ chức các kỳ thi Marugoto & JF'],
+    tuitionRange: 'Khóa học theo quỹ hỗ trợ (Ưu đãi)',
+    badge: 'Viện Văn Hóa Quốc Gia',
+    description: 'Địa chỉ vàng uy tín số 1 tại Việt Nam. Không chỉ đào tạo giáo trình chuẩn Marugoto mà còn là trung tâm tổ chức các sự kiện văn hóa, chiếu phim và hòa nhạc Nhật Bản.'
+  },
+  {
+    id: 6,
+    name: 'Trung tâm Nhật ngữ Dũng Mori Hà Nội',
+    city: 'Hà Nội',
+    rating: 4.9,
+    reviewsCount: 890,
+    address: 'Số 15, Ngõ 91, Nguyễn Chí Thanh, Quận Đống Đa, TP. Hà Nội',
+    phone: '0969 868 820',
+    website: 'https://dungmori.com',
+    strengths: ['Hệ thống bài giảng video triệu views', 'Luyện thi JLPT N5 đến N1 cấp tốc', 'Cộng đồng học viên đông nhất cả nước'],
+    tuitionRange: '1.600.000đ - 3.800.000đ / khóa',
+    badge: 'Thương Hiệu Triệu View',
+    description: 'Nổi tiếng với phong cách giảng dạy truyền cảm hứng, dễ nhớ, mẹo làm đề thi JLPT thực chiến và đội ngũ giáo viên trẻ trung đầy nhiệt huyết.'
+  },
+  {
+    id: 7,
+    name: 'Riki Nihongo Hà Nội',
+    city: 'Hà Nội',
+    rating: 4.9,
+    reviewsCount: 780,
+    address: 'Số 8 Trần Đăng Ninh, Dịch Vọng, Quận Cầu Giấy, TP. Hà Nội',
+    phone: '1900 633 692',
+    website: 'https://riki.edu.vn',
+    strengths: ['Bảo hành đỗ JLPT 100%', 'App học tập tích hợp hiện đại', 'Cơ sở vật chất hiện đại trẻ trung'],
+    tuitionRange: '2.100.000đ - 4.600.000đ / khóa',
+    badge: 'Cam Kết Đầu Ra',
+    description: 'Thương hiệu luyện thi JLPT hàng đầu tại miền Bắc với triết lý học không áp lực, kích thích não bộ ghi nhớ bằng hình ảnh và trò chơi tương tác.'
+  },
+  {
+    id: 8,
+    name: 'Trung tâm Tiếng Nhật Núi Trúc - Sugi Ryotaro',
+    city: 'Hà Nội',
+    rating: 4.8,
+    reviewsCount: 410,
+    address: 'Số 15 ngõ Núi Trúc, Phố Kim Mã, Quận Ba Đình, TP. Hà Nội',
+    phone: '024 3846 0341',
+    website: 'https://nuitruc.edu.vn',
+    strengths: ['Trung tâm lâu đời nhất Hà Nội (từ 1992)', 'Học phí trợ giá phù hợp sinh viên', 'Hội đồng cựu lưu học sinh uy tín'],
+    tuitionRange: '1.200.000đ - 2.800.000đ / khóa',
+    badge: 'Truyền Thống Hơn 30 Năm',
+    description: 'Thành lập từ năm 1992 dưới sự bảo trợ của Đại sứ thiện chí Sugi Ryotaro. Nơi đào tạo nền tảng ngữ pháp kinh điển và có mức học phí cực kỳ thân thiện với học sinh, sinh viên.'
+  },
+  {
+    id: 9,
+    name: 'Nhật ngữ Mina Hà Nội',
+    city: 'Hà Nội',
+    rating: 4.8,
+    reviewsCount: 230,
+    address: 'Số 8, ngõ 84, Chùa Láng, Quận Đống Đa, TP. Hà Nội',
+    phone: '024 3775 7264',
+    website: 'https://mina.edu.vn',
+    strengths: ['Chuyên sâu Minna no Nihongo 50 bài', 'Kèm cặp 1 kèm 1 sửa phát âm', 'Không gian học ấm cúng'],
+    tuitionRange: '1.500.000đ - 3.200.000đ / khóa',
+    badge: 'Chuyên Sâu Minna',
+    description: 'Tọa lạc gần các trường đại học lớn tại Chùa Láng, Mina chuyên về các khóa học nền tảng N5-N4 với phương pháp giảng dạy ân cần, tỉ mỉ.'
+  },
+
+  // Quảng Nam
+  {
+    id: 10,
+    name: 'Trung tâm Nhật ngữ Sakura Tam Kỳ',
+    city: 'Quảng Nam',
+    rating: 4.8,
+    reviewsCount: 165,
+    address: 'Đường Phan Bội Châu, Phường Tân Thạnh, TP. Tam Kỳ, Tỉnh Quảng Nam',
+    phone: '0235 3812 556',
+    website: 'https://sakuratamky.edu.vn',
+    strengths: ['Trung tâm Nhật ngữ lớn nhất Tam Kỳ', 'Hợp tác việc làm KCN Chu Lai & Tam Thăng', 'Luyện thi JLPT N5, N4'],
+    tuitionRange: '1.400.000đ - 2.800.000đ / khóa',
+    badge: 'Uy Tín Tam Kỳ',
+    description: 'Địa chỉ đào tạo tiếng Nhật uy tín hàng đầu tại thủ phủ Tam Kỳ, hỗ trợ thanh niên và công nhân các khu công nghiệp học tiếng Nhật để nâng cao thu nhập.'
+  },
+  {
+    id: 11,
+    name: 'Trung tâm Nhật ngữ & Hợp tác Quốc tế Hội An',
+    city: 'Quảng Nam',
+    rating: 4.9,
+    reviewsCount: 198,
+    address: 'Đường Trần Hưng Đạo, Phường Cẩm Phô, TP. Hội An, Tỉnh Quảng Nam',
+    phone: '0235 3910 888',
+    website: 'https://hoian-japan.org',
+    strengths: ['Giao lưu văn hóa phố cổ Hội An - Nhật Bản', 'Tiếng Nhật du lịch & dịch vụ khách sạn', 'Giáo viên tình nguyện viên JICA'],
+    tuitionRange: '1.500.000đ - 3.000.000đ / khóa',
+    badge: 'Văn Hóa Phố Cổ',
+    description: 'Nằm tại thành phố di sản có mối giao hảo hữu nghị hơn 400 năm với Nhật Bản. Chuyên sâu tiếng Nhật ngành du lịch, nhà hàng, khách sạn và hướng dẫn viên.'
+  },
+  {
+    id: 12,
+    name: 'Viện Đào tạo Ngôn ngữ & Hợp tác Nhật Bản - ĐH Đông Á Quảng Nam',
+    city: 'Quảng Nam',
+    rating: 4.7,
+    reviewsCount: 135,
+    address: 'Khu đô thị Điện Nam - Điện Ngọc, Thị xã Điện Bàn, Tỉnh Quảng Nam',
+    phone: '0235 3947 777',
+    website: 'https://donga.edu.vn/quangnam',
+    strengths: ['Chương trình thực tập Internship hưởng lương tại Nhật', 'Cơ sở hiện đại chuẩn đại học', 'Đảm bảo 100% đầu ra việc làm'],
+    tuitionRange: 'Theo tín chỉ đại học & Khóa ngắn hạn',
+    badge: 'Liên Kết Đại Học',
+    description: 'Cầu nối chiến lược đưa sinh viên tỉnh Quảng Nam sang Nhật thực tập và làm việc tại các tập đoàn điều dưỡng, ô tô, tự động hóa hàng đầu Nhật Bản.'
+  },
+
+  // TP. Hồ Chí Minh
+  {
+    id: 13,
+    name: 'Trường Nhật ngữ Đông Du TP. Hồ Chí Minh',
+    city: 'TP. Hồ Chí Minh',
+    rating: 4.9,
+    reviewsCount: 1150,
+    address: '43D/9 Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM',
+    phone: '028 3845 3783',
+    website: 'https://dongdu.edu.vn',
+    strengths: ['Cái nôi của phong trào Đông Du thời hiện đại', 'Bộ giáo trình Hán tự độc quyền nổi tiếng', 'Luyện thi JLPT N5 đến N1'],
+    tuitionRange: '1.900.000đ - 4.200.000đ / khóa',
+    badge: 'Huyền Thoại Đông Du',
+    description: 'Trường Nhật ngữ danh tiếng và có quy mô đào tạo lớn nhất phía Nam. Phương pháp Hán tự chiết tự của Đông Du đã đào tạo ra hàng chục nghìn thủ khoa JLPT và du học sinh ưu tú.'
+  },
+  {
+    id: 14,
+    name: 'Trường Nhật ngữ Sakura Sài Gòn (Lê Thánh Tôn)',
+    city: 'TP. Hồ Chí Minh',
+    rating: 4.9,
+    reviewsCount: 860,
+    address: '228 Lê Thánh Tôn, Phường Bến Thành, Quận 1, TP.HCM',
+    phone: '028 3822 3230',
+    website: 'https://sakura-vn.com',
+    strengths: ['Trung tâm Nhật ngữ đầu tiên tại TP.HCM (từ 1989)', '100% giáo viên người Nhật trực tiếp đứng lớp', 'Môi trường đắm chìm tiếng Nhật'],
+    tuitionRange: '2.800.000đ - 5.500.000đ / khóa',
+    badge: 'Lâu Đời Nhất Sài Gòn (1989)',
+    description: 'Tọa lạc ngay trung tâm Quận 1, Sakura là sự lựa chọn số 1 cho người đi làm và doanh nhân muốn giao tiếp lưu loát với phát âm chuẩn Tokyo tuyệt đối.'
+  },
+  {
+    id: 15,
+    name: 'Trung tâm Hợp tác Nguồn nhân lực VJCC TP.HCM',
+    city: 'TP. Hồ Chí Minh',
+    rating: 4.8,
+    reviewsCount: 490,
+    address: 'Trường ĐH Ngoại Thương CS2, Số 15 Đường D5, Phường 25, Quận Bình Thạnh, TP.HCM',
+    phone: '028 3512 3420',
+    website: 'https://vjcc.org.vn',
+    strengths: ['Dự án JICA chính phủ Nhật Bản', 'Chuyên sâu tiếng Nhật Thương Mại & BJT', 'Đào tạo quản lý phong cách Keieijuku'],
+    tuitionRange: '2.500.000đ - 5.000.000đ / khóa',
+    badge: 'Tiếng Nhật Doanh Nghiệp',
+    description: 'Viện đào tạo trực thuộc hợp tác giữa Bộ Giáo dục Đào tạo Việt Nam và JICA. Chuyên giảng dạy tiếng Nhật kinh doanh, viết email thương mại và văn hóa công sở Nhật Bản.'
+  },
+  {
+    id: 16,
+    name: 'Riki Nihongo Sài Gòn',
+    city: 'TP. Hồ Chí Minh',
+    rating: 4.8,
+    reviewsCount: 650,
+    address: '137 Điện Biên Phủ, Phường 15, Quận Bình Thạnh, TP.HCM',
+    phone: '1900 633 692',
+    website: 'https://riki.edu.vn',
+    strengths: ['Luyện thi JLPT cam kết đầu ra', 'Cơ sở hiện đại tại Bình Thạnh và Quận 10', 'Học kết hợp app online thông minh'],
+    tuitionRange: '2.100.000đ - 4.600.000đ / khóa',
+    badge: 'Cam Kết Điểm Số',
+    description: 'Chi nhánh Sài Gòn thu hút đông đảo sinh viên các trường đại học nhờ phương pháp học dễ nhớ, tương tác cao và chính sách bảo hành học lại miễn phí nếu thi trượt.'
+  },
+
+  // Các tỉnh khác
+  {
+    id: 17,
+    name: 'Trung tâm Nhật ngữ Kokoro Hải Phòng',
+    city: 'Các tỉnh khác',
+    rating: 4.8,
+    reviewsCount: 210,
+    address: 'Lê Hồng Phong, Quận Ngô Quyền, TP. Hải Phòng',
+    phone: '0225 3822 555',
+    website: 'https://kokorohaiphong.edu.vn',
+    strengths: ['Đào tạo nhân sự KCN Tràng Duệ & Đình Vũ', 'Luyện thi JLPT N5-N3', 'Học viên được giới thiệu việc làm ngay'],
+    tuitionRange: '1.600.000đ - 3.200.000đ / khóa',
+    badge: 'Uy Tín Hải Phòng',
+    description: 'Đơn vị đào tạo tiếng Nhật hàng đầu đất Cảng, đối tác cung ứng nhân lực cho các nhà máy và công ty Nhật Bản tại các khu công nghiệp lớn.'
+  },
+  {
+    id: 18,
+    name: 'Trung tâm Nhật ngữ Eikoh Mekong Cần Thơ',
+    city: 'Các tỉnh khác',
+    rating: 4.8,
+    reviewsCount: 175,
+    address: 'Đường 30/4, Phường Xuân Khánh, Quận Ninh Kiều, TP. Cần Thơ',
+    phone: '0292 3838 999',
+    website: 'https://eikohmekong.edu.vn',
+    strengths: ['Trung tâm chuẩn Nhật lớn nhất miền Tây', 'Luyện thi JLPT & Tư vấn du học', 'Đội ngũ giáo viên trẻ nhiệt tình'],
+    tuitionRange: '1.500.000đ - 3.000.000đ / khóa',
+    badge: 'Số 1 Miền Tây',
+    description: 'Cung cấp cơ hội học tiếng Nhật tiêu chuẩn cao cho học sinh, sinh viên vùng Đồng bằng Sông Cửu Long với chi phí hợp lý.'
+  },
+  {
+    id: 19,
+    name: 'Trung tâm Nhật ngữ Đại học Ngoại ngữ Huế',
+    city: 'Các tỉnh khác',
+    rating: 4.9,
+    reviewsCount: 320,
+    address: '57 Nguyễn Khoa Chiêm, Phường An Cựu, TP. Huế, Thừa Thiên Huế',
+    phone: '0234 3830 722',
+    website: 'https://hucfl.edu.vn',
+    strengths: ['Hội đồng tổ chức kỳ thi JLPT tại miền Trung', 'Giảng viên khoa Ngôn ngữ & Văn hóa Nhật Bản', 'Đào tạo học thuật bài bản'],
+    tuitionRange: '1.200.000đ - 2.600.000đ / khóa',
+    badge: 'Điểm Thi JLPT Miền Trung',
+    description: 'Cơ sở đào tạo học thuật chính quy hàng đầu Cố đô Huế, đồng thời là địa điểm tổ chức kỳ thi JLPT quốc tế thường niên thu hút hàng nghìn thí sinh miền Trung.'
+  },
+  {
+    id: 20,
+    name: 'Trung tâm Nhật ngữ Bình Dương (Thủ Dầu Một)',
+    city: 'Các tỉnh khác',
+    rating: 4.7,
+    reviewsCount: 195,
+    address: 'Đại lộ Bình Dương, Phường Hiệp Thành, TP. Thủ Dầu Một, Bình Dương',
+    phone: '0274 3848 111',
+    website: 'https://nhatngubinhduong.edu.vn',
+    strengths: ['Chuyên sâu tiếng Nhật kỹ thuật & nhà máy VSIP', 'Lớp học ca tối cho người đi làm', 'Luyện phỏng vấn tăng lương'],
+    tuitionRange: '1.700.000đ - 3.400.000đ / khóa',
+    badge: 'Chuyên Sâu KCN VSIP',
+    description: 'Tập trung đào tạo tiếng Nhật ứng dụng cho kỹ sư, chuyên viên và công nhân làm việc trong các khu công nghiệp VSIP 1, VSIP 2 tại Bình Dương.'
   }
 ];
 
@@ -1106,6 +1493,32 @@ app.get('/api/forum/reviews', (req, res) => {
     success: true,
     total: generalReviews.length,
     data: generalReviews
+  });
+});
+
+// 9.4.1 Get Japanese Language Centers Directory
+app.get('/api/forum/centers', (req, res) => {
+  const { city, search } = req.query;
+  let list = japaneseCenters;
+
+  if (city && city !== 'all') {
+    list = list.filter(c => c.city.toLowerCase() === city.toLowerCase());
+  }
+
+  if (search) {
+    const q = search.toLowerCase().trim();
+    list = list.filter(c =>
+      c.name.toLowerCase().includes(q) ||
+      c.address.toLowerCase().includes(q) ||
+      c.city.toLowerCase().includes(q) ||
+      c.strengths.some(s => s.toLowerCase().includes(q))
+    );
+  }
+
+  res.json({
+    success: true,
+    total: list.length,
+    data: list
   });
 });
 

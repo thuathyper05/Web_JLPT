@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Home, BookOpen, Bookmark, CheckSquare, Menu } from 'lucide-react';
+import { Home, BookOpen, Layers, CheckSquare, Menu } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
 export default function MobileBottomNav({ onOpenMobileMenu = () => {} }) {
@@ -9,7 +9,7 @@ export default function MobileBottomNav({ onOpenMobileMenu = () => {} }) {
   const bottomItems = [
     { id: 'home', label: 'Trang chủ', icon: Home },
     { id: 'lessons', label: 'Bài học', icon: BookOpen },
-    { id: 'notebook', label: 'Sổ tay', icon: Bookmark },
+    { id: 'flashcard', label: 'Flashcard', icon: Layers },
     { id: 'quiz', label: 'Trắc nghiệm', icon: CheckSquare },
   ];
 

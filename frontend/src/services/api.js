@@ -288,6 +288,7 @@ export const forumService = {
   addComment: (id, data) => api.post(`/forum/articles/${id}/comments`, data),
   getReviews: () => api.get('/forum/reviews'),
   addReview: (data) => api.post('/forum/reviews', data),
+  getCenters: (params) => api.get('/forum/centers', { params }),
 };
 
 export const supportService = {
