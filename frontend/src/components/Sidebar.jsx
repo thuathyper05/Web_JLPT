@@ -107,7 +107,7 @@ export default function Sidebar({
                 <img
                   src="/hyper_logo.png"
                   alt="HYPER JP"
-                  className="h-8 w-auto object-contain rounded-lg drop-shadow-sm"
+                  className="h-7 w-auto object-contain drop-shadow-sm"
                 />
               </div>
               <button
@@ -137,7 +137,7 @@ export default function Sidebar({
                   <img
                     src="/hyper_logo.png"
                     alt="HYPER JP"
-                    className="h-10 sm:h-11 w-auto object-contain relative z-10 rounded-xl drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                    className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
                   />
                 </div>
               </div>
