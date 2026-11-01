@@ -328,41 +328,162 @@ app.post('/api/auth/social-login', async (req, res) => {
   });
 });
 
+// Helper function to send real OTP verification email via nodemailer
+async function sendRealPasswordResetOtpEmail(toEmail, otpCode, username = 'Học viên') {
+  const smtpUser = process.env.EMAIL_USER || process.env.SMTP_USER || 'thuathyper05@gmail.com';
+  const smtpPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
+
+  const htmlContent = `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mã Xác Thực OTP Cấp Lại Mật Khẩu</title>
+</head>
+<body style="margin: 0; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6;">
+  <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
+    
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #881337 100%); padding: 36px 28px; text-align: center; color: #ffffff;">
+      <div style="display: inline-block; background: rgba(255,255,255,0.12); padding: 6px 16px; border-radius: 9999px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fbcfe8; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.2);">
+        HỆ THỐNG XÁC THỰC BẢO MẬT TÀI KHOẢN
+      </div>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: #ffffff;">
+        Cấp Lại Mật Khẩu Tài Khoản
+      </h1>
+      <p style="margin: 8px 0 0; font-size: 13px; color: #cbd5e1;">
+        Nền tảng học và ôn luyện thi năng lực tiếng Nhật thông minh
+      </p>
+    </div>
+
+    <div style="padding: 32px 28px;">
+      <p style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">
+        Xin chào ${username || 'Học viên'},
+      </p>
+      <p style="font-size: 14px; color: #475569; margin: 0 0 20px 0; line-height: 1.6;">
+        Hệ thống nhận được yêu cầu cấp lại mật khẩu đăng nhập cho tài khoản liên kết với địa chỉ email: <strong style="color: #0f172a;">${toEmail}</strong>.
+      </p>
+      <p style="font-size: 14px; color: #475569; margin: 0 0 24px 0; line-height: 1.6;">
+        Vui lòng sử dụng mã xác thực OTP gồm 6 chữ số dưới đây để tiến hành thiết lập mật khẩu mới:
+      </p>
+
+      <div style="background: #fff1f2; border: 2px dashed #f43f5e; border-radius: 16px; padding: 24px 16px; text-align: center; margin: 24px 0;">
+        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #be123c; margin-bottom: 10px;">
+          MÃ XÁC THỰC OTP CỦA BẠN
+        </div>
+        <div style="font-size: 40px; font-weight: 900; letter-spacing: 10px; color: #9f1239; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; padding-left: 10px;">
+          ${otpCode}
+        </div>
+        <div style="display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 700; color: #e11d48; background: #ffe4e6; padding: 4px 12px; border-radius: 9999px;">
+          Thời gian hiệu lực: 15 phút
+        </div>
+      </div>
+
+      <div style="background: #f8fafc; border-radius: 12px; border-left: 4px solid #f43f5e; padding: 14px 16px; margin: 24px 0; font-size: 12.5px; color: #64748b; line-height: 1.6;">
+        <strong style="color: #0f172a; display: block; margin-bottom: 4px;">Nguyên tắc an toàn bảo mật:</strong>
+        Mã OTP chỉ sử dụng một lần và có giá trị xác nhận quyền sở hữu tài khoản. Tuyệt đối không chia sẻ mã này cho bất kỳ ai, kể cả nhân viên hỗ trợ. Nếu bạn không gửi yêu cầu này, hãy yên tâm bỏ qua email, mật khẩu hiện tại của bạn vẫn được bảo vệ nguyên vẹn.
+      </div>
+
+      <div style="font-size: 13px; color: #64748b; margin-top: 24px;">
+        Trân trọng,<br>
+        <strong style="color: #0f172a;">Đội ngũ Kỹ thuật & Quản trị Hệ thống</strong>
+      </div>
+    </div>
+
+    <div style="background: #f8fafc; padding: 20px 28px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; line-height: 1.6;">
+      <p style="margin: 0 0 4px 0;">
+        Hotline / Zalo: <strong style="color: #475569;">0345698251</strong> | Email hỗ trợ: <strong style="color: #475569;">thuatnguyen1204@gmail.com</strong>
+      </p>
+      <p style="margin: 0; font-size: 11px; color: #cbd5e1;">
+        Đây là thư tự động gửi từ hệ thống học tập. Vui lòng không phản hồi trực tiếp vào địa chỉ gửi tự động này.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
+  `;
+
+  // Dispatch email via Gmail SMTP
+  if (smtpUser && smtpPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: smtpUser.trim(),
+          pass: smtpPass.replace(/\s+/g, '').trim()
+        }
+      });
+
+      await transporter.sendMail({
+        from: `"HYPER JLPT" <${smtpUser.trim()}>`,
+        to: toEmail,
+        subject: `[HYPER JLPT] Mã xác thực OTP đặt lại mật khẩu: ${otpCode}`,
+        html: htmlContent
+      });
+      console.log(`[Email OTP] Đã gửi mã OTP thực tế thành công tới: ${toEmail}`);
+      return { success: true };
+    } catch (err) {
+      console.error(`[Email OTP Error] Không thể gửi thư qua Gmail SMTP:`, err.message);
+      return { success: false, error: err.message };
+    }
+  } else {
+    console.warn(`[Email OTP] Chưa cấu hình EMAIL_PASS trong backend/.env. Thư OTP thực tế đã được chuẩn bị và sẵn sàng gửi.`);
+    return { success: false, reason: 'missing_credentials' };
+  }
+}
+
 app.post('/api/auth/send-otp', async (req, res) => {
   const { email } = req.body;
-  if (!email) {
+  if (!email || !email.trim()) {
     return res.status(400).json({ success: false, message: 'Vui lòng cung cấp địa chỉ email.' });
   }
 
   const cleanEmail = email.trim().toLowerCase();
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
+  let userFound = false;
+  let username = 'Học viên';
+
   if (db.pool && db.isDbConnected()) {
     try {
-      const userRes = await db.pool.query('SELECT id FROM users WHERE LOWER(email) = $1', [cleanEmail]);
+      const userRes = await db.pool.query('SELECT id, username FROM users WHERE LOWER(email) = $1', [cleanEmail]);
       if (userRes.rows.length === 0) {
-        return res.status(404).json({ success: false, message: 'Email này chưa được đăng ký trong hệ thống.' });
+        return res.status(404).json({ success: false, message: 'Địa chỉ email này chưa được đăng ký trong hệ thống.' });
       }
+
+      userFound = true;
+      username = userRes.rows[0].username || 'Học viên';
 
       await db.pool.query(
         "UPDATE users SET reset_token = $1, reset_token_expiry = NOW() + INTERVAL '15 minutes' WHERE id = $2",
         [otp, userRes.rows[0].id]
       );
-
-      return res.json({
-        success: true,
-        message: `Mã OTP 6 chữ số đã được gửi tới email của bạn! (Mã thử nghiệm: ${otp})`,
-        otp
-      });
     } catch (err) {
       console.error('Send OTP db error:', err);
     }
   }
 
+  // Also update in-memory user if exists
+  const memUser = inMemoryUsers.find(u => u.email.toLowerCase() === cleanEmail);
+  if (memUser) {
+    userFound = true;
+    memUser.reset_token = otp;
+    memUser.reset_token_expiry = Date.now() + 15 * 60 * 1000;
+  }
+
+  if (!userFound && (!db.pool || !db.isDbConnected())) {
+    return res.status(404).json({ success: false, message: 'Địa chỉ email này chưa được đăng ký trong hệ thống.' });
+  }
+
+  // Dispatch real professional email to user's mailbox
+  const emailResult = await sendRealPasswordResetOtpEmail(cleanEmail, otp, username);
+
+  // Return clean production response without exposing OTP in JSON
   return res.json({
     success: true,
-    message: `Mã OTP xác thực đã được gửi tới ${cleanEmail}! (Mã thử nghiệm: ${otp})`,
-    otp
+    emailSent: emailResult.success,
+    message: `Mã OTP xác thực 6 chữ số đã được gửi trực tiếp đến email ${cleanEmail}. Vui lòng kiểm tra hộp thư đến (Inbox) hoặc thư mục Thư rác/Spam.`
   });
 });
 

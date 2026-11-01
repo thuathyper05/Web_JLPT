@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { authService } from '../services/api';
-import SakuraPulse from './SakuraPulse';
 import {
   X,
   Mail,
@@ -35,7 +34,6 @@ export default function AuthModal() {
   // Forgot Password flow steps: 'request' | 'otp' | 'done'
   const [forgotStep, setForgotStep] = useState('request');
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
-  const [receivedOtp, setReceivedOtp] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -188,10 +186,7 @@ export default function AuthModal() {
           if (res.data?.success) {
             sounds.playCorrect();
             setForgotStep('otp');
-            setSuccessMsg(res.data.message || 'Mã OTP đã được gửi đến email của bạn.');
-            if (res.data.otp) {
-              setReceivedOtp(res.data.otp);
-            }
+            setSuccessMsg(res.data.message || 'Mã xác thực OTP đã được gửi trực tiếp đến hộp thư của bạn.');
           } else {
             setError(res.data?.message || 'Không tìm thấy tài khoản với email này.');
           }
@@ -393,13 +388,12 @@ export default function AuthModal() {
           {/* Top Brand Logo */}
           <div className="relative z-10 space-y-3">
             <div className="flex items-center">
-              <div className="bg-white px-3 py-1.5 rounded-2xl shadow-sm border border-pink-200/60 inline-flex items-center gap-2">
+              <div className="bg-white p-2 rounded-2xl shadow-xs border border-pink-200/60 inline-flex items-center justify-center">
                 <img
                   src="/hyper_logo.png"
-                  alt="HYPER"
-                  className="h-8 w-auto object-contain"
+                  alt="Logo"
+                  className="h-10 w-auto object-contain"
                 />
-                <span className="font-black text-sm text-slate-900 tracking-tight">HYPER JAPANESE</span>
               </div>
             </div>
 
@@ -455,11 +449,22 @@ export default function AuthModal() {
         {/* ── RIGHT COLUMN: HIGH-END AUTH FORM ── */}
         <div className="w-full md:w-7/12 p-6 sm:p-10 flex flex-col justify-between">
           <div>
+            {/* Mobile Standalone Brand Logo */}
+            <div className="flex md:hidden items-center justify-center mb-5">
+              <div className="bg-white p-2 rounded-2xl shadow-xs border border-pink-200/60 inline-flex items-center justify-center">
+                <img
+                  src="/hyper_logo.png"
+                  alt="Logo"
+                  className="h-9 w-auto object-contain"
+                />
+              </div>
+            </div>
+
             {/* Header Title */}
             <div className="mb-6">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider mb-2 border border-pink-100">
                 <User size={13} className="text-pink-600" />
-                <span>TÀI KHOẢN HỌC VIÊN HYPER</span>
+                <span>TÀI KHOẢN HỌC VIÊN</span>
               </div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                 {authMode === 'login' && 'Đăng nhập vào hệ thống'}
@@ -568,26 +573,16 @@ export default function AuthModal() {
                     <span className="text-xs font-semibold text-pink-600">{email}</span>
                   </div>
 
-                  {/* Real-time OTP Alert Banner */}
-                  {receivedOtp && (
-                    <div className="p-3 bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50 border border-pink-200 rounded-2xl flex items-center justify-between text-xs animate-in fade-in shadow-sm">
-                      <div className="flex items-center gap-2">
-                        <SakuraPulse size={14} />
-                        <span className="text-slate-700">Mã OTP: <strong className="text-sm font-mono text-pink-700 tracking-widest bg-white px-2.5 py-0.5 rounded-lg border border-pink-200 ml-1 font-black">{receivedOtp}</strong></span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          sounds.playFlip();
-                          const digits = receivedOtp.split('');
-                          setOtpCode(digits);
-                        }}
-                        className="px-3 py-1 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold text-[11px] rounded-xl shadow-sm transition-all cursor-pointer active:scale-95"
-                      >
-                        Điền nhanh
-                      </button>
+                  {/* Real Email OTP Notification Banner */}
+                  <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-2.5 text-xs text-emerald-800 animate-in fade-in shadow-2xs">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <p className="font-bold text-emerald-900 mb-0">Mã xác thực đã được gửi đến hộp thư</p>
+                      <p className="text-[11.5px] text-emerald-700 mb-0 leading-relaxed">
+                        Hệ thống đã gửi mã OTP 6 chữ số tới <strong className="text-slate-900">{email}</strong>. Vui lòng mở email (hộp thư đến hoặc mục Thư rác/Spam) để lấy mã và nhập vào các ô bên dưới.
+                      </p>
                     </div>
-                  )}
+                  </div>
 
                   <div className="flex justify-center gap-2 sm:gap-2.5">
                     {[0, 1, 2, 3, 4, 5].map((idx) => (
