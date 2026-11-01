@@ -51,6 +51,8 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 
+const FALLBACK_NEWS_IMAGE = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80';
+
 export default function ForumPage() {
   const { user, askAi, setActiveTab } = useApp();
 
@@ -75,7 +77,7 @@ export default function ForumPage() {
 
   // Pagination state (Báo Mới list browsing)
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
 
   // Centers directory state
   const [selectedCity, setSelectedCity] = useState('all');
@@ -86,11 +88,11 @@ export default function ForumPage() {
   const [selectedVote, setSelectedVote] = useState('N3');
   const [hasVoted, setHasVoted] = useState(false);
   const [voteStats, setVoteStats] = useState({
-    N5: 38,
-    N4: 31,
-    N3: 24,
-    N2: 12,
-    N1: 5
+    N5: 42,
+    N4: 35,
+    N3: 28,
+    N2: 15,
+    N1: 7
   });
 
   // Audio Reading state
@@ -116,14 +118,6 @@ export default function ForumPage() {
   const [submittingComment, setSubmittingComment] = useState(false);
   const [commentSuccess, setCommentSuccess] = useState(false);
 
-  // Review state
-  const [reviewAuthor, setReviewAuthor] = useState(user?.username || '');
-  const [reviewCenter, setReviewCenter] = useState('Khóa học tiếng Nhật N5 - HYPER');
-  const [reviewText, setReviewText] = useState('');
-  const [reviewRating, setReviewRating] = useState(5);
-  const [submittingReview, setSubmittingReview] = useState(false);
-  const [reviewSuccess, setReviewSuccess] = useState(false);
-
   // AI Summary state
   const [aiSummary, setAiSummary] = useState(null);
   const [loadingAiSummary, setLoadingAiSummary] = useState(false);
@@ -132,56 +126,56 @@ export default function ForumPage() {
   const [activeLeaderAdIndex, setActiveLeaderAdIndex] = useState(0);
   const [floatingAdDismissed, setFloatingAdDismissed] = useState(false);
 
-  // High-End Editorial Ad Creatives (VnExpress & Báo Mới Standard)
+  // Safe Image error handler
+  const handleImageError = (e) => {
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = FALLBACK_NEWS_IMAGE;
+  };
+
+  // High-End Commercial WebApp Advertisements
   const webappAds = [
     {
       id: 'ad_starter',
-      sponsorName: 'TÀI TRỢ CHUYÊN MÔN',
-      title: 'Học Tiếng Nhật Cùng Trợ Lý AI Sensei & Flashcard 3D',
-      desc: 'Nền tảng học thông minh HYPER JLPT với 1.500 từ vựng N5, âm thanh bản xứ Tokyo chuẩn cao độ và thuật toán Vườn Cây Bonsai ghi nhớ ngắt quãng.',
-      buttonText: 'Vào học ngay (Miễn phí 100%)',
-      badge: 'Miễn phí 100%',
+      sponsorTag: 'TÀI TRỢ CHÍNH THỨC',
+      badge: 'ĐÃ ĐƯỢC KIỂM CHỨNG',
+      title: 'Học Tiếng Nhật Thông Minh Cùng Trợ Lý AI Sensei & Flashcard 3D',
+      desc: 'Trọn bộ 25 bài học Minna no Nihongo, 1.500 từ vựng và Kanji N5 có giọng đọc Tokyo chuẩn cao độ, thuật toán Vườn Cây Bonsai ghi nhớ ngắt quãng SRS.',
+      features: ['1.500+ từ vựng & Kanji N5', 'Giọng đọc Tokyo chuẩn 100%', 'Trợ lý AI Sensei 24/7'],
+      buttonText: 'Bắt đầu học miễn phí ngay',
       targetTab: 'lessons',
       image: '/hyper_logo.png'
     },
     {
       id: 'ad_flashcard',
-      sponsorName: 'CÔNG NGHỆ HỌC TẬP',
-      title: 'Flashcard 3D Lật Thẻ Đa Chiều Chuẩn Phát Âm Tokyo',
-      desc: 'Ghi nhớ chữ Hán Kanji và từ vựng nhanh gấp 3 lần nhờ hiệu ứng lật thẻ thị giác, tự động phân tích nghĩa và phát âm giọng bản xứ.',
+      sponsorTag: 'CÔNG NGHỆ THỜI GIAN THỰC',
+      badge: 'PHƯƠNG PHÁP MỚI',
+      title: 'Flashcard 3D Lật Thẻ Đa Chiều: Tăng 300% Tốc Độ Ghi Nhớ Chữ Hán',
+      desc: 'Tự động phân tích âm On, âm Kun, nghĩa Hán Việt và phát âm mẫu chuẩn Tokyo ngay khi chạm vào thẻ, kích thích trực giác ghi nhớ bền vững.',
+      features: ['Hiệu ứng 3D trực quan', 'Phát âm bản xứ tức thì', 'Ghi nhớ không cần chép phạt'],
       buttonText: 'Trải nghiệm Flashcard 3D',
-      badge: 'Phương pháp mới',
       targetTab: 'flashcard',
       image: '/hyper_logo.png'
     },
     {
       id: 'ad_quiz',
-      sponsorName: 'KHẢO THÍ JLPT',
-      title: 'Bộ Đề Thi Thử Trắc Nghiệm JLPT N5 Bấm Giờ 2026',
-      desc: 'Chấm điểm tức thì, áp lực đồng hồ đếm ngược phòng thi thực tế và AI Sensei phân tích nguyên nhân từng câu trả lời sai.',
-      buttonText: 'Làm đề thi thử ngay',
-      badge: 'Bám sát đề thi thật',
+      sponsorTag: 'MÔ PHỎNG PHÒNG THI',
+      badge: 'BÁM SÁT ĐỀ THẬT 2026',
+      title: 'Bộ Đề Thi Thử Trắc Nghiệm JLPT N5 Có Bấm Giờ & Chấm Điểm Chuẩn IRT',
+      desc: 'Rèn luyện phản xạ phòng thi thực tế, phân bổ thời gian Moji-Goi và Dokkai khoa học, AI giải thích chi tiết đáp án từng câu hỏi.',
+      features: ['Đồng hồ đếm ngược áp lực thật', 'Thang điểm chuẩn hóa IRT', 'Giải thích chi tiết từng câu'],
+      buttonText: 'Làm đề thi thử miễn phí',
       targetTab: 'quiz',
       image: '/hyper_logo.png'
     },
     {
       id: 'ad_typing',
-      sponsorName: 'KỸ NĂNG VĂN PHÒNG',
-      title: 'Luyện Gõ Phím Romaji - Hiragana Chuẩn Công Sở Nhật Bản',
-      desc: 'Rèn luyện phản xạ gõ phím máy tính nhanh chóng để soạn thảo email, văn bản và báo cáo kinh doanh thực chiến cho kỹ sư và du học sinh.',
+      sponsorTag: 'KỸ NĂNG CÔNG SỞ',
+      badge: 'DÀNH CHO KỸ SƯ & DU HỌC',
+      title: 'Luyện Gõ Phím Romaji - Hiragana: Nâng Cao Phản Xạ Viết Văn Bản',
+      desc: 'Học cách soạn thảo email doanh nghiệp, viết báo cáo công việc và trao đổi với đồng nghiệp Nhật Bản nhanh chóng, chuẩn xác.',
+      features: ['Phản xạ gõ phím tốc độ cao', 'Bài tập từ vựng công sở', 'Tự động kiểm tra lỗi chính tả'],
       buttonText: 'Luyện gõ phím ngay',
-      badge: 'Thực chiến công việc',
       targetTab: 'practice',
-      image: '/hyper_logo.png'
-    },
-    {
-      id: 'ad_bonsai',
-      sponsorName: 'KHOA HỌC TRÍ NHỚ',
-      title: 'Vườn Cây Bonsai Tri Thức: Nhớ Từ Vựng Không Bao Giờ Quên',
-      desc: 'Mô phỏng đường cong lãng quên Ebbinghaus, nhắc nhở tưới nước ôn tập đúng thời điểm vàng để từ vựng in sâu vào tiềm thức vĩnh viễn.',
-      buttonText: 'Chăm sóc Bonsai',
-      badge: 'Thuật toán SRS',
-      targetTab: 'garden',
       image: '/hyper_logo.png'
     }
   ];
@@ -240,9 +234,7 @@ export default function ForumPage() {
       if (res.data?.success) {
         setCrawlerStatus(res.data);
       }
-    } catch {
-      // Keep existing status
-    }
+    } catch {}
   };
 
   const fetchArticles = async (showLoading = true) => {
@@ -283,15 +275,6 @@ export default function ForumPage() {
     }
   };
 
-  const fetchReviews = async () => {
-    try {
-      const res = await forumService.getReviews();
-      setReviews(res.data?.data || []);
-    } catch (err) {
-      console.error('Fetch reviews error:', err);
-    }
-  };
-
   useEffect(() => {
     fetchArticles();
     setCurrentPage(1);
@@ -301,18 +284,35 @@ export default function ForumPage() {
     fetchCenters();
   }, [selectedCity, centerSearch]);
 
-  useEffect(() => {
-    fetchReviews();
-  }, []);
+  // Safe sound trigger helper (NEVER crashes click events)
+  const safePlaySelect = () => {
+    try {
+      sounds.playSelect?.();
+    } catch {}
+  };
+
+  const safePlaySuccess = () => {
+    try {
+      sounds.playSuccess?.();
+    } catch {}
+  };
+
+  const safePlayFlip = () => {
+    try {
+      sounds.playFlip?.();
+    } catch {}
+  };
 
   // Trigger continuous auto-crawling
   const handleTriggerAutoCrawl = async () => {
     setIsCrawling(true);
     try {
-      sounds.playSuccess();
+      safePlaySuccess();
       const res = await forumService.crawlNews(3);
       if (res.data?.success) {
-        confetti({ particleCount: 40, spread: 70, origin: { y: 0.15 } });
+        try {
+          confetti({ particleCount: 40, spread: 70, origin: { y: 0.15 } });
+        } catch {}
         setCrawlToast(res.data.message);
         if (res.data.data?.length) {
           setArticles((prev) => [...res.data.data, ...prev]);
@@ -327,21 +327,25 @@ export default function ForumPage() {
     }
   };
 
-  // Article selection & reader actions
+  // Article selection & reader actions (SAFE & RESILIENT)
   const handleOpenArticle = (art) => {
-    sounds.playSelect();
+    safePlaySelect();
     setSelectedArticle(art);
     setAiSummary(null);
     setIsPlayingAudio(false);
-    stopSpeaking();
+    try {
+      stopSpeaking();
+    } catch {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToList = () => {
-    sounds.playFlip();
+    safePlayFlip();
     setSelectedArticle(null);
     setIsPlayingAudio(false);
-    stopSpeaking();
+    try {
+      stopSpeaking();
+    } catch {}
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -349,35 +353,43 @@ export default function ForumPage() {
   const handleToggleAudio = () => {
     if (!selectedArticle) return;
     if (isPlayingAudio) {
-      stopSpeaking();
+      try {
+        stopSpeaking();
+      } catch {}
       setIsPlayingAudio(false);
     } else {
       setIsPlayingAudio(true);
       const textToRead = selectedArticle.title + '. ' + selectedArticle.summary + '. ' + selectedArticle.content;
-      speakBilingualText(
-        textToRead,
-        'vi-VN',
-        () => setIsPlayingAudio(false),
-        () => setIsPlayingAudio(false)
-      );
+      try {
+        speakBilingualText(
+          textToRead,
+          'vi-VN',
+          () => setIsPlayingAudio(false),
+          () => setIsPlayingAudio(false)
+        );
+      } catch {
+        setIsPlayingAudio(false);
+      }
     }
   };
 
   // Bookmark Toggle
   const handleToggleBookmark = (id, e) => {
     e?.stopPropagation();
-    sounds.playSelect();
+    safePlaySelect();
     setBookmarkedIds((prev) => {
       const exists = prev.includes(id);
       const next = exists ? prev.filter((item) => item !== id) : [...prev, id];
-      localStorage.setItem('nihongo_bookmarked_news', JSON.stringify(next));
+      try {
+        localStorage.setItem('nihongo_bookmarked_news', JSON.stringify(next));
+      } catch {}
       return next;
     });
   };
 
   // Copy Article Link
   const handleCopyArticleLink = () => {
-    sounds.playSuccess();
+    safePlaySuccess();
     const url = window.location.origin + '/forum/' + (selectedArticle?.slug || selectedArticle?.id);
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
@@ -389,7 +401,7 @@ export default function ForumPage() {
     if (!selectedArticle) return;
     setLoadingAiSummary(true);
     try {
-      sounds.playFlip();
+      safePlayFlip();
       const prompt =
         'Bạn là Thư ký Báo chí cấp cao của Báo Mới Nhật Ngữ. Hãy tóm tắt bài viết sau thành 3 ý chính then chốt ngắn gọn, chuẩn xác, mang tính thời sự cao nhất:\\n\\nTiêu đề: ' +
         selectedArticle.title +
@@ -410,7 +422,7 @@ export default function ForumPage() {
     if (!commentText.trim() || !selectedArticle) return;
     setSubmittingComment(true);
     try {
-      sounds.playSuccess();
+      safePlaySuccess();
       const res = await forumService.addComment(selectedArticle.id, {
         author: commentAuthor,
         content: commentText,
@@ -435,20 +447,22 @@ export default function ForumPage() {
   // Vote in Poll
   const handleVotePoll = (level) => {
     if (hasVoted) return;
-    sounds.playSuccess();
+    safePlaySuccess();
     setSelectedVote(level);
     setHasVoted(true);
     setVoteStats((prev) => ({
       ...prev,
       [level]: (prev[level] || 0) + 1
     }));
-    confetti({ particleCount: 25, spread: 50, origin: { y: 0.8 } });
+    try {
+      confetti({ particleCount: 25, spread: 50, origin: { y: 0.8 } });
+    } catch {}
   };
 
   // Copy Center Phone
   const handleCopyPhone = (phone, id, e) => {
     e.stopPropagation();
-    sounds.playSuccess();
+    safePlaySuccess();
     navigator.clipboard.writeText(phone);
     setCopiedCenterPhone(id);
     setTimeout(() => setCopiedCenterPhone(null), 2000);
@@ -473,7 +487,7 @@ export default function ForumPage() {
   const currentLeaderAd = webappAds[activeLeaderAdIndex];
 
   return (
-    <div className="min-h-screen bg-slate-50/60 text-slate-800 font-sans selection:bg-rose-100 selection:text-rose-900 pb-20">
+    <div className="min-h-screen bg-slate-50/70 text-slate-800 font-sans selection:bg-rose-100 selection:text-rose-900 pb-20">
       {/* ── 1. TOAST NOTIFICATION: AUTO-CRAWLER RESULT ── */}
       {crawlToast && (
         <div className="fixed top-4 right-4 z-50 max-w-md p-4 rounded-2xl bg-white border border-emerald-300 shadow-xl flex items-start gap-3 animate-in fade-in slide-in-from-top-4">
@@ -536,8 +550,10 @@ export default function ForumPage() {
           <div className="flex items-center gap-3 sm:gap-4">
             <div
               onClick={() => {
+                safePlaySelect();
                 setSelectedCategory('all');
                 setSelectedArticle(null);
+                setCurrentPage(1);
               }}
               className="cursor-pointer group flex items-center gap-2.5"
             >
@@ -560,7 +576,7 @@ export default function ForumPage() {
             <button
               type="button"
               onClick={() => {
-                sounds.playFlip();
+                safePlayFlip();
                 setActiveTab('lessons');
               }}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs font-black shadow-xs transition-all cursor-pointer"
@@ -583,9 +599,10 @@ export default function ForumPage() {
                     key={c.id}
                     type="button"
                     onClick={() => {
-                      sounds.playSelect();
+                      safePlaySelect();
                       setSelectedCategory(c.id);
                       setSelectedArticle(null);
+                      setCurrentPage(1);
                     }}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                       isActive
@@ -617,39 +634,46 @@ export default function ForumPage() {
         </div>
       </header>
 
-      {/* ── 3. ROTATING EDITORIAL LEADERBOARD SPONSOR AD (CLEAN & PRESTIGE) ── */}
+      {/* ── 3. REDESIGNED HIGH-END COMMERCIAL LEADERBOARD AD ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
-              <img src="/hyper_logo.png" alt="HYPER" className="h-6 w-auto object-contain" />
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-50/90 via-white to-amber-50/70 border border-rose-200/90 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-white p-2 border border-rose-200/80 flex items-center justify-center shrink-0 shadow-xs">
+              <img src="/hyper_logo.png" alt="HYPER" onError={handleImageError} className="h-7 w-auto object-contain" />
             </div>
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                  {currentLeaderAd.sponsorName}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-700 text-white shadow-2xs">
+                  {currentLeaderAd.sponsorTag}
                 </span>
-                <span className="text-[10px] font-bold text-rose-700">{currentLeaderAd.badge}</span>
+                <span className="text-[10px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full border border-amber-200">
+                  {currentLeaderAd.badge}
+                </span>
               </div>
-              <p className="text-xs font-bold text-slate-900 mb-0 leading-tight">
+              <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight mb-0">
                 {currentLeaderAd.title}
-              </p>
+              </h3>
+              <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                {currentLeaderAd.features.map((feat, idx) => (
+                  <span key={idx} className="text-[10.5px] font-semibold text-slate-600 bg-white/80 px-2 py-0.5 rounded-md border border-slate-200/80">
+                    ✓ {feat}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
-            <span className="text-[11px] text-slate-500 hidden lg:inline max-w-sm truncate">
-              {currentLeaderAd.desc}
-            </span>
+          <div className="flex items-center gap-3 shrink-0 w-full md:w-auto justify-end">
             <button
               type="button"
               onClick={() => {
-                sounds.playFlip();
+                safePlayFlip();
                 setActiveTab(currentLeaderAd.targetTab);
               }}
-              className="px-3 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-800 text-white text-xs font-black shadow-xs transition-all cursor-pointer shrink-0"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs shadow-sm hover:shadow transition-all cursor-pointer flex items-center justify-center gap-1.5"
             >
-              {currentLeaderAd.buttonText}
+              <Sparkles size={13} className="text-rose-200" />
+              <span>{currentLeaderAd.buttonText}</span>
             </button>
           </div>
         </div>
@@ -673,8 +697,10 @@ export default function ForumPage() {
               <button
                 type="button"
                 onClick={() => {
+                  safePlaySelect();
                   setSelectedCategory(selectedArticle.category);
                   setSelectedArticle(null);
+                  setCurrentPage(1);
                 }}
                 className="hover:text-rose-700 font-semibold cursor-pointer"
               >
@@ -826,8 +852,9 @@ export default function ForumPage() {
               <div className="space-y-2">
                 <div className="rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
                   <img
-                    src={selectedArticle.imageUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80'}
+                    src={selectedArticle.imageUrl || FALLBACK_NEWS_IMAGE}
                     alt={selectedArticle.imageAlt || selectedArticle.title}
+                    onError={handleImageError}
                     className="w-full h-auto max-h-[480px] object-cover"
                   />
                 </div>
@@ -874,14 +901,14 @@ export default function ForumPage() {
                 ))}
 
                 {/* QUẢNG CÁO WEB APP SỐ 2: EDITORIAL SPONSOR BOX IN ARTICLE */}
-                <div className="my-8 p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 not-prose">
+                <div className="my-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-rose-50/30 border border-rose-200/90 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 not-prose">
                   <div className="flex items-start gap-3.5">
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 p-1 border border-slate-200 flex items-center justify-center shrink-0">
-                      <img src="/hyper_logo.png" alt="HYPER" className="h-8 w-auto object-contain" />
+                    <div className="w-12 h-12 rounded-xl bg-white p-1.5 border border-rose-200 flex items-center justify-center shrink-0 shadow-2xs">
+                      <img src="/hyper_logo.png" alt="HYPER" onError={handleImageError} className="h-8 w-auto object-contain" />
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                        <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-200">
                           TÀI TRỢ BỞI HYPER JAPANESE
                         </span>
                         <span className="text-[10px] font-bold text-rose-700">Miễn phí 100%</span>
@@ -897,7 +924,7 @@ export default function ForumPage() {
                   <button
                     type="button"
                     onClick={() => {
-                      sounds.playFlip();
+                      safePlayFlip();
                       setActiveTab('lessons');
                     }}
                     className="px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs shrink-0 shadow-xs cursor-pointer transition-all"
@@ -951,8 +978,10 @@ export default function ForumPage() {
                   <button
                     type="button"
                     onClick={() => {
+                      safePlaySelect();
                       setSelectedCategory(selectedArticle.category);
                       setSelectedArticle(null);
+                      setCurrentPage(1);
                     }}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 text-xs font-bold transition-all cursor-pointer"
                   >
@@ -991,7 +1020,6 @@ export default function ForumPage() {
                               type="button"
                               onClick={() => {
                                 handleOpenArticle(rel);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
                               }}
                               className="w-full text-left p-1.5 rounded-lg bg-white hover:bg-rose-50 text-[11px] font-medium text-slate-700 hover:text-rose-700 border border-slate-200 line-clamp-1 cursor-pointer transition-all"
                               title={rel.title}
@@ -1014,6 +1042,7 @@ export default function ForumPage() {
                             key={city}
                             type="button"
                             onClick={() => {
+                              safePlaySelect();
                               setSelectedCategory('centers');
                               setSelectedCity(city);
                               setSelectedArticle(null);
@@ -1038,7 +1067,7 @@ export default function ForumPage() {
                         <button
                           type="button"
                           onClick={() => {
-                            sounds.playFlip();
+                            safePlayFlip();
                             setActiveTab('flashcard');
                           }}
                           className="w-full text-left p-1.5 rounded-lg bg-white hover:bg-amber-50 text-[11px] font-medium text-slate-700 hover:text-amber-800 border border-slate-200 flex items-center justify-between cursor-pointer transition-all"
@@ -1049,7 +1078,7 @@ export default function ForumPage() {
                         <button
                           type="button"
                           onClick={() => {
-                            sounds.playFlip();
+                            safePlayFlip();
                             setActiveTab('practice');
                           }}
                           className="w-full text-left p-1.5 rounded-lg bg-white hover:bg-amber-50 text-[11px] font-medium text-slate-700 hover:text-amber-800 border border-slate-200 flex items-center justify-between cursor-pointer transition-all"
@@ -1182,7 +1211,9 @@ export default function ForumPage() {
                       key={idx}
                       type="button"
                       onClick={() => {
+                        safePlaySelect();
                         setSelectedCategory('Kỳ thi JLPT');
+                        setCurrentPage(1);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 text-xs font-semibold text-slate-700 hover:text-rose-800 transition-all flex items-center justify-between border border-transparent hover:border-rose-200 cursor-pointer"
@@ -1212,6 +1243,7 @@ export default function ForumPage() {
                       key={idx}
                       type="button"
                       onClick={() => {
+                        safePlaySelect();
                         setSelectedCategory('centers');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
@@ -1243,7 +1275,7 @@ export default function ForumPage() {
                       key={idx}
                       type="button"
                       onClick={() => {
-                        sounds.playFlip();
+                        safePlayFlip();
                         setActiveTab(item.tab);
                       }}
                       className="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 text-xs font-semibold text-slate-700 hover:text-amber-800 transition-all flex items-center justify-between border border-transparent hover:border-amber-200 cursor-pointer"
@@ -1276,7 +1308,7 @@ export default function ForumPage() {
                     key={city.id}
                     type="button"
                     onClick={() => {
-                      sounds.playSelect();
+                      safePlaySelect();
                       setSelectedCity(city.id);
                     }}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
@@ -1378,8 +1410,9 @@ export default function ForumPage() {
                 >
                   <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-xs">
                     <img
-                      src={featuredArticle.imageUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80'}
+                      src={featuredArticle.imageUrl || FALLBACK_NEWS_IMAGE}
                       alt={featuredArticle.title}
+                      onError={handleImageError}
                       className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-2">
@@ -1452,58 +1485,95 @@ export default function ForumPage() {
 
                 {/* Stream of Articles (Baomoi horizontal cards) */}
                 <div className="divide-y divide-slate-200/80">
-                  {paginatedArticles.map((art) => (
-                    <article
-                      key={art.id}
-                      onClick={() => handleOpenArticle(art)}
-                      className="py-4 sm:py-5 first:pt-0 cursor-pointer group flex flex-col-reverse sm:flex-row items-start justify-between gap-4"
-                    >
-                      {/* Left: Article Text & Meta */}
-                      <div className="flex-1 space-y-1.5">
-                        <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
-                          <div className="flex items-center gap-1.5 text-xs font-black uppercase text-rose-700">
-                            <span className="text-slate-400 font-normal">Trang chủ /</span>
-                            <span>{art.category}</span>
-                            <span className="text-slate-300">/</span>
-                            <span className="text-slate-400 font-normal lowercase">
-                              {art.publishedTime || 'Vừa xong'}
+                  {paginatedArticles.map((art, idx) => (
+                    <React.Fragment key={art.id}>
+                      <article
+                        onClick={() => handleOpenArticle(art)}
+                        className="py-4 sm:py-5 first:pt-0 cursor-pointer group flex flex-col-reverse sm:flex-row items-start justify-between gap-4"
+                      >
+                        {/* Left: Article Text & Meta */}
+                        <div className="flex-1 space-y-1.5">
+                          <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
+                            <div className="flex items-center gap-1.5 text-xs font-black uppercase text-rose-700">
+                              <span className="text-slate-400 font-normal">Trang chủ /</span>
+                              <span>{art.category}</span>
+                              <span className="text-slate-300">/</span>
+                              <span className="text-slate-400 font-normal lowercase">
+                                {art.publishedTime || 'Vừa xong'}
+                              </span>
+                            </div>
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-rose-50 group-hover:text-rose-700 text-[10.5px] font-bold text-slate-500 border border-slate-200 group-hover:border-rose-200 transition-all"
+                              title="Bài viết có sơ đồ liên kết phân tầng chi tiết"
+                            >
+                              <Network size={11} className="text-rose-600" />
+                              <span>Sơ đồ liên kết</span>
                             </span>
                           </div>
-                          <span
-                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-rose-50 group-hover:text-rose-700 text-[10.5px] font-bold text-slate-500 border border-slate-200 group-hover:border-rose-200 transition-all"
-                            title="Bài viết có sơ đồ liên kết phân tầng chi tiết"
+
+                          <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-rose-700 transition-colors leading-snug">
+                            {art.title}
+                          </h4>
+
+                          <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 leading-relaxed mb-0">
+                            {art.summary}
+                          </p>
+
+                          <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-1">
+                            <span className="font-semibold text-slate-600">{art.sourceName}</span>
+                            <span>/</span>
+                            <span>{art.readTime}</span>
+                            <span>/</span>
+                            <span>{art.views.toLocaleString()} lượt xem</span>
+                          </div>
+                        </div>
+
+                        {/* Right: Crisp Image Thumbnail with guaranteed error fallback */}
+                        <div className="w-full sm:w-44 aspect-video sm:aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                          <img
+                            src={art.imageUrl || FALLBACK_NEWS_IMAGE}
+                            alt={art.title}
+                            onError={handleImageError}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      </article>
+
+                      {/* IN-FEED NATIVE SPONSORED CARD (After every 4th article) */}
+                      {idx === 3 && (
+                        <div className="my-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-50/70 via-white to-rose-50/80 border border-amber-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <div className="flex items-center gap-3.5">
+                            <div className="w-10 h-10 rounded-xl bg-white p-1.5 border border-amber-200 flex items-center justify-center shrink-0 shadow-2xs">
+                              <img src="/hyper_logo.png" alt="HYPER" onError={handleImageError} className="h-6 w-auto object-contain" />
+                            </div>
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-600 text-white">
+                                  TÀI TRỢ CHUYÊN MỤC
+                                </span>
+                                <span className="text-[10px] font-bold text-rose-700">Miễn phí trọn đời</span>
+                              </div>
+                              <h4 className="text-sm font-black text-slate-900 mb-0">
+                                Lật Thẻ Flashcard 3D & Chăm Sóc Vườn Bonsai Ôn Tập Từ Vựng
+                              </h4>
+                              <p className="text-xs text-slate-600 mb-0">
+                                Đã có hơn 2.500 học viên đạt điểm tuyệt đối JLPT N5 nhờ phương pháp lặp lại ngắt quãng SRS.
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              safePlayFlip();
+                              setActiveTab('flashcard');
+                            }}
+                            className="px-4 py-2 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs shrink-0 shadow-xs cursor-pointer transition-all"
                           >
-                            <Network size={11} className="text-rose-600" />
-                            <span>Sơ đồ liên kết</span>
-                          </span>
+                            Lật thẻ ngay
+                          </button>
                         </div>
-
-                        <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-rose-700 transition-colors leading-snug">
-                          {art.title}
-                        </h4>
-
-                        <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 leading-relaxed mb-0">
-                          {art.summary}
-                        </p>
-
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-1">
-                          <span className="font-semibold text-slate-600">{art.sourceName}</span>
-                          <span>/</span>
-                          <span>{art.readTime}</span>
-                          <span>/</span>
-                          <span>{art.views.toLocaleString()} lượt xem</span>
-                        </div>
-                      </div>
-
-                      {/* Right: Crisp Image Thumbnail */}
-                      <div className="w-full sm:w-44 aspect-video sm:aspect-4/3 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
-                        <img
-                          src={art.imageUrl || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80'}
-                          alt={art.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    </article>
+                      )}
+                    </React.Fragment>
                   ))}
                 </div>
 
@@ -1513,7 +1583,7 @@ export default function ForumPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        sounds.playSelect();
+                        safePlaySelect();
                         setCurrentPage((prev) => Math.max(1, prev - 1));
                         window.scrollTo({ top: 350, behavior: 'smooth' });
                       }}
@@ -1532,7 +1602,7 @@ export default function ForumPage() {
                             key={pageNum}
                             type="button"
                             onClick={() => {
-                              sounds.playSelect();
+                              safePlaySelect();
                               setCurrentPage(pageNum);
                               window.scrollTo({ top: 350, behavior: 'smooth' });
                             }}
@@ -1552,7 +1622,7 @@ export default function ForumPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        sounds.playSelect();
+                        safePlaySelect();
                         setCurrentPage((prev) => Math.min(totalPages, prev + 1));
                         window.scrollTo({ top: 350, behavior: 'smooth' });
                       }}
@@ -1611,7 +1681,7 @@ export default function ForumPage() {
                         key={city}
                         type="button"
                         onClick={() => {
-                          sounds.playSelect();
+                          safePlaySelect();
                           setSelectedCategory('centers');
                           setSelectedCity(city);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1637,8 +1707,9 @@ export default function ForumPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        sounds.playSelect();
+                        safePlaySelect();
                         setSelectedCategory('Kỳ thi JLPT');
+                        setCurrentPage(1);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="w-full p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between text-left font-semibold text-slate-700"
@@ -1649,8 +1720,9 @@ export default function ForumPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        sounds.playSelect();
+                        safePlaySelect();
                         setSelectedCategory('Chính sách Visa');
+                        setCurrentPage(1);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className="w-full p-2 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-rose-700 cursor-pointer transition-colors flex items-center justify-between text-left font-semibold text-slate-700"
@@ -1661,7 +1733,7 @@ export default function ForumPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        sounds.playSelect();
+                        safePlaySelect();
                         setSelectedCategory('sitemap_explorer');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
@@ -1708,31 +1780,47 @@ export default function ForumPage() {
                   )}
                 </div>
 
-                {/* WIDGET 5: QUẢNG CÁO WEBAPP NATIVE CARD (CLEAN & MINIMAL) */}
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-slate-50 p-1 border border-slate-200 flex items-center justify-center shrink-0">
-                      <img src="/hyper_logo.png" alt="HYPER" className="h-5 w-auto object-contain" />
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                        HỌC TẬP THỰC CHIẾN
-                      </span>
-                      <h5 className="text-xs font-black text-slate-900 mb-0">Luyện Đề Thi Thử Bấm Giờ</h5>
+                {/* WIDGET 5: REDESIGNED COMMERCIAL APP SHOWCASE */}
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-white via-rose-50/20 to-amber-50/30 border border-rose-200/90 shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-700 text-white">
+                      HỌC TẬP THỰC CHIẾN
+                    </span>
+                    <div className="flex items-center gap-1 text-amber-500 text-xs font-black">
+                      <Star size={12} className="fill-amber-400" />
+                      <span>4.9 / 5.0</span>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed mb-0">
-                    Làm quen với áp lực phòng thi thật, AI Sensei chấm điểm tức thì và phân tích lỗi sai ngữ pháp.
-                  </p>
+
+                  <div className="space-y-1">
+                    <h5 className="text-sm font-black text-slate-900 mb-0">
+                      Bộ Đề Thi Thử JLPT N5 Có Bấm Giờ
+                    </h5>
+                    <p className="text-xs text-slate-600 leading-relaxed mb-0">
+                      Làm quen áp lực phòng thi thật, AI Sensei chấm điểm tức thì và phân tích nguyên nhân từng lỗi sai ngữ pháp.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 text-[11px] text-slate-500 font-medium">
+                    <div className="flex items-center gap-1.5">
+                      <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
+                      <span>Đồng hồ đếm ngược phòng thi 45 phút</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
+                      <span>Phân tích thang điểm chuẩn hóa IRT</span>
+                    </div>
+                  </div>
+
                   <button
                     type="button"
                     onClick={() => {
-                      sounds.playFlip();
+                      safePlayFlip();
                       setActiveTab('quiz');
                     }}
-                    className="w-full py-2 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs text-center shadow-xs transition-all cursor-pointer block"
+                    className="w-full py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs text-center shadow-xs transition-all cursor-pointer block"
                   >
-                    Làm đề thi thử miễn phí ngay
+                    Vào luyện đề thi thử miễn phí ngay
                   </button>
                 </div>
               </div>
@@ -1743,10 +1831,10 @@ export default function ForumPage() {
 
       {/* ── 5. FLOATING SLIDE-IN SPONSOR TOAST (CLEAN & NON-INTRUSIVE) ── */}
       {!floatingAdDismissed && !selectedArticle && (
-        <div className="fixed bottom-4 left-4 z-40 max-w-xs sm:max-w-sm p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4">
+        <div className="fixed bottom-4 left-4 z-40 max-w-xs sm:max-w-sm p-3.5 rounded-2xl bg-white border border-rose-200/90 shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
-              <img src="/hyper_logo.png" alt="HYPER" className="h-5 w-auto object-contain" />
+            <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center shrink-0">
+              <img src="/hyper_logo.png" alt="HYPER" onError={handleImageError} className="h-5 w-auto object-contain" />
             </div>
             <div className="space-y-0.5">
               <span className="text-[9px] font-black uppercase text-rose-700">TÀI TRỢ BỞI HYPER JAPANESE</span>
@@ -1760,7 +1848,7 @@ export default function ForumPage() {
             <button
               type="button"
               onClick={() => {
-                sounds.playFlip();
+                safePlayFlip();
                 setActiveTab('flashcard');
               }}
               className="px-2.5 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-800 text-white font-black text-[11px] shadow-xs cursor-pointer"

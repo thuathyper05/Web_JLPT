@@ -101,5 +101,17 @@ export const sounds = {
         osc.stop(now + idx * 0.09 + 0.35);
       });
     } catch {}
+  },
+
+  playSelect: () => {
+    try {
+      sounds.playFlip();
+    } catch {}
+  },
+
+  playSuccess: () => {
+    try {
+      sounds.playCorrect();
+    } catch {}
   }
 };
