@@ -635,18 +635,22 @@ app.get('/api/lessons/:id', async (req, res) => {
     }
   }
 
-  const vocabs = db.data.lessons.filter(v => v.lesson_number === lNum);
+  const vocabs = (db.data.lessons || []).filter(v => v.lesson_number === lNum && (v.level || 'N5').toUpperCase() === level);
+  const lessonObj = (db.data.lessonList || []).find(l => l.lesson_number === lNum && (l.level || 'N5').toUpperCase() === level);
+
   res.json({
-    id: lNum,
+    id: lessonObj?.id || lNum,
     lesson_number: lNum,
-    title: vocabs[0]?.lesson_title || `Bài ${lNum}`,
-    description: `Toàn bộ ${vocabs.length} từ vựng chuẩn Minna no Nihongo Bài ${lNum}`,
+    level: level,
+    title: lessonObj?.title || `Bài ${lNum}`,
+    description: lessonObj?.description || `Toàn bộ ${vocabs.length} từ vựng chuẩn JLPT ${level} Bài ${lNum}`,
     vocab_count: vocabs.length
   });
 });
 
 app.get('/api/vocabularies', async (req, res) => {
-  const { lesson, search, level = 'N5' } = req.query;
+  const { search, level = 'N5' } = req.query;
+  const lesson = req.query.lesson || req.query.lesson_number;
   const upperLevel = level.toUpperCase();
 
   if (db.pool && db.isDbConnected()) {
@@ -686,8 +690,8 @@ app.get('/api/vocabularies', async (req, res) => {
   }
 
   // Fallback in-memory
-  let result = db.data.lessons;
-  if (lesson) {
+  let result = (db.data.lessons || []).filter(v => (v.level || 'N5').toUpperCase() === upperLevel);
+  if (lesson && lesson !== 'all') {
     const lNum = parseInt(lesson);
     result = result.filter(v => v.lesson_number === lNum);
   }
@@ -739,7 +743,7 @@ app.get('/api/kanji', async (req, res) => {
     }
   }
 
-  let result = db.data.kanji;
+  let result = (db.data.kanji || []).filter(k => (k.level || 'N5').toUpperCase() === upperLevel);
   if (search) {
     const q = search.toLowerCase().trim();
     result = result.filter(k => 
@@ -783,8 +787,8 @@ app.get('/api/grammar', async (req, res) => {
     }
   }
 
-  let list = db.data.grammar;
-  if (lesson) {
+  let list = (db.data.grammar || []).filter(g => (g.level || 'N5').toUpperCase() === upperLevel);
+  if (lesson && lesson !== 'all') {
     const lNum = parseInt(lesson);
     list = list.filter(g => g.lesson_number === lNum);
   }

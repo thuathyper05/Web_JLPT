@@ -50,7 +50,15 @@ export default function ListeningPage() {
 
   // Current track index in currentTracks
   const [currentIndex, setCurrentIndex] = useState(0);
-  const track = currentTracks[currentIndex] || currentTracks[0] || levelTracks[0];
+  const track = currentTracks[currentIndex] || currentTracks[0] || levelTracks[0] || {
+    id: 1,
+    lesson: 1,
+    topic: 'Choukai JLPT ' + activeLevel,
+    situation: 'Bài luyện nghe chuẩn JLPT ' + activeLevel,
+    dialogue: [],
+    question: 'Hãy lắng nghe và chọn đáp án chính xác',
+    options: []
+  };
 
   // Playback & Interactive States
   const [isPlaying, setIsPlaying] = useState(false);
