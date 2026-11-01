@@ -53,9 +53,18 @@ export default function NotebookPage() {
   }, [currentLevel]);
 
   // Compute lists
-  const reviewWords = allWords.filter((w) => guestProgress[w.id]?.status === 'needs_review');
-  const favoriteWords = allWords.filter((w) => favorites[w.id]);
-  const masteredWords = allWords.filter((w) => guestProgress[w.id]?.status === 'mastered');
+  const safeProgress = (guestProgress && typeof guestProgress === 'object') ? guestProgress : {};
+  const safeFavorites = (favorites && typeof favorites === 'object') ? favorites : {};
+  const safeWords = Array.isArray(allWords) ? allWords : [];
+  const reviewWords = safeWords.filter((w) => {
+    const p = safeProgress[w.id];
+    return p && (p.status === 'needs_review' || p === 'needs_review');
+  });
+  const favoriteWords = safeWords.filter((w) => safeFavorites[w.id]);
+  const masteredWords = safeWords.filter((w) => {
+    const p = safeProgress[w.id];
+    return p && (p.status === 'mastered' || p === 'mastered');
+  });
 
   let currentList = [];
   if (activeSubTab === 'review') currentList = reviewWords;

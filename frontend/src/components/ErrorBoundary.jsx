@@ -13,10 +13,25 @@ export default class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('WebApp ErrorBoundary caught error:', error, errorInfo);
+    // Sanitize any corrupted localStorage values
+    try {
+      ['nihongo_guest_progress', 'nihongo_favorites', 'nihongo_gamification', 'nihongo_cached_user'].forEach((key) => {
+        const val = localStorage.getItem(key);
+        if (val === 'null' || val === 'undefined') {
+          localStorage.removeItem(key);
+        }
+      });
+    } catch {}
   }
 
   handleReload = () => {
     try {
+      ['nihongo_guest_progress', 'nihongo_favorites', 'nihongo_gamification', 'nihongo_cached_user'].forEach((key) => {
+        const val = localStorage.getItem(key);
+        if (val === 'null' || val === 'undefined') {
+          localStorage.removeItem(key);
+        }
+      });
       window.location.reload();
     } catch {
       window.location.href = '/';
@@ -26,6 +41,12 @@ export default class ErrorBoundary extends React.Component {
   handleResetHome = () => {
     try {
       localStorage.setItem('nihongo_current_level', 'N5');
+      ['nihongo_guest_progress', 'nihongo_favorites', 'nihongo_gamification', 'nihongo_cached_user'].forEach((key) => {
+        const val = localStorage.getItem(key);
+        if (val === 'null' || val === 'undefined') {
+          localStorage.removeItem(key);
+        }
+      });
     } catch {}
     window.location.href = '/';
   };
@@ -41,10 +62,10 @@ export default class ErrorBoundary extends React.Component {
 
             <div className="space-y-2">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">
-                Đã xảy ra sự cố hiển thị
+                Đang khôi phục hệ thống...
               </h2>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Hệ thống đang lưu giữ toàn bộ dữ liệu của bạn an toàn. Vui lòng bấm làm mới để đồng bộ lại trang web ngay lập tức.
+                Đang làm mới đồng bộ dữ liệu giao diện để hoạt động bình thường. Nhấn nút bên dưới để tải lại ngay.
               </p>
             </div>
 
@@ -55,7 +76,7 @@ export default class ErrorBoundary extends React.Component {
                 className="flex-1 py-3 px-4 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
               >
                 <RotateCw size={15} />
-                <span>Tải lại trang</span>
+                <span>Làm mới trang</span>
               </button>
 
               <button

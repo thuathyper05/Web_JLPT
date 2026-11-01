@@ -28,7 +28,14 @@ ALTER TABLE kanji ADD COLUMN IF NOT EXISTS stroke_count INT DEFAULT 5;
 ALTER TABLE kanji ADD COLUMN IF NOT EXISTS examples JSONB DEFAULT '[]'::jsonb;
 ALTER TABLE kanji DROP CONSTRAINT IF EXISTS kanji_kanji_key;
 ALTER TABLE kanji DROP CONSTRAINT IF EXISTS uq_kanji_character;
+DROP INDEX IF EXISTS uq_kanji_char;
 CREATE UNIQUE INDEX IF NOT EXISTS uq_kanji_level_char ON kanji (level, kanji);
+
+-- Xoa bo cac index cu chi ap dung cho 1 cap do N5
+DROP INDEX IF EXISTS uq_vocab_lesson_order;
+DROP INDEX IF EXISTS idx_vocab_order;
+DROP INDEX IF EXISTS idx_vocab_lesson;
+CREATE UNIQUE INDEX IF NOT EXISTS uq_vocab_level_lesson_order ON vocabularies (level, lesson_number, order_num);
 
 -- 2. TAO BANG CHO CAC TINH NANG NANG CAO MOI
 CREATE TABLE IF NOT EXISTS grammar_points (

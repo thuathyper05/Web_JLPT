@@ -74,58 +74,58 @@ export const AppProvider = ({ children }) => {
 
   // Gamification & Progress State (Real Tracking: học thì mới có chuỗi)
   const [gamification, setGamification] = useState(() => {
+    const defaultGamification = {
+      total_xp: 0,
+      current_streak: 0,
+      longest_streak: 0,
+      level_tier: 'Tân Thủ N5',
+      today_words_count: 0,
+      last_active_date: null,
+      daily_study_counts: {}
+    };
     try {
       const saved = localStorage.getItem('nihongo_gamification');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Dọn dẹp số liệu mẫu 12 ngày / 1240 xp cũ nếu chưa có lịch sử học thực tế
-        if (parsed.current_streak === 12 && (!parsed.daily_study_counts || Object.keys(parsed.daily_study_counts).length === 0)) {
-          parsed.current_streak = 0;
-          parsed.total_xp = 0;
-          parsed.longest_streak = 0;
+        if (parsed && typeof parsed === 'object') {
+          if (parsed.current_streak === 12 && (!parsed.daily_study_counts || Object.keys(parsed.daily_study_counts).length === 0)) {
+            parsed.current_streak = 0;
+            parsed.total_xp = 0;
+            parsed.longest_streak = 0;
+          }
+          return {
+            ...defaultGamification,
+            ...parsed,
+            daily_study_counts: (parsed.daily_study_counts && typeof parsed.daily_study_counts === 'object') ? parsed.daily_study_counts : {}
+          };
         }
-        return parsed;
       }
-      return {
-        total_xp: 0,
-        current_streak: 0,
-        longest_streak: 0,
-        level_tier: 'Tân Thủ N5',
-        today_words_count: 0,
-        last_active_date: null,
-        daily_study_counts: {}
-      };
-    } catch {
-      return {
-        total_xp: 0,
-        current_streak: 0,
-        longest_streak: 0,
-        level_tier: 'Tân Thủ N5',
-        today_words_count: 0,
-        last_active_date: null,
-        daily_study_counts: {}
-      };
-    }
+    } catch {}
+    return defaultGamification;
   });
 
   // Guest Progress: { [wordId]: { status: 'mastered' | 'needs_review', updated_at: string } }
   const [guestProgress, setGuestProgress] = useState(() => {
     try {
       const saved = localStorage.getItem('nihongo_guest_progress');
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch {}
+    return {};
   });
 
   // Favorites: { [wordId]: true }
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('nihongo_favorites');
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch {}
+    return {};
   });
 
   // Initial App Load Spinner (Beside auth check)
@@ -142,12 +142,21 @@ export const AppProvider = ({ children }) => {
     const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
 
     setGamification((prev) => {
-      const dailyCounts = { ...(prev.daily_study_counts || {}) };
+      const safePrev = (prev && typeof prev === 'object') ? prev : {
+        total_xp: 0,
+        current_streak: 0,
+        longest_streak: 0,
+        level_tier: 'Tân Thủ N5',
+        today_words_count: 0,
+        last_active_date: null,
+        daily_study_counts: {}
+      };
+      const dailyCounts = { ...(safePrev.daily_study_counts || {}) };
 
       // Nạp lịch sử học từ guestProgress nếu dailyCounts trống
       if (Object.keys(dailyCounts).length === 0 && guestProgress && typeof guestProgress === 'object') {
         Object.values(guestProgress).forEach((item) => {
-          if (item && item.updated_at) {
+          if (item && typeof item === 'object' && item.updated_at) {
             const d = item.updated_at.slice(0, 10);
             dailyCounts[d] = (dailyCounts[d] || 0) + 1;
           }
@@ -155,8 +164,8 @@ export const AppProvider = ({ children }) => {
       }
 
       const todayWords = dailyCounts[todayStr] || 0;
-      let streak = prev.current_streak || 0;
-      const lastActive = prev.last_active_date;
+      let streak = safePrev.current_streak || 0;
+      const lastActive = safePrev.last_active_date;
 
       if (!lastActive) {
         streak = todayWords > 0 ? 1 : 0;
@@ -170,11 +179,11 @@ export const AppProvider = ({ children }) => {
       }
 
       return {
-        ...prev,
+        ...safePrev,
         current_streak: streak,
         today_words_count: todayWords,
         daily_study_counts: dailyCounts,
-        last_active_date: todayWords > 0 ? todayStr : prev.last_active_date
+        last_active_date: todayWords > 0 ? todayStr : safePrev.last_active_date
       };
     });
 

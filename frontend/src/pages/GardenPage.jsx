@@ -58,14 +58,22 @@ export default function GardenPage() {
     fetchVocabs();
   }, [currentLevel]);
 
-  const totalWords = 1512;
-  const masteredCount = Object.values(guestProgress).filter((p) => p && typeof p === 'object' && p.status === 'mastered').length;
+  const safeProgress = (guestProgress && typeof guestProgress === 'object') ? guestProgress : {};
+  const safeWords = Array.isArray(allWords) ? allWords : [];
+  const totalWords = safeWords.length || 1589;
+  const masteredCount = Object.values(safeProgress).filter((p) => p && (p.status === 'mastered' || p === 'mastered')).length;
   const overallPercentage = Math.min(100, Math.round((masteredCount / totalWords) * 100));
 
   // Partition words into 4 SRS Trays based on learning history
-  const masteredList = allWords.filter((w) => guestProgress[w.id]?.status === 'mastered');
-  const reviewList = allWords.filter((w) => guestProgress[w.id]?.status === 'needs_review');
-  const unstudiedList = allWords.filter((w) => !guestProgress[w.id]);
+  const masteredList = safeWords.filter((w) => {
+    const p = safeProgress[w.id];
+    return p && (p.status === 'mastered' || p === 'mastered');
+  });
+  const reviewList = safeWords.filter((w) => {
+    const p = safeProgress[w.id];
+    return p && (p.status === 'needs_review' || p === 'needs_review');
+  });
+  const unstudiedList = safeWords.filter((w) => !safeProgress[w.id]);
 
   // Stage 1 (Mầm non): Words needing review or first lessons
   const stage1Words = reviewList.length > 0 ? reviewList : unstudiedList.slice(0, 10);

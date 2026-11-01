@@ -87,9 +87,10 @@ export default function DashboardPage() {
 
   // Real-time stats based on user learning data
   useEffect(() => {
-    const studiedCount = Object.keys(guestProgress).length;
-    const masteredCount = Object.values(guestProgress).filter(p => p.status === 'mastered').length;
-    const needsReviewCount = Object.values(guestProgress).filter(p => p.status === 'needs_review').length;
+    const safeProgress = (guestProgress && typeof guestProgress === 'object') ? guestProgress : {};
+    const studiedCount = Object.keys(safeProgress).length;
+    const masteredCount = Object.values(safeProgress).filter(p => p && (p.status === 'mastered' || p === 'mastered')).length;
+    const needsReviewCount = Object.values(safeProgress).filter(p => p && (p.status === 'needs_review' || p === 'needs_review')).length;
 
     const kanjiByLevel = { N5: 108, N4: 180, N3: 119, N2: 100, N1: 100 };
 
@@ -98,7 +99,7 @@ export default function DashboardPage() {
       mastered: masteredCount,
       needsReview: needsReviewCount,
       totalKanji: kanjiByLevel[currentLevel] || 108,
-      totalVocab: levelVocabs.length || (currentLevel === 'N1' ? 3070 : currentLevel === 'N2' ? 1778 : currentLevel === 'N3' ? 1659 : currentLevel === 'N4' ? 1488 : 1589)
+      totalVocab: (Array.isArray(levelVocabs) && levelVocabs.length > 0) ? levelVocabs.length : (currentLevel === 'N1' ? 3070 : currentLevel === 'N2' ? 1778 : currentLevel === 'N3' ? 1659 : currentLevel === 'N4' ? 1488 : 1589)
     });
   }, [guestProgress, currentLevel, levelVocabs]);
 
