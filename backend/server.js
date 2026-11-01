@@ -330,7 +330,7 @@ app.post('/api/auth/social-login', async (req, res) => {
 
 // Helper function to send real OTP verification email via nodemailer
 async function sendRealPasswordResetOtpEmail(toEmail, otpCode, username = 'Học viên') {
-  const smtpUser = process.env.EMAIL_USER || process.env.SMTP_USER || 'thuathyper05@gmail.com';
+  const smtpUser = process.env.EMAIL_USER || process.env.SMTP_USER || 'bahuy3373@gmail.com';
   const smtpPass = process.env.EMAIL_PASS || process.env.SMTP_PASS;
 
   const htmlContent = `
@@ -1755,8 +1755,8 @@ app.post('/api/support/feedback', async (req, res) => {
 
   // 3. Dispatch via nodemailer
   try {
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
+    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+    const smtpPass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').replace(/\s+/g, '');
 
     if (smtpUser && smtpPass) {
       const transporter = nodemailer.createTransport({
