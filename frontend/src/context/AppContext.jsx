@@ -397,6 +397,23 @@ export const AppProvider = ({ children }) => {
 
     // Sync to backend if available
     progressService.recordTick({ vocabId: wordId, status, xp: xpGained }).catch(() => {});
+
+  };
+
+  // Reset progress for specified words (e.g. restart lesson from scratch)
+  const resetWordProgress = (wordIds) => {
+    if (!Array.isArray(wordIds) || wordIds.length === 0) return;
+    setGuestProgress((prev) => {
+      const next = { ...(prev || {}) };
+      wordIds.forEach((id) => {
+        delete next[id];
+      });
+      try {
+        localStorage.setItem('nihongo_guest_progress', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+
   };
 
   // Spend XP on Rewards Shop
@@ -498,6 +515,7 @@ export const AppProvider = ({ children }) => {
         gamification,
         guestProgress,
         recordWordProgress,
+        resetWordProgress,
         favorites,
         toggleFavorite,
         isFavorite,
