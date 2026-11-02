@@ -33,7 +33,7 @@ function areKanaEqual(ch1, ch2) {
  * Parses a single variant without separators or outer bracket notes
  */
 function parseSingleVariant(kText, rText) {
-  if (!kText) return rText ? [{ type: 'text', text: rText }] : [];
+  if (!kText || kText === '-' || kText === '–' || kText === '—' || !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(kText)) return rText ? [{ type: 'text', text: rText }] : [];
   if (!rText) return [{ type: 'text', text: kText }];
 
   // If no kanji remains in kText, return as plain text
@@ -171,6 +171,11 @@ function parseSingleVariant(kText, rText) {
 function parseFuriganaSegments(kanjiStr, kanaStr) {
   let cleanK = (kanjiStr || '').trim();
   let cleanR = (kanaStr || '').trim();
+
+  // If cleanK is a placeholder dash (e.g. '-', '–', '—') or contains no Japanese characters, treat it as empty
+  if (!cleanK || cleanK === '-' || cleanK === '–' || cleanK === '—' || !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(cleanK)) {
+    cleanK = '';
+  }
 
   // If no Kanji characters exist, display as plain text without ruby
   if (!cleanK || !cleanK.split('').some(isKanji)) {

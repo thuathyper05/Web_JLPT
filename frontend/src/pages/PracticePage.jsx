@@ -414,7 +414,7 @@ export default function PracticePage() {
                   <h2 className="text-2xl sm:text-4xl font-black text-pink-700 leading-snug px-2">
                     {currentWord.clean_vietnamese || currentWord.vietnamese}
                   </h2>
-                  {currentWord.kanji && (
+                  {currentWord.kanji && currentWord.kanji !== '-' && currentWord.kanji !== '–' && /[\u4E00-\u9FAF]/.test(currentWord.kanji) && (
                     <div className="font-jp text-slate-500 text-sm font-semibold pt-1 flex flex-col sm:flex-row items-center justify-center gap-1.5">
                       <span>Chữ Hán:</span>
                       <FuriganaWord
@@ -438,7 +438,7 @@ export default function PracticePage() {
                     ĐỌC CHỮ HÁN / TỪ VỰNG SANG KANA
                   </span>
                   <h2 className="text-4xl sm:text-5xl font-black font-jp text-slate-900">
-                    {currentWord.kanji || currentWord.clean_kana || currentWord.kana}
+                    {(currentWord.kanji && currentWord.kanji !== '-' && currentWord.kanji !== '–') ? currentWord.kanji : (currentWord.clean_kana || currentWord.kana)}
                   </h2>
                   <div className="text-xs text-slate-500 font-semibold pt-1">
                     Nghĩa: {currentWord.clean_vietnamese || currentWord.vietnamese}

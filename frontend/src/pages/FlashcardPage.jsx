@@ -838,7 +838,7 @@ export default function FlashcardPage() {
                     )}
                   </div>
 
-                  {direction === 'jp_to_vi' && currentCard.kanji && currentCard.kanji !== '-' && (
+                  {direction === 'jp_to_vi' && currentCard.kanji && currentCard.kanji !== '-' && currentCard.kanji !== '–' && (
                     <div className="flex flex-col items-center justify-center gap-1">
                       <FuriganaWord
                         kanji={currentCard.kanji}

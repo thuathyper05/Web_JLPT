@@ -93,7 +93,7 @@ export default function WordMatchPage() {
       kanji: w.kanji,
       kana: w.clean_kana || w.kana,
       romaji: w.romaji,
-      audio: w.clean_kana || w.kana || (w.kanji !== '-' ? w.kanji : ''),
+      audio: w.clean_kana || w.kana || (w.kanji && w.kanji !== '-' && w.kanji !== '–' ? w.kanji : ''),
       fullWord: w
     })).sort(() => Math.random() - 0.5);
 
@@ -704,7 +704,7 @@ export default function WordMatchPage() {
                 {missedWords.slice(0, 4).map((w) => (
                   <div key={w.id} className="p-2.5 bg-white rounded-xl border border-pink-100 flex items-center justify-between text-xs">
                     <div>
-                      <span className="font-jp font-black text-slate-900 mr-2">{w.kanji && w.kanji !== '-' ? w.kanji : (w.clean_kana || w.kana)}</span>
+                      <span className="font-jp font-black text-slate-900 mr-2">{w.kanji && w.kanji !== '-' && w.kanji !== '–' ? w.kanji : (w.clean_kana || w.kana)}</span>
                       <span className="text-slate-600">{w.clean_vietnamese || w.vietnamese}</span>
                     </div>
                     <button
