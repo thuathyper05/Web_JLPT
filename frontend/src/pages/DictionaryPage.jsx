@@ -75,7 +75,7 @@ export default function DictionaryPage() {
       if (charTypeFilter === 'kanji' && (!w.kanji || !/[\u4E00-\u9FAF]/.test(w.kanji))) {
         return false;
       }
-      if (charTypeFilter === 'katakana' && !/[\u30A0-\u30FF]/.test(w.kana || w.clean_kana || '')) {
+      if (charTypeFilter === 'katakana' && !/[\u30A0-\u30FF]/.test((w.kanji || '') + (w.kana || '') + (w.clean_kana || ''))) {
         return false;
       }
       if (charTypeFilter === 'kana_only' && w.kanji && /[\u4E00-\u9FAF]/.test(w.kanji)) {

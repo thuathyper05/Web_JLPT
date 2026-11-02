@@ -96,7 +96,8 @@ export default function PracticePage() {
 
   const handleInputChange = (e) => {
     const val = e.target.value;
-    const converted = wanakana.toHiragana(val);
+    const isKata = /[\u30A1-\u30F6]/.test(currentWord?.clean_kana || currentWord?.kana || currentWord?.kanji || '');
+    const converted = isKata ? wanakana.toKatakana(val) : wanakana.toHiragana(val);
     setUserInput(converted);
   };
 
@@ -151,7 +152,8 @@ export default function PracticePage() {
 
   // Sheet Mode Handlers
   const handleSheetInputChange = (word, rawVal) => {
-    const converted = wanakana.toHiragana(rawVal);
+    const isKata = /[\u30A1-\u30F6]/.test(word?.clean_kana || word?.kana || word?.kanji || '');
+    const converted = isKata ? wanakana.toKatakana(rawVal) : wanakana.toHiragana(rawVal);
     setSheetInputs((prev) => ({ ...prev, [word.id]: converted }));
 
     const targetKana = (word.clean_kana || word.kana || '').trim();
@@ -198,7 +200,7 @@ export default function PracticePage() {
         <div className="relative z-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
             <Keyboard size={13} className="text-pink-600" />
-            <span>PHẢN XẠ BÀN PHÍM - ROMAJI SANG HIRAGANA</span>
+            <span>PHẢN XẠ BÀN PHÍM - ROMAJI SANG KANA (HIRAGANA / KATAKANA)</span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -433,7 +435,7 @@ export default function PracticePage() {
               {practiceMode === 'kanji_to_kana' && (
                 <>
                   <span className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider block">
-                    ĐỌC CHỮ HÁN SANG HIRAGANA
+                    ĐỌC CHỮ HÁN / TỪ VỰNG SANG KANA
                   </span>
                   <h2 className="text-4xl sm:text-5xl font-black font-jp text-slate-900">
                     {currentWord.kanji || currentWord.clean_kana || currentWord.kana}

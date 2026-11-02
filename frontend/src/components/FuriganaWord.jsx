@@ -174,7 +174,7 @@ function parseFuriganaSegments(kanjiStr, kanaStr) {
 
   // If no Kanji characters exist, display as plain text without ruby
   if (!cleanK || !cleanK.split('').some(isKanji)) {
-    return [{ type: 'text', text: cleanR || cleanK }];
+    return [{ type: 'text', text: cleanK || cleanR }];
   }
 
   // If no kana provided, display kanji as plain text
