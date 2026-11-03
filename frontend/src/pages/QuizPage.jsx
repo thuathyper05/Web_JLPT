@@ -430,12 +430,22 @@ export default function QuizPage() {
                     kanji={currentQ.kanji || currentQ.question}
                     kana={currentQ.kana || currentQ.audio_text}
                     romaji={currentQ.romaji}
-                    level={activeLevel}
+                    forceFurigana={true}
+                    showRomaji={false}
                     size="4xl"
                   />
                 ) : (
                   <h2 className="text-3xl sm:text-5xl font-black font-jp text-slate-900 tracking-wide break-words">
-                    {currentQ.question}
+                    {/[\u4E00-\u9FAF]/.test(currentQ.question) ? (
+                      <FuriganaSentence
+                        text={currentQ.question}
+                        forceFurigana={true}
+                        showRomaji={false}
+                        size="3xl"
+                      />
+                    ) : (
+                      currentQ.question
+                    )}
                   </h2>
                 )}
               </div>
@@ -466,6 +476,10 @@ export default function QuizPage() {
                   }
                 }
 
+                const optInfo = currentQ.options_data?.find((d) => d.text === opt);
+                const hasKanji = /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(opt);
+                const isSelectedOrCorrect = isAnswerSubmitted && (opt === currentQ.correct_answer || selectedOption === opt);
+
                 return (
                   <button
                     key={idx}
@@ -474,7 +488,33 @@ export default function QuizPage() {
                     onClick={() => handleSelectOption(opt)}
                     className={`p-4 rounded-2xl border font-bold text-sm text-left flex items-center justify-between transition-all active:scale-95 cursor-pointer ${btnStyle}`}
                   >
-                    <span className="truncate pr-2">{opt}</span>
+                    <div className="pr-2 leading-relaxed flex items-center min-w-0">
+                      {hasKanji ? (
+                        optInfo?.kanji && optInfo?.kana ? (
+                          <FuriganaWord
+                            kanji={optInfo.kanji}
+                            kana={optInfo.kana}
+                            forceFurigana={true}
+                            showRomaji={false}
+                            size="base"
+                            className="text-left"
+                            kanjiClassName={isSelectedOrCorrect ? 'text-white' : ''}
+                            furiganaClassName={isSelectedOrCorrect ? 'text-white/90' : 'text-pink-600'}
+                          />
+                        ) : (
+                          <FuriganaSentence
+                            text={opt}
+                            forceFurigana={true}
+                            showRomaji={false}
+                            size="base"
+                            kanjiClassName={isSelectedOrCorrect ? 'text-white' : ''}
+                            furiganaClassName={isSelectedOrCorrect ? 'text-white/90' : 'text-pink-600'}
+                          />
+                        )
+                      ) : (
+                        <span className="truncate">{opt}</span>
+                      )}
+                    </div>
                     <span className="w-6 h-6 rounded-lg bg-black/5 flex items-center justify-center text-xs font-black shrink-0">
                       {String.fromCharCode(65 + idx)}
                     </span>

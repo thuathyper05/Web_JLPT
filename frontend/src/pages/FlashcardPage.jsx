@@ -757,7 +757,7 @@ export default function FlashcardPage() {
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
                         romaji={currentCard.romaji}
-                        level={currentLevel}
+                        forceFurigana={true}
                         size="5xl"
                       />
                       {currentCard.romaji && (
@@ -830,7 +830,7 @@ export default function FlashcardPage() {
                           kanji={currentCard.kanji}
                           kana={currentCard.clean_kana || currentCard.kana}
                           romaji={currentCard.romaji}
-                          level={currentLevel}
+                          forceFurigana={true}
                           size="4xl"
                         />
                         {currentCard.romaji && (
@@ -848,7 +848,7 @@ export default function FlashcardPage() {
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
                         romaji={currentCard.romaji}
-                        level={currentLevel}
+                        forceFurigana={true}
                         size="xl"
                       />
                       {currentCard.romaji && (

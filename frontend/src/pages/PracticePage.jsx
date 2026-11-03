@@ -420,17 +420,12 @@ export default function PracticePage() {
                       <FuriganaWord
                         kanji={currentWord.kanji}
                         kana={currentWord.clean_kana || currentWord.kana}
-                        romaji={currentWord.romaji}
-                        level={currentLevel}
+                        showRomaji={false} forceFurigana={true}
                         size="lg"
                       />
                     </div>
                   )}
-                  {currentWord.romaji && (
-                    <div className="text-xs font-mono text-slate-400 font-medium">
-                      Romaji: {currentWord.romaji}
-                    </div>
-                  )}
+
                 </>
               )}
 
@@ -445,11 +440,7 @@ export default function PracticePage() {
                   <div className="text-xs text-slate-500 font-semibold pt-1">
                     Nghĩa: {currentWord.clean_vietnamese || currentWord.vietnamese}
                   </div>
-                  {currentWord.romaji && (
-                    <div className="text-xs font-mono text-slate-400 font-medium">
-                      Romaji: {currentWord.romaji}
-                    </div>
-                  )}
+
                 </>
               )}
 
@@ -510,8 +501,7 @@ export default function PracticePage() {
                     <FuriganaWord
                       kanji={currentWord.kanji}
                       kana={currentWord.clean_kana || currentWord.kana}
-                      romaji={currentWord.romaji}
-                      level={currentLevel}
+                      showRomaji={false} forceFurigana={true}
                       size="base"
                     />
                   </div>
@@ -648,8 +638,7 @@ export default function PracticePage() {
                         <FuriganaWord
                           kanji={item.kanji}
                           kana={item.clean_kana || item.kana}
-                          romaji={item.romaji}
-                          level={currentLevel}
+                          showRomaji={false} forceFurigana={true}
                           size="xl"
                         />
                         <button
@@ -666,11 +655,7 @@ export default function PracticePage() {
                         {item.clean_vietnamese || item.vietnamese}
                       </div>
 
-                      {item.romaji && (
-                        <div className="text-[11px] font-mono text-slate-400">
-                          Romaji: <span className="text-pink-600 font-semibold">{item.romaji}</span>
-                        </div>
-                      )}
+
                     </div>
                   </div>
 

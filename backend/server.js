@@ -1148,6 +1148,27 @@ app.get('/api/quiz/generate', async (req, res) => {
     const uniqueDistractors = [...new Set(distractors)].slice(0, 3);
     const options = [correctAnswer, ...uniqueDistractors].sort(() => Math.random() - 0.5);
 
+    // Build rich details for each option so Japanese Kanji can display Furigana on top
+    const wordMap = new Map();
+    wordMap.set(correctAnswer, {
+      text: correctAnswer,
+      kanji: item.kanji || '',
+      kana: item.clean_kana || item.kana || '',
+      romaji: item.romaji || ''
+    });
+    for (const w of otherWords) {
+      const text = qMode === 'jp_to_vi' ? getSafeViText(w) : (qMode === 'vi_to_jp' ? getSafeJpText(w) : (w.clean_kana || w.kana));
+      if (!wordMap.has(text)) {
+        wordMap.set(text, {
+          text,
+          kanji: w.kanji || '',
+          kana: w.clean_kana || w.kana || '',
+          romaji: w.romaji || ''
+        });
+      }
+    }
+    const options_data = options.map(opt => wordMap.get(opt) || { text: opt, kanji: opt, kana: '', romaji: '' });
+
     return {
       id: idx + 1,
       lesson_number: item.lesson_number,
@@ -1156,6 +1177,7 @@ app.get('/api/quiz/generate', async (req, res) => {
       question: questionText,
       correct_answer: correctAnswer,
       options,
+      options_data,
       kanji: item.kanji || '',
       kana: item.clean_kana || item.kana || '',
       romaji: item.romaji || '',
@@ -1275,21 +1297,18 @@ app.post('/api/ai/query', async (req, res) => {
 
 // ── 9. FORUM, NEWS & REAL-TIME REVIEWS ──
 const { masterArticles, crawlFreshArticles } = require('./forumArticlesData');
+const { runSilentBackgroundNewsIngestion } = require('./services/realNewsService');
 let forumArticles = [...masterArticles];
 
-// Background News Crawler: Tự động thu thập tin tức định kỳ mỗi 15 phút (Hoạt động hoàn toàn ngầm trong hệ thống)
+// Background Real News Crawler: Tự động thu thập tin tức thật từ NHK, The Japan Times, báo chí Nhật
+// Chạy hoàn toàn ngầm trong hệ thống và phân tích từ vựng, ngữ pháp bằng AI
+setTimeout(() => {
+  runSilentBackgroundNewsIngestion(forumArticles);
+}, 3000);
+
 setInterval(() => {
-  try {
-    const fresh = crawlFreshArticles(2);
-    forumArticles.unshift(...fresh);
-    if (forumArticles.length > 500) {
-      forumArticles = forumArticles.slice(0, 500);
-    }
-    console.log('[Silent News Crawler] Đã tự động cập nhật 2 bài viết mới từ nguồn chính thống vào hệ thống');
-  } catch (err) {
-    console.error('[News Crawler Error]', err.message);
-  }
-}, 15 * 60 * 1000);
+  runSilentBackgroundNewsIngestion(forumArticles);
+}, 20 * 60 * 1000);
 
 // Ensure PostgreSQL forum tables and initial genuine comments
 async function syncForumDatabase() {

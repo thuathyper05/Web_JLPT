@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { forumService, speakBilingualText, stopSpeaking } from '../services/api';
+import { forumService, speakJapanese, speakBilingualText, stopSpeaking } from '../services/api';
 import { sounds } from '../services/sounds';
 import confetti from 'canvas-confetti';
 import {
@@ -853,6 +853,23 @@ export default function ForumPage() {
                 {selectedArticle.title}
               </h1>
 
+              {selectedArticle.titleJp && (
+                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-jp font-bold text-slate-700 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Tiêu đề gốc tiếng Nhật:</span>
+                    <span className="truncate block font-semibold text-slate-800">{selectedArticle.titleJp}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => speakJapanese(selectedArticle.titleJp)}
+                    className="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 transition-colors shrink-0 cursor-pointer"
+                    title="Nghe phát âm tiếng Nhật"
+                  >
+                    <Volume2 size={16} />
+                  </button>
+                </div>
+              )}
+
               {/* Author & Official Source Credit */}
               <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-3">
@@ -929,6 +946,39 @@ export default function ForumPage() {
                   {aiSummary || selectedArticle.summary}
                 </p>
               </div>
+
+              {/* Study Corner for Japanese Learners */}
+              {(selectedArticle.keyVocab?.length > 0 || selectedArticle.grammarPoint) && (
+                <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-pink-50/40 border border-pink-200/80 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-pink-600"></span>
+                    <h3 className="font-bold text-sm text-slate-900 tracking-tight">
+                      Góc Từ Vựng & Ngữ Pháp Thực Tế Trong Bài Báo
+                    </h3>
+                  </div>
+
+                  {selectedArticle.keyVocab?.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                      {selectedArticle.keyVocab.map((v, i) => (
+                        <div key={i} className="p-3 rounded-xl bg-white border border-pink-100 shadow-2xs space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="font-jp font-bold text-base text-slate-900">{v.kanji}</span>
+                            <span className="text-xs font-semibold text-pink-600 font-jp">{v.kana}</span>
+                          </div>
+                          <div className="text-xs text-slate-600 font-medium">{v.vi}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {selectedArticle.grammarPoint && (
+                    <div className="p-3.5 rounded-xl bg-white border border-pink-100 shadow-2xs text-xs space-y-1">
+                      <span className="font-bold text-pink-700 block">Ngữ pháp JLPT ứng dụng:</span>
+                      <p className="text-slate-700 mb-0 font-medium leading-relaxed">{selectedArticle.grammarPoint}</p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Article Main Body with Custom Font Size */}
               <div

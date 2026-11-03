@@ -317,14 +317,19 @@ export default function LessonsPage() {
 
                 {/* Kanji and Kana Area with Furigana */}
                 <div className="py-4 space-y-2">
-                  <div className="flex justify-center items-center">
+                  <div className="flex flex-wrap items-center justify-center gap-3">
                     <FuriganaWord
                       kanji={currentWord.kanji}
                       kana={currentWord.clean_kana || currentWord.kana}
-                      romaji={currentWord.romaji}
-                      level={currentLevel}
+                      forceFurigana={true}
+                      showRomaji={false}
                       size="5xl"
                     />
+                    {currentWord.romaji && (
+                      <span className="px-3.5 py-1.5 rounded-2xl bg-pink-50 text-pink-700 font-mono text-sm sm:text-base font-bold border border-pink-200/80 shadow-xs self-center">
+                        {currentWord.romaji}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center justify-center gap-2 pt-1">
@@ -426,14 +431,19 @@ export default function LessonsPage() {
                     <div className="flex items-center gap-4">
                       <span className="text-xs font-bold text-slate-400 w-6">#{idx + 1}</span>
                       <div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2.5 flex-wrap">
                           <FuriganaWord
                             kanji={item.kanji}
                             kana={item.clean_kana || item.kana}
-                            romaji={item.romaji}
-                            level={currentLevel}
+                            forceFurigana={true}
+                            showRomaji={false}
                             size="base"
                           />
+                          {item.romaji && (
+                            <span className="px-2 py-0.5 rounded-lg bg-pink-50 text-pink-700 font-mono text-[11px] font-semibold border border-pink-100">
+                              {item.romaji}
+                            </span>
+                          )}
                         </div>
                         <div className="text-xs text-slate-600 mt-0.5">
                           {item.clean_vietnamese || item.vietnamese}
