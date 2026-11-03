@@ -157,6 +157,7 @@ export const AppProvider = ({ children }) => {
             localStorage.setItem('nihongo_token', res.data.token);
             try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
             setUser(res.data.user);
+            syncUserCloudProgress();
           }
         }).catch((err) => {
           console.error('Facebook OAuth hash login error:', err);
@@ -228,6 +229,8 @@ export const AppProvider = ({ children }) => {
             try {
               localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user));
             } catch {}
+            // Authoritative multi-device cloud sync
+            syncUserCloudProgress();
           }
         } catch {
           localStorage.removeItem('nihongo_token');
@@ -340,11 +343,82 @@ export const AppProvider = ({ children }) => {
     setAuthModalOpen(true);
   };
 
+  // Pull authoritative multi-device progress from cloud database
+  const syncUserCloudProgress = async () => {
+    try {
+      const res = await progressService.getProgress();
+      if (res.data?.success) {
+        if (res.data.progress && typeof res.data.progress === 'object') {
+          setGuestProgress((prev) => {
+            const merged = { ...(prev || {}), ...res.data.progress };
+            try {
+              localStorage.setItem('nihongo_guest_progress', JSON.stringify(merged));
+            } catch {}
+            return merged;
+          });
+        }
+        if (res.data.gamification) {
+          setGamification((prev) => {
+            const g = res.data.gamification;
+            const mergedGam = {
+              ...prev,
+              ...g,
+              current_streak: g.current_streak ?? prev.current_streak,
+              total_xp: g.total_xp ?? prev.total_xp,
+              longest_streak: g.longest_streak ?? prev.longest_streak,
+              today_words_count: g.today_words_count ?? prev.today_words_count,
+              last_active_date: g.last_active_date ?? prev.last_active_date
+            };
+            try {
+              localStorage.setItem('nihongo_gamification', JSON.stringify(mergedGam));
+            } catch {}
+            return mergedGam;
+          });
+        }
+
+        // Push any local offline progress to cloud
+        try {
+          const localSaved = localStorage.getItem('nihongo_guest_progress');
+          if (localSaved) {
+            const parsedLocal = JSON.parse(localSaved);
+            if (parsedLocal && Object.keys(parsedLocal).length > 0) {
+              progressService.syncProgress({
+                progress: parsedLocal,
+                gamification: res.data.gamification
+              }).then((syncRes) => {
+                if (syncRes.data?.progress) {
+                  setGuestProgress(syncRes.data.progress);
+                }
+                if (syncRes.data?.gamification) {
+                  setGamification((prev) => ({ ...prev, ...syncRes.data.gamification }));
+                }
+              }).catch(() => {});
+            }
+          }
+        } catch {}
+      }
+    } catch (err) {
+      console.warn('Sync user cloud progress error:', err);
+    }
+  };
+
   const logout = () => {
     sounds.playFlip();
     localStorage.removeItem('nihongo_token');
     localStorage.removeItem('nihongo_cached_user');
+    localStorage.removeItem('nihongo_guest_progress');
+    localStorage.removeItem('nihongo_gamification');
     setUser(null);
+    setGuestProgress({});
+    setGamification({
+      total_xp: 0,
+      current_streak: 0,
+      longest_streak: 0,
+      level_tier: 'Tân Thủ N5',
+      today_words_count: 0,
+      last_active_date: null,
+      daily_study_counts: {}
+    });
   };
 
   // Record word progress with real streak and daily target tracking (học thì mới có chuỗi)
@@ -395,8 +469,17 @@ export const AppProvider = ({ children }) => {
       };
     });
 
-    // Sync to backend if available
-    progressService.recordTick({ vocabId: wordId, status, xp: xpGained }).catch(() => {});
+    // Sync to backend with real-time multi-device cloud persistence
+    progressService.recordTick({ vocabId: wordId, status, xp: xpGained })
+      .then((tickRes) => {
+        if (tickRes.data?.gamification) {
+          setGamification((prev) => ({
+            ...prev,
+            ...tickRes.data.gamification
+          }));
+        }
+      })
+      .catch(() => {});
 
   };
 
@@ -550,6 +633,7 @@ export const AppProvider = ({ children }) => {
         gamification,
         guestProgress,
         recordWordProgress,
+    syncUserCloudProgress,
         resetWordProgress,
         favorites,
         toggleFavorite,

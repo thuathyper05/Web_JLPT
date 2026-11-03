@@ -357,6 +357,7 @@ export const quizService = {
 export const progressService = {
   getProgress: () => api.get('/progress'),
   recordTick: (data) => api.post('/progress/tick', data),
+  syncProgress: (data) => api.post('/progress/sync', data),
 };
 
 export const aiService = {

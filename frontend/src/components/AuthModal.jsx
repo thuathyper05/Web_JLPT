@@ -21,7 +21,7 @@ import {
 import { sounds } from '../services/sounds';
 
 export default function AuthModal() {
-  const { authModalOpen, setAuthModalOpen, authMode, setAuthMode, setUser } = useApp();
+  const { authModalOpen, setAuthModalOpen, authMode, setAuthMode, setUser, syncUserCloudProgress } = useApp();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -60,6 +60,7 @@ export default function AuthModal() {
                   sounds.playLevelUp();
                   localStorage.setItem('nihongo_token', res.data.token);
                   setUser(res.data.user);
+          syncUserCloudProgress?.();
                   setAuthModalOpen(false);
                 } else {
                   setError(res.data?.message || 'Đăng nhập Google thất bại');
@@ -151,6 +152,7 @@ export default function AuthModal() {
           localStorage.setItem('nihongo_token', res.data.token);
           try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
           setUser(res.data.user);
+          syncUserCloudProgress?.();
           setAuthModalOpen(false);
         } else {
           setError(res.data?.message || 'Email hoặc mật khẩu không chính xác.');
@@ -173,6 +175,7 @@ export default function AuthModal() {
           localStorage.setItem('nihongo_token', res.data.token);
           try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
           setUser(res.data.user);
+          syncUserCloudProgress?.();
           setAuthModalOpen(false);
         } else {
           setError(res.data?.message || 'Đăng ký tài khoản không thành công.');
@@ -281,6 +284,7 @@ export default function AuthModal() {
                     localStorage.setItem('nihongo_token', res.data.token);
                     try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
                     setUser(res.data.user);
+          syncUserCloudProgress?.();
                     setAuthModalOpen(false);
                   } else {
                     setError(res.data?.message || 'Đăng nhập Google thất bại');
@@ -350,6 +354,7 @@ export default function AuthModal() {
                 localStorage.setItem('nihongo_token', res.data.token);
                 try { localStorage.setItem('nihongo_cached_user', JSON.stringify(res.data.user)); } catch {}
                 setUser(res.data.user);
+          syncUserCloudProgress?.();
                 setAuthModalOpen(false);
               } else {
                 setError(res.data?.message || 'Đăng nhập Facebook thất bại.');

@@ -396,7 +396,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           </div>
 
           {/* Mobile Search Toggle Icon */}
-          <div className="sm:hidden flex justify-end">
+          <div className="sm:hidden flex justify-end shrink-0">
             <button
               type="button"
               onClick={() => {
@@ -404,11 +404,11 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 setMobileSearchOpen(true);
                 setTimeout(() => mobileInputRef.current?.focus(), 150);
               }}
-              className="px-2.5 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+              className="p-1.5 xs:px-2.5 xs:py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 whitespace-nowrap shrink-0"
               title="Tra cứu từ điển N5 - N1"
             >
-              <Search size={15} className="text-pink-600" />
-              <span>Từ điển</span>
+              <Search size={15} className="text-pink-600 shrink-0" />
+              <span className="hidden xs:inline whitespace-nowrap">Từ điển</span>
             </button>
           </div>
 
