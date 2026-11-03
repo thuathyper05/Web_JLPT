@@ -202,6 +202,11 @@ async function runAllTests() {
     assert('TTS Audio API status 200', ttsRes.status === 200);
     assert('TTS Audio returns audio/mpeg stream', ttsRes.headers['content-type'] && ttsRes.headers['content-type'].includes('audio/mpeg'));
 
+    // 16. Multi-Level N5-N1 High-Grade Dictionary Search API
+    const dictRes = await request({ hostname: 'localhost', port: 5000, path: '/api/dictionary/search?q=tabemasu', method: 'GET' });
+    assert('Dictionary Search API status 200', dictRes.status === 200);
+    assert('Dictionary Search returns multi-level results', dictRes.body.counts && dictRes.body.counts.vocab > 0);
+
   } catch (err) {
     console.error('Fatal testing error:', err);
     failed++;

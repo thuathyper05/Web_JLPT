@@ -374,6 +374,10 @@ export const forumService = {
   getStatus: () => api.get('/forum/status'),
 };
 
+export const dictionaryService = {
+  search: (params) => api.get('/dictionary/search', { params }),
+};
+
 export const supportService = {
   sendFeedback: (data) => api.post('/support/feedback', data),
 };

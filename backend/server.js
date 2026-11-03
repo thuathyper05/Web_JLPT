@@ -649,14 +649,18 @@ app.get('/api/lessons/:id', async (req, res) => {
 });
 
 app.get('/api/vocabularies', async (req, res) => {
-  const { search, level = 'N5' } = req.query;
+  const { search, level } = req.query;
   const lesson = req.query.lesson || req.query.lesson_number;
-  const upperLevel = level.toUpperCase();
+  const upperLevel = level ? level.toUpperCase() : (lesson ? 'N5' : 'ALL');
 
   if (db.pool && db.isDbConnected()) {
     try {
-      let queryText = 'SELECT * FROM vocabularies WHERE level = $1';
-      const params = [upperLevel];
+      let queryText = 'SELECT * FROM vocabularies WHERE 1=1';
+      const params = [];
+      if (upperLevel && upperLevel !== 'ALL') {
+        params.push(upperLevel);
+        queryText += ` AND level = ${params.length}`;
+      }
 
       if (lesson) {
         params.push(parseInt(lesson));
@@ -690,7 +694,10 @@ app.get('/api/vocabularies', async (req, res) => {
   }
 
   // Fallback in-memory
-  let result = (db.data.lessons || []).filter(v => (v.level || 'N5').toUpperCase() === upperLevel);
+  let result = db.data.lessons || [];
+  if (upperLevel && upperLevel !== 'ALL') {
+    result = result.filter(v => (v.level || 'N5').toUpperCase() === upperLevel);
+  }
   if (lesson && lesson !== 'all') {
     const lNum = parseInt(lesson);
     result = result.filter(v => v.lesson_number === lNum);
@@ -711,6 +718,186 @@ app.get('/api/vocabularies', async (req, res) => {
     success: true,
     total: result.length,
     data: result
+  });
+});
+
+// ── 2B. ADVANCED HIGH-GRADE DICTIONARY SEARCH (N5 - N1 Multi-domain Search) ──
+app.get('/api/dictionary/search', async (req, res) => {
+  const query = (req.query.q || req.query.search || '').trim();
+  const level = (req.query.level || 'ALL').toUpperCase();
+  const type = (req.query.type || 'all').toLowerCase(); // 'all', 'vocab', 'kanji', 'grammar'
+  const limit = Math.min(parseInt(req.query.limit, 10) || 40, 100);
+
+  if (!query) {
+    return res.json({
+      success: true,
+      query: '',
+      counts: { total: 0, vocab: 0, kanji: 0, grammar: 0 },
+      vocabularies: [],
+      kanji: [],
+      grammar: []
+    });
+  }
+
+  const cleanQ = query.toLowerCase();
+  const likePattern = `%${cleanQ}%`;
+  const startPattern = `${cleanQ}%`;
+
+  if (db.pool && db.isDbConnected()) {
+    try {
+      let vocabRows = [];
+      let kanjiRows = [];
+      let grammarRows = [];
+
+      // 1. Vocabularies Search across N5-N1
+      if (type === 'all' || type === 'vocab') {
+        let vSql = `
+          SELECT *,
+            CASE 
+              WHEN LOWER(kanji) = $1 OR LOWER(clean_kana) = $1 OR LOWER(kana) = $1 OR LOWER(romaji) = $1 THEN 1
+              WHEN LOWER(kanji) LIKE $2 OR LOWER(clean_kana) LIKE $2 OR LOWER(kana) LIKE $2 OR LOWER(romaji) LIKE $2 THEN 2
+              WHEN LOWER(vietnamese) LIKE $2 OR LOWER(clean_vietnamese) LIKE $2 THEN 3
+              ELSE 4
+            END AS relevance
+          FROM vocabularies
+          WHERE (
+            LOWER(kanji) LIKE $3 OR
+            LOWER(kana) LIKE $3 OR
+            LOWER(clean_kana) LIKE $3 OR
+            LOWER(vietnamese) LIKE $3 OR
+            LOWER(clean_vietnamese) LIKE $3 OR
+            LOWER(romaji) LIKE $3
+          )
+        `;
+        const vParams = [cleanQ, startPattern, likePattern];
+        if (level !== 'ALL') {
+          vParams.push(level);
+          vSql += ` AND level = ${vParams.length}`;
+        }
+        vSql += ` ORDER BY relevance ASC, level ASC, lesson_number ASC, order_num ASC LIMIT ${limit}`;
+        const vRes = await db.pool.query(vSql, vParams);
+        vocabRows = vRes.rows;
+      }
+
+      // 2. Kanji Search across N5-N1
+      if (type === 'all' || type === 'kanji') {
+        let kSql = `
+          SELECT * FROM kanji
+          WHERE (
+            kanji LIKE $1 OR
+            LOWER(onyomi) LIKE $1 OR
+            LOWER(kunyomi) LIKE $1 OR
+            LOWER(han_viet) LIKE $1 OR
+            LOWER(meaning) LIKE $1
+          )
+        `;
+        const kParams = [likePattern];
+        if (level !== 'ALL') {
+          kParams.push(level);
+          kSql += ` AND level = ${kParams.length}`;
+        }
+        kSql += ` LIMIT 20`;
+        const kRes = await db.pool.query(kSql, kParams);
+        kanjiRows = kRes.rows;
+      }
+
+      // 3. Grammar Search across N5-N1
+      if (type === 'all' || type === 'grammar') {
+        let gSql = `
+          SELECT * FROM grammar_points
+          WHERE (
+            LOWER(title) LIKE $1 OR
+            LOWER(structure) LIKE $1 OR
+            LOWER(meaning) LIKE $1
+          )
+        `;
+        const gParams = [likePattern];
+        if (level !== 'ALL') {
+          gParams.push(level);
+          gSql += ` AND level = ${gParams.length}`;
+        }
+        gSql += ` LIMIT 20`;
+        const gRes = await db.pool.query(gSql, gParams);
+        grammarRows = gRes.rows;
+      }
+
+      return res.json({
+        success: true,
+        query,
+        counts: {
+          total: vocabRows.length + kanjiRows.length + grammarRows.length,
+          vocab: vocabRows.length,
+          kanji: kanjiRows.length,
+          grammar: grammarRows.length
+        },
+        vocabularies: vocabRows,
+        kanji: kanjiRows,
+        grammar: grammarRows
+      });
+    } catch (err) {
+      console.error('Database dictionary search error:', err);
+    }
+  }
+
+  // Fallback in-memory
+  let vocabList = db.data.lessons || [];
+  if (level !== 'ALL') {
+    vocabList = vocabList.filter(v => (v.level || 'N5').toUpperCase() === level);
+  }
+
+  const matchedVocab = (type === 'all' || type === 'vocab') ? vocabList.map(v => {
+    const k = (v.kanji || '').toLowerCase();
+    const kana = (v.kana || '').toLowerCase();
+    const cKana = (v.clean_kana || '').toLowerCase();
+    const r = (v.romaji || '').toLowerCase();
+    const vi = (v.vietnamese || '').toLowerCase();
+    const cVi = (v.clean_vietnamese || '').toLowerCase();
+
+    const isMatch = k.includes(cleanQ) || kana.includes(cleanQ) || cKana.includes(cleanQ) || r.includes(cleanQ) || vi.includes(cleanQ) || cVi.includes(cleanQ);
+    if (!isMatch) return null;
+
+    let relevance = 4;
+    if (k === cleanQ || cKana === cleanQ || kana === cleanQ || r === cleanQ) relevance = 1;
+    else if (k.startsWith(cleanQ) || cKana.startsWith(cleanQ) || kana.startsWith(cleanQ) || r.startsWith(cleanQ)) relevance = 2;
+    else if (vi.startsWith(cleanQ) || cVi.startsWith(cleanQ)) relevance = 3;
+
+    return { ...v, relevance };
+  }).filter(Boolean).sort((a, b) => a.relevance - b.relevance || a.level.localeCompare(b.level)).slice(0, limit) : [];
+
+  let kanjiList = db.data.kanji || [];
+  if (level !== 'ALL') {
+    kanjiList = kanjiList.filter(k => (k.level || 'N5').toUpperCase() === level);
+  }
+  const matchedKanji = (type === 'all' || type === 'kanji') ? kanjiList.filter(k => 
+    (k.kanji && k.kanji.includes(query)) ||
+    (k.han_viet && k.han_viet.toLowerCase().includes(cleanQ)) ||
+    (k.onyomi && k.onyomi.toLowerCase().includes(cleanQ)) ||
+    (k.kunyomi && k.kunyomi.toLowerCase().includes(cleanQ)) ||
+    (k.meaning && k.meaning.toLowerCase().includes(cleanQ))
+  ).slice(0, 20) : [];
+
+  let grammarList = db.data.grammar || [];
+  if (level !== 'ALL') {
+    grammarList = grammarList.filter(g => (g.level || 'N5').toUpperCase() === level);
+  }
+  const matchedGrammar = (type === 'all' || type === 'grammar') ? grammarList.filter(g =>
+    (g.title && g.title.toLowerCase().includes(cleanQ)) ||
+    (g.structure && g.structure.toLowerCase().includes(cleanQ)) ||
+    (g.meaning && g.meaning.toLowerCase().includes(cleanQ))
+  ).slice(0, 20) : [];
+
+  return res.json({
+    success: true,
+    query,
+    counts: {
+      total: matchedVocab.length + matchedKanji.length + matchedGrammar.length,
+      vocab: matchedVocab.length,
+      kanji: matchedKanji.length,
+      grammar: matchedGrammar.length
+    },
+    vocabularies: matchedVocab,
+    kanji: matchedKanji,
+    grammar: matchedGrammar
   });
 });
 
