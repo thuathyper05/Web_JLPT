@@ -34,7 +34,7 @@ import {
 const FALLBACK_NEWS_IMAGE = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80';
 
 export default function ForumPage() {
-  const { user, askAi } = useApp();
+  const { user, askAi, setActiveTab } = useApp();
 
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -45,7 +45,7 @@ export default function ForumPage() {
 
   // Pagination (BaoMoi news stream)
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   // Audio Reading state
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -87,8 +87,16 @@ export default function ForumPage() {
 
   // Fetch articles on mount and category switch
   const fetchArticles = async (isRefresh = false) => {
-    if (isRefresh) setRefreshing(true);
-    else setLoading(true);
+    if (isRefresh) {
+      setRefreshing(true);
+      try {
+        await forumService.crawlNews(4);
+      } catch (e) {
+        console.warn('Crawl news warning:', e);
+      }
+    } else {
+      setLoading(true);
+    }
 
     try {
       const res = await forumService.getArticles({
@@ -582,6 +590,32 @@ export default function ForumPage() {
               </div>
             )}
 
+            {/* Editorial Platform Ad at bottom of article */}
+            <div className="p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white border border-rose-500/30 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="space-y-1 text-center sm:text-left">
+                <span className="text-[10px] font-black uppercase tracking-wider text-rose-300">
+                  Ôn tập từ vựng & kiến thức
+                </span>
+                <h4 className="font-serif font-black text-base text-white">
+                  Muốn ghi nhớ sâu các từ vựng và ngữ pháp vừa đọc?
+                </h4>
+                <p className="text-xs text-slate-300">
+                  Luyện tập qua Flashcard 3D thông minh và làm bài tập trắc nghiệm tự động trên HYPER JP.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playLevelUp();
+                  setActiveTab('flashcard');
+                }}
+                className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-rose-600 via-pink-600 to-rose-500 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs uppercase tracking-wider shadow-lotus flex items-center gap-1.5 cursor-pointer whitespace-nowrap active:scale-95 transition-all"
+              >
+                <span>Luyện Flashcard ngay</span>
+                <ArrowUpRight size={14} />
+              </button>
+            </div>
+
             {/* Comments & Discussion */}
             <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -772,15 +806,55 @@ export default function ForumPage() {
                     </div>
 
                     <div className="divide-y divide-slate-200 bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
-                      {pagedStreamArticles.map((art) => (
-                        <div
-                          key={art.id}
-                          onClick={() => {
-                            sounds.playFlip();
-                            setSelectedArticle(art);
-                          }}
-                          className="p-4 sm:p-5 hover:bg-slate-50 transition-colors cursor-pointer flex gap-4 items-start group"
-                        >
+                      {pagedStreamArticles.map((art, artIdx) => (
+                        <React.Fragment key={art.id}>
+                          {artIdx === 2 && (
+                            <div className="p-5 sm:p-6 bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white relative overflow-hidden group border-y border-rose-500/30">
+                              <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-gradient-to-b from-rose-500 via-pink-400 to-amber-400" />
+                              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                                <div className="space-y-1.5 flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+                                      <Sparkles size={11} className="text-amber-300" />
+                                      Tài trợ đặc biệt · HYPER JP
+                                    </span>
+                                    <span className="text-[10px] text-slate-400 font-semibold hidden xs:inline">Nền tảng học tiếng Nhật 2026</span>
+                                  </div>
+                                  <h4 className="font-serif font-black text-sm sm:text-base text-white leading-snug group-hover:text-rose-200 transition-colors">
+                                    Vừa đọc báo vừa tra cứu từ vựng tức thì: Trải nghiệm học tiếng Nhật không gián đoạn
+                                  </h4>
+                                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
+                                    Không cần lật từ điển giấy hay chuyển app. HYPER JP hiển thị Furigana trên đầu mọi chữ Hán, trợ lý AI Sensei giải nghĩa chuyên sâu và hệ thống 130 bài Minna chuẩn quốc tế.
+                                  </p>
+                                  <div className="flex items-center gap-2 flex-wrap pt-1 text-[11px] font-bold text-rose-200">
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ 9.584 từ vựng N5-N1</span>
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ Phát âm bản xứ chuẩn</span>
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ Đồng bộ đa thiết bị</span>
+                                  </div>
+                                </div>
+                                <div className="shrink-0 w-full sm:w-auto">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      sounds.playLevelUp();
+                                      setActiveTab('lessons');
+                                    }}
+                                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 via-pink-600 to-rose-500 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs uppercase tracking-wider shadow-lotus flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-95 whitespace-nowrap"
+                                  >
+                                    <span>Học ngay</span>
+                                    <ArrowUpRight size={14} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          <div
+                            onClick={() => {
+                              sounds.playFlip();
+                              setSelectedArticle(art);
+                            }}
+                            className="p-4 sm:p-5 hover:bg-slate-50 transition-colors cursor-pointer flex gap-4 items-start group"
+                          >
                           {/* Left: Content */}
                           <div className="flex-1 min-w-0 space-y-1.5">
                             <div className="flex items-center gap-2 text-[10px] font-bold">
@@ -832,6 +906,7 @@ export default function ForumPage() {
                             />
                           </div>
                         </div>
+                      </React.Fragment>
                       ))}
                     </div>
 
@@ -877,6 +952,60 @@ export default function ForumPage() {
 
             {/* ── RIGHT / SIDEBAR (4 COLS) ── */}
             <aside aria-label="Tin đọc nhiều và góc tự học" className="lg:col-span-4 space-y-6">
+              {/* ── QUẢNG CÁO CAO CẤP: NỀN TẢNG HYPER JP ── */}
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-rose-950 to-slate-900 text-white p-5 border border-rose-500/30 shadow-xl space-y-4">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-pink-500 to-amber-400" />
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-black uppercase tracking-wider flex items-center gap-1">
+                    <Sparkles size={11} className="text-amber-300" />
+                    Tài trợ độc quyền
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">HYPER JP PRO</span>
+                </div>
+                <div className="space-y-1.5">
+                  <h4 className="font-serif font-black text-base text-white leading-snug">
+                    Chinh Phục JLPT N5 - N1 Cùng Siêu Trợ Lý AI Sensei
+                  </h4>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    Học tiếng Nhật thế hệ mới với phương pháp lặp ngắt quãng SRS, luyện nghe Shadowing và vườn cây Bonsai tích lũy Streak mỗi ngày.
+                  </p>
+                </div>
+                <div className="space-y-2 py-1">
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+                    <div className="w-5 h-5 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                      <Check size={12} />
+                    </div>
+                    <span>130 bài học Minna & Marugoto chuẩn</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+                    <div className="w-5 h-5 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                      <Check size={12} />
+                    </div>
+                    <span>Furigana trên đầu Kanji cho mọi cấp độ</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-200">
+                    <div className="w-5 h-5 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                      <Check size={12} />
+                    </div>
+                    <span>Đồng bộ tiến độ điện thoại và máy tính</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    sounds.playLevelUp();
+                    setActiveTab('lessons');
+                  }}
+                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-rose-600 via-pink-600 to-rose-500 hover:from-rose-500 hover:to-pink-500 text-white font-black text-xs uppercase tracking-wider shadow-lotus flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
+                >
+                  <span>Khám phá bài học miễn phí</span>
+                  <ArrowUpRight size={15} />
+                </button>
+                <p className="text-[10px] text-center text-slate-400 italic">
+                  Không cần thẻ tín dụng · Bắt đầu chỉ với 1 chạm
+                </p>
+              </div>
+
               {/* BẢNG XẾP HẠNG ĐỌC NHIỀU 24H */}
               <div className="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">

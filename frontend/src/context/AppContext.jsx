@@ -1,3 +1,17 @@
+// Normalize user shape across Google OAuth, Facebook, DB and LocalStorage
+export const normalizeUser = (u) => {
+  if (!u || typeof u !== 'object') return null;
+  const avatar = u.avatar || u.avatar_url || '';
+  const name = u.name || u.username || (u.email ? u.email.split('@')[0] : 'Học viên');
+  return {
+    ...u,
+    name,
+    username: u.username || name,
+    avatar,
+    avatar_url: avatar
+  };
+};
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService, progressService, aiService } from '../services/api';
 import { sounds } from '../services/sounds';

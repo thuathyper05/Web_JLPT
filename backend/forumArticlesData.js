@@ -3244,6 +3244,468 @@ const masterArticles = [
     "isHot": false,
     "isFeatured": false
   }
+,
+  {
+    "id": 93,
+    "title": "Chính phủ Nhật Bản mở rộng 4 ngành nghề mới vào diện thị thực Kỹ năng đặc định loại 2 Tokutei Gino",
+    "slug": "chinh-phu-nhat-ban-mo-rong-4-nganh-nghe-moi-vao-dien-thi-thuc-ky-nang-dac-dinh-loai-2-tokutei-gino",
+    "category": "Kinh tế & Việc làm",
+    "summary": "Người lao động nước ngoài thuộc ngành logistics, vận tải đường sắt, dịch vụ bưu chính và sản xuất dệt may chính thức được xét định cư dài hạn và bảo lãnh gia đình.",
+    "content": "Nội các Nhật Bản đã chính thức thông qua quyết định mở rộng phạm vi áp dụng của tư cách lưu trú Kỹ năng đặc định loại 2 (Specified Skilled Worker No. 2) sang thêm 4 lĩnh vực công nghiệp trọng điểm.\n\nTheo quy định mới, lao động đạt chứng chỉ tiếng Nhật tương đương JLPT N3/N4 và vượt qua kỳ thi đánh giá tay nghề chuyên môn sẽ có cơ hội được gia hạn visa không giới hạn thời gian cư trú, đồng thời được quyền bảo lãnh vợ/chồng và con cái sang Nhật Bản sinh sống.\n\nBộ Đất đai, Cơ sở hạ tầng, Giao thông và Du lịch Nhật Bản (MLIT) cho biết động thái này nhằm giải quyết tình trạng thiếu hụt nhân lực trầm trọng do vấn đề già hóa dân số.",
+    "imageUrl": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Kỹ năng đặc định Tokutei Gino loại 2 tại Nhật Bản",
+    "imageCaption": "Ảnh tư liệu nguồn từ Bộ Đất đai, Cơ sở hạ tầng, Giao thông và Du lịch Nhật Bản (MLIT)",
+    "sourceName": "Thời Báo Nhật Bản (The Japan News)",
+    "sourceUrl": "https://japannews.yomiuri.co.jp",
+    "author": "Ban Thời Sự Quốc Tế",
+    "publishedAt": "03/11/2026",
+    "publishedTime": "30 phút trước",
+    "views": 3120,
+    "likes": 94,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Tokutei Gino",
+      "Visa Nhật Bản",
+      "Kỹ năng đặc định",
+      "Việc làm Nhật"
+    ],
+    "isHot": true,
+    "isFeatured": true,
+    "keyVocab": [
+      {
+        "kanji": "特定技能",
+        "kana": "とくていぎのう",
+        "vi": "Kỹ năng đặc định"
+      },
+      {
+        "kanji": "就労",
+        "kana": "しゅうろう",
+        "vi": "Lao động, làm việc"
+      },
+      {
+        "kanji": "在留資格",
+        "kana": "ざいりゅうしかく",
+        "vi": "Tư cách lưu trú"
+      }
+    ],
+    "grammarPoint": "～をめぐって (Xoay quanh vấn đề gì đó, dùng nhiều trong tin tức chính trị/kinh tế)"
+  },
+  {
+    "id": 94,
+    "title": "Tập đoàn Đường sắt JR East thử nghiệm thành công tàu Shinkansen tự hành đạt vận tốc 360km/h",
+    "slug": "tap-doan-duong-sat-jr-east-thu-nghiem-thanh-cong-tau-shinkansen-tu-hanh-dat-van-toc-360kmh",
+    "category": "Thời sự Nhật Bản",
+    "summary": "Đoàn tàu thử nghiệm ALFA-X thế hệ mới đã hoàn thành lộ trình chạy đêm giữa ga Sendai và Morioka với độ trễ 0 giây và mức độ an toàn tuyệt đối.",
+    "content": "Công ty Đường sắt Đông Nhật Bản (JR East) vừa công bố kết quả cuộc chạy thử nghiệm thành công của đoàn tàu cao tốc thử nghiệm Shinkansen thế hệ tiếp theo mang tên ALFA-X.\n\nTàu được trang bị hệ thống lái tự động hoàn toàn cấp độ GoA3 kết hợp trí tuệ nhân tạo (AI) nhận diện chướng ngại vật và điều chỉnh tốc độ tự động theo điều kiện thời tiết. Trong suốt hành trình chạy đêm dài 180km giữa tỉnh Miyagi và Iwate, đoàn tàu duy trì vận tốc ổn định 360km/h.\n\nJR East dự kiến sẽ đưa công nghệ này vào khai thác thương mại chính thức trên tuyến Tohoku Shinkansen và Hokkaido Shinkansen trong giai đoạn 2028 - 2030.",
+    "imageUrl": "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Tàu Shinkansen ALFA-X Nhật Bản",
+    "imageCaption": "Ảnh tư liệu phóng sự từ JR East",
+    "sourceName": "Kênh Truyền Hình Quốc Gia NHK",
+    "sourceUrl": "https://www3.nhk.or.jp/news/",
+    "author": "Phóng Viên Khoa Học Công Nghệ NHK",
+    "publishedAt": "03/11/2026",
+    "publishedTime": "45 phút trước",
+    "views": 4580,
+    "likes": 185,
+    "comments": [],
+    "readTime": "3 phút đọc",
+    "tags": [
+      "Shinkansen",
+      "ALFA-X",
+      "JR East",
+      "Công nghệ Nhật"
+    ],
+    "isHot": true,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "新幹線",
+        "kana": "しんかんせん",
+        "vi": "Tàu cao tốc Shinkansen"
+      },
+      {
+        "kanji": "自動運転",
+        "kana": "じどううんてん",
+        "vi": "Lái tự động"
+      },
+      {
+        "kanji": "時速",
+        "kana": "じそく",
+        "vi": "Tốc độ mỗi giờ (km/h)"
+      }
+    ],
+    "grammarPoint": "～に伴い / に伴って (Cùng với, đi đôi với sự biến đổi)"
+  },
+  {
+    "id": 95,
+    "title": "Đồng Yên Nhật tiếp tục đà hồi phục mạnh mẽ so với USD và VNĐ trong phiên giao dịch đầu tháng 11",
+    "slug": "dong-yen-nhat-tiep-tuc-da-hoi-phuc-manh-me-so-voi-usd-va-vnd",
+    "category": "Kinh tế & Việc làm",
+    "summary": "Tỷ giá JPY/VND tại các ngân hàng thương mại Việt Nam đã vượt ngưỡng 175, mở ra tín hiệu vui cho cộng đồng người lao động và du học sinh gửi tiền về nước.",
+    "content": "Thị trường ngoại hối Tokyo ghi nhận phiên tăng điểm ấn tượng thứ ba liên tiếp của đồng Yên Nhật (JPY) sau tuyên bố mới nhất của Thống đốc Ngân hàng Trung ương Nhật Bản (BOJ) Kazuo Ueda về khả năng tiếp tục điều chỉnh lãi suất cơ bản.\n\nTại Việt Nam, các ngân hàng thương mại lớn như Vietcombank, BIDV và VietinBank niêm yết giá bán tiền mặt Yên Nhật dao động quanh mốc 174,80 – 176,20 VNĐ/JPY, tăng gần 8% so với vùng đáy quý 2/2024.\n\nCác chuyên gia tài chính từ Viện Nghiên cứu Kinh tế Nomura dự báo đồng Yên sẽ tiếp tục xu hướng tích cực trong các tháng cuối năm 2026.",
+    "imageUrl": "https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Đồng Yên Nhật hồi phục tỷ giá",
+    "imageCaption": "Ảnh tư liệu từ Sở Giao Dịch Chứng Khoán Tokyo",
+    "sourceName": "Thời Báo Kinh Tế Nikkei (Nikkei Shimbun)",
+    "sourceUrl": "https://www.nikkei.com",
+    "author": "Chuyên Gia Phân Tích Tài Chính Nikkei",
+    "publishedAt": "03/11/2026",
+    "publishedTime": "1 giờ trước",
+    "views": 5210,
+    "likes": 210,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Tỷ giá đồng Yên",
+      "BOJ",
+      "Kinh tế Nhật Bản",
+      "Chuyển tiền Nhật Việt"
+    ],
+    "isHot": true,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "円高",
+        "kana": "えんだか",
+        "vi": "Đồng Yên lên giá"
+      },
+      {
+        "kanji": "為替レート",
+        "kana": "かわせれーと",
+        "vi": "Tỷ giá hối đoái"
+      },
+      {
+        "kanji": "金利",
+        "kana": "きんり",
+        "vi": "Lãi suất ngân hàng"
+      }
+    ],
+    "grammarPoint": "～につれて (Càng ngày càng... kéo theo sự thay đổi tương ứng)"
+  },
+  {
+    "id": 96,
+    "title": "Bộ Giáo dục Nhật Bản MEXT công bố danh sách 15 trường đại học cấp học bổng toàn phần chính phủ 2027",
+    "slug": "bo-giao-duc-nhat-ban-mext-cong-bo-danh-sach-15-truong-dai-hoc-cap-hoc-bong-toan-phan-chinh-phu-2027",
+    "category": "Du học & Học bổng",
+    "summary": "Học bổng bao gồm toàn bộ học phí, vé máy bay khứ hồi và sinh hoạt phí 145.000 Yên/tháng cho các ngành Trí tuệ Nhân tạo, Bán dẫn và Môi trường xanh.",
+    "content": "Bộ Giáo dục, Văn hóa, Thể thao, Khoa học và Công nghệ Nhật Bản (MEXT) vừa chính thức công bố đề án học bổng danh giá dành cho sinh viên quốc tế xuất sắc năm học 2027.\n\nTrong danh sách các trường tham gia có những đại học hàng đầu như Đại học Tokyo (Todai), Đại học Kyoto, Viện Công nghệ Tokyo (Tokyo Tech), Đại học Osaka và Đại học Tohoku. Đáng chú ý, năm nay MEXT ưu tiên đặc biệt cho các ứng viên theo học chuyên ngành Kỹ thuật Bán dẫn, Vi mạch và Trí tuệ Nhân tạo Ứng dụng.\n\nỨng viên dự tuyển cần có điểm trung bình tích lũy GPA từ 3.2/4.0 trở lên, chứng chỉ tiếng Nhật tối thiểu JLPT N2 hoặc tiếng Anh IELTS 6.5.",
+    "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Học bổng MEXT chính phủ Nhật Bản",
+    "imageCaption": "Ảnh tư liệu sinh viên quốc tế tại khuôn viên Đại học Tokyo",
+    "sourceName": "Cổng Thông Tin Du Học JASSO",
+    "sourceUrl": "https://www.jasso.go.jp",
+    "author": "Phòng Hợp Tác Quốc Tế MEXT",
+    "publishedAt": "02/11/2026",
+    "publishedTime": "2 giờ trước",
+    "views": 6420,
+    "likes": 315,
+    "comments": [],
+    "readTime": "5 phút đọc",
+    "tags": [
+      "Học bổng MEXT",
+      "Du học Nhật",
+      "JASSO",
+      "Đại học Tokyo"
+    ],
+    "isHot": true,
+    "isFeatured": true,
+    "keyVocab": [
+      {
+        "kanji": "奨学金",
+        "kana": "しょうがくきん",
+        "vi": "Học bổng"
+      },
+      {
+        "kanji": "留学生",
+        "kana": "りゅうがくせい",
+        "vi": "Du học sinh"
+      },
+      {
+        "kanji": "選考",
+        "kana": "せんこう",
+        "vi": "Tuyển chọn, xét duyệt"
+      }
+    ],
+    "grammarPoint": "～をはじめ / をはじめとして (Trước hết phải kể đến, tiêu biểu là...)"
+  },
+  {
+    "id": 97,
+    "title": "Khám phá lễ hội hoa anh đào sớm Kawazu Sakura rực rỡ tại bán đảo Izu, tỉnh Shizuoka",
+    "slug": "kham-pha-le-hoi-hoa-anh-dao-som-kawazu-sakura-ruc-ro-tai-ban-dao-izu",
+    "category": "Văn hóa & Du lịch",
+    "summary": "Hơn 8.000 gốc hoa anh đào Kawazu nở sớm dọc bờ sông Kawazu đang bước vào thời kỳ mãn khai, thu hút hàng trăm ngàn lượt du khách trong và ngoài nước.",
+    "content": "Khác với giống anh đào Somei Yoshino thường nở rộ vào cuối tháng 3, hoa anh đào Kawazu Sakura tại thị trấn Kawazu, bán đảo Izu bắt đầu bung nở từ đầu mùa xuân với sắc hồng thắm đặc trưng và thời gian hoa nở kéo dài đến gần một tháng.\n\nDọc theo bờ sông Kawazu dài 4km, du khách có thể tản bộ dưới đường hầm hoa rực rỡ xen lẫn những thảm hoa cải dầu vàng óng (Nanohana). Ban đêm, ban tổ chức thị trấn thắp sáng đèn LED lung linh tạo nên cảnh sắc huyền ảo thu hút đông đảo nhiếp ảnh gia quốc tế.",
+    "imageUrl": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Hoa anh đào Kawazu Sakura nở sớm tại Shizuoka",
+    "imageCaption": "Ảnh tư liệu phong cảnh từ Cơ quan Xúc tiến Du lịch Nhật Bản JNTO",
+    "sourceName": "Cơ Quan Xúc Tiến Du Lịch Quốc Gia Nhật Bản (JNTO)",
+    "sourceUrl": "https://www.japan.travel/vi/vn/",
+    "author": "Ban Biên Tập Văn Hóa & Du Lịch",
+    "publishedAt": "02/11/2026",
+    "publishedTime": "3 giờ trước",
+    "views": 3890,
+    "likes": 160,
+    "comments": [],
+    "readTime": "3 phút đọc",
+    "tags": [
+      "Kawazu Sakura",
+      "Hoa anh đào",
+      "Du lịch Nhật Bản",
+      "Shizuoka"
+    ],
+    "isHot": false,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "満開",
+        "kana": "まんかい",
+        "vi": "Nở rộ, mãn khai"
+      },
+      {
+        "kanji": "名所",
+        "kana": "めいしょ",
+        "vi": "Danh lam thắng cảnh"
+      },
+      {
+        "kanji": "観光客",
+        "kana": "かんこうきゃく",
+        "vi": "Khách du lịch"
+      }
+    ],
+    "grammarPoint": "～にかけて (Suốt từ... cho đến... chỉ phạm vi thời gian hoặc không gian)"
+  },
+  {
+    "id": 98,
+    "title": "Bí quyết đạt điểm tối đa phần đọc hiểu Dokkai N2 và N1 từ các thủ khoa JLPT",
+    "slug": "bi-quyet-dat-diem-toi-da-phan-doc-hieu-dokkai-n2-va-n1-tu-cac-thu-khoa-jlpt",
+    "category": "Kỳ thi JLPT",
+    "summary": "Phân tích cấu trúc đoạn văn, nhận diện từ nối chuyển ý (Shikashi, Tokoroga) và chiến thuật phân bổ thời gian hợp lý trong phòng thi.",
+    "content": "Phần thi Đọc hiểu (Dokkai) luôn là nỗi lo lắng lớn nhất đối với các thí sinh tham dự kỳ thi JLPT N2 và N1 do dung lượng bài đọc dài, từ vựng trừu tượng và áp lực thời gian căng thẳng.\n\nTheo chia sẻ của các thủ khoa 180/180 điểm JLPT, chìa khóa để xử lý bài đọc không phải là dịch từng chữ một, mà là nắm bắt mạch lập luận của tác giả:\n1. Đọc câu hỏi trước để xác định mục tiêu tìm kiếm thông tin.\n2. Chú ý các từ nối biểu thị quan điểm trái ngược như 「しかし」(nhưng), 「ところが」(thế nhưng), 「実は」(thực ra thì) – câu văn theo sau thường chính là đáp án cốt lõi.\n3. Luôn cảnh giác với các phương án có từ mang tính tuyệt đối như 「すべて」(tất cả), 「絶対」(tuyệt đối), 「～に限る」(chỉ riêng).\n\nLuyện tập đọc báo thời sự Nhật Bản mỗi ngày trên WebApp HYPER JP là phương pháp hữu hiệu giúp tăng tốc độ đọc lướt (Skimming) và quét từ khóa (Scanning) tự nhiên.",
+    "imageUrl": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Luyện thi đọc hiểu Dokkai JLPT",
+    "imageCaption": "Ảnh tư liệu phương pháp học tiếng Nhật",
+    "sourceName": "Tạp Chí Ngôn Ngữ Học Tiếng Nhật Tokyo",
+    "sourceUrl": "https://nihongokyoushi.org",
+    "author": "ThS. Đặng Tuấn Anh - Thủ Khoa JLPT N1",
+    "publishedAt": "01/11/2026",
+    "publishedTime": "5 giờ trước",
+    "views": 4890,
+    "likes": 245,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Dokkai N1",
+      "Đọc hiểu JLPT",
+      "Mẹo thi N2",
+      "Bí quyết học tập"
+    ],
+    "isHot": true,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "読解",
+        "kana": "どっかい",
+        "vi": "Đọc hiểu"
+      },
+      {
+        "kanji": "筆者",
+        "kana": "ひっしゃ",
+        "vi": "Tác giả bài viết"
+      },
+      {
+        "kanji": "主張",
+        "kana": "しゅちょう",
+        "vi": "Quan điểm, lập luận"
+      }
+    ],
+    "grammarPoint": "～にほかならない (Chính là, không gì khác hơn là... dùng để khẳng định mạnh mẽ)"
+  }
+,
+  {
+    "id": 99,
+    "title": "Hướng dẫn đăng ký Bảo hiểm Y tế Quốc dân Kokumin Kenko Hoken cho người mới sang Nhật",
+    "slug": "huong-dan-dang-ky-bao-hiem-y-te-quoc-dan-kokumin-kenko-hoken-cho-nguoi-moi-sang-nhat",
+    "category": "Xã hội & Đời sống",
+    "summary": "Người cư trú tại Nhật Bản bắt buộc phải tham gia bảo hiểm y tế để được chi trả 70% chi phí khám chữa bệnh và thuốc men tại các cơ sở y tế trên toàn quốc.",
+    "content": "Bảo hiểm Y tế Quốc dân (Kokumin Kenko Hoken) là chế độ an sinh xã hội bắt buộc đối với tất cả công dân và người nước ngoài cư trú hợp pháp tại Nhật Bản từ 3 tháng trở lên.\n\nSau khi hoàn tất thủ tục đăng ký địa chỉ thường trú tại Tòa thị chính (Shiyakusho / Kuyakusho), bạn sẽ được hướng dẫn sang quầy Bảo hiểm để nhận thẻ bảo hiểm y tế (Hokensho).\n\nLợi ích khi có thẻ bảo hiểm:\n- Được Quỹ bảo hiểm quốc gia chi trả 70% tổng viện phí và chi phí thuốc kê đơn; người bệnh chỉ phải tự chi trả 30%.\n- Áp dụng chế độ chi phí y tế cao (Kogaku Ryoyohi) giới hạn mức tối đa tự chi trả trong trường hợp phải phẫu thuật hoặc nằm viện dài ngày.\n- Du học sinh chưa có thu nhập tại Nhật được xét miễn giảm phí bảo hiểm từ 50% đến 70% trong năm đầu tiên.",
+    "imageUrl": "https://images.unsplash.com/photo-1513407030348-c983a97b98d8?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Bảo hiểm Y tế Quốc dân tại Nhật Bản",
+    "imageCaption": "Ảnh tư liệu hướng dẫn an sinh xã hội tại Nhật Bản",
+    "sourceName": "Bộ Y Tế, Lao Động và Phúc Lợi Nhật Bản (MHLW)",
+    "sourceUrl": "https://www.mhlw.go.jp",
+    "author": "Chuyên Viên Tư Vấn Đời Sống Shiyakusho",
+    "publishedAt": "01/11/2026",
+    "publishedTime": "6 giờ trước",
+    "views": 4120,
+    "likes": 198,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Kokumin Kenko Hoken",
+      "Bảo hiểm y tế",
+      "Đời sống Nhật",
+      "Thủ tục hành chính"
+    ],
+    "isHot": false,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "国民健康保険",
+        "kana": "こくみんけんこうほけん",
+        "vi": "Bảo hiểm y tế quốc dân"
+      },
+      {
+        "kanji": "自己負担",
+        "kana": "じこふたん",
+        "vi": "Tự chi trả phần của bản thân"
+      },
+      {
+        "kanji": "減免",
+        "kana": "げんめん",
+        "vi": "Miễn giảm (thuế, phí)"
+      }
+    ],
+    "grammarPoint": "～義務づけられている (Được quy định là nghĩa vụ bắt buộc theo luật)"
+  },
+  {
+    "id": 100,
+    "title": "Văn hóa ẩm thực Ramen: Khám phá 4 dòng nước dùng tinh túy Shoyu, Miso, Shio và Tonkotsu",
+    "slug": "van-hoa-am-thuc-ramen-kham-pha-4-dong-nuoc-dung-tinh-tuy-shoyu-miso-shio-tonkotsu",
+    "category": "Văn hóa & Du lịch",
+    "summary": "Ramen không chỉ là món mì quốc hồn quốc túy của xứ Phù Tang mà còn là cả một môn nghệ thuật đỉnh cao về kỹ thuật hầm xương và ủ tương lên men.",
+    "content": "Mỗi vùng miền tại Nhật Bản đều tự hào với phong cách mì Ramen độc bản của riêng mình:\n1. Shoyu Ramen (Tokyo): Nước dùng thanh tao từ nước tương shoyu ủ thùng gỗ sồi kết hợp nước luộc gà và cá bào katsuobushi.\n2. Miso Ramen (Sapporo, Hokkaido): Vị ngọt đậm đà từ đậu nành lên men đặc sản phương bắc, thường dùng kèm bắp ngọt và bơ tươi béo ngậy.\n3. Tonkotsu Ramen (Hakata, Fukuoka): Nước hầm xương heo đục sánh màu sữa hầm liên tục trong hơn 16 tiếng ở nhiệt độ cao, sợi mì mảnh dai giòn.\n4. Shio Ramen (Hakodate): Nước dùng muối biển tinh khiết trong vắt giữ trọn vị ngọt tự nhiên của rong biển kombu và hải sản tươi.\n\nNgười Nhật có thói quen húp mì xì xụp (Slurping) như một cách thể hiện sự trân trọng tài năng của người đầu bếp và giúp làm nguội sợi mì thơm ngon hơn khi thưởng thức.",
+    "imageUrl": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Mì Ramen truyền thống Nhật Bản",
+    "imageCaption": "Ảnh tư liệu nghệ thuật ẩm thực Nhật Bản",
+    "sourceName": "Tạp Chí Ẩm Thực Gourmet Japan",
+    "sourceUrl": "https://gourmet.jp",
+    "author": "Bếp Trưởng Kenji Sato",
+    "publishedAt": "31/10/2026",
+    "publishedTime": "1 ngày trước",
+    "views": 6890,
+    "likes": 420,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Ramen",
+      "Ẩm thực Nhật",
+      "Tonkotsu",
+      "Văn hóa ăn uống"
+    ],
+    "isHot": true,
+    "isFeatured": true,
+    "keyVocab": [
+      {
+        "kanji": "豚骨",
+        "kana": "とんこつ",
+        "vi": "Xương heo, nước hầm xương heo"
+      },
+      {
+        "kanji": "発酵",
+        "kana": "はっこう",
+        "vi": "Lên men (tương, miso)"
+      },
+      {
+        "kanji": "絶品",
+        "kana": "ぜっぴん",
+        "vi": "Tuyệt phẩm, món ăn hảo hạng"
+      }
+    ],
+    "grammarPoint": "～ならではの (Chỉ có ở... mới có được nét độc đáo này)"
+  },
+  {
+    "id": 101,
+    "title": "Lộ trình học tiếng Nhật từ sơ cấp N5 đến trung cấp N3 dành cho người đi làm bận rộn",
+    "slug": "lo-trinh-hoc-tieng-nhat-tu-so-cap-n5-den-trung-cap-n3-danh-cho-nguoi-di-lam-ban-ron",
+    "category": "Kỳ thi JLPT",
+    "summary": "Chiến thuật tận dụng các khoảng thời gian chết 15 phút mỗi ngày, kết hợp phương pháp lặp ngắt quãng SRS trên WebApp để ghi nhớ từ vựng vĩnh viễn.",
+    "content": "Người đi làm thường gặp khó khăn lớn về mặt thời gian khi học tiếng Nhật do lịch làm việc dày đặc. Tuy nhiên, theo các nghiên cứu thần kinh học về trí nhớ, việc học tập trung 20 phút mỗi ngày mang lại hiệu quả cao gấp 3 lần so với dồn 4 tiếng vào ngày cuối tuần.\n\nLộ trình 3 giai đoạn tối ưu hóa:\n- Giai đoạn 1 (Tháng 1-2): Hoàn thành 25 bài Minna no Nihongo N5. Thuộc bảng chữ cái và 150 Kanji căn bản. Tận dụng tính năng Furigana trên WebApp HYPER JP để đọc thành thạo không vấp.\n- Giai đoạn 2 (Tháng 3-4): Nâng cấp lên Minna N4 (Bài 26-50). Nắm vững thể bị động (Ukemi), sai khiến (Shieki) và kính ngữ (Keigo).\n- Giai đoạn 3 (Tháng 5-6): Luyện từ vựng và ngữ pháp N3 theo chủ đề thời sự. Luyện nghe mỗi sáng qua tính năng audio song ngữ Nhật - Việt.\n\nKiên trì duy trì chuỗi Streak học tập liên tục là bí quyết cốt lõi để não bộ hình thành phản xạ ngôn ngữ bền vững.",
+    "imageUrl": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Lộ trình tự học tiếng Nhật cho người bận rộn",
+    "imageCaption": "Ảnh tư liệu phương pháp học tập hiện đại",
+    "sourceName": "Học Viện Ngôn Ngữ HYPER JP",
+    "sourceUrl": "https://hyperjapanese.onrender.com",
+    "author": "ThS. Hoàng Mai Chi - Chuyên Gia Sư Phạm",
+    "publishedAt": "31/10/2026",
+    "publishedTime": "1 ngày trước",
+    "views": 7540,
+    "likes": 512,
+    "comments": [],
+    "readTime": "5 phút đọc",
+    "tags": [
+      "Tự học tiếng Nhật",
+      "Lộ trình N3",
+      "Minna no Nihongo",
+      "Kinh nghiệm học"
+    ],
+    "isHot": true,
+    "isFeatured": true,
+    "keyVocab": [
+      {
+        "kanji": "継続",
+        "kana": "けいぞく",
+        "vi": "Duy trì, kiên trì liên tục"
+      },
+      {
+        "kanji": "習慣化",
+        "kana": "しゅうかんか",
+        "vi": "Tập thành thói quen"
+      },
+      {
+        "kanji": "効率",
+        "kana": "こうりつ",
+        "vi": "Hiệu quả, năng suất"
+      }
+    ],
+    "grammarPoint": "～ものだ (Bản chất vốn dĩ là như vậy, lời khuyên nên làm gì)"
+  },
+  {
+    "id": 102,
+    "title": "Tokyo tổ chức ngày hội xúc tiến tuyển dụng nhân sự công nghệ thông tin nước ngoài 2026",
+    "slug": "tokyo-to-chuc-ngay-hoi-xuc-tien-tuyen-dung-nhan-su-cong-nghe-thong-tin-nuoc-ngoai-2026",
+    "category": "Kinh tế & Việc làm",
+    "summary": "Chính quyền Thủ đô Tokyo phối hợp cùng hơn 80 công ty công nghệ tổ chức phỏng vấn trực tiếp các vị trí Cloud Engineer, AI Specialist và Full-Stack Developer.",
+    "content": "Nhằm giải quyết bài toán thiếu hụt gần 450.000 chuyên gia công nghệ thông tin vào năm 2030, chính quyền Thủ đô Tokyo (TMG) đã khởi động chương trình hỗ trợ việc làm toàn diện cho kỹ sư công nghệ nước ngoài.\n\nCác ứng viên trúng tuyển sẽ được hỗ trợ toàn bộ chi phí vé máy bay sang Tokyo, hỗ trợ tìm căn hộ với tiền nhà ưu đãi trong 6 tháng đầu và được tài trợ các khóa đào tạo tiếng Nhật thương mại Business Japanese.\n\nMức lương cơ bản cho kỹ sư có 2-3 năm kinh nghiệm dao động từ 5.500.000 đến 8.000.000 Yên/năm (tương đương 900 triệu đến 1,3 tỷ đồng).",
+    "imageUrl": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Tuyển dụng kỹ sư công nghệ thông tin tại Tokyo",
+    "imageCaption": "Ảnh tư liệu Hội chợ Việc làm Công nghệ Tokyo",
+    "sourceName": "Chính Quyền Thủ Đô Tokyo (TMG)",
+    "sourceUrl": "https://www.metro.tokyo.lg.jp",
+    "author": "Phòng Hỗ Trợ Doanh Nghiệp Quốc Tế TMG",
+    "publishedAt": "30/10/2026",
+    "publishedTime": "2 ngày trước",
+    "views": 5980,
+    "likes": 310,
+    "comments": [],
+    "readTime": "4 phút đọc",
+    "tags": [
+      "Kỹ sư IT Nhật Bản",
+      "Tuyển dụng Tokyo",
+      "Việc làm lương cao",
+      "Kỹ sư phần mềm"
+    ],
+    "isHot": true,
+    "isFeatured": false,
+    "keyVocab": [
+      {
+        "kanji": "採用",
+        "kana": "さいよう",
+        "vi": "Tuyển dụng, tuyển chọn"
+      },
+      {
+        "kanji": "待遇",
+        "kana": "たいぐう",
+        "vi": "Chế độ đãi ngộ, phúc lợi"
+      },
+      {
+        "kanji": "人材育成",
+        "kana": "じんざいいくせい",
+        "vi": "Đào tạo và phát triển nhân tài"
+      }
+    ],
+    "grammarPoint": "～を皮切りに (Khởi đầu từ... sau đó lan rộng ra các hoạt động tiếp theo)"
+  }
 ];
 
 // Bộ mô phỏng tìm kiếm và cào tin tức tự động liên tục (Continuous Ingestion Engine)

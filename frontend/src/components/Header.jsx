@@ -404,11 +404,11 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 setMobileSearchOpen(true);
                 setTimeout(() => mobileInputRef.current?.focus(), 150);
               }}
-              className="p-1.5 xs:px-2.5 xs:py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 whitespace-nowrap shrink-0"
+              className="px-2 py-1.5 xs:px-2.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs font-bold flex items-center gap-1 cursor-pointer shadow-sm active:scale-95 whitespace-nowrap shrink-0"
               title="Tra cứu từ điển N5 - N1"
             >
               <Search size={15} className="text-pink-600 shrink-0" />
-              <span className="hidden xs:inline whitespace-nowrap">Từ điển</span>
+              <span className="text-[11px] font-bold whitespace-nowrap">Tra cứu</span>
             </button>
           </div>
 
@@ -864,27 +864,43 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                 }}
                 className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-2xl border border-pink-200 hover:border-pink-300 bg-white hover:bg-pink-50/30 transition-all cursor-pointer shadow-sm active:scale-95"
               >
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name || 'Học viên'}
-                    className="w-7 h-7 rounded-xl object-cover border border-pink-200 shrink-0"
-                  />
-                ) : (
-                  <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center font-bold text-xs shrink-0">
-                    {(user.name || user.email || 'H').charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <span className="text-xs font-bold text-slate-800 hidden md:inline max-w-[120px] truncate">
-                  {user.name || user.email?.split('@')[0]}
-                </span>
+                {(() => {
+                  const userAvatar = user.avatar || user.avatar_url;
+                  const userName = user.name || user.username || (user.email ? user.email.split('@')[0] : 'Học viên');
+                  return (
+                    <>
+                      {userAvatar ? (
+                        <img
+                          src={userAvatar}
+                          alt={userName}
+                          referrerPolicy="no-referrer"
+                          crossOrigin="anonymous"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            const fallback = e.currentTarget.parentElement?.querySelector('.avatar-fallback');
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
+                          className="w-7 h-7 rounded-xl object-cover border border-pink-200 shrink-0"
+                        />
+                      ) : null}
+                      <div
+                        className={`avatar-fallback w-7 h-7 rounded-xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white items-center justify-center font-bold text-xs shrink-0 ${userAvatar ? 'hidden' : 'flex'}`}
+                      >
+                        {(userName || 'H').charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-xs font-bold text-slate-800 hidden md:inline max-w-[120px] truncate">
+                        {userName}
+                      </span>
+                    </>
+                  );
+                })()}
                 <ChevronDown size={13} className="text-slate-400" />
               </button>
 
               {profileDropdownOpen && (
                 <div className="absolute right-0 top-12 w-56 bg-white rounded-3xl shadow-xl border border-pink-100 p-2 z-50 animate-in fade-in slide-in-from-top-1">
                   <div className="p-3 border-b border-pink-50">
-                    <p className="text-xs font-black text-slate-900 truncate">{user.name || 'Học viên Nihongo'}</p>
+                    <p className="text-xs font-black text-slate-900 truncate">{user.name || user.username || (user.email ? user.email.split('@')[0] : 'Học viên Nihongo')}</p>
                     <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
                     <div className="mt-2 flex items-center gap-1.5">
                       <span className="px-2 py-0.5 rounded-full bg-pink-100 text-pink-700 text-[10px] font-black">

@@ -64,6 +64,21 @@ function authenticateToken(req, res, next) {
 app.use(authenticateToken);
 
 // ── 1. AUTH ROUTES (PostgreSQL with In-Memory Resilient Fallback) ──
+function formatAuthUser(u) {
+  if (!u) return null;
+  const username = u.username || (u.email ? u.email.split('@')[0] : 'Học viên');
+  const avatar = u.avatar_url || u.avatar || '';
+  return {
+    id: u.id,
+    username,
+    name: username,
+    email: u.email,
+    role: u.role || 'user',
+    avatar,
+    avatar_url: avatar
+  };
+}
+
 app.post('/api/auth/register', async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
   if (!username || !email || !password) {
@@ -97,7 +112,7 @@ app.post('/api/auth/register', async (req, res) => {
         success: true,
         message: 'Đăng ký tài khoản thành công!',
         token,
-        user: newUser
+        user: formatAuthUser(newUser)
       });
     } catch (err) {
       console.error('Database register error:', err);
@@ -125,7 +140,7 @@ app.post('/api/auth/register', async (req, res) => {
     success: true,
     message: 'Đăng ký tài khoản thành công!',
     token,
-    user: { id: newUser.id, username: newUser.username, email: newUser.email }
+    user: formatAuthUser(newUser)
   });
 });
 
@@ -148,7 +163,7 @@ app.post('/api/auth/login', async (req, res) => {
             success: true,
             message: 'Đăng nhập thành công!',
             token,
-            user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }
+            user: formatAuthUser(user)
           });
         } else {
           return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không chính xác.' });
@@ -170,7 +185,7 @@ app.post('/api/auth/login', async (req, res) => {
     success: true,
     message: 'Đăng nhập thành công!',
     token,
-    user: { id: user.id, username: user.username, email: user.email, avatar_url: user.avatar_url || '' }
+    user: formatAuthUser(user)
   });
 });
 
@@ -319,7 +334,7 @@ app.post('/api/auth/social-login', async (req, res) => {
         success: true,
         message: `Đăng nhập qua ${provider || 'tài khoản'} thành công!`,
         token,
-        user: { id: user.id, username: user.username, email: user.email, role: user.role, avatar_url: user.avatar_url || '' }
+        user: formatAuthUser(user)
       });
     } catch (err) {
       console.error('Social login db error:', err);
@@ -339,7 +354,7 @@ app.post('/api/auth/social-login', async (req, res) => {
     success: true,
     message: `Đăng nhập qua ${provider || 'tài khoản'} thành công!`,
     token,
-    user: mockUser
+    user: formatAuthUser(mockUser)
   });
 });
 
@@ -554,13 +569,13 @@ app.get('/api/auth/me', async (req, res) => {
     try {
       const uRes = await db.pool.query('SELECT id, username, email, role, avatar_url FROM users WHERE id = $1', [req.user.id]);
       if (uRes.rows.length > 0) {
-        return res.json({ success: true, user: uRes.rows[0] });
+        return res.json({ success: true, user: formatAuthUser(uRes.rows[0]) });
       }
     } catch (e) {
       console.error('Fetch me error:', e);
     }
   }
-  res.json({ success: true, user: req.user });
+  res.json({ success: true, user: formatAuthUser(req.user) });
 });
 
 // ── 2. LESSONS & VOCABULARIES (Multi-Level N5-N1) ──

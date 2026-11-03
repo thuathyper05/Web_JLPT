@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, X, ArrowUpCircle } from 'lucide-react';
+import { RefreshCw, X, Sparkles } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
 export default function AppUpdateBanner() {
@@ -118,34 +118,31 @@ export default function AppUpdateBanner() {
   return (
     <aside
       aria-label="Thông báo cập nhật ứng dụng"
-      className="fixed bottom-20 sm:bottom-6 sm:right-6 left-3 right-3 sm:left-auto sm:max-w-md z-50 animate-in slide-in-from-bottom-5 duration-300"
+      className="fixed bottom-20 sm:bottom-6 left-2.5 right-2.5 sm:left-auto sm:right-6 sm:w-96 z-50 animate-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
     >
-      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-pink-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 rounded-3xl p-4 shadow-[0_12px_40px_rgba(236,72,153,0.18)] flex items-center justify-between gap-3 relative overflow-hidden">
-        {/* Subtle accent line on top */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600" />
+      <div className="relative overflow-hidden rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-pink-500/40 text-white p-3 sm:p-3.5 shadow-[0_12px_40px_rgba(236,72,153,0.35)] flex items-center justify-between gap-2.5">
+        {/* Glowing gradient accent bar */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400" />
 
         {/* Left: Icon and info */}
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-11 h-11 rounded-2xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 border border-pink-200/80 dark:border-pink-800/60 flex items-center justify-center shrink-0 shadow-2xs">
-            <ArrowUpCircle size={22} className="stroke-[2.2]" />
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center shrink-0 shadow-inner">
+            <Sparkles size={18} className="animate-pulse" />
           </div>
 
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-pink-600 dark:text-pink-400">
-                HYPER JP
-              </span>
-              <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400">
-                Bản cập nhật mới
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 leading-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+              <span className="text-[10px] font-black uppercase tracking-wider text-pink-400">
+                Bản mới đã sẵn sàng
               </span>
             </div>
 
-            <h4 className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white truncate mt-0.5">
-              Hệ thống đã có phiên bản mới
+            <h4 className="font-extrabold text-xs text-white truncate mt-1 leading-tight">
+              Cập nhật dữ liệu HYPER JP
             </h4>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
-              Nhấn cập nhật để áp dụng tính năng và dữ liệu mới nhất.
+            <p className="text-[10px] sm:text-[11px] text-slate-300 truncate mt-0.5 leading-tight">
+              Chạm cập nhật để trải nghiệm ngay
             </p>
           </div>
         </div>
@@ -156,16 +153,16 @@ export default function AppUpdateBanner() {
             type="button"
             onClick={handleUpdateNow}
             disabled={isUpdating}
-            className="px-3.5 py-2 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-xs shadow-lotus flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer disabled:opacity-75"
+            className="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-400 hover:to-rose-500 text-white font-extrabold text-xs shadow-md shadow-pink-500/30 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer disabled:opacity-75"
           >
-            <RefreshCw size={13} className={isUpdating ? 'animate-spin' : ''} />
-            <span>{isUpdating ? 'Đang tải...' : 'Cập nhật'}</span>
+            <RefreshCw size={12} className={isUpdating ? 'animate-spin' : ''} />
+            <span className="whitespace-nowrap">{isUpdating ? 'Đang tải...' : 'Cập nhật'}</span>
           </button>
 
           <button
             type="button"
             onClick={() => setDismissed(true)}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             title="Đóng thông báo"
             aria-label="Đóng thông báo"
           >
