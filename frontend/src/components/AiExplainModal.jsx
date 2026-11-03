@@ -220,6 +220,33 @@ export default function AiExplainModal() {
 
         {/* ── 3. CONTENT BODY (SCROLLABLE) ── */}
         <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1">
+          {/* AI Target Word Banner with Furigana & Romaji */}
+          {(data?.kanji || data?.word || data?.kana) && (
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-pink-50/90 via-white to-rose-50/70 border border-pink-100 flex items-center justify-between gap-3 shadow-xs">
+              <div className="flex items-center gap-3 min-w-0">
+                <FuriganaWord
+                  kanji={data.kanji || data.word}
+                  kana={data.clean_kana || data.kana}
+                  romaji={data.romaji}
+                  level={data.level || currentLevel}
+                  size="2xl"
+                />
+                {(data.clean_vietnamese || data.vietnamese || data.meaning) && (
+                  <span className="text-xs font-bold text-slate-700 border-l border-pink-200 pl-3 truncate">
+                    {data.clean_vietnamese || data.vietnamese || data.meaning}
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => speakJapanese(data.kanji || data.word, data.clean_kana || data.kana)}
+                className="p-2 rounded-xl bg-pink-100/80 hover:bg-pink-200 text-pink-700 transition-colors cursor-pointer shrink-0"
+                title="Nghe phát âm chuẩn Tokyo"
+              >
+                <Volume2 size={16} />
+              </button>
+            </div>
+          )}
           {loading ? (
             <div className="py-14 text-center space-y-3">
               <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />

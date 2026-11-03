@@ -144,7 +144,7 @@ function executeGeminiRequest(apiKey, promptText, modelName) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(postData)
       },
-      timeout: 20000
+      timeout: 10000
     };
 
     const req = https.request(options, (res) => {
@@ -170,7 +170,7 @@ function executeGeminiRequest(apiKey, promptText, modelName) {
 
     req.on('timeout', () => {
       req.destroy();
-      reject({ statusCode: 408, message: 'Request timed out (20s)', isQuota: false });
+      reject({ statusCode: 408, message: 'Request timed out (10s)', isQuota: false });
     });
 
     req.on('error', (err) => {
@@ -226,6 +226,54 @@ async function callGemini(promptText, modelName = PRIMARY_MODEL) {
   }
 
   throw new Error(lastError ? lastError.message : 'Tất cả API keys đều tạm thời hết hạn mức quota.');
+}
+
+
+function parseVocabAnalysis(text, context) {
+  let nuance = '';
+  let mnemonic = '';
+  let jp = '';
+  let romaji = '';
+  let vi = '';
+  let commonTraps = '';
+
+  const nuanceMatch = text.match(/(?:1\.\s*Ý nghĩa|Ý nghĩa cốt lõi|Sắc thái)[^:\n]*:\s*([\s\S]*?)(?=(?:2\.\s*Mẹo|Mẹo ghi nhớ|\n\n2\.|$))/i);
+  if (nuanceMatch) nuance = nuanceMatch[1].trim();
+
+  const mnemMatch = text.match(/(?:2\.\s*Mẹo|Mẹo ghi nhớ|Tượng hình|Câu chuyện)[^:\n]*:\s*([\s\S]*?)(?=(?:3\.\s*Ví dụ|Ví dụ thực tế|\n\n3\.|$))/i);
+  if (mnemMatch) mnemonic = mnemMatch[1].trim();
+
+  const trapMatch = text.match(/(?:Bẫy nhầm lẫn|Bẫy thường gặp|Lưu ý)[^:\n]*:\s*([\s\S]*?)(?=(?:3\.\s*Ví dụ|\n\n3\.|$))/i);
+  if (trapMatch) commonTraps = trapMatch[1].trim();
+
+  const jpMatch = text.match(/Câu tiếng Nhật:\s*([^\n]+)/i);
+  if (jpMatch) jp = jpMatch[1].trim();
+
+  const romajiMatch = text.match(/Cách đọc:\s*([^\n]+)/i);
+  if (romajiMatch) romaji = romajiMatch[1].trim();
+
+  const viMatch = text.match(/Dịch nghĩa:\s*([^\n]+)/i);
+  if (viMatch) vi = viMatch[1].trim();
+
+  const word = typeof context === 'string'
+    ? context
+    : (context?.kanji || context?.word || context?.clean_kana || context?.title || '');
+  const kana = typeof context === 'object' ? (context?.clean_kana || context?.kana || '') : '';
+  const vietnamese = typeof context === 'object' ? (context?.clean_vietnamese || context?.vietnamese || context?.meaning || context?.translation || '') : '';
+
+  return {
+    kanji: context?.kanji || (typeof context === 'string' ? context : ''),
+    kana: kana,
+    clean_kana: kana,
+    clean_vietnamese: vietnamese,
+    vietnamese: vietnamese,
+    level: context?.level || 'N5',
+    nuance: nuance || text.slice(0, 220),
+    mnemonic: mnemonic || 'Ghi nhớ bằng cách đặt từ trong ngữ cảnh giao tiếp cụ thể và liên tưởng hình ảnh trực quan.',
+    common_traps: commonTraps || 'Chú ý phát âm trường âm và trọng âm ngữ điệu tiếng Nhật chuẩn Tokyo.',
+    golden_rule: 'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng (SRS) và luyện phát âm thành tiếng!',
+    example: jp ? { jp, vi, romaji, tip: 'Luyện nghe phát âm chuẩn Tokyo' } : (context?.example_jp ? { jp: context.example_jp, vi: context.example_vi || '' } : null)
+  };
 }
 
 // Parses sentence grammar breakdown from AI output
@@ -426,6 +474,8 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
       extraData = parseSentenceAnalysis(sanitizedText, prompt || context?.sentence);
     } else if (normalizedAction === 'user_diagnosis') {
       extraData = parseRoadmapDiagnosis(sanitizedText);
+    } else if (['explain_vocab', 'explain_kanji', 'explain_particle'].includes(normalizedAction)) {
+      extraData = parseVocabAnalysis(sanitizedText, context);
     }
 
     return {
@@ -444,13 +494,32 @@ Hãy giải đáp cụ thể, thân thiện, súc tích, đi thẳng vào bản 
     };
   } catch (error) {
     console.error('Gemini API pool call failed:', error.message);
-    const wordKey = context?.kanji || context?.word || context?.word_title || prompt;
+    const wordKey = typeof context === 'string'
+      ? context
+      : (context?.kanji || context?.word || context?.particle || context?.title || context?.word_title || prompt || 'Từ Vựng');
+    const kanaVal = typeof context === 'object' ? (context?.clean_kana || context?.kana || '') : '';
+    const vnVal = typeof context === 'object' ? (context?.clean_vietnamese || context?.vietnamese || context?.meaning || '') : '';
+
     return {
       success: true,
       data: {
-        title: `AI Sensei: ${wordKey || 'Hỗ Trợ Học Tập'}`,
-        explanation: `AI Sensei hướng dẫn:\nKhi học từ vựng 「${wordKey}」, bí quyết ghi nhớ bền vững là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào câu hoàn chỉnh mỗi ngày.\n\nCâu tiếng Nhật: 「${wordKey}」を毎日使います。\nCách đọc: Mainichi tsukaimasu.\nDịch nghĩa: Tôi sử dụng hàng ngày.`,
-        nuance: 'Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.',
+        title: `AI Sensei: ${wordKey}`,
+        kanji: typeof context === 'object' ? (context?.kanji || '') : (typeof context === 'string' ? context : ''),
+        kana: kanaVal,
+        clean_kana: kanaVal,
+        clean_vietnamese: vnVal,
+        vietnamese: vnVal,
+        level: typeof context === 'object' ? (context?.level || 'N5') : 'N5',
+        explanation: `AI Sensei hướng dẫn:\nKhi học 「${wordKey}」, bí quyết ghi nhớ bền vững là đọc to thành tiếng theo ngữ điệu Tokyo Pitch Accent và đặt từ vào câu hoàn chỉnh mỗi ngày.\n\nCâu tiếng Nhật: 「${wordKey}」を毎日使います。\nCách đọc: Mainichi tsukaimasu.\nDịch nghĩa: Tôi sử dụng hàng ngày.`,
+        nuance: vnVal ? `Ý nghĩa cốt lõi: ${vnVal}. Thường xuất hiện trong các bài thi JLPT.` : 'Từ vựng cốt lõi thường gặp trong các đề thi năng lực JLPT.',
+        mnemonic: 'Quan sát kỹ cấu tạo chữ và liên tưởng hình ảnh trực quan để ghi nhớ tự nhiên vào tiềm thức.',
+        common_traps: 'Chú ý phát âm trường âm và trọng âm ngữ điệu chuẩn Tokyo.',
+        golden_rule: 'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng (SRS) và phát âm to rõ ràng!',
+        example: {
+          jp: typeof context === 'object' && context?.example_jp ? context.example_jp : `「${wordKey}」を勉強します。`,
+          vi: typeof context === 'object' && context?.example_vi ? context.example_vi : `Học 「${wordKey}」 mỗi ngày.`,
+          tip: 'Luyện nghe phát âm chuẩn Tokyo'
+        },
         answer: `AI Sensei ghi nhận thắc mắc về 「${wordKey}」. Hãy kết hợp luyện nghe và nhắc lại theo phương pháp Shadowing nhé!`,
         reply: `AI Sensei ghi nhận thắc mắc về 「${wordKey}」. Hãy kết hợp luyện nghe và nhắc lại theo phương pháp Shadowing nhé!`,
         aiGenerated: false,

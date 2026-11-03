@@ -37,7 +37,7 @@ export default function AiChatBubble() {
 
     try {
       const res = await aiService.query({ action: 'chat', prompt: q });
-      const aiReply = res.data?.data?.explanation || res.data?.data?.reply || res.data?.data?.nuance;
+      const aiReply = res.data?.data?.explanation || res.data?.data?.reply || res.data?.data?.nuance || res.data?.data?.answer;
       if (res.data?.success && aiReply) {
         sounds.playCorrect();
         setMessages((prev) => [
@@ -67,7 +67,7 @@ export default function AiChatBubble() {
   return (
     <>
       {/* Floating Trigger Button: Positioned comfortably 26px+ above mobile bottom bar to never overlap 'Thêm' menu */}
-      <div className="fixed right-3.5 sm:right-5 lg:right-6 bottom-[calc(env(safe-area-inset-bottom,0px)+86px)] lg:bottom-6 z-30">
+      <div className="fixed right-3.5 sm:right-5 lg:right-6 bottom-[calc(env(safe-area-inset-bottom,0px)+86px)] lg:bottom-6 z-40">
         <button
           type="button"
           onClick={() => { sounds.playFlip(); setIsOpen(!isOpen); }}

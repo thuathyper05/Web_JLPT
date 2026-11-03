@@ -439,10 +439,26 @@ export const AppProvider = ({ children }) => {
   // AI Assistant trigger from any screen with personalized user progress
   const askAi = async (action, context, defaultTitle = 'Trợ Lý AI Phân Tích') => {
     sounds.playFlip();
+
+    let safeAction = action || 'free_question';
+    let safeContext = context;
+    let safeTitle = defaultTitle;
+
+    if (typeof action === 'string' && !context && action.length > 20) {
+      safeAction = 'free_question';
+      safeContext = { question: action };
+    }
+
+    // Pre-populate modal data with known context immediately so it displays instantly
+    const initialData = typeof safeContext === 'object' && safeContext !== null ? { ...safeContext } : {};
+    if (typeof safeContext === 'string') {
+      initialData.word = safeContext;
+    }
+
     setAiModal({
       isOpen: true,
-      title: defaultTitle,
-      data: null,
+      title: safeTitle,
+      data: initialData,
       loading: true
     });
 
@@ -458,16 +474,22 @@ export const AppProvider = ({ children }) => {
       };
 
       const res = await aiService.query({
-        action,
-        context,
+        action: safeAction,
+        context: safeContext,
+        prompt: typeof safeContext === 'string' ? safeContext : (safeContext?.question || safeContext?.message || ''),
         userProgress,
         username: user?.username || 'Học viên'
       });
+
       if (res.data?.success) {
+        const mergedData = {
+          ...initialData,
+          ...(res.data.data || {})
+        };
         setAiModal({
           isOpen: true,
-          title: res.data.data?.title || defaultTitle,
-          data: res.data.data,
+          title: res.data.data?.title || safeTitle,
+          data: mergedData,
           loading: false
         });
         return res.data;
@@ -476,15 +498,28 @@ export const AppProvider = ({ children }) => {
       }
     } catch (err) {
       console.warn('askAi query failed:', err);
+      const wordKey = initialData.kanji || initialData.word || initialData.clean_kana || initialData.title || '';
+      const fallbackData = {
+        ...initialData,
+        explanation: wordKey
+          ? `AI Sensei hướng dẫn:\nKhi học 「${wordKey}」, hãy kết hợp đọc to thành tiếng theo ngữ điệu Tokyo và đặt từ vào câu hoàn chỉnh mỗi ngày.`
+          : 'Trợ lý AI đang sẵn sàng hỗ trợ. Bạn có thể luyện nghe phát âm chuẩn Tokyo hoặc xem mẹo nhớ tượng hình để khắc sâu vào tiềm thức nhé!',
+        nuance: initialData.clean_vietnamese || initialData.vietnamese
+          ? `Ý nghĩa chuẩn xác: ${initialData.clean_vietnamese || initialData.vietnamese}.`
+          : 'Từ vựng trọng tâm thường gặp trong đề thi năng lực tiếng Nhật JLPT.',
+        mnemonic: initialData.kanji
+          ? `Quan sát kỹ các nét của chữ Hán 「${initialData.kanji}」 để liên tưởng hình ảnh trực quan.`
+          : 'Luyện lặp lại ngắt quãng (SRS) vào các khung giờ vàng trong ngày.',
+        golden_rule: 'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng và phát âm to rõ ràng!',
+        example: initialData.example_jp ? {
+          jp: initialData.example_jp,
+          vi: initialData.example_vi || ''
+        } : (wordKey ? { jp: `「${wordKey}」を勉強します。`, vi: `Học 「${wordKey}」 mỗi ngày.` } : null)
+      };
       setAiModal({
         isOpen: true,
-        title: defaultTitle,
-        data: {
-          nuance:
-            'Trợ lý AI đang sẵn sàng hỗ trợ. Bạn có thể luyện nghe phát âm chuẩn Tokyo hoặc xem mẹo nhớ tượng hình để khắc sâu vào tiềm thức nhé!',
-          golden_rule:
-            'Học tiếng Nhật hiệu quả nhất là kết hợp lặp lại ngắt quãng (SRS) và luyện phát âm thành tiếng!'
-        },
+        title: safeTitle,
+        data: fallbackData,
         loading: false
       });
     }
