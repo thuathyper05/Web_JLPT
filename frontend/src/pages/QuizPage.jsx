@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { quizService, lessonService, speakJapanese } from '../services/api';
+import FuriganaWord, { FuriganaSentence } from '../components/FuriganaWord';
 import { sounds } from '../services/sounds';
 import {
   CheckSquare,
@@ -423,9 +424,21 @@ export default function QuizPage() {
             </span>
 
             <div className="flex items-center justify-center gap-3">
-              <h2 className="text-3xl sm:text-5xl font-black font-jp text-slate-900 tracking-wide break-words">
-                {currentQ.question}
-              </h2>
+              <div>
+                {currentQ.mode === 'jp_to_vi' ? (
+                  <FuriganaWord
+                    kanji={currentQ.kanji || currentQ.question}
+                    kana={currentQ.kana || currentQ.audio_text}
+                    romaji={currentQ.romaji}
+                    level={activeLevel}
+                    size="4xl"
+                  />
+                ) : (
+                  <h2 className="text-3xl sm:text-5xl font-black font-jp text-slate-900 tracking-wide break-words">
+                    {currentQ.question}
+                  </h2>
+                )}
+              </div>
               {currentQ.audio_text && (
                 <button
                   type="button"
@@ -484,9 +497,13 @@ export default function QuizPage() {
                     <span>Hỏi AI chi tiết</span>
                   </button>
                 </div>
-                <p className="text-xs text-slate-700 mb-0 leading-relaxed">
-                  {currentQ.explanation}
-                </p>
+                <div className="text-xs text-slate-700 mb-0 leading-relaxed">
+                  <FuriganaSentence
+                    text={currentQ.explanation}
+                    level={activeLevel}
+                    size="xs"
+                  />
+                </div>
               </div>
             )}
           </div>

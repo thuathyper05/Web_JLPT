@@ -756,6 +756,8 @@ export default function FlashcardPage() {
                       <FuriganaWord
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
+                        romaji={currentCard.romaji}
+                        level={currentLevel}
                         size="5xl"
                       />
                       {currentCard.romaji && (
@@ -827,6 +829,8 @@ export default function FlashcardPage() {
                         <FuriganaWord
                           kanji={currentCard.kanji}
                           kana={currentCard.clean_kana || currentCard.kana}
+                          romaji={currentCard.romaji}
+                          level={currentLevel}
                           size="4xl"
                         />
                         {currentCard.romaji && (
@@ -843,6 +847,8 @@ export default function FlashcardPage() {
                       <FuriganaWord
                         kanji={currentCard.kanji}
                         kana={currentCard.clean_kana || currentCard.kana}
+                        romaji={currentCard.romaji}
+                        level={currentLevel}
                         size="xl"
                       />
                       {currentCard.romaji && (

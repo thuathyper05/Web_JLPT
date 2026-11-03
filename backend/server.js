@@ -1156,6 +1156,10 @@ app.get('/api/quiz/generate', async (req, res) => {
       question: questionText,
       correct_answer: correctAnswer,
       options,
+      kanji: item.kanji || '',
+      kana: item.clean_kana || item.kana || '',
+      romaji: item.romaji || '',
+      level: upperLevel,
       audio_text: item.clean_kana || item.kana || (item.kanji !== '-' ? item.kanji : ''),
       explanation: `Từ 「${getSafeJpText(item)}」 có nghĩa là "${getSafeViText(item)}". ${item.usage_note ? `Lưu ý: ${item.usage_note}` : ''}`
     };

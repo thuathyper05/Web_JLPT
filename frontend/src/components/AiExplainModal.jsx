@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { speakJapanese, speakBilingualText, stopSpeaking, aiService } from '../services/api';
 import { sounds } from '../services/sounds';
-import FuriganaWord from './FuriganaWord';
+import FuriganaWord, { FuriganaSentence } from './FuriganaWord';
 import {
   X,
   Sparkles,
@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function AiExplainModal() {
-  const { aiModal, closeAiModal } = useApp();
+  const { aiModal, closeAiModal, currentLevel } = useApp();
   const [activeTab, setActiveTab] = useState('analysis'); // 'analysis' | 'chat' | 'quiz'
   const [userQuery, setUserQuery] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -286,8 +286,12 @@ export default function AiExplainModal() {
                     </button>
                   </div>
 
-                  <div className="font-jp font-black text-slate-900 text-sm sm:text-base leading-relaxed">
-                    {data.example.jp}
+                  <div className="pt-1">
+                    <FuriganaSentence
+                      text={data.example.jp}
+                      level={data?.level || currentLevel}
+                      size="sm"
+                    />
                   </div>
                   <div className="text-xs text-slate-600">{data.example.vi}</div>
 

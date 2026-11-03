@@ -529,14 +529,16 @@ export default function ListeningPage() {
                           <div className="text-[10px] font-bold text-slate-400">
                             {turn.speaker}
                           </div>
-                          <div className="font-jp font-bold text-sm sm:text-base text-slate-900">
-                            {turn.kanji}
+                          <div className="pt-0.5">
+                            <FuriganaWord
+                              kanji={turn.kanji}
+                              kana={turn.kana}
+                              romaji={turn.romaji}
+                              level={currentLevel}
+                              forceFurigana={showFurigana && (currentLevel === 'N5' || currentLevel === 'N4')}
+                              size="base"
+                            />
                           </div>
-                          {showFurigana && turn.kana && (
-                            <div className="font-jp text-xs text-pink-600 font-medium">
-                              {turn.kana}
-                            </div>
-                          )}
                           {showTranslation && turn.vi && (
                             <div className="text-xs text-slate-600 pt-1 border-t border-slate-100 mt-1">
                               {turn.vi}

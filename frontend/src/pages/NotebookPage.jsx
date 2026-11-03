@@ -267,6 +267,8 @@ export default function NotebookPage() {
                     <FuriganaWord
                       kanji={word.kanji}
                       kana={word.clean_kana || word.kana}
+                      romaji={word.romaji}
+                      level={word.level || currentLevel}
                       size="xl"
                     />
                   </div>

@@ -420,6 +420,8 @@ export default function PracticePage() {
                       <FuriganaWord
                         kanji={currentWord.kanji}
                         kana={currentWord.clean_kana || currentWord.kana}
+                        romaji={currentWord.romaji}
+                        level={currentLevel}
                         size="lg"
                       />
                     </div>
@@ -508,6 +510,8 @@ export default function PracticePage() {
                     <FuriganaWord
                       kanji={currentWord.kanji}
                       kana={currentWord.clean_kana || currentWord.kana}
+                      romaji={currentWord.romaji}
+                      level={currentLevel}
                       size="base"
                     />
                   </div>
@@ -644,6 +648,8 @@ export default function PracticePage() {
                         <FuriganaWord
                           kanji={item.kanji}
                           kana={item.clean_kana || item.kana}
+                          romaji={item.romaji}
+                          level={currentLevel}
                           size="xl"
                         />
                         <button

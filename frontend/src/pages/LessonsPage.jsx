@@ -321,6 +321,8 @@ export default function LessonsPage() {
                     <FuriganaWord
                       kanji={currentWord.kanji}
                       kana={currentWord.clean_kana || currentWord.kana}
+                      romaji={currentWord.romaji}
+                      level={currentLevel}
                       size="5xl"
                     />
                   </div>
@@ -428,6 +430,8 @@ export default function LessonsPage() {
                           <FuriganaWord
                             kanji={item.kanji}
                             kana={item.clean_kana || item.kana}
+                            romaji={item.romaji}
+                            level={currentLevel}
                             size="base"
                           />
                         </div>

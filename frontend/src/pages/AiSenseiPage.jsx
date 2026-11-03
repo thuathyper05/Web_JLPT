@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { aiService, speakJapanese, speakBilingualText, stopSpeaking } from '../services/api';
+import FuriganaWord, { FuriganaSentence } from '../components/FuriganaWord';
 import { sounds } from '../services/sounds';
 import {
   Sparkles,
@@ -442,9 +443,13 @@ export default function AiSenseiPage() {
                 </button>
               </div>
 
-              <h3 className="text-2xl font-black font-jp text-slate-900">
-                {sentenceResult.original || sentenceInput}
-              </h3>
+              <div className="py-2">
+                <FuriganaSentence
+                  text={sentenceResult.original || sentenceInput}
+                  level="N5"
+                  size="xl"
+                />
+              </div>
 
               {sentenceResult.translation && (
                 <div className="p-3.5 rounded-xl bg-white border border-pink-100 font-bold text-xs text-slate-800">

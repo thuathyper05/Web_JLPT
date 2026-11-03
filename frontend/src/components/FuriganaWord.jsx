@@ -1,6 +1,8 @@
 import React from 'react';
+import { useApp } from '../context/AppContext';
+import { n5n4FuriganaDict } from '../data/n5n4FuriganaDict';
 
-function toHiragana(str) {
+export function toHiragana(str) {
   if (!str) return '';
   return str.replace(/[\u30a1-\u30f6]/g, (ch) =>
     String.fromCharCode(ch.charCodeAt(0) - 0x60)
@@ -10,7 +12,7 @@ function toHiragana(str) {
 /**
  * Checks if a character is a CJK Unified Ideograph (Kanji) or Kanji iteration mark
  */
-function isKanji(ch) {
+export function isKanji(ch) {
   if (!ch) return false;
   const code = ch.charCodeAt(0);
   return (
@@ -23,17 +25,128 @@ function isKanji(ch) {
   );
 }
 
-function areKanaEqual(ch1, ch2) {
+export function areKanaEqual(ch1, ch2) {
   if (!ch1 || !ch2) return false;
   if (ch1 === ch2) return true;
   return toHiragana(ch1) === toHiragana(ch2);
 }
 
 /**
+ * Comprehensive Hepburn Romaji mapping table
+ */
+const hepburnMap = {
+  'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
+  'か': 'ka', 'き': 'ki', 'く': 'ku', 'け': 'ke', 'こ': 'ko',
+  'さ': 'sa', 'し': 'shi', 'す': 'su', 'せ': 'se', 'そ': 'so',
+  'た': 'ta', 'ち': 'chi', 'つ': 'tsu', 'て': 'te', 'と': 'to',
+  'な': 'na', 'に': 'ni', 'ぬ': 'nu', 'ね': 'ne', 'の': 'no',
+  'は': 'ha', 'ひ': 'hi', 'ふ': 'fu', 'へ': 'he', 'ほ': 'ho',
+  'ま': 'ma', 'み': 'mi', 'む': 'mu', 'め': 'me', 'も': 'mo',
+  'や': 'ya', 'ゆ': 'yu', 'よ': 'yo',
+  'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
+  'わ': 'wa', 'を': 'o', 'ん': 'n',
+  'が': 'ga', 'ぎ': 'gi', 'ぐ': 'gu', 'げ': 'ge', 'ご': 'go',
+  'ざ': 'za', 'じ': 'ji', 'ず': 'zu', 'ぜ': 'ze', 'ぞ': 'zo',
+  'だ': 'da', 'ぢ': 'ji', 'づ': 'zu', 'で': 'de', 'ど': 'do',
+  'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
+  'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
+  'きゃ': 'kya', 'きゅ': 'kyu', 'きょ': 'kyo',
+  'しゃ': 'sha', 'しゅ': 'shu', 'しょ': 'sho',
+  'ちゃ': 'cha', 'ちゅ': 'chu', 'ちょ': 'cho',
+  'にゃ': 'nya', 'にゅ': 'nyu', 'にょ': 'nyo',
+  'ひゃ': 'hya', 'ひゅ': 'hyu', 'ひょ': 'hyo',
+  'みゃ': 'mya', 'みゅ': 'myu', 'みょ': 'myo',
+  'りゃ': 'rya', 'りゅ': 'ryu', 'りょ': 'ryo',
+  'ぎゃ': 'gya', 'ぎゅ': 'gyu', 'ぎょ': 'gyo',
+  'じゃ': 'ja', 'じゅ': 'ju', 'じょ': 'jo',
+  'びゃ': 'bya', 'びゅ': 'byu', 'びょ': 'byo',
+  'ぴゃ': 'pya', 'ぴゅ': 'pyu', 'ぴょ': 'pyo',
+  'ふぁ': 'fa', 'ふぃ': 'fi', 'ふぇ': 'fe', 'ふぉ': 'fo',
+  'てぃ': 'ti', 'でぃ': 'di', 'とぅ': 'tu', 'どぅ': 'du',
+  'うぃ': 'wi', 'うぇ': 'we', 'うぉ': 'wo',
+  'ゔ': 'vu', 'ゔぁ': 'va', 'ゔぃ': 'vi', 'ゔぇ': 've', 'ゔぉ': 'vo',
+  'しぇ': 'she', 'じぇ': 'je', 'ちぇ': 'che'
+};
+
+/**
+ * Converts Hiragana or Katakana string to clean Hepburn Romaji
+ */
+export function toHepburnRomaji(str) {
+  if (!str) return '';
+  const hira = toHiragana(str);
+  let result = '';
+  let i = 0;
+
+  while (i < hira.length) {
+    // Sokuon (small tsu っ or ッ)
+    if (hira[i] === 'っ' || hira[i] === 'ッ') {
+      const nextTwo = hira.slice(i + 1, i + 3);
+      const nextOne = hira.slice(i + 1, i + 2);
+      const rom = hepburnMap[nextTwo] || hepburnMap[nextOne] || '';
+      if (rom) {
+        result += rom[0] === 'c' ? 't' : rom[0];
+      }
+      i++;
+      continue;
+    }
+
+    // Chouonpu (ー)
+    if (hira[i] === 'ー') {
+      const lastChar = result[result.length - 1];
+      if (lastChar && 'aeiou'.includes(lastChar)) {
+        result += lastChar;
+      }
+      i++;
+      continue;
+    }
+
+    // Two-character combination (y-sounds)
+    const two = hira.slice(i, i + 2);
+    if (hepburnMap[two]) {
+      result += hepburnMap[two];
+      i += 2;
+      continue;
+    }
+
+    // Single character
+    const one = hira.slice(i, i + 1);
+    if (hepburnMap[one]) {
+      result += hepburnMap[one];
+      i += 1;
+      continue;
+    }
+
+    result += hira[i];
+    i++;
+  }
+
+  return result;
+}
+
+/**
+ * Safely accesses useApp without crashing outside AppProvider
+ */
+function useSafeApp() {
+  try {
+    return useApp();
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Parses a single variant without separators or outer bracket notes
  */
 function parseSingleVariant(kText, rText) {
-  if (!kText || kText === '-' || kText === '–' || kText === '—' || !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(kText)) return rText ? [{ type: 'text', text: rText }] : [];
+  if (
+    !kText ||
+    kText === '-' ||
+    kText === '–' ||
+    kText === '—' ||
+    !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(kText)
+  ) {
+    return rText ? [{ type: 'text', text: rText }] : [];
+  }
   if (!rText) return [{ type: 'text', text: kText }];
 
   // If no kanji remains in kText, return as plain text
@@ -142,7 +255,7 @@ function parseSingleVariant(kText, rText) {
     const cleanBlockHira = toHiragana(nonKanjiBlock.replace(/\s+/g, ''));
     const rTextHira = toHiragana(rText);
 
-    let rIdx = cleanBlockHira ? rTextHira.indexOf(cleanBlockHira, 1) : -1;
+    const rIdx = cleanBlockHira ? rTextHira.indexOf(cleanBlockHira, 1) : -1;
     if (rIdx > 0) {
       const leftK = kText.slice(0, firstNonKanjiIdx);
       const leftR = rText.slice(0, rIdx);
@@ -163,17 +276,18 @@ function parseSingleVariant(kText, rText) {
 /**
  * Advanced Furigana Segmenter:
  * Breaks Japanese words into precise Kanji blocks with ruby annotations and plain Kana segments.
- * Accurately handles:
- * - Separators (e.g. '探します、捜します' with 'さがします')
- * - Auxiliary bracket notes (e.g. '遅れます［時間に～］' with 'おくれます', '［お］弁当')
- * - Okurigana (e.g. 'ます' in '探します')
  */
-function parseFuriganaSegments(kanjiStr, kanaStr) {
+export function parseFuriganaSegments(kanjiStr, kanaStr) {
   let cleanK = (kanjiStr || '').trim();
   let cleanR = (kanaStr || '').trim();
 
-  // If cleanK is a placeholder dash (e.g. '-', '–', '—') or contains no Japanese characters, treat it as empty
-  if (!cleanK || cleanK === '-' || cleanK === '–' || cleanK === '—' || !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(cleanK)) {
+  if (
+    !cleanK ||
+    cleanK === '-' ||
+    cleanK === '–' ||
+    cleanK === '—' ||
+    !/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF]/.test(cleanK)
+  ) {
     cleanK = '';
   }
 
@@ -187,7 +301,7 @@ function parseFuriganaSegments(kanjiStr, kanaStr) {
     return [{ type: 'text', text: cleanK }];
   }
 
-  // 1. Handle bracketed context suffix like '遅れます［時間に～］' or 'お先に［失礼します］。'
+  // 1. Handle bracketed context suffix like '遅れます［時間に～］'
   const trailingBracketMatch = cleanK.match(/^(.+?)\s*([［\[（(].+?[］\]）)])[。.]*$/);
   if (trailingBracketMatch) {
     const mainK = trailingBracketMatch[1];
@@ -199,7 +313,7 @@ function parseFuriganaSegments(kanjiStr, kanaStr) {
     return [...mainSegments, { type: 'text', text: ' ' + bracketNote, isNote: true }];
   }
 
-  // 2. Handle leading bracket notation like '［お］弁当' or '［いろいろ］お世話に なりました。'
+  // 2. Handle leading bracket notation like '［お］弁当'
   const leadingBracketMatch = cleanK.match(/^([［\[（(].+?[］\]）)])\s*(.+)$/);
   if (leadingBracketMatch) {
     const bracketNote = leadingBracketMatch[1];
@@ -230,21 +344,31 @@ function parseFuriganaSegments(kanjiStr, kanaStr) {
 
 /**
  * FuriganaWord
- * Displays Japanese Kanji with small, elegant Furigana (Hiragana) ONLY directly above the Kanji glyph.
- * Okurigana (Kana suffixes like 'ます' in '探します') and pure Kana words remain plain text without furigana above.
- * Uses robust flexbox architecture to ensure furigana is 100% centered and fits neatly within the Kanji boundaries.
+ * Displays Japanese Kanji with small, elegant Furigana (Hiragana/Katakana) directly above the Kanji glyph.
+ * Level N5 and N4: Furigana and Romaji are active.
+ * Level N3, N2, N1: Displays clean standard Kanji (unless forceFurigana is enabled).
  */
 export default function FuriganaWord({
   kanji = '',
   kana = '',
   romaji = '',
-  showRomaji = false,
+  showRomaji = null,
+  level = null,
+  forceFurigana = false,
   size = 'base',
   className = '',
   kanjiClassName = '',
   furiganaClassName = '',
   romajiClassName = ''
 }) {
+  const appCtx = useSafeApp();
+  const currentAppLevel = appCtx?.currentLevel || 'N5';
+  const activeLevel = (level || currentAppLevel).toUpperCase();
+
+  // Condition: Only apply for N5 and N4
+  const isN5N4 = forceFurigana || activeLevel === 'N5' || activeLevel === 'N4';
+  const shouldShowRomaji = showRomaji !== null ? showRomaji : isN5N4;
+
   const sizeClasses = {
     xs: {
       kanji: 'text-xs',
@@ -299,11 +423,31 @@ export default function FuriganaWord({
   };
 
   const currentSize = sizeClasses[size] || sizeClasses.base;
-  const segments = parseFuriganaSegments(kanji, kana);
+  const cleanK = (kanji || '').trim();
+  const cleanR = (kana || '').trim();
+
+  // If level is NOT N5 or N4 (N3, N2, N1) and not forced:
+  // Display standard clean text without ruby on top
+  if (!isN5N4) {
+    const displayText = (cleanK && cleanK !== '-' && cleanK !== '–' && cleanK !== '—') ? cleanK : cleanR;
+    return (
+      <span
+        className={`inline-flex items-center font-jp font-black text-slate-900 select-text leading-none ${currentSize.kanji} ${kanjiClassName} ${className}`}
+      >
+        {displayText}
+      </span>
+    );
+  }
+
+  // N5 and N4 Level: Parse Furigana segments
+  const segments = parseFuriganaSegments(cleanK, cleanR);
+
+  // Compute Romaji
+  const effectiveRomaji = (romaji || '').trim() || toHepburnRomaji(cleanR || cleanK);
 
   return (
     <div className={`inline-flex flex-col items-center justify-center font-jp ${className}`}>
-      {/* Kanji & Furigana Row */}
+      {/* Kanji and Furigana Row */}
       <span className="inline-flex items-end justify-center font-jp select-text leading-none flex-wrap">
         {segments.map((seg, idx) => {
           if (seg.type === 'ruby') {
@@ -319,11 +463,9 @@ export default function FuriganaWord({
                 fontRatio = 'text-[0.48em]';
                 trackingClass = 'tracking-normal';
               } else if (fLen === 2) {
-                // Exactly 2 kana on 1 kanji: fits cleanly without spilling over
                 fontRatio = 'text-[0.38em]';
                 trackingClass = 'tracking-tighter';
               } else if (fLen >= 3) {
-                // 3 or more kana on 1 kanji (e.g. こころ on 心)
                 fontRatio = 'text-[0.30em]';
                 trackingClass = 'tracking-tighter';
                 scaleClass = 'scale-x-95';
@@ -384,12 +526,120 @@ export default function FuriganaWord({
         })}
       </span>
 
-      {/* Optional Romaji subtitle */}
-      {showRomaji && romaji && (
+      {/* Romaji display for N5 and N4 */}
+      {shouldShowRomaji && effectiveRomaji && (
         <span
           className={`font-sans font-medium text-slate-400 mt-1 tracking-wide select-text ${currentSize.romaji} ${romajiClassName}`}
         >
-          {romaji}
+          {effectiveRomaji}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// Cached regex for sentence tokenizer
+let dictRegex = null;
+function getDictRegex() {
+  if (!dictRegex) {
+    const keys = Object.keys(n5n4FuriganaDict || {}).sort((a, b) => b.length - a.length);
+    dictRegex = new RegExp(
+      '(' + keys.map((k) => k.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|') + ')',
+      'g'
+    );
+  }
+  return dictRegex;
+}
+
+/**
+ * FuriganaSentence
+ * Renders full sentences with automatic ruby Furigana for all N5 and N4 Kanji words.
+ * Level N5 and N4: Furigana and Romaji are active.
+ * Level N3, N2, N1: Displays clean standard Japanese sentence text.
+ */
+export function FuriganaSentence({
+  text = '',
+  level = null,
+  forceFurigana = false,
+  showRomaji = null,
+  size = 'base',
+  className = '',
+  kanjiClassName = '',
+  furiganaClassName = '',
+  romajiClassName = ''
+}) {
+  const appCtx = useSafeApp();
+  const currentAppLevel = appCtx?.currentLevel || 'N5';
+  const activeLevel = (level || currentAppLevel).toUpperCase();
+  const isN5N4 = forceFurigana || activeLevel === 'N5' || activeLevel === 'N4';
+  const shouldShowRomaji = showRomaji !== null ? showRomaji : isN5N4;
+
+  if (!text) return null;
+
+  if (!isN5N4) {
+    return (
+      <span className={`font-jp font-bold text-slate-900 select-text ${className}`}>
+        {text}
+      </span>
+    );
+  }
+
+  // Tokenize against N5/N4 dictionary
+  const regex = getDictRegex();
+  const parts = text.split(regex);
+
+  return (
+    <div className={`inline-flex flex-col items-start gap-1 font-jp ${className}`}>
+      <div className="inline-flex flex-wrap items-end gap-x-0.5 gap-y-2 leading-none">
+        {parts.map((part, idx) => {
+          if (!part) return null;
+
+          const dictEntry = n5n4FuriganaDict[part];
+          if (dictEntry) {
+            return (
+              <FuriganaWord
+                key={idx}
+                kanji={part}
+                kana={dictEntry.kana}
+                romaji={dictEntry.romaji}
+                showRomaji={false}
+                level="N5"
+                size={size}
+                kanjiClassName={kanjiClassName}
+                furiganaClassName={furiganaClassName}
+              />
+            );
+          }
+
+          // Handle bracketed particles like ［は］, ［を］, ［に］
+          const bracketMatch = part.match(/^([［\[].+?[］\]])$/);
+          if (bracketMatch) {
+            return (
+              <span
+                key={idx}
+                className="inline-block px-1.5 py-0.5 mx-0.5 rounded-lg bg-pink-100 text-pink-700 font-black border border-pink-200 text-xs self-center"
+              >
+                {part}
+              </span>
+            );
+          }
+
+          return (
+            <span
+              key={idx}
+              className={`font-jp font-bold text-slate-800 leading-none self-end align-bottom ${kanjiClassName}`}
+            >
+              {part}
+            </span>
+          );
+        })}
+      </div>
+
+      {shouldShowRomaji && (
+        <span
+          className={`font-mono text-xs text-slate-400 font-medium tracking-wide mt-0.5 select-text ${romajiClassName}`}
+        >
+          {toHepburnRomaji(text.replace(/[［\[］\]]/g, ''))}
         </span>
       )}
     </div>

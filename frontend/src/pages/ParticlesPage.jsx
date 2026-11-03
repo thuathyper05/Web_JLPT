@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { particlesService, speakJapanese } from '../services/api';
+import FuriganaWord, { FuriganaSentence } from '../components/FuriganaWord';
 import { sounds } from '../services/sounds';
 import {
   Compass,
@@ -236,8 +237,12 @@ export default function ParticlesPage() {
                         <span>Phát âm</span>
                       </button>
                     </div>
-                    <div className="font-jp font-bold text-xs sm:text-sm text-slate-900">
-                      {item.examples[0].jp}
+                    <div className="pt-1">
+                      <FuriganaSentence
+                        text={item.examples[0].jp}
+                        level={activeLevel}
+                        size="sm"
+                      />
                     </div>
                     <div className="text-xs text-slate-600 font-medium">
                       {item.examples[0].vi}
