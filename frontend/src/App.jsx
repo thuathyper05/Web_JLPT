@@ -25,10 +25,43 @@ import AiSenseiPage from './pages/AiSenseiPage';
 import SupportPage from './pages/SupportPage';
 import ForumPage from './pages/ForumPage';
 import LevelComingSoonPage from './pages/LevelComingSoonPage';
+import AdminPage from './pages/AdminPage';
 
 export default function App() {
   const { activeTab, pageLoading, loadingMessage, sidebarCollapsed } = useApp();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  // Dedicated Independent Admin Portal Routing
+  const [isAdminPath, setIsAdminPath] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.location.pathname === '/admin' ||
+      window.location.pathname.startsWith('/admin/') ||
+      window.location.hash.startsWith('#/admin')
+    );
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const checkAdmin =
+        window.location.pathname === '/admin' ||
+        window.location.pathname.startsWith('/admin/') ||
+        window.location.hash.startsWith('#/admin');
+      setIsAdminPath(checkAdmin);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
+  // When visiting standalone Admin Executive Control Center
+  if (isAdminPath) {
+    return <AdminPage />;
+  }
 
   const renderContent = () => {
     switch (activeTab) {

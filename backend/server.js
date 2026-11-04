@@ -9,6 +9,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const db = require('./db');
 const { generateAiResponse } = require('./services/aiService');
+const { logActivity, registerAdminRoutes } = require('./services/adminService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -2352,7 +2353,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // App Version & Live Deploy Detection
-const APP_VERSION = '3.3.0';
+const APP_VERSION = '1.2';
 app.get('/api/version', (req, res) => {
   res.json({
     success: true,
@@ -2617,6 +2618,9 @@ app.get('/data-deletion', (req, res) => {
 </body>
 </html>`);
 });
+
+// ── 11. INDEPENDENT HIGH-SECURITY ADMIN PORTAL & AUDIT LOGS ──
+registerAdminRoutes(app);
 
 // ── Production Frontend Serving (Unified Full-Stack Deployment on Render) ──
 const distPath = path.join(__dirname, '../frontend/dist');
