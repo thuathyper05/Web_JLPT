@@ -361,7 +361,9 @@ export const progressService = {
 };
 
 export const aiService = {
-  query: (data) => api.post('/ai/query', data),
+  query: function (data) {
+    return api.post('/ai/query', data, { timeout: 30000 });
+  },
 };
 
 export const forumService = {

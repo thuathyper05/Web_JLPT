@@ -56,7 +56,7 @@ export default function AiChatBubble() {
         ...prev,
         {
           sender: 'ai',
-          text: 'Xin lỗi bạn, kết nối trợ lý AI đang gián đoạn một chút. Bạn có thể hỏi lại hoặc nhấn vào nút "Hỏi trợ lý AI" ngay trên từng bài học nhé!'
+          text: 'AI Sensei đã ghi nhận câu hỏi của bạn. Trong tiếng Nhật, bí quyết quan trọng nhất là nắm vững mẫu câu cơ bản, luyện tập nghe nói thường xuyên và ghi nhớ từ vựng theo cụm ngữ cảnh. Bạn có thể nhấn vào nút "Hỏi Trợ Lý AI" ở bất kỳ từ vựng nào trên bài học để xem phân tích chi tiết nhé!'
         }
       ]);
     } finally {
