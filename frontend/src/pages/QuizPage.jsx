@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { quizService, lessonService, speakJapanese } from '../services/api';
 import FuriganaWord, { FuriganaSentence } from '../components/FuriganaWord';
+import { n5n4FuriganaDict } from '../data/n5n4FuriganaDict';
 import { sounds } from '../services/sounds';
 import {
   CheckSquare,
@@ -476,7 +477,18 @@ export default function QuizPage() {
                   }
                 }
 
-                const optInfo = currentQ.options_data?.find((d) => d.text === opt);
+                const optClean = opt.replace(/\s+/g, '');
+                const optInfo = currentQ.options_data?.find(function(d) {
+                  return (
+                    d.text === opt ||
+                    (d.text && d.text.replace(/\s+/g, '') === optClean) ||
+                    d.kanji === opt ||
+                    (d.kanji && d.kanji.replace(/\s+/g, '') === optClean)
+                  );
+                });
+                const dictEntry = (typeof n5n4FuriganaDict === 'object' && n5n4FuriganaDict) ? (n5n4FuriganaDict[opt] || n5n4FuriganaDict[optClean]) : null;
+                const resolvedKana = optInfo?.kana || dictEntry?.kana || '';
+                const resolvedKanji = optInfo?.kanji || opt;
                 const hasKanji = /[\u4E00-\u9FAF\u3400-\u4DBF]/.test(opt);
                 const isSelectedOrCorrect = isAnswerSubmitted && (opt === currentQ.correct_answer || selectedOption === opt);
 
@@ -485,15 +497,15 @@ export default function QuizPage() {
                     key={idx}
                     type="button"
                     disabled={isAnswerSubmitted}
-                    onClick={() => handleSelectOption(opt)}
+                    onClick={function() { handleSelectOption(opt); }}
                     className={`p-4 rounded-2xl border font-bold text-sm text-left flex items-center justify-between transition-all active:scale-95 cursor-pointer ${btnStyle}`}
                   >
                     <div className="pr-2 leading-relaxed flex items-center min-w-0">
                       {hasKanji ? (
-                        optInfo?.kanji && optInfo?.kana ? (
+                        resolvedKana ? (
                           <FuriganaWord
-                            kanji={optInfo.kanji}
-                            kana={optInfo.kana}
+                            kanji={resolvedKanji}
+                            kana={resolvedKana}
                             forceFurigana={true}
                             showRomaji={false}
                             size="base"

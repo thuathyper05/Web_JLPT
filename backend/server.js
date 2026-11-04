@@ -1211,62 +1211,95 @@ app.get('/api/quiz/generate', async (req, res) => {
 });
 
 // ── 7. PROGRESS & GAMIFICATION (PostgreSQL Multi-Device Cloud Sync) ──
-app.get('/api/progress', async (req, res) => {
-  if (req.user?.id && db.pool && db.isDbConnected()) {
+function getLocalDateString(d) {
+  const date = d ? (d instanceof Date ? d : new Date(d)) : new Date();
+  if (isNaN(date.getTime())) return new Date().toISOString().slice(0, 10);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return year + "-" + month + "-" + day;
+}
+
+app.get("/api/progress", async (req, res) => {
+  if (req.user && req.user.id && db.pool && db.isDbConnected()) {
     try {
       const statsRes = await db.pool.query(
-        `SELECT 
-           COUNT(*) as total_studied,
-           COUNT(*) FILTER (WHERE status = 'mastered') as mastered,
-           COUNT(*) FILTER (WHERE status = 'needs_review') as needs_review
-         FROM user_progress 
-         WHERE user_id = $1`,
+        "SELECT " +
+        "  COUNT(*) as total_studied, " +
+        "  COUNT(*) FILTER (WHERE status = 'mastered') as mastered, " +
+        "  COUNT(*) FILTER (WHERE status = 'needs_review') as needs_review " +
+        "FROM user_progress " +
+        "WHERE user_id = $1",
         [req.user.id]
       );
       const row = statsRes.rows[0];
-      const studied = parseInt(row.total_studied) || 0;
-      const mastered = parseInt(row.mastered) || 0;
-      const needsReview = parseInt(row.needs_review) || 0;
+      const studied = parseInt(row.total_studied, 10) || 0;
+      const mastered = parseInt(row.mastered, 10) || 0;
+      const needsReview = parseInt(row.needs_review, 10) || 0;
 
       // Fetch all individual word progress rows for account
       const progRes = await db.pool.query(
-        `SELECT vocabulary_id, status, last_studied_at FROM user_progress WHERE user_id = $1`,
+        'SELECT vocabulary_id, status, TO_CHAR(last_studied_at, \'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"\') as last_studied_at ' +
+        "FROM user_progress WHERE user_id = $1",
         [req.user.id]
       );
       const wordProgress = {};
-      for (const r of progRes.rows) {
+      const historyCounts = {};
+      for (let i = 0; i < progRes.rows.length; i++) {
+        const r = progRes.rows[i];
         wordProgress[r.vocabulary_id] = {
           status: r.status,
           updated_at: r.last_studied_at
         };
+        if (r.last_studied_at) {
+          const dStr = r.last_studied_at.slice(0, 10);
+          historyCounts[dStr] = (historyCounts[dStr] || 0) + 1;
+        }
       }
 
       // Fetch or init user gamification row
       let gamRes = await db.pool.query(
-        `SELECT total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier 
-         FROM user_gamification WHERE user_id = $1`,
+        "SELECT total_xp, current_streak, longest_streak, today_words_count, " +
+        "       TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, " +
+        "       level_tier, daily_study_counts, target_per_day " +
+        "FROM user_gamification WHERE user_id = $1",
         [req.user.id]
       );
       let userGam = gamRes.rows[0];
-      const todayStr = new Date().toISOString().slice(0, 10);
-      const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const todayStr = getLocalDateString(new Date());
+      const yesterdayStr = getLocalDateString(new Date(Date.now() - 86400000));
 
       if (!userGam) {
         const initGam = await db.pool.query(
-          `INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier)
-           VALUES ($1, 0, 0, 0, 0, CURRENT_DATE, 'Tân Thủ N5')
-           RETURNING total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier`,
-          [req.user.id]
+          "INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier, daily_study_counts, target_per_day) " +
+          "VALUES ($1, 0, 0, 0, 0, CURRENT_DATE, 'Tân Thủ N5', $2::jsonb, 10) " +
+          "RETURNING total_xp, current_streak, longest_streak, today_words_count, TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, level_tier, daily_study_counts, target_per_day",
+          [req.user.id, JSON.stringify(historyCounts)]
         );
         userGam = initGam.rows[0];
-      } else {
-        const lastDateStr = userGam.last_active_date ? new Date(userGam.last_active_date).toISOString().slice(0, 10) : null;
-        if (lastDateStr && lastDateStr !== todayStr && lastDateStr !== yesterdayStr) {
-          userGam.current_streak = 0;
-          userGam.today_words_count = 0;
-        } else if (lastDateStr !== todayStr) {
-          userGam.today_words_count = 0;
+      }
+
+      // Merge saved daily_study_counts with historyCounts from user_progress
+      const mergedDailyCounts = Object.assign({}, historyCounts);
+      if (userGam.daily_study_counts && typeof userGam.daily_study_counts === "object") {
+        for (const [k, v] of Object.entries(userGam.daily_study_counts)) {
+          mergedDailyCounts[k] = Math.max(mergedDailyCounts[k] || 0, parseInt(v, 10) || 0);
         }
+      }
+
+      const todayWords = mergedDailyCounts[todayStr] || 0;
+      let streak = userGam.current_streak || 0;
+      const lastDateStr = userGam.last_active_date_str;
+
+      if (!lastDateStr) {
+        streak = todayWords > 0 ? 1 : 0;
+      } else if (lastDateStr === todayStr) {
+        if (todayWords > 0 && streak === 0) streak = 1;
+      } else if (lastDateStr === yesterdayStr) {
+        // Keep streak from yesterday
+      } else {
+        // Broken streak
+        streak = todayWords > 0 ? 1 : 0;
       }
 
       return res.json({
@@ -1280,22 +1313,24 @@ app.get('/api/progress', async (req, res) => {
         },
         gamification: {
           total_xp: userGam.total_xp || 0,
-          current_streak: userGam.current_streak || 0,
-          longest_streak: userGam.longest_streak || 0,
-          today_words_count: userGam.today_words_count || 0,
-          last_active_date: userGam.last_active_date,
-          level_tier: userGam.level_tier || 'Tân Thủ N5'
+          current_streak: streak,
+          longest_streak: Math.max(userGam.longest_streak || 0, streak),
+          today_words_count: todayWords,
+          last_active_date: todayWords > 0 ? todayStr : lastDateStr,
+          level_tier: userGam.level_tier || 'Tân Thủ N5',
+          daily_study_counts: mergedDailyCounts,
+          target_per_day: userGam.target_per_day || 10
         },
         progress: wordProgress
       });
     } catch (err) {
-      console.error('Database progress stats error:', err);
+      console.error("Database progress stats error:", err);
     }
   }
 
   const studied = Object.keys(inMemoryProgress).length;
-  const mastered = Object.values(inMemoryProgress).filter(p => p.status === 'mastered').length;
-  const needsReview = Object.values(inMemoryProgress).filter(p => p.status === 'needs_review').length;
+  const mastered = Object.values(inMemoryProgress).filter(function(p) { return p.status === "mastered"; }).length;
+  const needsReview = Object.values(inMemoryProgress).filter(function(p) { return p.status === "needs_review"; }).length;
 
   res.json({
     success: true,
@@ -1311,49 +1346,59 @@ app.get('/api/progress', async (req, res) => {
   });
 });
 
-app.post('/api/progress/tick', async (req, res) => {
+app.post("/api/progress/tick", async (req, res) => {
   const { vocabId, status, xp = 10 } = req.body;
-  const xpAmount = parseInt(xp) || 10;
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const xpAmount = parseInt(xp, 10) || 10;
+  const todayStr = getLocalDateString(new Date());
+  const yesterdayStr = getLocalDateString(new Date(Date.now() - 86400000));
+  const idNum = parseInt(vocabId, 10);
 
-  if (vocabId && req.user?.id && db.pool && db.isDbConnected()) {
+  if (req.user && req.user.id && db.pool && db.isDbConnected()) {
     try {
-      await db.pool.query(
-        `INSERT INTO user_progress (user_id, vocabulary_id, status, last_studied_at)
-         VALUES ($1, $2, $3, NOW())
-         ON CONFLICT (user_id, vocabulary_id) 
-         DO UPDATE SET status = EXCLUDED.status, last_studied_at = NOW()`,
-        [req.user.id, vocabId, status]
-      );
+      if (idNum && status) {
+        await db.pool.query(
+          "INSERT INTO user_progress (user_id, vocabulary_id, status, last_studied_at) " +
+          "VALUES ($1, $2, $3, NOW()) " +
+          "ON CONFLICT (user_id, vocabulary_id) " +
+          "DO UPDATE SET status = EXCLUDED.status, last_studied_at = NOW()",
+          [req.user.id, idNum, status]
+        );
+      }
 
       // Fetch or insert gamification row
       let gamRes = await db.pool.query(
-        `SELECT * FROM user_gamification WHERE user_id = $1`,
+        "SELECT total_xp, current_streak, longest_streak, today_words_count, " +
+        "       TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, " +
+        "       level_tier, daily_study_counts, target_per_day " +
+        "FROM user_gamification WHERE user_id = $1",
         [req.user.id]
       );
       let g = gamRes.rows[0];
+      const dailyCounts = (g && g.daily_study_counts && typeof g.daily_study_counts === "object")
+        ? Object.assign({}, g.daily_study_counts)
+        : {};
+      dailyCounts[todayStr] = (dailyCounts[todayStr] || 0) + 1;
+      const todayWords = dailyCounts[todayStr];
+
       if (!g) {
         const init = await db.pool.query(
-          `INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier)
-           VALUES ($1, $2, 1, 1, 1, CURRENT_DATE, 'Tân Thủ N5')
-           RETURNING *`,
-          [req.user.id, xpAmount]
+          "INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier, daily_study_counts, target_per_day) " +
+          "VALUES ($1, $2, 1, 1, $3, CURRENT_DATE, 'Tân Thủ N5', $4::jsonb, 10) " +
+          "RETURNING total_xp, current_streak, longest_streak, today_words_count, TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, level_tier, daily_study_counts, target_per_day",
+          [req.user.id, xpAmount, todayWords, JSON.stringify(dailyCounts)]
         );
         g = init.rows[0];
       } else {
-        const lastDateStr = g.last_active_date ? new Date(g.last_active_date).toISOString().slice(0, 10) : null;
+        const lastDateStr = g.last_active_date_str;
         let newStreak = g.current_streak || 0;
-        let newTodayWords = (g.today_words_count || 0) + 1;
 
-        if (lastDateStr !== todayStr) {
-          if (lastDateStr === yesterdayStr && newStreak > 0) {
-            newStreak += 1;
-          } else {
-            newStreak = 1;
-          }
-          newTodayWords = 1;
-        } else if (newStreak === 0) {
+        if (!lastDateStr) {
+          newStreak = 1;
+        } else if (lastDateStr === todayStr) {
+          if (newStreak === 0) newStreak = 1;
+        } else if (lastDateStr === yesterdayStr) {
+          newStreak += 1;
+        } else {
           newStreak = 1;
         }
 
@@ -1361,11 +1406,12 @@ app.post('/api/progress/tick', async (req, res) => {
         const newTotalXp = (g.total_xp || 0) + xpAmount;
 
         const updatedGam = await db.pool.query(
-          `UPDATE user_gamification 
-           SET total_xp = $1, current_streak = $2, longest_streak = $3, today_words_count = $4, last_active_date = CURRENT_DATE, updated_at = NOW()
-           WHERE user_id = $5
-           RETURNING *`,
-          [newTotalXp, newStreak, newLongest, newTodayWords, req.user.id]
+          "UPDATE user_gamification " +
+          "SET total_xp = $1, current_streak = $2, longest_streak = $3, today_words_count = $4, " +
+          "    last_active_date = CURRENT_DATE, daily_study_counts = $5::jsonb, updated_at = NOW() " +
+          "WHERE user_id = $6 " +
+          "RETURNING total_xp, current_streak, longest_streak, today_words_count, TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, level_tier, daily_study_counts, target_per_day",
+          [newTotalXp, newStreak, newLongest, todayWords, JSON.stringify(dailyCounts), req.user.id]
         );
         g = updatedGam.rows[0];
       }
@@ -1377,12 +1423,14 @@ app.post('/api/progress/tick', async (req, res) => {
           current_streak: g.current_streak,
           longest_streak: g.longest_streak,
           today_words_count: g.today_words_count,
-          last_active_date: g.last_active_date,
-          level_tier: g.level_tier
+          last_active_date: g.last_active_date_str || todayStr,
+          level_tier: g.level_tier,
+          daily_study_counts: dailyCounts,
+          target_per_day: g.target_per_day || 10
         }
       });
     } catch (err) {
-      console.error('Database tick progress error:', err);
+      console.error("Database tick progress error:", err);
     }
   }
 
@@ -1402,105 +1450,140 @@ app.post('/api/progress/tick', async (req, res) => {
 });
 
 // Full Multi-Device Bidirectional Progress Synchronization API
-app.post('/api/progress/sync', async (req, res) => {
+app.post("/api/progress/sync", async (req, res) => {
   const { progress = {}, gamification = {} } = req.body;
-  if (!req.user?.id || !db.pool || !db.isDbConnected()) {
-    return res.json({ success: true, message: 'Khách vãng lai lưu bộ nhớ cục bộ' });
+  if (!req.user || !req.user.id || !db.pool || !db.isDbConnected()) {
+    return res.json({ success: true, message: "Khách vãng lai lưu bộ nhớ cục bộ" });
   }
 
-  try {
-    const client = await db.pool.connect();
-    try {
-      await client.query('BEGIN');
+  const todayStr = getLocalDateString(new Date());
 
-      const entries = Object.entries(progress);
-      for (const [vId, p] of entries) {
-        const idNum = parseInt(vId);
-        if (!idNum || !p?.status) continue;
-        await client.query(
-          `INSERT INTO user_progress (user_id, vocabulary_id, status, last_studied_at)
-           VALUES ($1, $2, $3, COALESCE($4::timestamp, NOW()))
-           ON CONFLICT (user_id, vocabulary_id)
-           DO UPDATE SET 
-             status = EXCLUDED.status,
-             last_studied_at = GREATEST(user_progress.last_studied_at, EXCLUDED.last_studied_at)`,
+  try {
+    const entries = Object.entries(progress);
+    for (let i = 0; i < entries.length; i++) {
+      const [vId, p] = entries[i];
+      const idNum = parseInt(vId, 10);
+      if (!idNum || !p || !p.status) continue;
+      try {
+        await db.pool.query(
+          "INSERT INTO user_progress (user_id, vocabulary_id, status, last_studied_at) " +
+          "VALUES ($1, $2, $3, COALESCE($4::timestamp, NOW())) " +
+          "ON CONFLICT (user_id, vocabulary_id) " +
+          "DO UPDATE SET " +
+          "  status = EXCLUDED.status, " +
+          "  last_studied_at = GREATEST(user_progress.last_studied_at, EXCLUDED.last_studied_at)",
           [req.user.id, idNum, p.status, p.updated_at || null]
         );
+      } catch (wordErr) {
+        // Individual word safe continue
       }
-
-      const clientXp = parseInt(gamification.total_xp) || 0;
-      const clientStreak = parseInt(gamification.current_streak) || 0;
-      const clientLongest = parseInt(gamification.longest_streak) || 0;
-
-      await client.query(
-        `INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier)
-         VALUES ($1, $2, $3, $4, 0, CURRENT_DATE, 'Tân Thủ N5')
-         ON CONFLICT (user_id)
-         DO UPDATE SET
-           total_xp = GREATEST(user_gamification.total_xp, EXCLUDED.total_xp),
-           current_streak = GREATEST(user_gamification.current_streak, EXCLUDED.current_streak),
-           longest_streak = GREATEST(user_gamification.longest_streak, EXCLUDED.longest_streak),
-           updated_at = NOW()`,
-        [req.user.id, clientXp, clientStreak, clientLongest]
-      );
-
-      await client.query('COMMIT');
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
-    } finally {
-      client.release();
     }
 
+    const clientXp = parseInt(gamification.total_xp, 10) || 0;
+    const clientStreak = parseInt(gamification.current_streak, 10) || 0;
+    const clientLongest = parseInt(gamification.longest_streak, 10) || 0;
+    const clientDailyCounts = (gamification.daily_study_counts && typeof gamification.daily_study_counts === "object")
+      ? gamification.daily_study_counts
+      : {};
+
+    // Get current cloud gamification
+    const currentGamRes = await db.pool.query(
+      "SELECT total_xp, current_streak, longest_streak, today_words_count, " +
+      "       TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, " +
+      "       daily_study_counts, level_tier, target_per_day " +
+      "FROM user_gamification WHERE user_id = $1",
+      [req.user.id]
+    );
+
+    let existingGam = currentGamRes.rows[0];
+    const serverDailyCounts = (existingGam && existingGam.daily_study_counts && typeof existingGam.daily_study_counts === "object")
+      ? existingGam.daily_study_counts
+      : {};
+
+    // Merge daily counts
+    const mergedDailyCounts = Object.assign({}, serverDailyCounts);
+    for (const [d, count] of Object.entries(clientDailyCounts)) {
+      mergedDailyCounts[d] = Math.max(mergedDailyCounts[d] || 0, parseInt(count, 10) || 0);
+    }
+    const todayWords = mergedDailyCounts[todayStr] || 0;
+
+    const mergedXp = Math.max(existingGam ? (existingGam.total_xp || 0) : 0, clientXp);
+    const mergedStreak = Math.max(existingGam ? (existingGam.current_streak || 0) : 0, clientStreak);
+    const mergedLongest = Math.max(existingGam ? (existingGam.longest_streak || 0) : 0, clientLongest, mergedStreak);
+
+    await db.pool.query(
+      "INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier, daily_study_counts, target_per_day) " +
+      "VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Tân Thủ N5', $6::jsonb, 10) " +
+      "ON CONFLICT (user_id) " +
+      "DO UPDATE SET " +
+      "  total_xp = GREATEST(user_gamification.total_xp, EXCLUDED.total_xp), " +
+      "  current_streak = GREATEST(user_gamification.current_streak, EXCLUDED.current_streak), " +
+      "  longest_streak = GREATEST(user_gamification.longest_streak, EXCLUDED.longest_streak), " +
+      "  today_words_count = EXCLUDED.today_words_count, " +
+      "  daily_study_counts = EXCLUDED.daily_study_counts, " +
+      "  last_active_date = CASE WHEN EXCLUDED.today_words_count > 0 THEN CURRENT_DATE ELSE user_gamification.last_active_date END, " +
+      "  updated_at = NOW()",
+      [req.user.id, mergedXp, mergedStreak, mergedLongest, todayWords, JSON.stringify(mergedDailyCounts)]
+    );
+
+    // Retrieve final authoritative state
     const progRes = await db.pool.query(
-      `SELECT vocabulary_id, status, last_studied_at FROM user_progress WHERE user_id = $1`,
+      'SELECT vocabulary_id, status, TO_CHAR(last_studied_at, \'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"\') as last_studied_at ' +
+      "FROM user_progress WHERE user_id = $1",
       [req.user.id]
     );
     const unifiedProgress = {};
-    for (const r of progRes.rows) {
+    for (let i = 0; i < progRes.rows.length; i++) {
+      const r = progRes.rows[i];
       unifiedProgress[r.vocabulary_id] = { status: r.status, updated_at: r.last_studied_at };
     }
 
     const gamRes = await db.pool.query(
-      `SELECT * FROM user_gamification WHERE user_id = $1`,
+      "SELECT total_xp, current_streak, longest_streak, today_words_count, " +
+      "       TO_CHAR(last_active_date, 'YYYY-MM-DD') as last_active_date_str, " +
+      "       level_tier, daily_study_counts, target_per_day " +
+      "FROM user_gamification WHERE user_id = $1",
       [req.user.id]
     );
     const g = gamRes.rows[0] || {};
 
     const statsRes = await db.pool.query(
-      `SELECT 
-         COUNT(*) as total_studied,
-         COUNT(*) FILTER (WHERE status = 'mastered') as mastered,
-         COUNT(*) FILTER (WHERE status = 'needs_review') as needs_review
-       FROM user_progress WHERE user_id = $1`,
+      "SELECT " +
+      "  COUNT(*) as total_studied, " +
+      "  COUNT(*) FILTER (WHERE status = 'mastered') as mastered, " +
+      "  COUNT(*) FILTER (WHERE status = 'needs_review') as needs_review " +
+      "FROM user_progress WHERE user_id = $1",
       [req.user.id]
     );
     const stRow = statsRes.rows[0];
 
     return res.json({
       success: true,
-      progress: unifiedProgress,
+      message: "Đồng bộ tiến độ đám mây thành công",
+      overall: {
+        total_vocabularies: 9584,
+        studied_vocabularies: parseInt(stRow.total_studied, 10) || 0,
+        mastered_count: parseInt(stRow.mastered, 10) || 0,
+        needs_review_count: parseInt(stRow.needs_review, 10) || 0,
+        accuracy_rate: stRow.total_studied > 0 ? Math.round((stRow.mastered / stRow.total_studied) * 100) : 0
+      },
       gamification: {
         total_xp: g.total_xp || 0,
         current_streak: g.current_streak || 0,
         longest_streak: g.longest_streak || 0,
         today_words_count: g.today_words_count || 0,
-        last_active_date: g.last_active_date,
-        level_tier: g.level_tier || 'Tân Thủ N5'
+        last_active_date: g.last_active_date_str || todayStr,
+        level_tier: g.level_tier || "Tân Thủ N5",
+        daily_study_counts: g.daily_study_counts || mergedDailyCounts,
+        target_per_day: g.target_per_day || 10
       },
-      overall: {
-        total_vocabularies: 9584,
-        studied_vocabularies: parseInt(stRow.total_studied) || 0,
-        mastered_count: parseInt(stRow.mastered) || 0,
-        needs_review_count: parseInt(stRow.needs_review) || 0
-      }
+      progress: unifiedProgress
     });
   } catch (err) {
-    console.error('Database sync progress error:', err);
-    res.status(500).json({ success: false, message: 'Lỗi đồng bộ tiến độ đa thiết bị' });
+    console.error("Sync progress db error:", err);
+    return res.status(500).json({ success: false, message: "Lỗi đồng bộ đám mây" });
   }
 });
-
 // ── 8. AI ASSISTANT ENDPOINT ──
 app.post('/api/ai/query', async (req, res) => {
   try {

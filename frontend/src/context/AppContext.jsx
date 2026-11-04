@@ -381,7 +381,10 @@ export const AppProvider = ({ children }) => {
               total_xp: g.total_xp ?? prev.total_xp,
               longest_streak: g.longest_streak ?? prev.longest_streak,
               today_words_count: g.today_words_count ?? prev.today_words_count,
-              last_active_date: g.last_active_date ?? prev.last_active_date
+              last_active_date: g.last_active_date ?? prev.last_active_date,
+              daily_study_counts: (g.daily_study_counts && typeof g.daily_study_counts === 'object')
+                ? g.daily_study_counts
+                : (prev.daily_study_counts || {})
             };
             try {
               localStorage.setItem('nihongo_gamification', JSON.stringify(mergedGam));
@@ -487,10 +490,17 @@ export const AppProvider = ({ children }) => {
     progressService.recordTick({ vocabId: wordId, status, xp: xpGained })
       .then((tickRes) => {
         if (tickRes.data?.gamification) {
-          setGamification((prev) => ({
-            ...prev,
-            ...tickRes.data.gamification
-          }));
+          setGamification((prev) => {
+            const updated = {
+              ...prev,
+              ...tickRes.data.gamification,
+              daily_study_counts: tickRes.data.gamification.daily_study_counts || prev.daily_study_counts
+            };
+            try {
+              localStorage.setItem('nihongo_gamification', JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
         }
       })
       .catch(() => {});

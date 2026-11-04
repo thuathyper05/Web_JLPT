@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, CheckCircle2, Download, Database, ShieldCheck, Zap, Layers, Cpu, Sparkles } from 'lucide-react';
+import { RefreshCw, CheckCircle2, Download, Zap, Layers, Cpu, X } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
 export default function AppUpdateBanner() {
   const [hasUpdate, setHasUpdate] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
   const [serverVersion, setServerVersion] = useState('1.2');
   const [serverBuildTime, setServerBuildTime] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -18,7 +19,7 @@ export default function AppUpdateBanner() {
   ];
 
   // Check version against backend API
-  const checkVersion = async () => {
+  const checkVersion = async function() {
     try {
       const res = await fetch('/api/version?t=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) return;
@@ -29,31 +30,48 @@ export default function AppUpdateBanner() {
       setServerVersion(v);
       setServerBuildTime(data.buildTime);
 
+      const clientBuild = typeof __BUILD_TIME__ !== 'undefined' ? Number(__BUILD_TIME__) : 0;
       const storedBuildTime = sessionStorage.getItem('hyper_initial_build_time');
       const storedVersion = localStorage.getItem('hyper_app_version');
 
+      let updateAvailable = false;
+
+      // 1. If server build time is newer than client bundled build time
+      if (clientBuild > 0 && Number(data.buildTime) > clientBuild + 1000) {
+        updateAvailable = true;
+      }
+
+      // 2. If storedVersion in localStorage is different from server version
+      if (storedVersion && storedVersion !== v) {
+        updateAvailable = true;
+      }
+
+      // 3. Compare with sessionStorage initial build time
       if (!storedBuildTime) {
         sessionStorage.setItem('hyper_initial_build_time', String(data.buildTime));
       } else {
         const storedNum = parseInt(storedBuildTime, 10);
         if (data.buildTime > storedNum) {
-          setHasUpdate(true);
+          updateAvailable = true;
         }
       }
 
-      // If version in server is newer than recorded in localStorage
-      if (storedVersion && storedVersion !== v) {
+      if (updateAvailable) {
         setHasUpdate(true);
+        window.__HAS_APP_UPDATE__ = true;
+        window.dispatchEvent(new CustomEvent('hyper-update-status', {
+          detail: { hasUpdate: true, version: v }
+        }));
       }
     } catch {
       // Offline or network lag
     }
   };
 
-  useEffect(() => {
+  useEffect(function() {
     checkVersion();
 
-    const handleVisibility = () => {
+    const handleVisibility = function() {
       if (document.visibilityState === 'visible') {
         checkVersion();
       }
@@ -61,20 +79,32 @@ export default function AppUpdateBanner() {
     window.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('focus', handleVisibility);
 
+    const handleOpenUpdate = function() {
+      setHasUpdate(true);
+      setIsDismissed(false);
+    };
+    window.addEventListener('hyper-open-update', handleOpenUpdate);
+
     const interval = setInterval(checkVersion, 25000);
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
         setHasUpdate(true);
+        window.dispatchEvent(new CustomEvent('hyper-update-status', {
+          detail: { hasUpdate: true, version: serverVersion }
+        }));
       });
-      navigator.serviceWorker.getRegistration().then((reg) => {
+      navigator.serviceWorker.getRegistration().then(function(reg) {
         if (reg) {
-          reg.addEventListener('updatefound', () => {
+          reg.addEventListener('updatefound', function() {
             const newWorker = reg.installing;
             if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
+              newWorker.addEventListener('statechange', function() {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   setHasUpdate(true);
+                  window.dispatchEvent(new CustomEvent('hyper-update-status', {
+                    detail: { hasUpdate: true, version: serverVersion }
+                  }));
                 }
               });
             }
@@ -83,15 +113,16 @@ export default function AppUpdateBanner() {
       });
     }
 
-    return () => {
+    return function() {
       window.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('focus', handleVisibility);
+      window.removeEventListener('hyper-open-update', handleOpenUpdate);
       clearInterval(interval);
     };
-  }, []);
+  }, [serverVersion]);
 
   // Premium Animated Data Updating Sequence
-  const handleUpdateNow = () => {
+  const handleUpdateNow = function() {
     if (isUpdating) return;
     setIsUpdating(true);
     setUpdatePercent(8);
@@ -103,19 +134,19 @@ export default function AppUpdateBanner() {
     } catch {}
 
     // Multi-phase smooth progress sequence
-    setTimeout(() => {
+    setTimeout(function() {
       setUpdatePercent(32);
       setCurrentStepIndex(0);
       setStatusMessage('Đang tải gói giao diện v' + serverVersion + ' mới nhất...');
     }, 450);
 
-    setTimeout(() => {
+    setTimeout(function() {
       setUpdatePercent(68);
       setCurrentStepIndex(1);
       setStatusMessage('Đồng bộ cơ sở dữ liệu 9.584 từ vựng và chỉ mục Furigana...');
     }, 1000);
 
-    setTimeout(() => {
+    setTimeout(function() {
       setUpdatePercent(90);
       setCurrentStepIndex(2);
       setStatusMessage('Làm mới bộ nhớ đệm Cache và kích hoạt bản dựng mới...');
@@ -123,7 +154,7 @@ export default function AppUpdateBanner() {
       // Update Service Worker
       try {
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistration().then((reg) => {
+          navigator.serviceWorker.getRegistration().then(function(reg) {
             if (reg && reg.waiting) {
               reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             }
@@ -134,14 +165,14 @@ export default function AppUpdateBanner() {
       // Clear caches safely
       try {
         if ('caches' in window) {
-          window.caches.keys().then((names) => {
-            names.forEach((name) => window.caches.delete(name));
+          window.caches.keys().then(function(names) {
+            names.forEach(function(name) { window.caches.delete(name); });
           });
         }
       } catch {}
     }, 1600);
 
-    setTimeout(() => {
+    setTimeout(function() {
       setUpdatePercent(100);
       setCurrentStepIndex(2);
       setStatusMessage('Cập nhật hoàn tất! Đang khởi động lại ứng dụng...');
@@ -153,7 +184,7 @@ export default function AppUpdateBanner() {
     }, 2200);
 
     // Clean page reload with cache buster
-    setTimeout(() => {
+    setTimeout(function() {
       const cleanPath = window.location.origin + window.location.pathname;
       window.location.replace(cleanPath + '?v=' + Date.now());
     }, 2800);
@@ -164,71 +195,84 @@ export default function AppUpdateBanner() {
   return (
     <>
       {/* ── MINIMALIST COMMERCIAL UPDATE CARD (NON-AI, PREMIUM SAAS DESIGN) ── */}
-      <aside
-        aria-label="Thông báo cập nhật phiên bản webapp"
-        className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+82px)] lg:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:w-[380px] z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto"
-      >
-        <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-[0_12px_40px_rgba(15,23,42,0.14)] p-4 text-slate-800 dark:text-slate-100 flex flex-col gap-3">
-          {/* Subtle Accent Stripe */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500" />
+      {!isDismissed && (
+        <aside
+          aria-label="Thông báo cập nhật phiên bản webapp"
+          className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+74px)] lg:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:w-[380px] z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto"
+        >
+          <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-[0_12px_40px_rgba(15,23,42,0.14)] p-4 text-slate-800 dark:text-slate-100 flex flex-col gap-3">
+            {/* Subtle Accent Stripe */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500" />
 
-          {/* Top Row: Icon + Version + Status */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center shrink-0 border border-pink-100 dark:border-pink-900/50">
-                <Download size={18} />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                  <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                    Bản cập nhật mới
-                  </span>
+            {/* Top Row: Icon + Version + Status + Close Button */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center shrink-0 border border-pink-100 dark:border-pink-900/50">
+                  <Download size={18} />
                 </div>
-                <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight truncate">
-                  HYPER Japanese v{serverVersion}
-                </h4>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                    <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      Bản cập nhật mới
+                    </span>
+                  </div>
+                  <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight truncate">
+                    HYPER Japanese v{serverVersion}
+                  </h4>
+                </div>
+              </div>
+
+              {/* Version Pill + Dismiss Button */}
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold tracking-tight border border-slate-200 dark:border-slate-700">
+                  v{serverVersion}
+                </span>
+                <button
+                  type="button"
+                  onClick={function() { setIsDismissed(true); }}
+                  className="w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+                  title="Thu gọn thông báo"
+                  aria-label="Thu gọn"
+                >
+                  <X size={15} />
+                </button>
               </div>
             </div>
 
-            {/* Version Pill */}
-            <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold tracking-tight border border-slate-200 dark:border-slate-700 shrink-0">
-              v{serverVersion}
-            </span>
+            {/* Feature Highlights Pills */}
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+                <Zap size={11} className="text-pink-600 dark:text-pink-400" />
+                Đồng bộ đa thiết bị
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+                <Cpu size={11} className="text-pink-600 dark:text-pink-400" />
+                AI Sensei tối ưu
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+                <Layers size={11} className="text-pink-600 dark:text-pink-400" />
+                Từ điển N5-N1
+              </span>
+            </div>
+
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-0">
+              Hệ thống giữ nguyên phiên bản cũ cho đến khi bạn xác nhận cập nhật.
+            </p>
+
+            {/* Action Button */}
+            <button
+              type="button"
+              onClick={handleUpdateNow}
+              disabled={isUpdating}
+              className="w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-pink-600 dark:hover:bg-pink-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer disabled:opacity-80"
+            >
+              <RefreshCw size={14} className={isUpdating ? 'animate-spin' : ''} />
+              <span>{isUpdating ? 'Đang cập nhật hệ thống...' : 'Cập nhật lên bản v' + serverVersion + ' ngay'}</span>
+            </button>
           </div>
-
-          {/* Feature Highlights Pills */}
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
-              <Zap size={11} className="text-pink-600 dark:text-pink-400" />
-              Đồng bộ đa thiết bị
-            </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
-              <Cpu size={11} className="text-pink-600 dark:text-pink-400" />
-              AI Sensei tối ưu
-            </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
-              <Layers size={11} className="text-pink-600 dark:text-pink-400" />
-              Từ điển N5-N1
-            </span>
-          </div>
-
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-0">
-            Hệ thống giữ nguyên phiên bản cũ cho đến khi bạn xác nhận cập nhật.
-          </p>
-
-          {/* Action Button */}
-          <button
-            type="button"
-            onClick={handleUpdateNow}
-            disabled={isUpdating}
-            className="w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-pink-600 dark:hover:bg-pink-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer disabled:opacity-80"
-          >
-            <RefreshCw size={14} className={isUpdating ? 'animate-spin' : ''} />
-            <span>{isUpdating ? 'Đang cập nhật hệ thống...' : 'Cập nhật lên bản v' + serverVersion + ' ngay'}</span>
-          </button>
-        </div>
-      </aside>
+        </aside>
+      )}
 
       {/* ── HIGH-END FULLSCREEN UPDATING OVERLAY (PREMIUM SAAS DIALOG) ── */}
       {isUpdating && (
@@ -267,7 +311,7 @@ export default function AppUpdateBanner() {
 
             {/* Clean Segmented Checkpoints */}
             <div className="space-y-2 pt-2 text-left border-t border-slate-100 dark:border-slate-800">
-              {updateSteps.map((step, idx) => {
+              {updateSteps.map(function(step, idx) {
                 const isPassed = updatePercent >= ((idx + 1) * 33);
                 const isCurrent = currentStepIndex === idx && !isPassed;
 

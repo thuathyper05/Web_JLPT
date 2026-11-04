@@ -101,7 +101,7 @@ async function autoInitDatabase(pool) {
       CREATE TABLE IF NOT EXISTS user_progress (
         id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(id) ON DELETE CASCADE,
-        vocabulary_id INT REFERENCES vocabularies(id) ON DELETE CASCADE,
+        vocabulary_id INT NOT NULL,
         status VARCHAR(50) DEFAULT 'learning',
         correct_count INT DEFAULT 0,
         wrong_count INT DEFAULT 0,
@@ -146,6 +146,8 @@ async function autoInitDatabase(pool) {
         today_words_count INT DEFAULT 0,
         last_active_date DATE DEFAULT CURRENT_DATE,
         level_tier VARCHAR(50) DEFAULT 'Tân Thủ N5',
+        daily_study_counts JSONB DEFAULT '{}'::jsonb,
+        target_per_day INT DEFAULT 10,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
@@ -234,6 +236,9 @@ async function autoInitDatabase(pool) {
 
       CREATE INDEX IF NOT EXISTS idx_vocab_level_lesson ON vocabularies (level, lesson_number);
       CREATE INDEX IF NOT EXISTS idx_lessons_level ON lessons (level);
+      ALTER TABLE user_progress DROP CONSTRAINT IF EXISTS user_progress_vocabulary_id_fkey;
+      ALTER TABLE user_gamification ADD COLUMN IF NOT EXISTS daily_study_counts JSONB DEFAULT '{}'::jsonb;
+      ALTER TABLE user_gamification ADD COLUMN IF NOT EXISTS target_per_day INT DEFAULT 10;
     `);
 
     // 3. Check if full educational dataset exists

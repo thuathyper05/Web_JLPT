@@ -5,6 +5,7 @@ import FuriganaWord from './FuriganaWord';
 import SakuraPulse from './SakuraPulse';
 import {
   Menu,
+  RefreshCw,
   Zap,
   Bell,
   User,
@@ -48,6 +49,21 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
   } = useApp();
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [hasAppUpdate, setHasAppUpdate] = useState(false);
+  const [appUpdateVersion, setAppUpdateVersion] = useState('1.2');
+
+  useEffect(function() {
+    const handleUpdateStatus = function(e) {
+      if (e.detail && e.detail.hasUpdate) {
+        setHasAppUpdate(true);
+        if (e.detail.version) setAppUpdateVersion(e.detail.version);
+      }
+    };
+    window.addEventListener('hyper-update-status', handleUpdateStatus);
+    return function() {
+      window.removeEventListener('hyper-update-status', handleUpdateStatus);
+    };
+  }, []);
   const [levelDropdownOpen, setLevelDropdownOpen] = useState(false);
 
   // ── ADVANCED DICTIONARY SEARCH STATE (N5 - N1) ──
@@ -781,6 +797,22 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
 
         {/* ── RIGHT: NOTIFICATIONS & USER ACCOUNT ── */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* App Update Button (Visible on mobile & desktop) */}
+          {hasAppUpdate && (
+            <button
+              type="button"
+              onClick={function() {
+                sounds.playFlip();
+                window.dispatchEvent(new CustomEvent('hyper-open-update'));
+              }}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-600 text-white font-extrabold text-[11px] shadow-sm animate-pulse active:scale-95 transition-all cursor-pointer"
+              title={'Có bản cập nhật mới v' + appUpdateVersion}
+            >
+              <RefreshCw size={12} className="animate-spin text-white" />
+              <span className="hidden xs:inline sm:inline">Cập nhật</span>
+              <span className="text-[10px] font-mono bg-white/20 px-1 py-0.2 rounded">v{appUpdateVersion}</span>
+            </button>
+          )}
           {/* Notifications Popover */}
           <div ref={notificationRef} className="relative">
             <button
@@ -922,6 +954,22 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                     >
                       <Bookmark size={14} className="text-pink-600" />
                       <span>Sổ tay từ vựng</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={function() {
+                        sounds.playFlip();
+                        setProfileDropdownOpen(false);
+                        window.dispatchEvent(new CustomEvent('hyper-open-update'));
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-pink-50 hover:text-pink-700 rounded-xl transition-colors cursor-pointer flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <RefreshCw size={14} className="text-pink-600" />
+                        <span>Kiểm tra cập nhật</span>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">v{appUpdateVersion}</span>
                     </button>
 
                     <button
