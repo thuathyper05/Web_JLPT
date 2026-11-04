@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Sparkles, CheckCircle2, DownloadCloud, Database, ShieldCheck, Zap } from 'lucide-react';
+import { RefreshCw, CheckCircle2, Download, Database, ShieldCheck, Zap, Layers, Cpu, Sparkles } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
 export default function AppUpdateBanner() {
   const [hasUpdate, setHasUpdate] = useState(false);
   const [serverVersion, setServerVersion] = useState('1.2');
+  const [serverBuildTime, setServerBuildTime] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [updateStep, setUpdateStep] = useState(0); // 0 to 100 percent
-  const [updateStatusText, setUpdateStatusText] = useState('Khởi tạo cập nhật...');
+  const [updatePercent, setUpdatePercent] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [statusMessage, setStatusMessage] = useState('Khởi tạo cập nhật...');
+
+  const updateSteps = [
+    { title: 'Tải gói tài nguyên v1.2', detail: 'Tối ưu hóa mã nguồn và CSS giao diện' },
+    { title: 'Đồng bộ cơ sở dữ liệu', detail: 'Nạp 9.584 từ vựng và chỉ mục Furigana' },
+    { title: 'Làm mới bộ nhớ đệm', detail: 'Xóa Cache cũ và kích hoạt phiên bản mới' }
+  ];
 
   // Check version against backend API
   const checkVersion = async () => {
@@ -17,20 +25,25 @@ export default function AppUpdateBanner() {
       const data = await res.json();
       if (!data || !data.buildTime) return;
 
-      if (data.version) {
-        setServerVersion(data.version);
-      }
+      const v = data.version || '1.2';
+      setServerVersion(v);
+      setServerBuildTime(data.buildTime);
 
       const storedBuildTime = sessionStorage.getItem('hyper_initial_build_time');
+      const storedVersion = localStorage.getItem('hyper_app_version');
+
       if (!storedBuildTime) {
-        // Record initial build time for current session
         sessionStorage.setItem('hyper_initial_build_time', String(data.buildTime));
       } else {
         const storedNum = parseInt(storedBuildTime, 10);
-        // If server was redeployed on Render, buildTime is greater
         if (data.buildTime > storedNum) {
           setHasUpdate(true);
         }
+      }
+
+      // If version in server is newer than recorded in localStorage
+      if (storedVersion && storedVersion !== v) {
+        setHasUpdate(true);
       }
     } catch {
       // Offline or network lag
@@ -38,10 +51,8 @@ export default function AppUpdateBanner() {
   };
 
   useEffect(() => {
-    // 1. Initial check
     checkVersion();
 
-    // 2. Check whenever user switches tabs or refocused
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') {
         checkVersion();
@@ -50,10 +61,8 @@ export default function AppUpdateBanner() {
     window.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('focus', handleVisibility);
 
-    // 3. Fast periodic check every 20 seconds for real-time Render deploy detection
-    const interval = setInterval(checkVersion, 20000);
+    const interval = setInterval(checkVersion, 25000);
 
-    // 4. Service Worker update event detection
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         setHasUpdate(true);
@@ -81,44 +90,48 @@ export default function AppUpdateBanner() {
     };
   }, []);
 
-  // High-End Animated Data Updating Sequence
+  // Premium Animated Data Updating Sequence
   const handleUpdateNow = () => {
     if (isUpdating) return;
     setIsUpdating(true);
-    setUpdateStep(5);
-    setUpdateStatusText('Đang kết nối máy chủ Render...');
+    setUpdatePercent(8);
+    setCurrentStepIndex(0);
+    setStatusMessage('Đang kết nối máy chủ xác thực gói cập nhật...');
 
     try {
       sounds.playLevelUp();
     } catch {}
 
-    // Multi-phase real visual loading simulation
+    // Multi-phase smooth progress sequence
     setTimeout(() => {
-      setUpdateStep(25);
-      setUpdateStatusText(`Xác thực gói cập nhật phiên bản v${serverVersion}...`);
-    }, 400);
+      setUpdatePercent(32);
+      setCurrentStepIndex(0);
+      setStatusMessage('Đang tải gói giao diện v' + serverVersion + ' mới nhất...');
+    }, 450);
 
     setTimeout(() => {
-      setUpdateStep(55);
-      setUpdateStatusText('Làm mới cơ sở dữ liệu 9.584 từ vựng & 130 bài học...');
-    }, 900);
+      setUpdatePercent(68);
+      setCurrentStepIndex(1);
+      setStatusMessage('Đồng bộ cơ sở dữ liệu 9.584 từ vựng và chỉ mục Furigana...');
+    }, 1000);
 
     setTimeout(() => {
-      setUpdateStep(80);
-      setUpdateStatusText('Xóa bộ nhớ đệm Cache & cập nhật Service Worker PWA...');
+      setUpdatePercent(90);
+      setCurrentStepIndex(2);
+      setStatusMessage('Làm mới bộ nhớ đệm Cache và kích hoạt bản dựng mới...');
 
-      // Tell service worker to skip waiting
+      // Update Service Worker
       try {
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.getRegistration().then((reg) => {
-            if (reg?.waiting) {
+            if (reg && reg.waiting) {
               reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             }
           });
         }
       } catch {}
 
-      // Clear browser caches
+      // Clear caches safely
       try {
         if ('caches' in window) {
           window.caches.keys().then((names) => {
@@ -126,136 +139,167 @@ export default function AppUpdateBanner() {
           });
         }
       } catch {}
-    }, 1400);
+    }, 1600);
 
     setTimeout(() => {
-      setUpdateStep(100);
-      setUpdateStatusText(`Hoàn tất! Đang khởi chạy phiên bản v${serverVersion}...`);
-      try {
-        sessionStorage.removeItem('hyper_initial_build_time');
-      } catch {}
-    }, 1900);
+      setUpdatePercent(100);
+      setCurrentStepIndex(2);
+      setStatusMessage('Cập nhật hoàn tất! Đang khởi động lại ứng dụng...');
 
-    // Hard reload with fresh timestamp cache-buster
+      if (serverBuildTime) {
+        sessionStorage.setItem('hyper_initial_build_time', String(serverBuildTime));
+      }
+      localStorage.setItem('hyper_app_version', serverVersion);
+    }, 2200);
+
+    // Clean page reload with cache buster
     setTimeout(() => {
       const cleanPath = window.location.origin + window.location.pathname;
-      window.location.href = cleanPath + '?t=' + Date.now();
-    }, 2400);
+      window.location.replace(cleanPath + '?v=' + Date.now());
+    }, 2800);
   };
 
-  // Only render when update is available (never dismissed until user updates)
   if (!hasUpdate) return null;
 
   return (
     <>
-      {/* ── HIGH-END LIVE UPDATE PROMPT CARD (PERSISTENT UNTIL UPDATED) ── */}
+      {/* ── MINIMALIST COMMERCIAL UPDATE CARD (NON-AI, PREMIUM SAAS DESIGN) ── */}
       <aside
-        aria-label="Thông báo cập nhật phiên bản ứng dụng"
-        className="fixed bottom-20 sm:bottom-6 left-2.5 right-2.5 sm:left-auto sm:right-6 sm:w-96 z-50 animate-in slide-in-from-bottom-3 duration-300 pointer-events-auto"
+        aria-label="Thông báo cập nhật phiên bản webapp"
+        className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+82px)] lg:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:w-[380px] z-50 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto"
       >
-        <div className="relative overflow-hidden rounded-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-xl border border-pink-500/50 text-white p-3.5 sm:p-4 shadow-[0_16px_50px_rgba(236,72,153,0.35)] flex flex-col gap-3">
-          {/* Shimmering top glowing border */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 animate-pulse" />
+        <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-[0_12px_40px_rgba(15,23,42,0.14)] p-4 text-slate-800 dark:text-slate-100 flex flex-col gap-3">
+          {/* Subtle Accent Stripe */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500" />
 
-          {/* Top Info Row */}
-          <div className="flex items-start justify-between gap-3 min-w-0">
-            <div className="flex items-center gap-2.5 min-w-0 flex-1">
-              <div className="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center shrink-0 shadow-inner">
-                <Sparkles size={20} className="animate-pulse" />
+          {/* Top Row: Icon + Version + Status */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-9 h-9 rounded-xl bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400 flex items-center justify-center shrink-0 border border-pink-100 dark:border-pink-900/50">
+                <Download size={18} />
               </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 leading-none">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
-                  <span className="text-[10px] font-black uppercase tracking-wider text-pink-400">
-                    Bản cập nhật mới v{serverVersion}
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                  <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                    Bản cập nhật mới
                   </span>
                 </div>
-
-                <h4 className="font-extrabold text-xs sm:text-sm text-white truncate mt-1 leading-tight">
-                  HYPER JP có phiên bản mới
+                <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight truncate">
+                  HYPER Japanese v{serverVersion}
                 </h4>
-                <p className="text-[10px] sm:text-[11px] text-slate-300 truncate mt-0.5 leading-tight">
-                  Chưa cập nhật sẽ giữ bản cũ. Chạm để nâng cấp!
-                </p>
               </div>
             </div>
 
-            {/* Version Badge */}
-            <span className="px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/40 text-[10px] font-black uppercase tracking-wider shrink-0">
+            {/* Version Pill */}
+            <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold tracking-tight border border-slate-200 dark:border-slate-700 shrink-0">
               v{serverVersion}
             </span>
           </div>
 
-          {/* Interactive Action Button */}
+          {/* Feature Highlights Pills */}
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+              <Zap size={11} className="text-pink-600 dark:text-pink-400" />
+              Đồng bộ đa thiết bị
+            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+              <Cpu size={11} className="text-pink-600 dark:text-pink-400" />
+              AI Sensei tối ưu
+            </span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 text-[10.5px] font-medium border border-slate-100 dark:border-slate-700/60">
+              <Layers size={11} className="text-pink-600 dark:text-pink-400" />
+              Từ điển N5-N1
+            </span>
+          </div>
+
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-0">
+            Hệ thống giữ nguyên phiên bản cũ cho đến khi bạn xác nhận cập nhật.
+          </p>
+
+          {/* Action Button */}
           <button
             type="button"
             onClick={handleUpdateNow}
             disabled={isUpdating}
-            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-pink-500/30 flex items-center justify-center gap-2 transition-all active:scale-98 cursor-pointer disabled:opacity-80"
+            className="w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-pink-600 dark:hover:bg-pink-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] cursor-pointer disabled:opacity-80"
           >
             <RefreshCw size={14} className={isUpdating ? 'animate-spin' : ''} />
-            <span>{isUpdating ? 'Đang nâng cấp dữ liệu...' : `Cập nhật lên bản v${serverVersion} ngay`}</span>
+            <span>{isUpdating ? 'Đang cập nhật hệ thống...' : 'Cập nhật lên bản v' + serverVersion + ' ngay'}</span>
           </button>
         </div>
       </aside>
 
-      {/* ── HIGH-TECH DATA LOADING OVERLAY MODAL ── */}
+      {/* ── HIGH-END FULLSCREEN UPDATING OVERLAY (PREMIUM SAAS DIALOG) ── */}
       {isUpdating && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md bg-slate-900 border border-pink-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_rgba(236,72,153,0.35)] text-center space-y-5 overflow-hidden">
-            {/* Ambient Background Glow */}
-            <div className="absolute -top-24 -left-24 w-48 h-48 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-rose-600/20 rounded-full blur-3xl pointer-events-none" />
-
-            {/* Glowing Tech Icon Container */}
-            <div className="relative mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-pink-600 to-rose-500 text-white flex items-center justify-center shadow-lotus">
-              <RefreshCw size={28} className="animate-spin" />
-              <div className="absolute inset-0 rounded-2xl border-2 border-white/30 animate-ping pointer-events-none" />
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl text-center space-y-6 overflow-hidden">
+            {/* Header Icon with Smooth Circular Progress Ring */}
+            <div className="relative mx-auto w-16 h-16 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-pink-600 dark:text-pink-400 shadow-sm">
+              <RefreshCw size={26} className="animate-spin text-pink-600 dark:text-pink-400" />
             </div>
 
             <div className="space-y-1.5">
-              <span className="text-[11px] font-black tracking-widest text-pink-400 uppercase">
-                Hệ Thống Đang Nâng Cấp Tự Động
+              <span className="text-[11px] font-bold tracking-wider text-pink-600 dark:text-pink-400 uppercase">
+                Đang nâng cấp hệ thống
               </span>
-              <h3 className="font-black text-lg sm:text-xl text-white">
-                Đang Cập Nhật Lên Bản v{serverVersion}
+              <h3 className="font-extrabold text-lg sm:text-xl text-slate-900 dark:text-white">
+                Cập Nhật HYPER Japanese v{serverVersion}
               </h3>
-              <p className="text-xs text-slate-400 h-6 transition-all duration-300">
-                {updateStatusText}
+              <p className="text-xs text-slate-500 dark:text-slate-400 h-5 transition-all duration-300">
+                {statusMessage}
               </p>
             </div>
 
-            {/* Shimmering Animated Progress Bar */}
+            {/* Precision Linear Progress Bar with Percentage */}
             <div className="space-y-2">
-              <div className="w-full h-3 rounded-full bg-slate-800 p-0.5 overflow-hidden border border-slate-700/80">
+              <div className="w-full h-2.5 rounded-full bg-slate-100 dark:bg-slate-800 p-0.5 overflow-hidden border border-slate-200 dark:border-slate-700">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-emerald-400 transition-all duration-300 relative shadow-inner"
-                  style={{ width: `${updateStep}%` }}
-                >
-                  <div className="absolute inset-0 bg-white/20 animate-pulse" />
-                </div>
+                  className="h-full rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 transition-all duration-300 relative"
+                  style={{ width: `${updatePercent}%` }}
+                />
               </div>
-              <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 px-1">
-                <span>Tiến độ tải dữ liệu</span>
-                <span className="text-pink-400 font-mono font-black">{updateStep}%</span>
+              <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 dark:text-slate-400 px-1">
+                <span>Tiến trình hoàn thiện</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-white">{updatePercent}%</span>
               </div>
             </div>
 
-            {/* Feature Checkpoints */}
-            <div className="grid grid-cols-3 gap-2 pt-2 text-[10px] font-bold text-slate-400 border-t border-slate-800">
-              <div className="flex items-center justify-center gap-1">
-                <Database size={11} className={updateStep >= 25 ? 'text-emerald-400' : 'text-slate-600'} />
-                <span>9.584 từ</span>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <Zap size={11} className={updateStep >= 55 ? 'text-emerald-400' : 'text-slate-600'} />
-                <span>Furigana</span>
-              </div>
-              <div className="flex items-center justify-center gap-1">
-                <ShieldCheck size={11} className={updateStep >= 80 ? 'text-emerald-400' : 'text-slate-600'} />
-                <span>Đa thiết bị</span>
-              </div>
+            {/* Clean Segmented Checkpoints */}
+            <div className="space-y-2 pt-2 text-left border-t border-slate-100 dark:border-slate-800">
+              {updateSteps.map((step, idx) => {
+                const isPassed = updatePercent >= ((idx + 1) * 33);
+                const isCurrent = currentStepIndex === idx && !isPassed;
+
+                return (
+                  <div
+                    key={idx}
+                    className={`flex items-center justify-between p-2.5 rounded-xl border transition-all text-xs ${
+                      isPassed
+                        ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300'
+                        : isCurrent
+                        ? 'bg-pink-50/60 dark:bg-pink-950/20 border-pink-200/60 dark:border-pink-800/40 text-pink-800 dark:text-pink-300'
+                        : 'bg-slate-50/50 dark:bg-slate-800/30 border-slate-100 dark:border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                        {isPassed ? (
+                          <CheckCircle2 size={16} className="text-emerald-600 dark:text-emerald-400" />
+                        ) : isCurrent ? (
+                          <RefreshCw size={13} className="animate-spin text-pink-600 dark:text-pink-400" />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="font-bold text-[11px] leading-tight">{step.title}</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">{step.detail}</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
