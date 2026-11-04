@@ -27,6 +27,7 @@ function initializeKeysPool() {
 
   // Deduplicate while preserving order
   const uniqueKeys = [...new Set(rawList)].filter(Boolean);
+  console.log('[AI Pool] Đã nạp thành công ' + uniqueKeys.length + ' API keys Gemini vào hệ thống luân phiên.');
 
   return uniqueKeys.map(function (key, idx) {
     // Determine best model based on key type
@@ -143,7 +144,7 @@ function executeGeminiRequest(apiKey, promptText, modelName) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(postData)
       },
-      timeout: 6500
+      timeout: 5000
     };
 
     const req = https.request(options, function (res) {
@@ -190,7 +191,7 @@ async function callGemini(promptText) {
     throw new Error('Chưa cấu hình GEMINI_API_KEY trong file .env');
   }
 
-  const maxAttempts = Math.min(keyEntries.length * 2, 4);
+  const maxAttempts = Math.min(keyEntries.length, 5);
   let lastError = null;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -198,7 +199,7 @@ async function callGemini(promptText) {
     if (!entry) break;
 
     // Use primary model for attempt 0 or fallback on retry
-    const modelToUse = (attempt % 2 === 0) ? entry.primaryModel : entry.fallbackModel;
+    const modelToUse = entry.primaryModel;
 
     try {
       const result = await executeGeminiRequest(entry.key, promptText, modelToUse);
