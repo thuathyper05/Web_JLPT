@@ -1212,12 +1212,15 @@ app.get('/api/quiz/generate', async (req, res) => {
 
 // ── 7. PROGRESS & GAMIFICATION (PostgreSQL Multi-Device Cloud Sync) ──
 function getLocalDateString(d) {
-  const date = d ? (d instanceof Date ? d : new Date(d)) : new Date();
-  if (isNaN(date.getTime())) return new Date().toISOString().slice(0, 10);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return year + "-" + month + "-" + day;
+  try {
+    const date = d ? (d instanceof Date ? d : new Date(d)) : new Date();
+    if (isNaN(date.getTime())) {
+      return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
+    }
+    return date.toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
+  } catch (err) {
+    return new Date().toISOString().slice(0, 10);
+  }
 }
 
 app.get("/api/progress", async (req, res) => {
@@ -1658,7 +1661,7 @@ async function syncForumDatabase() {
         if (art.comments && Array.isArray(art.comments)) {
           for (const c of art.comments) {
             await db.pool.query(
-              'INSERT INTO forum_comments (article_id, author, rating, content, likes, created_at) VALUES ($1, $2, $3, $4, $5, NOW() - (random() * interval \'4 days\'))',
+              'INSERT INTO forum_comments (article_id, author, author_name, rating, content, likes, created_at) VALUES ($1, $2, $2, $3, $4, $5, NOW() - (random() * interval \'4 days\'))',
               [art.id, c.author || 'Bạn đọc', c.rating || 5, c.content || '', Math.floor(Math.random() * 8)]
             );
           }
@@ -2153,8 +2156,8 @@ app.post('/api/forum/articles/:id/comments', async (req, res) => {
   if (db.pool && db.isDbConnected()) {
     try {
       const insRes = await db.pool.query(
-        `INSERT INTO forum_comments (article_id, author, rating, content, likes, created_at)
-         VALUES ($1, $2, $3, $4, 0, NOW())
+        `INSERT INTO forum_comments (article_id, author, author_name, rating, content, likes, created_at)
+         VALUES ($1, $2, $2, $3, $4, 0, NOW())
          RETURNING id, article_id, author, rating, content, likes,
                    TO_CHAR(created_at, 'DD/MM/YYYY HH24:MI') as "createdAt",
                    created_at`,
@@ -2445,7 +2448,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // App Version & Live Deploy Detection
-const APP_VERSION = '1.2';
+const APP_VERSION = '1.3';
 app.get('/api/version', (req, res) => {
   res.json({
     success: true,

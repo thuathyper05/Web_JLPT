@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    __APP_VERSION__: JSON.stringify('1.2'),
+    __APP_VERSION__: JSON.stringify('1.3'),
     __BUILD_TIME__: Date.now(),
   },
   server: {

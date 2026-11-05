@@ -93,8 +93,8 @@ export default function AiSenseiPage() {
     setPromptOffset((prev) => prev + 1);
 
     try {
-      const masteredCount = Object.values(guestProgress || {}).filter((p) => p.status === 'mastered').length;
-      const reviewWords = Object.keys(guestProgress || {}).filter((k) => guestProgress[k]?.status === 'needs_review');
+      const masteredCount = Object.values(guestProgress || {}).filter(function(p) { return p && (p.status === 'mastered' || p === 'mastered'); }).length;
+      const reviewWords = Object.keys(guestProgress || {}).filter(function(k) { const p = guestProgress[k]; return p && (p.status === 'needs_review' || p === 'needs_review'); });
 
       const res = await aiService.query({
         action: 'chat',
@@ -166,8 +166,8 @@ export default function AiSenseiPage() {
     sounds.playFlip();
     setRoadmapLoading(true);
     try {
-      const masteredCount = Object.values(guestProgress || {}).filter((p) => p.status === 'mastered').length;
-      const reviewWords = Object.keys(guestProgress || {}).filter((k) => guestProgress[k]?.status === 'needs_review');
+      const masteredCount = Object.values(guestProgress || {}).filter(function(p) { return p && (p.status === 'mastered' || p === 'mastered'); }).length;
+      const reviewWords = Object.keys(guestProgress || {}).filter(function(k) { const p = guestProgress[k]; return p && (p.status === 'needs_review' || p === 'needs_review'); });
 
       const res = await aiService.query({
         action: 'user_diagnosis',

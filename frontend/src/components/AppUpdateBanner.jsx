@@ -5,15 +5,29 @@ import { sounds } from '../services/sounds';
 export default function AppUpdateBanner() {
   const [hasUpdate, setHasUpdate] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [serverVersion, setServerVersion] = useState('1.2');
+  const [serverVersion, setServerVersion] = useState('1.3');
   const [serverBuildTime, setServerBuildTime] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatePercent, setUpdatePercent] = useState(0);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [statusMessage, setStatusMessage] = useState('Khởi tạo cập nhật...');
 
+  function compareVersions(v1, v2) {
+    if (!v1 || !v2) return 0;
+    const parts1 = String(v1).split('.').map(function(n) { return parseInt(n, 10) || 0; });
+    const parts2 = String(v2).split('.').map(function(n) { return parseInt(n, 10) || 0; });
+    const maxLen = Math.max(parts1.length, parts2.length);
+    for (let i = 0; i < maxLen; i++) {
+      const num1 = parts1[i] || 0;
+      const num2 = parts2[i] || 0;
+      if (num1 > num2) return 1;
+      if (num1 < num2) return -1;
+    }
+    return 0;
+  }
+
   const updateSteps = [
-    { title: 'Tải gói tài nguyên v1.2', detail: 'Tối ưu hóa mã nguồn và CSS giao diện' },
+    { title: 'Tải gói tài nguyên v' + serverVersion, detail: 'Tối ưu hóa mã nguồn và CSS giao diện' },
     { title: 'Đồng bộ cơ sở dữ liệu', detail: 'Nạp 9.584 từ vựng và chỉ mục Furigana' },
     { title: 'Làm mới bộ nhớ đệm', detail: 'Xóa Cache cũ và kích hoạt phiên bản mới' }
   ];
@@ -24,39 +38,29 @@ export default function AppUpdateBanner() {
       const res = await fetch('/api/version?t=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
-      if (!data || !data.buildTime) return;
+      if (!data) return;
 
-      const v = data.version || '1.2';
+      const v = data.version || '1.3';
       setServerVersion(v);
-      setServerBuildTime(data.buildTime);
+      if (data.buildTime) setServerBuildTime(data.buildTime);
 
-      const clientBuild = typeof __BUILD_TIME__ !== 'undefined' ? Number(__BUILD_TIME__) : 0;
-      const storedBuildTime = sessionStorage.getItem('hyper_initial_build_time');
       const storedVersion = localStorage.getItem('hyper_app_version');
 
-      let updateAvailable = false;
-
-      // 1. If server build time is newer than client bundled build time
-      if (clientBuild > 0 && Number(data.buildTime) > clientBuild + 1000) {
-        updateAvailable = true;
+      // Khi người dùng mới vào lần đầu: lưu phiên bản hiện tại mà không làm phiền
+      if (!storedVersion) {
+        localStorage.setItem('hyper_app_version', v);
+        setHasUpdate(false);
+        return;
       }
 
-      // 2. If storedVersion in localStorage is different from server version
-      if (storedVersion && storedVersion !== v) {
-        updateAvailable = true;
+      // Đã cập nhật lên bản v này rồi: ẩn nút và banner hoàn toàn
+      if (storedVersion === v || compareVersions(v, storedVersion) <= 0) {
+        setHasUpdate(false);
+        return;
       }
 
-      // 3. Compare with sessionStorage initial build time
-      if (!storedBuildTime) {
-        sessionStorage.setItem('hyper_initial_build_time', String(data.buildTime));
-      } else {
-        const storedNum = parseInt(storedBuildTime, 10);
-        if (data.buildTime > storedNum) {
-          updateAvailable = true;
-        }
-      }
-
-      if (updateAvailable) {
+      // Chỉ hiển thị khi có phiên bản mới hơn trên máy chủ (ví dụ 1.3 so với 1.2, hoặc 1.4 so với 1.3)
+      if (compareVersions(v, storedVersion) > 0) {
         setHasUpdate(true);
         window.__HAS_APP_UPDATE__ = true;
         window.dispatchEvent(new CustomEvent('hyper-update-status', {
@@ -181,6 +185,7 @@ export default function AppUpdateBanner() {
         sessionStorage.setItem('hyper_initial_build_time', String(serverBuildTime));
       }
       localStorage.setItem('hyper_app_version', serverVersion);
+      setHasUpdate(false);
     }, 2200);
 
     // Clean page reload with cache buster

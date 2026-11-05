@@ -627,25 +627,25 @@ export default function ForumPage() {
 
               {/* Comment Input */}
               <form onSubmit={handleSubmitComment} className="space-y-3">
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     placeholder="Họ và tên..."
                     value={commentAuthor}
                     onChange={(e) => setCommentAuthor(e.target.value)}
-                    className="w-1/3 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                    className="w-full sm:w-1/3 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20"
                   />
                   <input
                     type="text"
                     placeholder="Chia sẻ quan điểm của bạn về bài viết này..."
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20"
+                    className="w-full sm:flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20"
                   />
                   <button
                     type="submit"
                     disabled={submittingComment || !commentText.trim()}
-                    className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
                   >
                     <Send size={13} />
                     <span>Gửi</span>
@@ -912,7 +912,7 @@ export default function ForumPage() {
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                      <div className="flex items-center justify-center gap-1.5 pt-4">
+                      <div className="flex items-center justify-between sm:justify-center gap-2 pt-4 px-2">
                         <button
                           type="button"
                           disabled={currentPage === 1}
@@ -921,20 +921,9 @@ export default function ForumPage() {
                         >
                           Trang trước
                         </button>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-                          <button
-                            key={num}
-                            type="button"
-                            onClick={() => setCurrentPage(num)}
-                            className={`w-8 h-8 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                              currentPage === num
-                                ? 'bg-rose-600 text-white shadow-xs'
-                                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-                            }`}
-                          >
-                            {num}
-                          </button>
-                        ))}
+                        <span className="text-xs font-bold text-slate-600 bg-white px-3 py-1.5 rounded-xl border border-slate-200">
+                          Trang {currentPage} / {totalPages}
+                        </span>
                         <button
                           type="button"
                           disabled={currentPage === totalPages}

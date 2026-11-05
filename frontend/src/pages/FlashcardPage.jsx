@@ -111,7 +111,8 @@ export default function FlashcardPage() {
     const unmastered = [];
 
     allCards.forEach((card) => {
-      const status = guestProgress?.[card.id]?.status;
+      const item = guestProgress ? guestProgress[card.id] : null;
+      const status = (typeof item === 'object' && item) ? item.status : (item || 'unstudied');
       if (status === 'mastered') {
         mastered.push(card);
       } else if (status === 'needs_review') {
@@ -188,7 +189,8 @@ export default function FlashcardPage() {
   }, [sessionCards]);
 
   const currentCard = sessionCards[currentIndex] || sessionCards[0] || null;
-  const currentCardStatus = currentCard ? guestProgress?.[currentCard.id]?.status || 'unstudied' : 'unstudied';
+  const currentCardItem = currentCard && guestProgress ? guestProgress[currentCard.id] : null;
+  const currentCardStatus = (typeof currentCardItem === 'object' && currentCardItem) ? currentCardItem.status : (currentCardItem || 'unstudied');
 
   // 8. Flip card
   const handleFlip = useCallback(() => {

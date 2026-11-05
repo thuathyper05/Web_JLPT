@@ -1,16 +1,35 @@
 // Normalize user shape across Google OAuth, Facebook, DB and LocalStorage
-export const normalizeUser = (u) => {
+export function normalizeUser(u) {
   if (!u || typeof u !== 'object') return null;
   const avatar = u.avatar || u.avatar_url || '';
   const name = u.name || u.username || (u.email ? u.email.split('@')[0] : 'Học viên');
   return {
     ...u,
-    name,
+    name: name,
     username: u.username || name,
-    avatar,
+    avatar: avatar,
     avatar_url: avatar
   };
-};
+}
+
+// Normalize word progress shape across multi-device sync
+export function normalizeProgress(raw) {
+  if (!raw || typeof raw !== 'object') return {};
+  const normalized = {};
+  const nowIso = new Date().toISOString();
+  const entries = Object.entries(raw);
+  for (let i = 0; i < entries.length; i++) {
+    const k = entries[i][0];
+    const v = entries[i][1];
+    if (!v) continue;
+    if (typeof v === 'string') {
+      normalized[k] = { status: v, updated_at: nowIso };
+    } else if (typeof v === 'object' && v.status) {
+      normalized[k] = { status: v.status, updated_at: v.updated_at || nowIso };
+    }
+  }
+  return normalized;
+}
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService, progressService, aiService } from '../services/api';
@@ -119,12 +138,12 @@ export const AppProvider = ({ children }) => {
   });
 
   // Guest Progress: { [wordId]: { status: 'mastered' | 'needs_review', updated_at: string } }
-  const [guestProgress, setGuestProgress] = useState(() => {
+  const [guestProgress, setGuestProgress] = useState(function() {
     try {
       const saved = localStorage.getItem('nihongo_guest_progress');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed === 'object') return parsed;
+        if (parsed && typeof parsed === 'object') return normalizeProgress(parsed);
       }
     } catch {}
     return {};
@@ -358,30 +377,29 @@ export const AppProvider = ({ children }) => {
   };
 
   // Pull authoritative multi-device progress from cloud database
-  const syncUserCloudProgress = async () => {
+  const syncUserCloudProgress = async function() {
     try {
       const res = await progressService.getProgress();
-      if (res.data?.success) {
+      if (res.data && res.data.success) {
         if (res.data.progress && typeof res.data.progress === 'object') {
-          setGuestProgress((prev) => {
-            const merged = { ...(prev || {}), ...res.data.progress };
-            try {
-              localStorage.setItem('nihongo_guest_progress', JSON.stringify(merged));
-            } catch {}
-            return merged;
-          });
+          const normalized = normalizeProgress(res.data.progress);
+          setGuestProgress(normalized);
+          try {
+            localStorage.setItem('nihongo_guest_progress', JSON.stringify(normalized));
+          } catch {}
         }
         if (res.data.gamification) {
-          setGamification((prev) => {
-            const g = res.data.gamification;
+          const g = res.data.gamification;
+          setGamification(function(prev) {
             const mergedGam = {
               ...prev,
               ...g,
-              current_streak: g.current_streak ?? prev.current_streak,
-              total_xp: g.total_xp ?? prev.total_xp,
-              longest_streak: g.longest_streak ?? prev.longest_streak,
-              today_words_count: g.today_words_count ?? prev.today_words_count,
-              last_active_date: g.last_active_date ?? prev.last_active_date,
+              current_streak: g.current_streak !== undefined ? g.current_streak : prev.current_streak,
+              total_xp: g.total_xp !== undefined ? g.total_xp : prev.total_xp,
+              longest_streak: g.longest_streak !== undefined ? g.longest_streak : prev.longest_streak,
+              today_words_count: g.today_words_count !== undefined ? g.today_words_count : prev.today_words_count,
+              last_active_date: g.last_active_date || prev.last_active_date,
+              target_per_day: g.target_per_day || prev.target_per_day || 10,
               daily_study_counts: (g.daily_study_counts && typeof g.daily_study_counts === 'object')
                 ? g.daily_study_counts
                 : (prev.daily_study_counts || {})
@@ -392,27 +410,6 @@ export const AppProvider = ({ children }) => {
             return mergedGam;
           });
         }
-
-        // Push any local offline progress to cloud
-        try {
-          const localSaved = localStorage.getItem('nihongo_guest_progress');
-          if (localSaved) {
-            const parsedLocal = JSON.parse(localSaved);
-            if (parsedLocal && Object.keys(parsedLocal).length > 0) {
-              progressService.syncProgress({
-                progress: parsedLocal,
-                gamification: res.data.gamification
-              }).then((syncRes) => {
-                if (syncRes.data?.progress) {
-                  setGuestProgress(syncRes.data.progress);
-                }
-                if (syncRes.data?.gamification) {
-                  setGamification((prev) => ({ ...prev, ...syncRes.data.gamification }));
-                }
-              }).catch(() => {});
-            }
-          }
-        } catch {}
       }
     } catch (err) {
       console.warn('Sync user cloud progress error:', err);
