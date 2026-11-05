@@ -32,8 +32,8 @@ function initializeKeysPool() {
   return uniqueKeys.map(function (key, idx) {
     // Determine best model based on key type
     const isStandardCloudKey = key.startsWith('AIzaSy');
-    const primaryModel = isStandardCloudKey ? 'gemini-2.5-flash' : 'gemini-3.5-flash';
-    const fallbackModel = isStandardCloudKey ? 'gemini-3.5-flash' : 'gemini-2.5-flash';
+    const primaryModel = 'gemini-3-flash-preview';
+    const fallbackModel = 'gemini-3.8-flash';
 
     return {
       id: idx + 1,
@@ -138,13 +138,14 @@ function executeGeminiRequest(apiKey, promptText, modelName) {
 
     const options = {
       hostname: 'generativelanguage.googleapis.com',
+      family: 4,
       path: `/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(postData)
       },
-      timeout: 5000
+      timeout: 8000
     };
 
     const req = https.request(options, function (res) {

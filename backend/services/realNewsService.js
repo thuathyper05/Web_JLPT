@@ -133,7 +133,7 @@ Yêu cầu xuất ra JSON ngắn gọn đúng định dạng sau (không dùng m
 }`;
 
   try {
-    const aiRes = await callGemini(prompt, 'gemini-3.5-flash-lite');
+    const aiRes = await callGemini(prompt);
     if (!aiRes || !aiRes.text) return heuristicCurateArticle(rawItem);
 
     const cleaned = aiRes.text.replace(/```json|```/g, '').trim();

@@ -24,11 +24,19 @@ import {
 
 export default function Sidebar({
   mobileOpen = false,
-  onCloseMobile = () => {},
-  sidebarCollapsed = false,
-  toggleSidebarCollapse = () => {}
+  onCloseMobile = function () {},
+  sidebarCollapsed: propCollapsed,
+  toggleSidebarCollapse: propToggle
 }) {
-  const { activeTab, setActiveTab, gamification } = useApp();
+  const appCtx = useApp();
+  const activeTab = appCtx?.activeTab || 'home';
+  const setActiveTab = appCtx?.setActiveTab || function () {};
+  const gamification = appCtx?.gamification;
+  const sidebarCollapsed = propCollapsed !== undefined ? propCollapsed : (appCtx?.sidebarCollapsed || false);
+  const toggleSidebarCollapse = function () {
+    if (propToggle) propToggle();
+    else if (appCtx && appCtx.toggleSidebarCollapse) appCtx.toggleSidebarCollapse();
+  };
 
   const navSections = [
     {

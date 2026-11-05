@@ -28,7 +28,7 @@ import LevelComingSoonPage from './pages/LevelComingSoonPage';
 import AdminPage from './pages/AdminPage';
 
 export default function App() {
-  const { activeTab, pageLoading, loadingMessage, sidebarCollapsed } = useApp();
+  const { activeTab, pageLoading, loadingMessage, sidebarCollapsed, toggleSidebarCollapse } = useApp();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Dedicated Independent Admin Portal Routing
@@ -125,13 +125,15 @@ export default function App() {
       {/* ── 1. SIDEBAR (DESKTOP & MOBILE DRAWER) ── */}
       <Sidebar
         mobileOpen={mobileSidebarOpen}
-        onCloseMobile={() => setMobileSidebarOpen(false)}
+        onCloseMobile={function () { setMobileSidebarOpen(false); }}
+        sidebarCollapsed={sidebarCollapsed}
+        toggleSidebarCollapse={toggleSidebarCollapse}
       />
 
       {/* ── 2. MAIN CONTENT WRAPPER ── */}
       <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
         {/* Sticky Top Header */}
-        <Header onOpenMobileMenu={() => setMobileSidebarOpen(true)} />
+        <Header onOpenMobileMenu={function () { setMobileSidebarOpen(true); }} />
 
         {/* Dynamic View Area */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-12 max-w-7xl w-full mx-auto">

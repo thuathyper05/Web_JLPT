@@ -28,7 +28,9 @@ import {
   Filter,
   Layers,
   Loader2,
-  Star
+  Star,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 import { sounds } from '../services/sounds';
 
@@ -45,7 +47,9 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
     userPerks,
     favorites,
     toggleFavorite,
-    isFavorite
+    isFavorite,
+    sidebarCollapsed,
+    toggleSidebarCollapse
   } = useApp();
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -295,7 +299,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
   return (
     <>
       <header className="h-16 px-3 sm:px-6 md:px-8 bg-white/95 backdrop-blur-md border-b border-pink-100/80 sticky top-0 z-30 flex items-center justify-between gap-2">
-        {/* ── LEFT: MOBILE TOGGLE & LEVEL SELECTOR ── */}
+        {/* ── LEFT: MOBILE TOGGLE, DESKTOP COLLAPSE & LEVEL SELECTOR ── */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             type="button"
@@ -304,6 +308,20 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
             aria-label="Mở menu"
           >
             <Menu size={22} />
+          </button>
+
+          {/* Desktop Sidebar Toggle Button */}
+          <button
+            type="button"
+            onClick={function () {
+              sounds.playFlip();
+              if (toggleSidebarCollapse) toggleSidebarCollapse();
+            }}
+            className="hidden lg:flex p-2 rounded-xl text-slate-600 hover:text-pink-600 hover:bg-pink-50 transition-colors cursor-pointer"
+            title={sidebarCollapsed ? 'Mở rộng thanh menu' : 'Thu gọn thanh menu'}
+            aria-label="Thu gọn hoặc mở rộng thanh menu"
+          >
+            {sidebarCollapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
           </button>
 
           {/* Level Switcher Dropdown */}
