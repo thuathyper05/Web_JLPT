@@ -385,4 +385,5 @@ export const supportService = {
   sendFeedback: (data) => api.post('/support/feedback', data),
 };
 
+export { api };
 export default api;

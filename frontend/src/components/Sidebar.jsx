@@ -17,26 +17,19 @@ import {
   Bookmark,
   Headphones,
   Keyboard,
-  PanelLeftClose,
-  PanelLeftOpen,
   X
 } from 'lucide-react';
 
 export default function Sidebar({
   mobileOpen = false,
   onCloseMobile = function () {},
-  sidebarCollapsed: propCollapsed,
-  toggleSidebarCollapse: propToggle
+  sidebarCollapsed: propCollapsed
 }) {
   const appCtx = useApp();
-  const activeTab = appCtx?.activeTab || 'home';
-  const setActiveTab = appCtx?.setActiveTab || function () {};
-  const gamification = appCtx?.gamification;
-  const sidebarCollapsed = propCollapsed !== undefined ? propCollapsed : (appCtx?.sidebarCollapsed || false);
-  const toggleSidebarCollapse = function () {
-    if (propToggle) propToggle();
-    else if (appCtx && appCtx.toggleSidebarCollapse) appCtx.toggleSidebarCollapse();
-  };
+  const activeTab = appCtx ? appCtx.activeTab : 'home';
+  const setActiveTab = appCtx ? appCtx.setActiveTab : function () {};
+  const gamification = appCtx ? appCtx.gamification : null;
+  const sidebarCollapsed = propCollapsed !== undefined ? propCollapsed : (appCtx ? appCtx.sidebarCollapsed : false);
 
   const navSections = [
     {
@@ -75,7 +68,7 @@ export default function Sidebar({
     }
   ];
 
-  const handleNav = (item) => {
+  const handleNav = function (item) {
     sounds.playFlip();
     setActiveTab(item.id);
     onCloseMobile();
@@ -98,72 +91,44 @@ export default function Sidebar({
         } ${mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}
         style={{ height: '100dvh' }}
       >
-        {/* ── 1. TOP HEADER: LOGO & COLLAPSE BUTTON ── */}
+        {/* ── 1. TOP HEADER: LOGO ONLY (NO COLLAPSE BUTTON IN SIDEBAR) ── */}
         <div
-          className={`shrink-0 relative h-20 px-3 border-b border-pink-50 flex items-center ${
-            sidebarCollapsed ? 'justify-center flex-col py-2 gap-1' : 'justify-between'
-          }`}
+          className={`shrink-0 relative h-20 px-3 border-b border-pink-50 flex items-center justify-center`}
         >
           {sidebarCollapsed ? (
-            // Collapsed Header: Mini Logo Centered + Expand Button
-            <div className="flex flex-col items-center justify-center gap-1 w-full animate-in fade-in">
+            // Collapsed Header: Mini Logo Centered
+            <div className="flex items-center justify-center w-full animate-in fade-in">
               <div
-                onClick={() => handleNav({ id: 'home' })}
+                onClick={function () { handleNav({ id: 'home' }); }}
                 className="cursor-pointer group hover:scale-105 transition-transform"
                 title="HYPER JP - Về trang chủ"
               >
                 <img
                   src="/hyper_logo.png"
                   alt="HYPER JP"
-                  className="h-7 w-auto object-contain drop-shadow-sm"
+                  className="h-8 w-auto object-contain drop-shadow-sm"
                 />
               </div>
-              <button
-                type="button"
-                onClick={toggleSidebarCollapse}
-                className="hidden lg:flex p-1 rounded-lg text-slate-400 hover:text-pink-600 hover:bg-pink-50 transition-colors cursor-pointer"
-                title="Mở rộng menu"
-                aria-label="Mở rộng menu"
-              >
-                <PanelLeftOpen size={16} />
-              </button>
             </div>
           ) : (
-            // Expanded Header: Centered Logo with balance spacer + Top-right Collapse Button
-            <>
-              {/* Balance Spacer on Left */}
-              <div className="w-8 hidden lg:block shrink-0" />
-
-              {/* Centered Logo */}
-              <div
-                onClick={() => handleNav({ id: 'home' })}
-                className="flex-1 flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
-                title="HYPER JP - Về trang chủ"
-              >
-                <div className="relative flex items-center justify-center">
-                  <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <img
-                    src="/hyper_logo.png"
-                    alt="HYPER JP"
-                    className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
-                  />
-                </div>
+            // Expanded Header: Centered Logo
+            <div
+              onClick={function () { handleNav({ id: 'home' }); }}
+              className="flex-1 flex items-center justify-center cursor-pointer group transition-transform duration-300 hover:scale-105 select-none"
+              title="HYPER JP - Về trang chủ"
+            >
+              <div className="relative flex items-center justify-center">
+                <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-pink-500/25 to-rose-500/25 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <img
+                  src="/hyper_logo.png"
+                  alt="HYPER JP"
+                  className="h-10 sm:h-11 w-auto object-contain relative z-10 drop-shadow-sm transition-all duration-300 group-hover:brightness-105"
+                />
               </div>
-
-              {/* Desktop Collapse Button on Top Right */}
-              <button
-                type="button"
-                onClick={toggleSidebarCollapse}
-                className="hidden lg:flex p-1.5 rounded-xl text-slate-400 hover:text-pink-600 hover:bg-pink-50/70 transition-colors cursor-pointer shrink-0"
-                title="Thu gọn thanh menu"
-                aria-label="Thu gọn thanh menu"
-              >
-                <PanelLeftClose size={18} />
-              </button>
-            </>
+            </div>
           )}
 
-          {/* Mobile Close Button */}
+          {/* Mobile Close Button (Chỉ dành riêng cho drawer di động) */}
           <button
             type="button"
             onClick={onCloseMobile}
@@ -180,79 +145,81 @@ export default function Sidebar({
             sidebarCollapsed ? 'p-2' : 'p-3.5'
           }`}
         >
-          {navSections.map((sec, idx) => (
-            <div key={idx}>
-              {/* Section title (only shown when expanded) */}
-              {!sidebarCollapsed && (
-                <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
-                  {sec.title}
-                </div>
-              )}
-              {sidebarCollapsed && idx > 0 && (
-                <div className="my-2 border-t border-slate-100" />
-              )}
+          {navSections.map(function (sec, idx) {
+            return (
+              <div key={idx}>
+                {/* Section title (only shown when expanded) */}
+                {!sidebarCollapsed && (
+                  <div className="px-3 mb-1 text-[10.5px] font-extrabold text-slate-400 tracking-wider uppercase">
+                    {sec.title}
+                  </div>
+                )}
+                {sidebarCollapsed && idx > 0 && (
+                  <div className="my-2 border-t border-slate-100" />
+                )}
 
-              <div className="space-y-0.5">
-                {sec.items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => handleNav(item)}
-                      title={item.label}
-                      className={`w-full flex items-center rounded-xl font-semibold text-[13px] transition-all cursor-pointer ${
-                        sidebarCollapsed
-                          ? 'justify-center p-2.5'
-                          : 'justify-between px-3 py-2'
-                      } ${
-                        isActive
-                          ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lotus font-bold'
-                          : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-600'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon
-                          size={18}
-                          className={`shrink-0 ${
-                            isActive ? 'text-white' : 'text-slate-500 group-hover:text-pink-600'
-                          }`}
-                        />
-                        {!sidebarCollapsed && (
-                          <span className="truncate">{item.label}</span>
+                <div className="space-y-0.5">
+                  {sec.items.map(function (item) {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={function () { handleNav(item); }}
+                        title={item.label}
+                        className={`w-full flex items-center rounded-xl font-semibold text-[13px] transition-all cursor-pointer ${
+                          sidebarCollapsed
+                            ? 'justify-center p-2.5'
+                            : 'justify-between px-3 py-2'
+                        } ${
+                          isActive
+                            ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-lotus font-bold'
+                            : 'text-slate-600 hover:bg-pink-50/60 hover:text-pink-600'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon
+                            size={18}
+                            className={`shrink-0 ${
+                              isActive ? 'text-white' : 'text-slate-500 group-hover:text-pink-600'
+                            }`}
+                          />
+                          {!sidebarCollapsed && (
+                            <span className="truncate">{item.label}</span>
+                          )}
+                        </div>
+
+                        {!sidebarCollapsed && item.badge && (
+                          <span
+                            className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                              isActive
+                                ? 'bg-white/20 text-white'
+                                : 'bg-rose-100 text-rose-600'
+                            }`}
+                          >
+                            {item.badge}
+                          </span>
                         )}
-                      </div>
 
-                      {!sidebarCollapsed && item.badge && (
-                        <span
-                          className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                            isActive
-                              ? 'bg-white/20 text-white'
-                              : 'bg-rose-100 text-rose-600'
-                          }`}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
-
-                      {!sidebarCollapsed && item.isNew && !item.badge && (
-                        <span
-                          className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
-                            isActive
-                              ? 'bg-white/20 text-white'
-                              : 'bg-pink-100 text-pink-600'
-                          }`}
-                        >
-                          MỚI
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
+                        {!sidebarCollapsed && item.isNew && !item.badge && (
+                          <span
+                            className={`px-1.5 py-0.2 text-[9.5px] font-extrabold rounded-md uppercase ${
+                              isActive
+                                ? 'bg-white/20 text-white'
+                                : 'bg-pink-100 text-pink-600'
+                            }`}
+                          >
+                            MỚI
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* ── 3. BOTTOM AREA: REAL STREAK CARD (NEVER CUT OFF) ── */}
@@ -265,21 +232,21 @@ export default function Sidebar({
           {sidebarCollapsed ? (
             <div className="flex flex-col items-center">
               <div
-                onClick={() => handleNav({ id: 'home' })}
+                onClick={function () { handleNav({ id: 'home' }); }}
                 className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white flex flex-col items-center justify-center cursor-pointer shadow-sm hover:scale-105 transition-transform"
-                title={`Chuỗi ${gamification?.current_streak || 0} ngày học liên tục`}
+                title={`Chuỗi ${gamification ? (gamification.current_streak || 0) : 0} ngày học liên tục`}
               >
                 <Flame
                   size={18}
-                  className={(gamification?.current_streak || 0) > 0 ? "text-amber-400 animate-bounce" : "text-slate-500"}
-                  fill={(gamification?.current_streak || 0) > 0 ? "#f59e0b" : "none"}
+                  className={(gamification && gamification.current_streak > 0) ? "text-amber-400 animate-bounce" : "text-slate-500"}
+                  fill={(gamification && gamification.current_streak > 0) ? "#f59e0b" : "none"}
                 />
-                <span className="text-[10px] font-black">{gamification?.current_streak || 0}d</span>
+                <span className="text-[10px] font-black">{gamification ? (gamification.current_streak || 0) : 0}d</span>
               </div>
             </div>
           ) : (
             <div
-              onClick={() => handleNav({ id: 'home' })}
+              onClick={function () { handleNav({ id: 'home' }); }}
               className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-pink-950 text-white relative overflow-hidden cursor-pointer shadow-lg group hover:scale-[1.02] transition-transform"
             >
               {/* Background Japanese Watermark */}
@@ -294,16 +261,16 @@ export default function Sidebar({
                 <div className="flex items-center gap-2">
                   <Flame
                     size={20}
-                    className={(gamification?.current_streak || 0) > 0 ? "text-amber-400 animate-bounce" : "text-slate-500"}
-                    fill={(gamification?.current_streak || 0) > 0 ? "#f59e0b" : "none"}
+                    className={(gamification && gamification.current_streak > 0) ? "text-amber-400 animate-bounce" : "text-slate-500"}
+                    fill={(gamification && gamification.current_streak > 0) ? "#f59e0b" : "none"}
                   />
                   <span className="font-black text-lg tracking-tight text-white">
-                    {gamification?.current_streak || 0} ngày
+                    {gamification ? (gamification.current_streak || 0) : 0} ngày
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1 mb-0">
-                  {(gamification?.current_streak || 0) > 0
-                    ? `Hôm nay bạn đã học ${gamification?.today_words_count || 0} từ`
+                  {(gamification && gamification.current_streak > 0)
+                    ? `Hôm nay bạn đã học ${gamification.today_words_count || 0} từ`
                     : 'Học 1 từ hôm nay để bắt đầu chuỗi!'}
                 </p>
               </div>

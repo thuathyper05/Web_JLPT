@@ -579,6 +579,25 @@ app.get('/api/auth/me', async (req, res) => {
   res.json({ success: true, user: formatAuthUser(req.user) });
 });
 
+app.put('/api/auth/profile', async function (req, res) {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập để thực hiện.' });
+  }
+  const name = (req.body.name || req.body.username || '').trim();
+  if (!name) {
+    return res.status(400).json({ success: false, message: 'Tên không được để trống.' });
+  }
+  if (db.pool && db.isDbConnected()) {
+    try {
+      await db.pool.query('UPDATE users SET username = $1 WHERE id = $2', [name, req.user.id]);
+    } catch (e) {
+      console.error('Update profile error:', e);
+    }
+  }
+  req.user.username = name;
+  res.json({ success: true, user: formatAuthUser(req.user) });
+});
+
 // ── 2. LESSONS & VOCABULARIES (Multi-Level N5-N1) ──
 app.get('/api/lessons', async (req, res) => {
   const level = (req.query.level || 'N5').toUpperCase();

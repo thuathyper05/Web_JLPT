@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { vocabService, dictionaryService, speakJapanese } from '../services/api';
 import FuriganaWord from './FuriganaWord';
 import SakuraPulse from './SakuraPulse';
+import AccountProfileModal from './AccountProfileModal';
 import {
   Menu,
   RefreshCw,
@@ -53,6 +54,9 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
   } = useApp();
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const profileRef = useRef(null);
+  const appUpdateVersion = '1.3';
   const [levelDropdownOpen, setLevelDropdownOpen] = useState(false);
 
   // ── ADVANCED DICTIONARY SEARCH STATE (N5 - N1) ──
@@ -238,6 +242,9 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
       }
       if (notificationRef.current && !notificationRef.current.contains(e.target)) {
         setNotificationOpen(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -874,16 +881,18 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
 
           {/* User Profile / Auth Button */}
           {user ? (
-            <div className="relative">
+            <div ref={profileRef} className="relative">
               <button
                 type="button"
-                onClick={() => {
+                onClick={function () {
                   sounds.playFlip();
                   setProfileDropdownOpen(!profileDropdownOpen);
                 }}
-                className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-2xl border border-pink-200 hover:border-pink-300 bg-white hover:bg-pink-50/30 transition-all cursor-pointer shadow-sm active:scale-95"
+                className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-2xl border border-pink-200 hover:border-pink-300 bg-white hover:bg-pink-50/40 transition-all cursor-pointer shadow-sm active:scale-95"
+                title="Tài khoản học viên"
+                aria-label="Tài khoản học viên"
               >
-                {(() => {
+                {(function () {
                   const userAvatar = user.avatar || user.avatar_url;
                   const userName = user.name || user.username || (user.email ? user.email.split('@')[0] : 'Học viên');
                   return (
@@ -894,9 +903,9 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                           alt={userName}
                           referrerPolicy="no-referrer"
                           crossOrigin="anonymous"
-                          onError={(e) => {
+                          onError={function (e) {
                             e.currentTarget.style.display = 'none';
-                            const fallback = e.currentTarget.parentElement?.querySelector('.avatar-fallback');
+                            const fallback = e.currentTarget.parentElement ? e.currentTarget.parentElement.querySelector('.avatar-fallback') : null;
                             if (fallback) fallback.style.display = 'flex';
                           }}
                           className="w-7 h-7 rounded-xl object-cover border border-pink-200 shrink-0"
@@ -913,26 +922,54 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
                     </>
                   );
                 })()}
-                <ChevronDown size={13} className="text-slate-400" />
+                <ChevronDown size={13} className={`text-slate-400 transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {profileDropdownOpen && (
-                <div className="absolute right-0 top-12 w-56 bg-white rounded-3xl shadow-xl border border-pink-100 p-2 z-50 animate-in fade-in slide-in-from-top-1">
-                  <div className="p-3 border-b border-pink-50">
-                    <p className="text-xs font-black text-slate-900 truncate">{user.name || user.username || (user.email ? user.email.split('@')[0] : 'Học viên Nihongo')}</p>
-                    <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
+                <div className="absolute right-0 top-12 w-64 bg-white rounded-3xl shadow-xl border border-pink-100 p-2 z-50 animate-in fade-in slide-in-from-top-1">
+                  <div
+                    onClick={function () {
+                      sounds.playFlip();
+                      setProfileDropdownOpen(false);
+                      setProfileModalOpen(true);
+                    }}
+                    className="p-3 border-b border-pink-50 hover:bg-pink-50/60 rounded-2xl transition-colors cursor-pointer group"
+                    title="Nhấn để xem chi tiết hồ sơ tài khoản"
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-black text-slate-900 group-hover:text-pink-600 transition-colors truncate">
+                        {user.name || user.username || (user.email ? user.email.split('@')[0] : 'Học viên Nihongo')}
+                      </p>
+                      <span className="text-[10px] text-pink-600 font-bold bg-pink-50 px-2 py-0.5 rounded-full border border-pink-200">
+                        Hồ sơ
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{user.email}</p>
                     <div className="mt-2 flex items-center gap-1.5">
                       <span className="px-2 py-0.5 rounded-full bg-pink-100 text-pink-700 text-[10px] font-black">
-                        {gamification.level_tier || 'Tân Thủ N5'}
+                        {gamification ? (gamification.level_tier || 'Tân Thủ N5') : 'Tân Thủ N5'}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-bold">{gamification.total_xp || 0} XP</span>
+                      <span className="text-[10px] text-slate-500 font-bold">{gamification ? (gamification.total_xp || 0) : 0} XP</span>
                     </div>
                   </div>
 
-                  <div className="py-1">
+                  <div className="py-1 space-y-0.5">
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={function () {
+                        sounds.playFlip();
+                        setProfileDropdownOpen(false);
+                        setProfileModalOpen(true);
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-pink-50 hover:text-pink-700 rounded-xl transition-colors cursor-pointer flex items-center gap-2"
+                    >
+                      <User size={14} className="text-pink-600" />
+                      <span>Giao diện tài khoản</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={function () {
                         sounds.playFlip();
                         setProfileDropdownOpen(false);
                         setActiveTab('notebook');
@@ -945,7 +982,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
 
                     <button
                       type="button"
-                      onClick={function() {
+                      onClick={function () {
                         sounds.playFlip();
                         setProfileDropdownOpen(false);
                         window.dispatchEvent(new CustomEvent('hyper-open-update'));
@@ -961,7 +998,7 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
 
                     <button
                       type="button"
-                      onClick={() => {
+                      onClick={function () {
                         sounds.playFlip();
                         setProfileDropdownOpen(false);
                         logout();
@@ -978,17 +1015,25 @@ export default function Header({ onOpenMobileMenu = () => {} }) {
           ) : (
             <button
               type="button"
-              onClick={() => {
+              onClick={function () {
                 sounds.playFlip();
                 openAuth('login');
               }}
-              className="px-3 sm:px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white text-xs font-bold shadow-lotus hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-600 to-rose-500 text-white text-xs font-bold shadow-lotus hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              title="Tài khoản học viên - Đăng nhập / Đăng ký"
             >
-              Đăng nhập
+              <User size={14} />
+              <span>Tài khoản</span>
             </button>
           )}
         </div>
       </header>
+
+      {/* ── USER ACCOUNT PROFILE MODAL ── */}
+      <AccountProfileModal
+        isOpen={profileModalOpen}
+        onClose={function () { setProfileModalOpen(false); }}
+      />
 
       {/* ── MOBILE FULLSCREEN PREMIUM DICTIONARY OVERLAY ── */}
       {mobileSearchOpen && (
