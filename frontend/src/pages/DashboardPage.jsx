@@ -65,12 +65,7 @@ export default function DashboardPage() {
       }
     };
     fetchVocabs();
-    const targetWords = gamification?.target_per_day || 10;
-  const todayWords = gamification?.today_words_count || 0;
-  const isTargetMet = todayWords >= targetWords;
-  const progressPercent = Math.min(100, Math.round((todayWords / Math.max(1, targetWords)) * 100));
-
-  return () => { isMounted = false; };
+    return () => { isMounted = false; };
   }, [currentLevel]);
 
   // Hourly word timer: checks every 60s if clock hour changed
@@ -157,6 +152,11 @@ export default function DashboardPage() {
     }
     return week;
   }, []);
+
+  const targetWords = gamification?.target_per_day || 10;
+  const todayWords = gamification?.today_words_count || 0;
+  const isTargetMet = todayWords >= targetWords;
+  const progressPercent = Math.min(100, Math.round((todayWords / Math.max(1, targetWords)) * 100));
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12 animate-in fade-in duration-300">
