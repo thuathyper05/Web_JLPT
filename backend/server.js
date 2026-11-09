@@ -694,7 +694,7 @@ app.get('/api/vocabularies', async (req, res) => {
       const params = [];
       if (upperLevel && upperLevel !== 'ALL') {
         params.push(upperLevel);
-        queryText += ` AND level = ${params.length}`;
+        queryText += ` AND level = $${params.length}`;
       }
 
       if (lesson) {
