@@ -12,7 +12,7 @@ const { generateAiResponse } = require('./services/aiService');
 const { logActivity, registerAdminRoutes } = require('./services/adminService');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 const JWT_SECRET = process.env.JWT_SECRET || 'hyper_nihongohub_secret_2026';
 const SERVER_START_TIME = Date.now();
 

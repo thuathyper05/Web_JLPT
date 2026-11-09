@@ -1,8 +1,10 @@
 const http = require('http');
+const TEST_PORT = parseInt(process.env.TEST_PORT || process.env.PORT || 5050, 10);
 
 function request(options, data = null) {
+  const reqOptions = { ...options, port: options.port === 5000 ? TEST_PORT : (options.port || TEST_PORT) };
   return new Promise((resolve, reject) => {
-    const req = http.request(options, (res) => {
+    const req = http.request(reqOptions, (res) => {
       let body = '';
       res.on('data', (chunk) => (body += chunk));
       res.on('end', () => {
