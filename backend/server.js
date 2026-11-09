@@ -1458,12 +1458,28 @@ app.post("/api/progress/tick", async (req, res) => {
 
   if (vocabId) {
     inMemoryProgress[vocabId] = {
-      status,
+      status: status,
       updated_at: new Date().toISOString()
     };
   }
 
-  inMemoryGamification.total_xp += xpAmount;
+  inMemoryGamification.total_xp = (inMemoryGamification.total_xp || 0) + xpAmount;
+  inMemoryGamification.daily_study_counts = inMemoryGamification.daily_study_counts || {};
+  inMemoryGamification.daily_study_counts[todayStr] = (inMemoryGamification.daily_study_counts[todayStr] || 0) + 1;
+  inMemoryGamification.today_words_count = inMemoryGamification.daily_study_counts[todayStr];
+
+  if (!inMemoryGamification.last_active_date) {
+    inMemoryGamification.current_streak = 1;
+  } else if (inMemoryGamification.last_active_date === todayStr) {
+    if (inMemoryGamification.current_streak === 0) inMemoryGamification.current_streak = 1;
+  } else if (inMemoryGamification.last_active_date === yesterdayStr) {
+    inMemoryGamification.current_streak += 1;
+  } else {
+    inMemoryGamification.current_streak = 1;
+  }
+  inMemoryGamification.longest_streak = Math.max(inMemoryGamification.longest_streak || 0, inMemoryGamification.current_streak);
+  inMemoryGamification.last_active_date = todayStr;
+  inMemoryGamification.target_per_day = inMemoryGamification.target_per_day || 10;
 
   res.json({
     success: true,
@@ -1471,11 +1487,35 @@ app.post("/api/progress/tick", async (req, res) => {
   });
 });
 
+// Target Per Day Update API
+app.post("/api/progress/target", async function (req, res) {
+  const target = Math.max(1, Math.min(100, parseInt(req.body.target, 10) || 10));
+  if (req.user && req.user.id && db.pool && db.isDbConnected()) {
+    try {
+      await db.pool.query(
+        "INSERT INTO user_gamification (user_id, target_per_day, updated_at) " +
+        "VALUES ($1, $2, NOW()) " +
+        "ON CONFLICT (user_id) DO UPDATE SET target_per_day = EXCLUDED.target_per_day, updated_at = NOW()",
+        [req.user.id, target]
+      );
+    } catch (err) {
+      console.error("Update target error:", err);
+    }
+  }
+  inMemoryGamification.target_per_day = target;
+  res.json({ success: true, target_per_day: target });
+});
+
 // Full Multi-Device Bidirectional Progress Synchronization API
 app.post("/api/progress/sync", async (req, res) => {
   const { progress = {}, gamification = {} } = req.body;
   if (!req.user || !req.user.id || !db.pool || !db.isDbConnected()) {
-    return res.json({ success: true, message: "Khách vãng lai lưu bộ nhớ cục bộ" });
+    return res.json({
+      success: true,
+      message: "Khách vãng lai lưu bộ nhớ cục bộ",
+      progress: inMemoryProgress,
+      gamification: inMemoryGamification
+    });
   }
 
   const todayStr = getLocalDateString(new Date());
@@ -1533,9 +1573,10 @@ app.post("/api/progress/sync", async (req, res) => {
     const mergedStreak = Math.max(existingGam ? (existingGam.current_streak || 0) : 0, clientStreak);
     const mergedLongest = Math.max(existingGam ? (existingGam.longest_streak || 0) : 0, clientLongest, mergedStreak);
 
+    const clientTarget = Math.max(1, Math.min(100, parseInt(gamification.target_per_day, 10) || (existingGam && existingGam.target_per_day) || 10));
     await db.pool.query(
       "INSERT INTO user_gamification (user_id, total_xp, current_streak, longest_streak, today_words_count, last_active_date, level_tier, daily_study_counts, target_per_day) " +
-      "VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Tân Thủ N5', $6::jsonb, 10) " +
+      "VALUES ($1, $2, $3, $4, $5, CURRENT_DATE, 'Tân Thủ N5', $6::jsonb, $7) " +
       "ON CONFLICT (user_id) " +
       "DO UPDATE SET " +
       "  total_xp = GREATEST(user_gamification.total_xp, EXCLUDED.total_xp), " +
@@ -1543,9 +1584,10 @@ app.post("/api/progress/sync", async (req, res) => {
       "  longest_streak = GREATEST(user_gamification.longest_streak, EXCLUDED.longest_streak), " +
       "  today_words_count = EXCLUDED.today_words_count, " +
       "  daily_study_counts = EXCLUDED.daily_study_counts, " +
+      "  target_per_day = EXCLUDED.target_per_day, " +
       "  last_active_date = CASE WHEN EXCLUDED.today_words_count > 0 THEN CURRENT_DATE ELSE user_gamification.last_active_date END, " +
       "  updated_at = NOW()",
-      [req.user.id, mergedXp, mergedStreak, mergedLongest, todayWords, JSON.stringify(mergedDailyCounts)]
+      [req.user.id, mergedXp, mergedStreak, mergedLongest, todayWords, JSON.stringify(mergedDailyCounts), clientTarget]
     );
 
     // Retrieve final authoritative state

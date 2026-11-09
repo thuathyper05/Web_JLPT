@@ -33,7 +33,8 @@ export default function AccountProfileModal({ isOpen, onClose }) {
     syncUserCloudProgress,
     logout,
     setActiveTab,
-    favorites
+    favorites,
+    setDailyTarget
   } = useApp();
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -57,6 +58,7 @@ export default function AccountProfileModal({ isOpen, onClose }) {
   const totalXp = gamification?.total_xp || 0;
   const todayWords = gamification?.today_words_count || 0;
   const levelTier = gamification?.level_tier || 'Tân Thủ N5';
+  const targetWords = gamification?.target_per_day || 10;
 
   const handleStartEditName = function () {
     sounds.playFlip();
@@ -344,6 +346,35 @@ export default function AccountProfileModal({ isOpen, onClose }) {
                     }`}
                   >
                     {lvl}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Daily Goal Target Selector */}
+          <div className="p-3 rounded-2xl bg-pink-50/50 border border-pink-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-700">Mục tiêu học mỗi ngày:</span>
+              <span className="text-[11px] font-extrabold text-pink-600 uppercase">{targetWords} từ / ngày</span>
+            </div>
+            <div className="grid grid-cols-5 gap-1.5">
+              {[5, 10, 15, 20, 30].map(function (num) {
+                const isSelected = targetWords === num;
+                return (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={function () {
+                      if (setDailyTarget) setDailyTarget(num);
+                    }}
+                    className={`py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-sm'
+                        : 'bg-white text-slate-600 hover:bg-pink-100/60 hover:text-pink-600 border border-pink-200'
+                    }`}
+                  >
+                    {num} từ
                   </button>
                 );
               })}

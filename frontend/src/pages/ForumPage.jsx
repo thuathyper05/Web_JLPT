@@ -827,9 +827,9 @@ export default function ForumPage() {
                                     Không cần lật từ điển giấy hay chuyển app. HYPER JP hiển thị Furigana trên đầu mọi chữ Hán, trợ lý AI Sensei giải nghĩa chuyên sâu và hệ thống 130 bài Minna chuẩn quốc tế.
                                   </p>
                                   <div className="flex items-center gap-2 flex-wrap pt-1 text-[11px] font-bold text-rose-200">
-                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ 9.584 từ vựng N5-N1</span>
-                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ Phát âm bản xứ chuẩn</span>
-                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">✓ Đồng bộ đa thiết bị</span>
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">9.584 từ vựng N5-N1</span>
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">Phát âm bản xứ chuẩn</span>
+                                    <span className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-lg">Đồng bộ đa thiết bị</span>
                                   </div>
                                 </div>
                                 <div className="shrink-0 w-full sm:w-auto">

@@ -355,9 +355,10 @@ export const quizService = {
 };
 
 export const progressService = {
-  getProgress: () => api.get('/progress'),
-  recordTick: (data) => api.post('/progress/tick', data),
-  syncProgress: (data) => api.post('/progress/sync', data),
+  getProgress: function () { return api.get('/progress'); },
+  recordTick: function (data) { return api.post('/progress/tick', data); },
+  syncProgress: function (data) { return api.post('/progress/sync', data); },
+  setDailyTarget: function (target) { return api.post('/progress/target', { target: target }); },
 };
 
 export const aiService = {

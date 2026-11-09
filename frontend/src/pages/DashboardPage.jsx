@@ -26,7 +26,7 @@ import {
 import { sounds } from '../services/sounds';
 
 export default function DashboardPage() {
-  const { user, currentLevel = 'N5', setActiveTab, setSelectedLesson, selectedLesson, gamification, guestProgress, askAi } = useApp();
+  const { user, currentLevel = 'N5', setActiveTab, setSelectedLesson, selectedLesson, gamification, guestProgress, askAi, setDailyTarget } = useApp();
   const [stats, setStats] = useState({
     studied: 0,
     mastered: 0,
@@ -65,7 +65,12 @@ export default function DashboardPage() {
       }
     };
     fetchVocabs();
-    return () => { isMounted = false; };
+    const targetWords = gamification?.target_per_day || 10;
+  const todayWords = gamification?.today_words_count || 0;
+  const isTargetMet = todayWords >= targetWords;
+  const progressPercent = Math.min(100, Math.round((todayWords / Math.max(1, targetWords)) * 100));
+
+  return () => { isMounted = false; };
   }, [currentLevel]);
 
   // Hourly word timer: checks every 60s if clock hour changed
@@ -86,11 +91,28 @@ export default function DashboardPage() {
     : fallbackWord;
 
   // Real-time stats based on user learning data
-  useEffect(() => {
+  useEffect(function () {
     const safeProgress = (guestProgress && typeof guestProgress === 'object') ? guestProgress : {};
-    const studiedCount = Object.keys(safeProgress).length;
-    const masteredCount = Object.values(safeProgress).filter(p => p && (p.status === 'mastered' || p === 'mastered')).length;
-    const needsReviewCount = Object.values(safeProgress).filter(p => p && (p.status === 'needs_review' || p === 'needs_review')).length;
+
+    let studiedCount = 0;
+    let masteredCount = 0;
+    let needsReviewCount = 0;
+
+    if (Array.isArray(levelVocabs) && levelVocabs.length > 0) {
+      const levelIdSet = new Set(levelVocabs.map(function (w) { return String(w.id); }));
+      for (const [id, item] of Object.entries(safeProgress)) {
+        if (levelIdSet.has(String(id))) {
+          studiedCount += 1;
+          const st = (item && typeof item === 'object') ? item.status : item;
+          if (st === 'mastered') masteredCount += 1;
+          else if (st === 'needs_review') needsReviewCount += 1;
+        }
+      }
+    } else {
+      studiedCount = Object.keys(safeProgress).length;
+      masteredCount = Object.values(safeProgress).filter(function (p) { return p && (p.status === 'mastered' || p === 'mastered'); }).length;
+      needsReviewCount = Object.values(safeProgress).filter(function (p) { return p && (p.status === 'needs_review' || p === 'needs_review'); }).length;
+    }
 
     const kanjiByLevel = { N5: 108, N4: 180, N3: 119, N2: 100, N1: 100 };
 
@@ -99,7 +121,9 @@ export default function DashboardPage() {
       mastered: masteredCount,
       needsReview: needsReviewCount,
       totalKanji: kanjiByLevel[currentLevel] || 108,
-      totalVocab: (Array.isArray(levelVocabs) && levelVocabs.length > 0) ? levelVocabs.length : (currentLevel === 'N1' ? 3070 : currentLevel === 'N2' ? 1778 : currentLevel === 'N3' ? 1659 : currentLevel === 'N4' ? 1488 : 1589)
+      totalVocab: (Array.isArray(levelVocabs) && levelVocabs.length > 0)
+        ? levelVocabs.length
+        : (currentLevel === 'N1' ? 3070 : currentLevel === 'N2' ? 1778 : currentLevel === 'N3' ? 1659 : currentLevel === 'N4' ? 1488 : 1589)
     });
   }, [guestProgress, currentLevel, levelVocabs]);
 
@@ -246,11 +270,11 @@ export default function DashboardPage() {
                 </h3>
               </div>
               <span className={`px-2.5 py-0.5 rounded-full font-bold text-[11px] border ${
-                (gamification?.today_words_count || 0) >= 10
+                isTargetMet
                   ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                   : 'bg-pink-50 text-pink-600 border-pink-100'
               }`}>
-                {(gamification?.today_words_count || 0) >= 10 ? 'Hoàn thành' : `${gamification?.today_words_count || 0}/10 từ`}
+                {isTargetMet ? 'Hoàn thành' : `${todayWords}/${targetWords} từ`}
               </span>
             </div>
 
@@ -259,23 +283,23 @@ export default function DashboardPage() {
               <div
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 flex items-center justify-center shrink-0 transition-all shadow-inner"
                 style={{
-                  background: `conic-gradient(#db2777 ${Math.min(100, ((gamification?.today_words_count || 0) / 10) * 100)}%, #fce7f3 0)`
+                  background: `conic-gradient(#db2777 ${progressPercent}%, #fce7f3 0)`
                 }}
               >
                 <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                   <div className="flex items-baseline justify-center whitespace-nowrap">
                     <span className="text-xl sm:text-2xl font-black text-slate-900 leading-none">
-                      {gamification?.today_words_count || 0}
+                      {todayWords}
                     </span>
-                    <span className="text-xs font-bold text-slate-400 ml-0.5 shrink-0">/10</span>
+                    <span className="text-xs font-bold text-slate-400 ml-0.5 shrink-0">/{targetWords}</span>
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs text-slate-600 font-medium mb-1.5 leading-snug">
-                  {(gamification?.today_words_count || 0) >= 10
-                    ? 'Bạn đã hoàn thành chỉ tiêu 10 từ hôm nay!'
-                    : `Còn ${Math.max(0, 10 - (gamification?.today_words_count || 0))} từ nữa để đạt chỉ tiêu ngày.`}
+                  {isTargetMet
+                    ? `Bạn đã hoàn thành chỉ tiêu ${targetWords} từ hôm nay!`
+                    : `Còn ${Math.max(0, targetWords - todayWords)} từ nữa để đạt chỉ tiêu ngày.`}
                 </p>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-pink-600">
                   <Flame
@@ -290,25 +314,58 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
+
+            {/* Quick Daily Target Goal Selector */}
+            <div className="mt-3 pt-3 border-t border-pink-50">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  Chỉ tiêu hàng ngày:
+                </span>
+                <span className="text-[11px] font-extrabold text-pink-600">
+                  {targetWords} từ / ngày
+                </span>
+              </div>
+              <div className="grid grid-cols-5 gap-1">
+                {[5, 10, 15, 20, 30].map(function (num) {
+                  const isSelected = targetWords === num;
+                  return (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={function () {
+                        if (setDailyTarget) setDailyTarget(num);
+                      }}
+                      className={`py-1 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-xs scale-105'
+                          : 'bg-pink-50/70 hover:bg-pink-100/70 text-slate-700 border border-pink-100'
+                      }`}
+                    >
+                      {num} từ
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* 7 Days of the week target tracking (T2 đến CN) */}
-          <div className="pt-4 border-t border-pink-50 mt-4">
-            <div className="flex items-center justify-between mb-2.5">
+          <div className="pt-3 border-t border-pink-50 mt-3">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 Mục tiêu 7 ngày trong tuần
               </span>
               <span className="text-[10px] font-medium text-slate-400">
-                Chỉ tiêu: 10 từ/ngày
+                Chỉ tiêu: {targetWords} từ/ngày
               </span>
             </div>
 
             <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center">
-              {weekDays.map((day) => {
+              {weekDays.map(function (day) {
                 const count = day.isToday
-                  ? (gamification?.today_words_count || 0)
+                  ? todayWords
                   : ((gamification?.daily_study_counts && gamification.daily_study_counts[day.dateStr]) || 0);
-                const isMet = count >= 10;
+                const isMet = count >= targetWords;
 
                 return (
                   <div key={day.shortName} className="flex flex-col items-center gap-1.5">
@@ -328,12 +385,12 @@ export default function DashboardPage() {
                       title={
                         day.isToday
                           ? isMet
-                            ? `Hôm nay: Đã hoàn thành (${count}/10 từ)`
-                            : `Hôm nay: Đang học (${count}/10 từ)`
+                            ? `Hôm nay: Đã hoàn thành (${count}/${targetWords} từ)`
+                            : `Hôm nay: Đang học (${count}/${targetWords} từ)`
                           : day.isPast
                           ? isMet
-                            ? `${day.fullName} (${day.dayNum}): Đạt chỉ tiêu (${count}/10 từ)`
-                            : `${day.fullName} (${day.dayNum}): Chưa đạt (${count}/10 từ)`
+                            ? `${day.fullName} (${day.dayNum}): Đạt chỉ tiêu (${count}/${targetWords} từ)`
+                            : `${day.fullName} (${day.dayNum}): Chưa đạt (${count}/${targetWords} từ)`
                           : `${day.fullName} (${day.dayNum}): Sắp tới`
                       }
                     >
@@ -378,7 +435,7 @@ export default function DashboardPage() {
                 <span className="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
                   <Check size={9} className="stroke-[3]" />
                 </span>
-                <span>Đạt (≥10 từ)</span>
+                <span>Đạt (≥{targetWords} từ)</span>
               </div>
               <div className="flex items-center gap-1">
                 <span className="w-3.5 h-3.5 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">

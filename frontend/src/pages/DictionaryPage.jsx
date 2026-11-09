@@ -139,7 +139,7 @@ export default function DictionaryPage() {
           {/* AI Smart Topics Suggestion Chips */}
           <div className="pt-2">
             <span className="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider block mb-2">
-              ✦ GỢI Ý CHỦ ĐỀ THÔNG MINH TỪ AI:
+              GỢI Ý CHỦ ĐỀ THÔNG MINH TỪ AI:
             </span>
             <div className="flex flex-wrap gap-2">
               {aiSmartTopics.map((topic) => {

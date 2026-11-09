@@ -1,3 +1,17 @@
+export function getLocalYMD(d) {
+  const date = d ? new Date(d) : new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function getYesterdayYMD(d) {
+  const date = d ? new Date(d) : new Date();
+  date.setDate(date.getDate() - 1);
+  return getLocalYMD(date);
+}
+
 // Normalize user shape across Google OAuth, Facebook, DB and LocalStorage
 export function normalizeUser(u) {
   if (!u || typeof u !== 'object') return null;
@@ -106,16 +120,18 @@ export const AppProvider = ({ children }) => {
   });
 
   // Gamification & Progress State (Real Tracking: học thì mới có chuỗi)
-  const [gamification, setGamification] = useState(() => {
-    const defaultGamification = {
-      total_xp: 0,
-      current_streak: 0,
-      longest_streak: 0,
-      level_tier: 'Tân Thủ N5',
-      today_words_count: 0,
-      last_active_date: null,
-      daily_study_counts: {}
-    };
+  const defaultGamification = {
+    total_xp: 0,
+    current_streak: 0,
+    longest_streak: 0,
+    level_tier: 'Tân Thủ N5',
+    today_words_count: 0,
+    target_per_day: 10,
+    last_active_date: null,
+    daily_study_counts: {}
+  };
+
+  const [gamification, setGamification] = useState(function () {
     try {
       const saved = localStorage.getItem('nihongo_gamification');
       if (saved) {
@@ -129,11 +145,12 @@ export const AppProvider = ({ children }) => {
           return {
             ...defaultGamification,
             ...parsed,
+            target_per_day: parsed.target_per_day || 10,
             daily_study_counts: (parsed.daily_study_counts && typeof parsed.daily_study_counts === 'object') ? parsed.daily_study_counts : {}
           };
         }
       }
-    } catch {}
+    } catch (err) {}
     return defaultGamification;
   });
 
@@ -202,27 +219,19 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   // Check current auth status and daily streak on mount
-  useEffect(() => {
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  useEffect(function () {
+    const todayStr = getLocalYMD();
+    const yesterdayStr = getYesterdayYMD();
 
-    setGamification((prev) => {
-      const safePrev = (prev && typeof prev === 'object') ? prev : {
-        total_xp: 0,
-        current_streak: 0,
-        longest_streak: 0,
-        level_tier: 'Tân Thủ N5',
-        today_words_count: 0,
-        last_active_date: null,
-        daily_study_counts: {}
-      };
-      const dailyCounts = { ...(safePrev.daily_study_counts || {}) };
+    setGamification(function (prev) {
+      const safePrev = (prev && typeof prev === 'object') ? prev : defaultGamification;
+      const dailyCounts = Object.assign({}, safePrev.daily_study_counts || {});
 
       // Nạp lịch sử học từ guestProgress nếu dailyCounts trống
       if (Object.keys(dailyCounts).length === 0 && guestProgress && typeof guestProgress === 'object') {
-        Object.values(guestProgress).forEach((item) => {
+        Object.values(guestProgress).forEach(function (item) {
           if (item && typeof item === 'object' && item.updated_at) {
-            const d = item.updated_at.slice(0, 10);
+            const d = getLocalYMD(new Date(item.updated_at));
             dailyCounts[d] = (dailyCounts[d] || 0) + 1;
           }
         });
@@ -230,26 +239,31 @@ export const AppProvider = ({ children }) => {
 
       const todayWords = dailyCounts[todayStr] || 0;
       let streak = safePrev.current_streak || 0;
-      const lastActive = safePrev.last_active_date;
+      const cleanLastActive = safePrev.last_active_date ? String(safePrev.last_active_date).slice(0, 10) : null;
 
-      if (!lastActive) {
+      if (!cleanLastActive) {
         streak = todayWords > 0 ? 1 : 0;
-      } else if (lastActive === todayStr) {
-        // Đã học hôm nay: giữ nguyên chuỗi
-      } else if (lastActive === yesterdayStr) {
-        // Đã học hôm qua: giữ chuỗi chờ học hôm nay
+      } else if (cleanLastActive === todayStr) {
+        if (todayWords > 0 && streak === 0) streak = 1;
+      } else if (cleanLastActive === yesterdayStr) {
+        // Đã học hôm qua: giữ nguyên chuỗi chờ học hôm nay
       } else {
-        // Bị ngắt quãng quá 1 ngày: chuỗi trở về 0
+        // Bị ngắt quãng quá 1 ngày: nếu hôm nay đã học thì bắt đầu 1, chưa học thì 0
         streak = todayWords > 0 ? 1 : 0;
       }
 
-      return {
+      const updated = {
         ...safePrev,
         current_streak: streak,
         today_words_count: todayWords,
+        target_per_day: safePrev.target_per_day || 10,
         daily_study_counts: dailyCounts,
         last_active_date: todayWords > 0 ? todayStr : safePrev.last_active_date
       };
+      try {
+        localStorage.setItem('nihongo_gamification', JSON.stringify(updated));
+      } catch (err) {}
+      return updated;
     });
 
     const initAuth = async () => {
@@ -377,36 +391,49 @@ export const AppProvider = ({ children }) => {
   };
 
   // Pull authoritative multi-device progress from cloud database
-  const syncUserCloudProgress = async function() {
+  const syncUserCloudProgress = async function () {
     try {
-      const res = await progressService.getProgress();
+      const localProg = guestProgress || {};
+      const localGam = gamification || {};
+      // Call bidirectional sync endpoint with local data
+      const res = await progressService.syncProgress({
+        progress: localProg,
+        gamification: localGam
+      });
       if (res.data && res.data.success) {
         if (res.data.progress && typeof res.data.progress === 'object') {
           const normalized = normalizeProgress(res.data.progress);
-          setGuestProgress(normalized);
+          const mergedProg = Object.assign({}, localProg, normalized);
+          setGuestProgress(mergedProg);
           try {
-            localStorage.setItem('nihongo_guest_progress', JSON.stringify(normalized));
-          } catch {}
+            localStorage.setItem('nihongo_guest_progress', JSON.stringify(mergedProg));
+          } catch (err) {}
         }
         if (res.data.gamification) {
           const g = res.data.gamification;
-          setGamification(function(prev) {
+          setGamification(function (prev) {
+            const mergedCounts = Object.assign({}, prev.daily_study_counts || {});
+            if (g.daily_study_counts && typeof g.daily_study_counts === 'object') {
+              for (const [k, v] of Object.entries(g.daily_study_counts)) {
+                mergedCounts[k] = Math.max(mergedCounts[k] || 0, parseInt(v, 10) || 0);
+              }
+            }
+            const todayStr = getLocalYMD();
+            const todayCount = mergedCounts[todayStr] || 0;
             const mergedGam = {
               ...prev,
               ...g,
-              current_streak: g.current_streak !== undefined ? g.current_streak : prev.current_streak,
-              total_xp: g.total_xp !== undefined ? g.total_xp : prev.total_xp,
-              longest_streak: g.longest_streak !== undefined ? g.longest_streak : prev.longest_streak,
-              today_words_count: g.today_words_count !== undefined ? g.today_words_count : prev.today_words_count,
-              last_active_date: g.last_active_date || prev.last_active_date,
+              total_xp: Math.max(prev.total_xp || 0, g.total_xp || 0),
+              current_streak: Math.max(prev.current_streak || 0, g.current_streak || 0),
+              longest_streak: Math.max(prev.longest_streak || 0, g.longest_streak || 0),
+              today_words_count: Math.max(prev.today_words_count || 0, g.today_words_count || 0, todayCount),
               target_per_day: g.target_per_day || prev.target_per_day || 10,
-              daily_study_counts: (g.daily_study_counts && typeof g.daily_study_counts === 'object')
-                ? g.daily_study_counts
-                : (prev.daily_study_counts || {})
+              daily_study_counts: mergedCounts,
+              last_active_date: (todayCount > 0) ? todayStr : (g.last_active_date || prev.last_active_date)
             };
             try {
               localStorage.setItem('nihongo_gamification', JSON.stringify(mergedGam));
-            } catch {}
+            } catch (err) {}
             return mergedGam;
           });
         }
@@ -436,34 +463,39 @@ export const AppProvider = ({ children }) => {
   };
 
   // Record word progress with real streak and daily target tracking (học thì mới có chuỗi)
-  const recordWordProgress = (wordId, status) => {
+  const recordWordProgress = function (wordId, status) {
     const nowIso = new Date().toISOString();
-    const todayStr = nowIso.slice(0, 10);
-    const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    const todayStr = getLocalYMD();
+    const yesterdayStr = getYesterdayYMD();
 
-    setGuestProgress((prev) => ({
-      ...prev,
-      [wordId]: {
-        status,
-        updated_at: nowIso
-      }
-    }));
+    setGuestProgress(function (prev) {
+      const next = {
+        ...prev,
+        [wordId]: {
+          status: status,
+          updated_at: nowIso
+        }
+      };
+      try {
+        localStorage.setItem('nihongo_guest_progress', JSON.stringify(next));
+      } catch (err) {}
+      return next;
+    });
 
     const xpGained = status === 'mastered' ? 15 : 5;
 
-    setGamification((prev) => {
-      const dailyCounts = { ...(prev.daily_study_counts || {}) };
+    setGamification(function (prev) {
+      const dailyCounts = Object.assign({}, prev.daily_study_counts || {});
       dailyCounts[todayStr] = (dailyCounts[todayStr] || 0) + 1;
       const todayCount = dailyCounts[todayStr];
 
       let streak = prev.current_streak || 0;
+      const cleanLastActive = prev.last_active_date ? String(prev.last_active_date).slice(0, 10) : null;
 
-      if (prev.last_active_date !== todayStr) {
-        // Lần đầu học trong ngày hôm nay
-        if (prev.last_active_date === yesterdayStr && streak > 0) {
+      if (cleanLastActive !== todayStr) {
+        if (cleanLastActive === yesterdayStr && streak > 0) {
           streak += 1;
         } else {
-          // Bắt đầu chuỗi mới từ 1
           streak = 1;
         }
       } else if (streak === 0) {
@@ -472,36 +504,66 @@ export const AppProvider = ({ children }) => {
 
       const longest = Math.max(prev.longest_streak || 0, streak);
 
-      return {
+      const updated = {
         ...prev,
         total_xp: (prev.total_xp || 0) + xpGained,
         current_streak: streak,
         longest_streak: longest,
         today_words_count: todayCount,
+        target_per_day: prev.target_per_day || 10,
         last_active_date: todayStr,
         daily_study_counts: dailyCounts
       };
+      try {
+        localStorage.setItem('nihongo_gamification', JSON.stringify(updated));
+      } catch (err) {}
+      return updated;
     });
 
     // Sync to backend with real-time multi-device cloud persistence
-    progressService.recordTick({ vocabId: wordId, status, xp: xpGained })
-      .then((tickRes) => {
-        if (tickRes.data?.gamification) {
-          setGamification((prev) => {
+    progressService.recordTick({ vocabId: wordId, status: status, xp: xpGained })
+      .then(function (tickRes) {
+        if (tickRes.data && tickRes.data.gamification) {
+          const serverGam = tickRes.data.gamification;
+          setGamification(function (prev) {
+            const mergedCounts = Object.assign({}, prev.daily_study_counts || {});
+            if (serverGam.daily_study_counts && typeof serverGam.daily_study_counts === 'object') {
+              for (const [k, v] of Object.entries(serverGam.daily_study_counts)) {
+                mergedCounts[k] = Math.max(mergedCounts[k] || 0, parseInt(v, 10) || 0);
+              }
+            }
             const updated = {
               ...prev,
-              ...tickRes.data.gamification,
-              daily_study_counts: tickRes.data.gamification.daily_study_counts || prev.daily_study_counts
+              ...serverGam,
+              total_xp: Math.max(prev.total_xp || 0, serverGam.total_xp || 0),
+              current_streak: Math.max(prev.current_streak || 0, serverGam.current_streak || 0),
+              longest_streak: Math.max(prev.longest_streak || 0, serverGam.longest_streak || 0),
+              today_words_count: Math.max(prev.today_words_count || 0, serverGam.today_words_count || 0),
+              target_per_day: serverGam.target_per_day || prev.target_per_day || 10,
+              daily_study_counts: mergedCounts,
+              last_active_date: todayStr
             };
             try {
               localStorage.setItem('nihongo_gamification', JSON.stringify(updated));
-            } catch {}
+            } catch (err) {}
             return updated;
           });
         }
       })
-      .catch(() => {});
+      .catch(function () {});
+  };
 
+  const setDailyTarget = function (num) {
+    const target = Math.max(1, Math.min(100, parseInt(num, 10) || 10));
+    sounds.playFlip();
+    setGamification(function (prev) {
+      const updated = { ...prev, target_per_day: target };
+      try {
+        localStorage.setItem('nihongo_gamification', JSON.stringify(updated));
+      } catch (err) {}
+      return updated;
+    });
+    progressService.setDailyTarget(target).catch(function () {});
   };
 
   // Reset progress for specified words (e.g. restart lesson from scratch)
@@ -654,6 +716,8 @@ export const AppProvider = ({ children }) => {
         gamification,
         guestProgress,
         recordWordProgress,
+        setDailyTarget,
+        getLocalYMD,
     syncUserCloudProgress,
         resetWordProgress,
         favorites,

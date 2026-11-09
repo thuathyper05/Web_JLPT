@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function LessonsPage() {
-  const { currentLevel, selectedLesson, setSelectedLesson, setActiveTab, recordWordProgress, askAi } = useApp();
+  const { currentLevel, selectedLesson, setSelectedLesson, setActiveTab, recordWordProgress, askAi, guestProgress } = useApp();
 
   const [lessonInfo, setLessonInfo] = useState(null);
   const [lessonsList, setLessonsList] = useState([]);
@@ -286,9 +286,22 @@ export default function LessonsPage() {
               <div className="p-8 rounded-3xl bg-white border border-pink-100 shadow-lotus relative overflow-hidden text-center space-y-6">
                 {/* Top Toolbar in Card */}
                 <div className="flex justify-between items-center">
-                  <span className="px-2.5 py-1 rounded-lg bg-pink-600 text-white font-extrabold text-[11px]">
-                    Bài {selectedLesson} - #{currentIndex + 1}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-pink-600 text-white font-extrabold text-[11px]">
+                      Bài {selectedLesson} - #{currentIndex + 1}
+                    </span>
+                    {currentWord && guestProgress && guestProgress[currentWord.id] ? (
+                      <span className={`px-2 py-0.5 rounded-lg text-[10.5px] font-bold border ${
+                        (guestProgress[currentWord.id]?.status === 'mastered' || guestProgress[currentWord.id] === 'mastered')
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : 'bg-rose-50 text-rose-700 border-rose-200'
+                      }`}>
+                        {(guestProgress[currentWord.id]?.status === 'mastered' || guestProgress[currentWord.id] === 'mastered')
+                          ? 'Đã thuộc'
+                          : 'Cần ôn'}
+                      </span>
+                    ) : null}
+                  </div>
 
                   <div className="flex items-center gap-2">
                     <button
@@ -421,57 +434,109 @@ export default function LessonsPage() {
                 />
               </div>
 
-              {/* Words List */}
+              {/* Words List with Status and Quick Ratings */}
               <div className="divide-y divide-pink-50 overflow-hidden">
-                {filteredList.map((item, idx) => (
-                  <div
-                    key={item.id || idx}
-                    className="py-3 px-2 flex items-center justify-between hover:bg-pink-50/30 rounded-xl transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="text-xs font-bold text-slate-400 w-6">#{idx + 1}</span>
-                      <div>
-                        <div className="flex items-center gap-2.5 flex-wrap">
-                          <FuriganaWord
-                            kanji={item.kanji}
-                            kana={item.clean_kana || item.kana}
-                            forceFurigana={true}
-                            showRomaji={false}
-                            size="base"
-                          />
-                          {item.romaji && (
-                            <span className="px-2 py-0.5 rounded-lg bg-pink-50 text-pink-700 font-mono text-[11px] font-semibold border border-pink-100">
-                              {item.romaji}
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-xs text-slate-600 mt-0.5">
-                          {item.clean_vietnamese || item.vietnamese}
+                {filteredList.map(function (item, idx) {
+                  const itemProgress = guestProgress ? guestProgress[item.id] : null;
+                  const itemStatus = itemProgress ? (typeof itemProgress === 'object' ? itemProgress.status : itemProgress) : null;
+                  const isMastered = itemStatus === 'mastered';
+                  const isNeedsReview = itemStatus === 'needs_review';
+
+                  return (
+                    <div
+                      key={item.id || idx}
+                      className="py-3 px-2 flex items-center justify-between hover:bg-pink-50/30 rounded-xl transition-colors gap-2"
+                    >
+                      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                        <span className="text-xs font-bold text-slate-400 w-6 shrink-0">#{idx + 1}</span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <FuriganaWord
+                              kanji={item.kanji}
+                              kana={item.clean_kana || item.kana}
+                              forceFurigana={true}
+                              showRomaji={false}
+                              size="base"
+                            />
+                            {item.romaji && (
+                              <span className="px-2 py-0.5 rounded-lg bg-pink-50 text-pink-700 font-mono text-[11px] font-semibold border border-pink-100 shrink-0">
+                                {item.romaji}
+                              </span>
+                            )}
+                            {isMastered ? (
+                              <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold shrink-0">
+                                Đã thuộc
+                              </span>
+                            ) : isNeedsReview ? (
+                              <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-bold shrink-0">
+                                Cần ôn
+                              </span>
+                            ) : null}
+                          </div>
+                          <div className="text-xs text-slate-600 mt-0.5 truncate">
+                            {item.clean_vietnamese || item.vietnamese}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => speakJapanese(item.kanji, item.clean_kana || item.kana)}
-                        className="p-2 rounded-lg text-pink-600 hover:bg-pink-100/70 cursor-pointer"
-                        title="Nghe phát âm"
-                      >
-                        <Volume2 size={16} />
-                      </button>
+                      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                        {/* Quick Rate Mastered Button */}
+                        <button
+                          type="button"
+                          onClick={function () {
+                            sounds.playCorrect();
+                            recordWordProgress(item.id, 'mastered');
+                          }}
+                          className={`p-1.5 sm:px-2.5 sm:py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                            isMastered
+                              ? 'bg-emerald-600 text-white shadow-xs'
+                              : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200'
+                          }`}
+                          title="Đánh dấu đã thuộc (+15 XP)"
+                        >
+                          <CheckCircle2 size={14} />
+                          <span className="hidden sm:inline">Thuộc</span>
+                        </button>
 
-                      <button
-                        type="button"
-                        onClick={() => askAi('explain_vocab', item, `AI: ${item.kanji || item.kana}`)}
-                        className="p-2 rounded-lg text-slate-400 hover:text-pink-600 hover:bg-pink-50 cursor-pointer"
-                        title="Hỏi AI"
-                      >
-                        <Sparkles size={16} />
-                      </button>
+                        {/* Quick Rate Needs Review Button */}
+                        <button
+                          type="button"
+                          onClick={function () {
+                            sounds.playWrong();
+                            recordWordProgress(item.id, 'needs_review');
+                          }}
+                          className={`p-1.5 sm:px-2.5 sm:py-1 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                            isNeedsReview
+                              ? 'bg-rose-600 text-white shadow-xs'
+                              : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                          }`}
+                          title="Đánh dấu cần ôn lại (+5 XP)"
+                        >
+                          <RotateCcw size={14} />
+                          <span className="hidden sm:inline">Ôn</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={function () { speakJapanese(item.kanji, item.clean_kana || item.kana); }}
+                          className="p-1.5 rounded-lg text-pink-600 hover:bg-pink-100/70 cursor-pointer"
+                          title="Nghe phát âm"
+                        >
+                          <Volume2 size={16} />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={function () { askAi('explain_vocab', item, `AI: ${item.kanji || item.kana}`); }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-pink-600 hover:bg-pink-50 cursor-pointer"
+                          title="Hỏi AI"
+                        >
+                          <Sparkles size={16} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
