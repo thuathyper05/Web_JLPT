@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { kanjiService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
+import { KANJI_TOPICS, getKanjiMnemonicInfo, TOPIC_STYLES } from '../data/kanjiTopics.js';
+import { generateKanjiQuiz } from '../services/kanjiQuizGenerator.js';
+import KanjiStrokeCanvas from '../components/KanjiStrokeCanvas.jsx';
 import {
   PenTool,
   Search,
@@ -9,26 +12,79 @@ import {
   Sparkles,
   X,
   BookOpen,
-  Info,
-  RotateCcw
+  RotateCcw,
+  Compass,
+  Layers,
+  ListChecks,
+  CheckCircle2,
+  XCircle,
+  Trophy,
+  Award,
+  Hash,
+  Calendar,
+  Users,
+  Activity,
+  Building,
+  Filter,
+  Flame,
+  Check,
+  ChevronRight
 } from 'lucide-react';
 
+// Bảng ánh xạ icon chủ đề an toàn
+const TOPIC_ICON_MAP = {
+  Hash: Hash,
+  Calendar: Calendar,
+  Users: Users,
+  Compass: Compass,
+  Activity: Activity,
+  Building: Building,
+  Sparkles: Sparkles
+};
+
 export default function KanjiPage() {
-  const { currentLevel, askAi } = useApp();
+  const { currentLevel, askAi, guestProgress, recordWordProgress } = useApp();
+
+  // Dữ liệu Kanji từ API
   const [kanjiList, setKanjiList] = useState([]);
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+
+  // Chế độ xem chính: 'roadmap' (Lộ trình), 'vault' (Kho chữ Hán), 'practice' (Giải bài tập)
+  const [activeTab, setActiveTab] = useState('roadmap');
+
+  // Bộ lọc & Tìm kiếm trong Kho chữ Hán (Vault)
+  const [search, setSearch] = useState('');
+  const [selectedTopicFilter, setSelectedTopicFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'mastered', 'needs_review', 'unlearned'
+  const [sortBy, setSortBy] = useState('default'); // 'default', 'strokes_asc', 'strokes_desc', 'han_viet'
+
+  // Modal chi tiết chữ Hán
   const [selectedKanji, setSelectedKanji] = useState(null);
+  const [detailModalTab, setDetailModalTab] = useState('mnemonic'); // 'mnemonic' hoặc 'stroke'
+
+  // Trạng thái giải bài tập Kanji (Practice Arena)
+  const [quizState, setQuizState] = useState('setup'); // 'setup', 'playing', 'result'
+  const [quizSettings, setQuizSettings] = useState({
+    count: 10,
+    topicId: 'all',
+    mode: 'all'
+  });
+  const [quizQuestions, setQuizQuestions] = useState([]);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const [quizScore, setQuizScore] = useState(0);
 
   const activeLevel = currentLevel || 'N5';
 
-  useEffect(() => {
+  // Tải danh sách Kanji theo cấp độ hiện tại
+  useEffect(function () {
     let isMounted = true;
-    const fetchKanji = async () => {
+    async function fetchKanji() {
       setLoading(true);
       try {
         const res = await kanjiService.getKanji({ level: activeLevel });
-        const list = Array.isArray(res.data) ? res.data : [];
+        const list = Array.isArray(res.data) ? res.data : (Array.isArray(res) ? res : []);
         if (isMounted) {
           setKanjiList(list);
         }
@@ -37,37 +93,260 @@ export default function KanjiPage() {
       } finally {
         if (isMounted) setLoading(false);
       }
-    };
+    }
     fetchKanji();
-    return () => { isMounted = false; };
+    return function () {
+      isMounted = false;
+    };
   }, [activeLevel]);
 
-  const filtered = kanjiList.filter((item) => {
-    if (!item) return false;
-    if (!search.trim()) return true;
-    const q = search.toLowerCase().trim();
-    return (
-      (item.kanji && item.kanji.includes(q)) ||
-      (item.han_viet && item.han_viet.toLowerCase().includes(q)) ||
-      (item.meaning && item.meaning.toLowerCase().includes(q)) ||
-      (item.onyomi && item.onyomi.toLowerCase().includes(q)) ||
-      (item.kunyomi && item.kunyomi.toLowerCase().includes(q))
-    );
-  });
+  // Trích xuất trạng thái học tập của một Kanji
+  function getKanjiStatus(item) {
+    if (!item) return 'unlearned';
+    const keyWithId = item.id ? String(item.id) : null;
+    const keyWithChar = 'kanji_' + item.kanji;
+    const safeProgress = guestProgress && typeof guestProgress === 'object' ? guestProgress : {};
 
-  const openDetail = (item) => {
+    const progressEntry = (keyWithId && safeProgress[keyWithId]) || safeProgress[keyWithChar] || safeProgress[item.kanji];
+    if (progressEntry && progressEntry.status) {
+      return progressEntry.status; // 'mastered' hoặc 'needs_review'
+    }
+    return 'unlearned';
+  }
+
+  // Thống kê tổng quan học tập của cấp độ hiện tại
+  const stats = useMemo(function () {
+    const total = kanjiList.length;
+    let masteredCount = 0;
+    let reviewCount = 0;
+
+    for (let i = 0; i < kanjiList.length; i++) {
+      const st = getKanjiStatus(kanjiList[i]);
+      if (st === 'mastered') masteredCount++;
+      else if (st === 'needs_review') reviewCount++;
+    }
+
+    const unlearnedCount = Math.max(0, total - masteredCount - reviewCount);
+    const masteryRate = total > 0 ? Math.round((masteredCount / total) * 100) : 0;
+
+    return {
+      total: total,
+      mastered: masteredCount,
+      review: reviewCount,
+      unlearned: unlearnedCount,
+      rate: masteryRate
+    };
+  }, [kanjiList, guestProgress]);
+
+  // Danh sách Kanji đã được lọc và sắp xếp trong Kho Hán Tự (Vault)
+  const filteredKanjiList = useMemo(function () {
+    let result = kanjiList.slice();
+
+    // 1. Lọc theo từ khóa tìm kiếm
+    if (search.trim()) {
+      const q = search.toLowerCase().trim();
+      result = result.filter(function (item) {
+        if (!item) return false;
+        return (
+          (item.kanji && item.kanji.includes(q)) ||
+          (item.han_viet && item.han_viet.toLowerCase().includes(q)) ||
+          (item.meaning && item.meaning.toLowerCase().includes(q)) ||
+          (item.onyomi && item.onyomi.toLowerCase().includes(q)) ||
+          (item.kunyomi && item.kunyomi.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    // 2. Lọc theo chủ đề
+    if (selectedTopicFilter !== 'all') {
+      const topicObj = KANJI_TOPICS.find(function (t) {
+        return t.id === selectedTopicFilter;
+      });
+      if (topicObj && topicObj.chars) {
+        result = result.filter(function (item) {
+          return topicObj.chars.indexOf(item.kanji) !== -1;
+        });
+      }
+    }
+
+    // 3. Lọc theo trạng thái học tập
+    if (statusFilter !== 'all') {
+      result = result.filter(function (item) {
+        const st = getKanjiStatus(item);
+        return st === statusFilter;
+      });
+    }
+
+    // 4. Sắp xếp
+    if (sortBy === 'strokes_asc') {
+      result.sort(function (a, b) {
+        return (a.stroke_count || a.stroke || 1) - (b.stroke_count || b.stroke || 1);
+      });
+    } else if (sortBy === 'strokes_desc') {
+      result.sort(function (a, b) {
+        return (b.stroke_count || b.stroke || 1) - (a.stroke_count || a.stroke || 1);
+      });
+    } else if (sortBy === 'han_viet') {
+      result.sort(function (a, b) {
+        return (a.han_viet || '').localeCompare(b.han_viet || '', 'vi');
+      });
+    }
+
+    return result;
+  }, [kanjiList, search, selectedTopicFilter, statusFilter, sortBy, guestProgress]);
+
+  // Tính toán số lượng và tiến độ theo từng chủ đề lộ trình
+  const topicStats = useMemo(function () {
+    const map = {};
+    for (let t = 0; t < KANJI_TOPICS.length; t++) {
+      const topic = KANJI_TOPICS[t];
+      const charsInLevel = kanjiList.filter(function (k) {
+        return topic.chars.indexOf(k.kanji) !== -1;
+      });
+
+      let mastered = 0;
+      let review = 0;
+      for (let c = 0; c < charsInLevel.length; c++) {
+        const st = getKanjiStatus(charsInLevel[c]);
+        if (st === 'mastered') mastered++;
+        else if (st === 'needs_review') review++;
+      }
+
+      const totalChars = charsInLevel.length;
+      const percent = totalChars > 0 ? Math.round((mastered / totalChars) * 100) : 0;
+
+      map[topic.id] = {
+        total: totalChars,
+        mastered: mastered,
+        review: review,
+        percent: percent,
+        items: charsInLevel
+      };
+    }
+    return map;
+  }, [kanjiList, guestProgress]);
+
+  // Mở modal chi tiết chữ Hán
+  function openDetail(item) {
     sounds.playFlip();
     setSelectedKanji(item);
+    setDetailModalTab('mnemonic');
     speakJapanese(item.kanji);
-  };
+  }
+
+  // Đánh dấu trạng thái học tập trực tiếp
+  function handleMarkStatus(item, newStatus) {
+    if (!item) return;
+    const wordKey = item.id ? item.id : 'kanji_' + item.kanji;
+    if (newStatus === 'mastered') {
+      sounds.playCorrect();
+    } else {
+      sounds.playFlip();
+    }
+    if (typeof recordWordProgress === 'function') {
+      recordWordProgress(wordKey, newStatus);
+    }
+  }
+
+  // Bắt đầu buổi làm bài tập Kanji
+  function handleStartQuiz(customTopicId) {
+    sounds.playFlip();
+    const targetTopicId = customTopicId || quizSettings.topicId;
+
+    let targetTopicChars = null;
+    if (targetTopicId !== 'all') {
+      const topicObj = KANJI_TOPICS.find(function (t) {
+        return t.id === targetTopicId;
+      });
+      if (topicObj) {
+        targetTopicChars = topicObj.chars;
+      }
+    }
+
+    const generated = generateKanjiQuiz(kanjiList, {
+      count: quizSettings.count,
+      topicChars: targetTopicChars,
+      quizMode: quizSettings.mode
+    });
+
+    if (generated.length === 0) {
+      alert('Không đủ dữ liệu Kanji để tạo bài tập cho cấu hình này. Hãy chọn thêm chủ đề hoặc cấp độ khác.');
+      return;
+    }
+
+    setQuizQuestions(generated);
+    setQuizIndex(0);
+    setSelectedAnswer(null);
+    setIsAnswerSubmitted(false);
+    setQuizScore(0);
+    setQuizState('playing');
+    setActiveTab('practice');
+  }
+
+  // Xử lý khi người dùng chọn đáp án bài tập
+  function handleSelectAnswer(option) {
+    if (isAnswerSubmitted) return;
+
+    const currentQ = quizQuestions[quizIndex];
+    if (!currentQ) return;
+
+    setSelectedAnswer(option);
+    setIsAnswerSubmitted(true);
+
+    const isCorrect = option === currentQ.correctAnswer;
+    if (isCorrect) {
+      sounds.playCorrect();
+      setQuizScore(function (prev) {
+        return prev + 1;
+      });
+      if (currentQ.targetItem) {
+        handleMarkStatus(currentQ.targetItem, 'mastered');
+      }
+    } else {
+      sounds.playWrong();
+      if (currentQ.targetItem) {
+        handleMarkStatus(currentQ.targetItem, 'needs_review');
+      }
+    }
+  }
+
+  // Chuyển sang câu hỏi tiếp theo
+  function handleNextQuestion() {
+    sounds.playFlip();
+    if (quizIndex < quizQuestions.length - 1) {
+      setQuizIndex(function (prev) {
+        return prev + 1;
+      });
+      setSelectedAnswer(null);
+      setIsAnswerSubmitted(false);
+    } else {
+      sounds.playLevelUp();
+      setQuizState('result');
+    }
+  }
+
+  // Chuyển sang xem một chủ đề cụ thể trong Kho Hán tự
+  function handleJumpToTopicVault(topicId) {
+    setSelectedTopicFilter(topicId);
+    setStatusFilter('all');
+    setSearch('');
+    setActiveTab('vault');
+    sounds.playFlip();
+  }
+
+  // Phân tích thông tin mẹo nhớ cho Kanji đang chọn
+  const selectedKanjiMnemonic = useMemo(function () {
+    if (!selectedKanji) return null;
+    return getKanjiMnemonicInfo(selectedKanji.kanji, selectedKanji.han_viet, selectedKanji.meaning);
+  }, [selectedKanji]);
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-16 animate-in fade-in duration-300">
-      {/* ── 1. HEADER ── */}
+    <div className="space-y-6 max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
+      {/* ════════════════════ 1. HEADER & THỐNG KÊ TỔNG QUAN ════════════════════ */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden">
-        {/* Background Japanese Watermark */}
-        <div className="absolute right-4 top-2 text-pink-100/50 font-jp font-black text-8xl pointer-events-none select-none">
-          学
+        {/* Nền thư pháp Nhật chìm */}
+        <div className="absolute right-4 top-2 text-pink-100/40 font-jp font-black text-8xl sm:text-9xl pointer-events-none select-none">
+          漢
         </div>
 
         <div className="relative z-10">
@@ -76,201 +355,954 @@ export default function KanjiPage() {
             <span>CHỮ HÁN KANJI - JLPT {activeLevel}</span>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Bảng Chữ Hán Kanji {activeLevel}
+          <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
+            Khám Phá & Chinh Phục Kanji {activeLevel}
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
-            Tra cứu Hán tự {activeLevel} với âm Hán Việt, cách đọc On/Kun và số nét chuẩn xác.
+            Phương pháp học chiết tự tượng hình, giải nghĩa bộ thủ, luyện viết nét bút thuận và hệ thống giải bài tập thực chiến giúp ghi nhớ lâu bền.
           </p>
 
-          {/* Search Row */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-pink-50">
-            <div className="relative flex-1 max-w-md">
-              <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Tìm Kanji, Hán Việt, nghĩa..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-xl border border-pink-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-500 bg-pink-50/30 focus:bg-white transition-all"
-              />
+          {/* 4 Khối thống kê tiến độ học tập */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-pink-50">
+            <div className="p-3 rounded-2xl bg-pink-50/50 border border-pink-100 text-center">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tổng Kanji</span>
+              <span className="text-lg sm:text-xl font-black text-slate-800">{stats.total} chữ</span>
             </div>
 
-            <div className="px-3.5 py-1.5 rounded-xl bg-pink-50 border border-pink-200/80 text-pink-700 font-extrabold text-xs">
-              {filtered.length} Kanji {activeLevel}
+            <div className="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-100 text-center">
+              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block flex items-center justify-center gap-1">
+                <CheckCircle2 size={11} />
+                <span>Đã thuộc</span>
+              </span>
+              <span className="text-lg sm:text-xl font-black text-emerald-700">
+                {stats.mastered} <span className="text-xs font-semibold text-emerald-500">({stats.rate}%)</span>
+              </span>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-amber-50/60 border border-amber-100 text-center">
+              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block flex items-center justify-center gap-1">
+                <Flame size={11} />
+                <span>Cần ôn</span>
+              </span>
+              <span className="text-lg sm:text-xl font-black text-amber-700">{stats.review} chữ</span>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Chưa học</span>
+              <span className="text-lg sm:text-xl font-black text-slate-600">{stats.unlearned} chữ</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 2. KANJI GRID ── */}
-      {loading ? (
-        <div className="py-20 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
-          <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />
-          <p className="text-xs font-bold text-slate-400">Đang tải bảng Chữ Hán Kanji {activeLevel}...</p>
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="p-12 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
-          <PenTool size={36} className="mx-auto text-slate-300" />
-          <h3 className="text-base font-bold text-slate-700">Không tìm thấy Chữ Hán phù hợp</h3>
-          <p className="text-xs text-slate-400">
-            {search ? `Không có kết quả nào cho "${search}".` : `Hiện chưa có chữ Hán nào cho cấp độ ${activeLevel}.`}
-          </p>
-          {search && (
-            <button
-              type="button"
-              onClick={() => setSearch('')}
-              className="px-4 py-2 rounded-xl bg-pink-50 text-pink-600 font-bold text-xs inline-flex items-center gap-1.5 hover:bg-pink-100 transition-colors"
-            >
-              <RotateCcw size={14} />
-              <span>Xóa bộ lọc</span>
-            </button>
+      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG 3 CHẾ ĐỘ CHÍNH ════════════════════ */}
+      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-pink-50/70 border border-pink-100 shadow-sm overflow-x-auto">
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
+            setActiveTab('roadmap');
+          }}
+          className={'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 transition-all whitespace-nowrap ' + (activeTab === 'roadmap' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
+        >
+          <Compass size={16} className={activeTab === 'roadmap' ? 'text-pink-600' : 'text-slate-400'} />
+          <span>1. Lộ Trình Hán Tự</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
+            setActiveTab('vault');
+          }}
+          className={'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 transition-all whitespace-nowrap ' + (activeTab === 'vault' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
+        >
+          <Layers size={16} className={activeTab === 'vault' ? 'text-pink-600' : 'text-slate-400'} />
+          <span>2. Kho Chữ Hán ({filteredKanjiList.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
+            setActiveTab('practice');
+          }}
+          className={'flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 transition-all whitespace-nowrap ' + (activeTab === 'practice' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
+        >
+          <ListChecks size={16} className={activeTab === 'practice' ? 'text-pink-600' : 'text-slate-400'} />
+          <span>3. Giải Bài Tập Kanji</span>
+          {quizState === 'playing' && (
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {filtered.map((item, idx) => (
-            <div
-              key={item.id || idx}
-              onClick={() => openDetail(item)}
-              className="p-5 rounded-2xl bg-white border border-pink-100/90 shadow-sm hover:shadow-lotus hover:border-pink-300 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between relative group"
-            >
-              {/* Stroke Badge */}
-              <div className="absolute top-3 right-3 text-[10px] font-bold text-slate-400 bg-pink-50/60 px-2 py-0.5 rounded-full border border-pink-100">
-                {item.stroke_count || item.stroke || 1} nét
-              </div>
+        </button>
+      </div>
 
-              {/* Kanji Char */}
-              <div className="text-center my-3">
-                <div className="text-5xl font-black font-jp text-slate-900 mb-2 group-hover:scale-110 group-hover:text-pink-600 transition-all">
-                  {item.kanji}
-                </div>
-
-                {/* Hán Việt Pill */}
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-extrabold text-[11px] mb-1.5">
-                  {item.han_viet || '—'}
-                </span>
-
-                {/* Meaning */}
-                <div className="text-xs font-bold text-slate-800 truncate px-1">
-                  {item.meaning || '—'}
-                </div>
-              </div>
-
-              {/* On / Kun Footer */}
-              <div className="pt-3 border-t border-pink-50 text-[11px] text-slate-500 space-y-0.5">
-                <div className="truncate">
-                  <strong className="text-slate-600">On:</strong> {item.onyomi || '—'}
-                </div>
-                <div className="truncate">
-                  <strong className="text-slate-600">Kun:</strong> {item.kunyomi || '—'}
-                </div>
-              </div>
+      {/* ════════════════════ TAB 1: LỘ TRÌNH HÁN TỰ (ROADMAP) ════════════════════ */}
+      {activeTab === 'roadmap' && (
+        <div className="space-y-4">
+          <div className="p-4 rounded-2xl bg-white border border-pink-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 text-slate-700 font-bold">
+              <Compass size={16} className="text-pink-600" />
+              <span>Lộ trình {KANJI_TOPICS.length} chặng chủ đề thiết yếu cho JLPT {activeLevel}</span>
             </div>
-          ))}
+            <div className="text-slate-400">
+              Nhấp vào chữ để xem chi tiết chiết tự hoặc chọn chặng để giải bài tập ngay
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {KANJI_TOPICS.map(function (topic, topicIndex) {
+              const currentTopicStat = topicStats[topic.id] || { total: 0, mastered: 0, percent: 0, items: [] };
+              const IconComp = TOPIC_ICON_MAP[topic.iconName] || BookOpen;
+              const style = TOPIC_STYLES[topic.id] || TOPIC_STYLES.numbers;
+
+              return (
+                <div
+                  key={topic.id}
+                  className="p-5 sm:p-6 rounded-3xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-all relative overflow-hidden"
+                >
+                  {/* Header chặng chủ đề */}
+                  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={'w-11 h-11 rounded-2xl flex items-center justify-center ' + style.bgLight + ' border ' + style.border}>
+                        <IconComp size={20} className={style.text} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 border border-pink-100">
+                            Chặng {topicIndex + 1}
+                          </span>
+                          <h3 className="text-base sm:text-lg font-black text-slate-900">
+                            {topic.name}
+                          </h3>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          {topic.desc}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Badge tiến độ chặng */}
+                    <div className="text-right">
+                      <div className="text-xs font-black text-slate-800">
+                        {currentTopicStat.mastered} / {currentTopicStat.total} chữ
+                      </div>
+                      <div className="text-[11px] font-bold text-emerald-600">
+                        {currentTopicStat.percent}% hoàn thành
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Thanh tiến trình mini */}
+                  <div className="w-full h-2 rounded-full bg-pink-50 overflow-hidden mb-4">
+                    <div
+                      className={'h-full rounded-full transition-all duration-500 ' + style.progress}
+                      style={{ width: currentTopicStat.percent + '%' }}
+                    />
+                  </div>
+
+                  {/* Danh sách chữ Hán trong chặng */}
+                  {currentTopicStat.items.length === 0 ? (
+                    <div className="p-4 text-center text-xs text-slate-400 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                      Chủ đề này chưa có chữ Hán nào trong cấp độ {activeLevel}.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2.5 mb-4">
+                      {currentTopicStat.items.map(function (kItem) {
+                        const kStatus = getKanjiStatus(kItem);
+                        const isMastered = kStatus === 'mastered';
+                        const isReview = kStatus === 'needs_review';
+
+                        return (
+                          <button
+                            key={kItem.id || kItem.kanji}
+                            type="button"
+                            onClick={function () { openDetail(kItem); }}
+                            className={'p-2.5 rounded-2xl border transition-all text-center flex flex-col items-center justify-between cursor-pointer group relative ' + (isMastered ? 'bg-emerald-50/50 border-emerald-200 hover:border-emerald-400' : isReview ? 'bg-amber-50/50 border-amber-200 hover:border-amber-400' : 'bg-white border-pink-100 hover:border-pink-300 hover:shadow-sm')}
+                          >
+                            {/* Trạng thái góc */}
+                            {isMastered && (
+                              <div className="absolute top-1 right-1 text-emerald-600">
+                                <Check size={10} strokeWidth={3} />
+                              </div>
+                            )}
+                            {isReview && (
+                              <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-500" />
+                            )}
+
+                            <span className="text-2xl sm:text-3xl font-black font-jp text-slate-800 group-hover:text-pink-600 group-hover:scale-110 transition-transform my-0.5">
+                              {kItem.kanji}
+                            </span>
+                            <span className="text-[10px] font-bold text-amber-700 truncate max-w-full">
+                              {kItem.han_viet || '—'}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Nút hành động nhanh của chặng */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-pink-50 text-xs">
+                    <button
+                      type="button"
+                      onClick={function () { handleJumpToTopicVault(topic.id); }}
+                      className="text-pink-600 font-extrabold flex items-center gap-1 hover:text-pink-700 cursor-pointer"
+                    >
+                      <span>Xem toàn bộ chữ trong chủ đề này</span>
+                      <ChevronRight size={14} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={function () {
+                        setQuizSettings(function (prev) {
+                          return { ...prev, topicId: topic.id };
+                        });
+                        handleStartQuiz(topic.id);
+                      }}
+                      className="px-3 py-1.5 rounded-xl bg-pink-50 border border-pink-200 text-pink-700 font-extrabold hover:bg-pink-100 transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <ListChecks size={13} className="text-pink-600" />
+                      <span>Luyện bài tập chặng này</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      {/* ── 3. KANJI DETAIL MODAL ── */}
+      {/* ════════════════════ TAB 2: KHO CHỮ HÁN (VAULT) ════════════════════ */}
+      {activeTab === 'vault' && (
+        <div className="space-y-4">
+          {/* Thanh công cụ tìm kiếm và lọc */}
+          <div className="p-5 rounded-3xl bg-white border border-pink-100 shadow-sm space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* Ô tìm kiếm */}
+              <div className="relative flex-1 min-w-[240px]">
+                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm Kanji, Hán Việt, On, Kun, nghĩa..."
+                  value={search}
+                  onChange={function (e) { setSearch(e.target.value); }}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-pink-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-500 bg-pink-50/30 focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Sắp xếp */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-500 hidden sm:inline">Sắp xếp:</span>
+                <select
+                  value={sortBy}
+                  onChange={function (e) { setSortBy(e.target.value); }}
+                  className="px-3 py-2 rounded-xl border border-pink-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-pink-400 cursor-pointer"
+                >
+                  <option value="default">Thứ tự bài học</option>
+                  <option value="strokes_asc">Số nét (Ít đến Nhiều)</option>
+                  <option value="strokes_desc">Số nét (Nhiều đến Ít)</option>
+                  <option value="han_viet">Âm Hán Việt (A - Z)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Bộ lọc trạng thái & chủ đề */}
+            <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-pink-50 text-xs">
+              <span className="font-bold text-slate-400 mr-1 flex items-center gap-1">
+                <Filter size={13} />
+                <span>Trạng thái:</span>
+              </span>
+
+              {[
+                { id: 'all', label: 'Tất cả (' + kanjiList.length + ')' },
+                { id: 'mastered', label: 'Đã thuộc (' + stats.mastered + ')' },
+                { id: 'needs_review', label: 'Cần ôn (' + stats.review + ')' },
+                { id: 'unlearned', label: 'Chưa học (' + stats.unlearned + ')' }
+              ].map(function (btn) {
+                const isSelected = statusFilter === btn.id;
+                return (
+                  <button
+                    key={btn.id}
+                    type="button"
+                    onClick={function () { setStatusFilter(btn.id); }}
+                    className={'px-3 py-1 rounded-full font-bold transition-all cursor-pointer ' + (isSelected ? 'bg-pink-600 text-white shadow-sm' : 'bg-pink-50 text-slate-600 hover:bg-pink-100')}
+                  >
+                    {btn.label}
+                  </button>
+                );
+              })}
+
+              {/* Bộ lọc chủ đề */}
+              <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-1.5 pt-2 sm:pt-0">
+                <span className="font-bold text-slate-400">Chủ đề:</span>
+                <select
+                  value={selectedTopicFilter}
+                  onChange={function (e) { setSelectedTopicFilter(e.target.value); }}
+                  className="px-2.5 py-1 rounded-xl border border-pink-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-pink-400 cursor-pointer"
+                >
+                  <option value="all">Tất cả chủ đề</option>
+                  {KANJI_TOPICS.map(function (t) {
+                    return (
+                      <option key={t.id} value={t.id}>
+                        {t.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Lưới Kanji Cards */}
+          {loading ? (
+            <div className="py-20 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
+              <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />
+              <p className="text-xs font-bold text-slate-400">Đang tải dữ liệu Hán tự {activeLevel}...</p>
+            </div>
+          ) : filteredKanjiList.length === 0 ? (
+            <div className="p-12 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
+              <PenTool size={36} className="mx-auto text-slate-300" />
+              <h3 className="text-base font-bold text-slate-700">Không tìm thấy Chữ Hán phù hợp</h3>
+              <p className="text-xs text-slate-400">
+                Không có kết quả nào thỏa mãn bộ lọc hiện tại.
+              </p>
+              <button
+                type="button"
+                onClick={function () {
+                  setSearch('');
+                  setSelectedTopicFilter('all');
+                  setStatusFilter('all');
+                }}
+                className="px-4 py-2 rounded-xl bg-pink-50 text-pink-600 font-bold text-xs inline-flex items-center gap-1.5 hover:bg-pink-100 transition-colors"
+              >
+                <RotateCcw size={14} />
+                <span>Đặt lại bộ lọc</span>
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {filteredKanjiList.map(function (item, idx) {
+                const kStatus = getKanjiStatus(item);
+                const isMastered = kStatus === 'mastered';
+                const isReview = kStatus === 'needs_review';
+
+                return (
+                  <div
+                    key={item.id || idx}
+                    onClick={function () { openDetail(item); }}
+                    className={'p-5 rounded-2xl bg-white border shadow-sm hover:shadow-lotus hover:border-pink-300 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between relative group ' + (isMastered ? 'border-emerald-200/90' : isReview ? 'border-amber-200/90' : 'border-pink-100/90')}
+                  >
+                    {/* Badge số nét */}
+                    <div className="absolute top-3 right-3 text-[10px] font-bold text-slate-400 bg-pink-50/60 px-2 py-0.5 rounded-full border border-pink-100">
+                      {item.stroke_count || item.stroke || 1} nét
+                    </div>
+
+                    {/* Trạng thái học tập góc trái */}
+                    {isMastered && (
+                      <div className="absolute top-3 left-3 text-emerald-600 flex items-center gap-0.5 text-[10px] font-extrabold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <CheckCircle2 size={11} />
+                        <span>Đã thuộc</span>
+                      </div>
+                    )}
+                    {isReview && (
+                      <div className="absolute top-3 left-3 text-amber-600 flex items-center gap-0.5 text-[10px] font-extrabold bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                        <Flame size={11} />
+                        <span>Cần ôn</span>
+                      </div>
+                    )}
+
+                    {/* Chữ Kanji lớn */}
+                    <div className="text-center my-3 pt-2">
+                      <div className="text-5xl font-black font-jp text-slate-900 mb-2 group-hover:scale-110 group-hover:text-pink-600 transition-all">
+                        {item.kanji}
+                      </div>
+
+                      {/* Hán Việt Pill */}
+                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-extrabold text-[11px] mb-1.5">
+                        {item.han_viet || '—'}
+                      </span>
+
+                      {/* Ý nghĩa */}
+                      <div className="text-xs font-bold text-slate-800 truncate px-1">
+                        {item.meaning || '—'}
+                      </div>
+                    </div>
+
+                    {/* On / Kun Footer */}
+                    <div className="pt-3 border-t border-pink-50 text-[11px] text-slate-500 space-y-0.5">
+                      <div className="truncate">
+                        <strong className="text-slate-600">On:</strong> {item.onyomi || '—'}
+                      </div>
+                      <div className="truncate">
+                        <strong className="text-slate-600">Kun:</strong> {item.kunyomi || '—'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════ TAB 3: GIẢI BÀI TẬP BẰNG CHỮ KANJI ════════════════════ */}
+      {activeTab === 'practice' && (
+        <div className="space-y-4">
+          {/* Màn hình 1: Cấu hình bài tập (Quiz Setup) */}
+          {quizState === 'setup' && (
+            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm max-w-2xl mx-auto space-y-6">
+              <div className="text-center space-y-2">
+                <div className="w-14 h-14 rounded-3xl bg-pink-100 text-pink-600 flex items-center justify-center mx-auto shadow-lotus-sm">
+                  <ListChecks size={28} />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+                  Luyện Giải Bài Tập Kanji {activeLevel}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
+                  Thử thách phản xạ Hán tự qua 4 dạng bài tập: âm Hán Việt, ý nghĩa, âm đọc và điền từ ghép.
+                </p>
+              </div>
+
+              {/* Tùy chỉnh số lượng câu hỏi */}
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-700 block">Số lượng câu hỏi:</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[5, 10, 20].map(function (c) {
+                    const isSelected = quizSettings.count === c;
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={function () {
+                          setQuizSettings(function (prev) {
+                            return { ...prev, count: c };
+                          });
+                        }}
+                        className={'py-2.5 rounded-2xl font-black text-xs transition-all border ' + (isSelected ? 'bg-pink-600 text-white border-pink-600 shadow-lotus-sm' : 'bg-pink-50/50 text-slate-700 border-pink-200 hover:bg-pink-100')}
+                      >
+                        {c} câu hỏi
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Tùy chỉnh dạng bài tập */}
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-700 block">Dạng bài tập:</label>
+                <select
+                  value={quizSettings.mode}
+                  onChange={function (e) {
+                    const val = e.target.value;
+                    setQuizSettings(function (prev) {
+                      return { ...prev, mode: val };
+                    });
+                  }}
+                  className="w-full p-3 rounded-2xl border border-pink-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+                >
+                  <option value="all">Tất cả dạng bài (Hỗn hợp phong phú)</option>
+                  <option value="han_viet">Đoán âm Hán Việt (Kanji sang Hán Việt)</option>
+                  <option value="meaning">Đoán nghĩa tiếng Việt (Kanji sang Nghĩa)</option>
+                  <option value="reading">Đoán chữ qua âm đọc (Hiragana sang Kanji)</option>
+                  <option value="compound">Hoàn thành từ ghép Hán tự (Điền chữ còn thiếu)</option>
+                </select>
+              </div>
+
+              {/* Tùy chỉnh chủ đề bài tập */}
+              <div className="space-y-2">
+                <label className="text-xs font-black text-slate-700 block">Phạm vi chủ đề:</label>
+                <select
+                  value={quizSettings.topicId}
+                  onChange={function (e) {
+                    const val = e.target.value;
+                    setQuizSettings(function (prev) {
+                      return { ...prev, topicId: val };
+                    });
+                  }}
+                  className="w-full p-3 rounded-2xl border border-pink-200 text-xs font-bold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+                >
+                  <option value="all">Toàn bộ Kanji {activeLevel} ({kanjiList.length} chữ)</option>
+                  {KANJI_TOPICS.map(function (t) {
+                    return (
+                      <option key={t.id} value={t.id}>
+                        {t.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              {/* Nút Bắt đầu */}
+              <button
+                type="button"
+                onClick={function () { handleStartQuiz(); }}
+                className="w-full py-3.5 rounded-2xl bg-pink-600 text-white font-black text-sm shadow-lotus hover:bg-pink-700 transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <ListChecks size={18} />
+                <span>Bắt Đầu Giải Bài Tập Ngay</span>
+              </button>
+            </div>
+          )}
+
+          {/* Màn hình 2: Đang làm bài tập (Quiz Playing) */}
+          {quizState === 'playing' && quizQuestions.length > 0 && (
+            <div className="max-w-2xl mx-auto space-y-4">
+              {/* Header tiến trình */}
+              <div className="p-4 rounded-2xl bg-white border border-pink-100 shadow-sm flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="font-black text-pink-600">
+                    Câu {quizIndex + 1} / {quizQuestions.length}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[10px]">
+                    {quizQuestions[quizIndex].modeLabel}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span className="font-extrabold text-emerald-600 flex items-center gap-1">
+                    <CheckCircle2 size={13} />
+                    <span>Đúng: {quizScore}</span>
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={function () { setQuizState('setup'); }}
+                    className="text-slate-400 hover:text-slate-700 cursor-pointer font-bold"
+                  >
+                    Thoát
+                  </button>
+                </div>
+              </div>
+
+              {/* Thanh tiến trình % câu hỏi */}
+              <div className="w-full h-2 rounded-full bg-pink-100/60 overflow-hidden">
+                <div
+                  className="h-full bg-pink-600 rounded-full transition-all duration-300"
+                  style={{ width: ((quizIndex + 1) / quizQuestions.length) * 100 + '%' }}
+                />
+              </div>
+
+              {/* Thẻ câu hỏi */}
+              {quizQuestions[quizIndex] && (
+                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm text-center space-y-5">
+                  <p className="text-xs sm:text-sm font-bold text-slate-500">
+                    {quizQuestions[quizIndex].prompt}
+                  </p>
+
+                  {/* Vùng hiển thị câu hỏi lớn */}
+                  <div className="py-2">
+                    {quizQuestions[quizIndex].isDisplayLargeKanji ? (
+                      <div className="text-6xl sm:text-7xl font-black font-jp text-slate-900 tracking-wider">
+                        {quizQuestions[quizIndex].displayQuestion}
+                      </div>
+                    ) : (
+                      <div className="text-3xl sm:text-4xl font-black font-jp text-pink-700 bg-pink-50/70 p-4 rounded-2xl border border-pink-100 inline-block max-w-full">
+                        {quizQuestions[quizIndex].displayQuestion}
+                      </div>
+                    )}
+
+                    {quizQuestions[quizIndex].subQuestion && (
+                      <p className="text-xs font-bold text-slate-400 mt-2">
+                        {quizQuestions[quizIndex].subQuestion}
+                      </p>
+                    )}
+
+                    {/* Nút phát âm âm thanh */}
+                    <button
+                      type="button"
+                      onClick={function () {
+                        speakJapanese(quizQuestions[quizIndex].kanjiChar || quizQuestions[quizIndex].displayQuestion);
+                      }}
+                      className="mt-3 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-pink-50 text-pink-700 text-xs font-bold hover:bg-pink-100 transition-colors cursor-pointer"
+                    >
+                      <Volume2 size={13} />
+                      <span>Nghe phát âm</span>
+                    </button>
+                  </div>
+
+                  {/* 4 Nút Lựa chọn đáp án */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    {quizQuestions[quizIndex].options.map(function (opt, optIdx) {
+                      const isChosen = selectedAnswer === opt;
+                      const isCorrectOpt = opt === quizQuestions[quizIndex].correctAnswer;
+
+                      let btnStyle = 'bg-white border-pink-200 text-slate-800 hover:border-pink-400 hover:bg-pink-50/40';
+
+                      if (isAnswerSubmitted) {
+                        if (isCorrectOpt) {
+                          btnStyle = 'bg-emerald-500 text-white border-emerald-600 shadow-md font-black';
+                        } else if (isChosen && !isCorrectOpt) {
+                          btnStyle = 'bg-rose-500 text-white border-rose-600 shadow-md font-black';
+                        } else {
+                          btnStyle = 'bg-slate-50 text-slate-400 border-slate-200 opacity-60';
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={optIdx}
+                          type="button"
+                          disabled={isAnswerSubmitted}
+                          onClick={function () { handleSelectAnswer(opt); }}
+                          className={'p-4 rounded-2xl border-2 text-sm sm:text-base font-extrabold transition-all cursor-pointer flex items-center justify-center ' + btnStyle}
+                        >
+                          <span className="font-jp">{opt}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Hộp Giải thích chi tiết hiển thị sau khi chọn */}
+                  {isAnswerSubmitted && quizQuestions[quizIndex].explanation && (
+                    <div className="p-4 sm:p-5 rounded-2xl bg-pink-50/60 border border-pink-200 text-left space-y-2.5 animate-in fade-in duration-200">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                          <BookOpen size={14} className="text-pink-600" />
+                          <span>Giải thích chi tiết:</span>
+                        </span>
+                        <span className="text-xs font-black text-pink-700">
+                          {quizQuestions[quizIndex].explanation.kanji} - {quizQuestions[quizIndex].explanation.han_viet}
+                        </span>
+                      </div>
+
+                      <div className="text-xs text-slate-700 space-y-1">
+                        <div>
+                          <strong>Nghĩa:</strong> {quizQuestions[quizIndex].explanation.meaning}
+                        </div>
+                        <div>
+                          <strong>Âm On:</strong> {quizQuestions[quizIndex].explanation.onyomi} | <strong>Âm Kun:</strong> {quizQuestions[quizIndex].explanation.kunyomi}
+                        </div>
+                        {quizQuestions[quizIndex].explanation.mnemonic && (
+                          <div className="p-2.5 rounded-xl bg-white/90 border border-pink-100 text-[11px] text-pink-900 leading-relaxed">
+                            <strong className="text-pink-700 flex items-center gap-1 mb-0.5">
+                              <Sparkles size={12} />
+                              <span>Mẹo nhớ tượng hình:</span>
+                            </strong>
+                            {quizQuestions[quizIndex].explanation.mnemonic}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Nút Câu tiếp theo */}
+                      <button
+                        type="button"
+                        onClick={handleNextQuestion}
+                        className="w-full mt-2 py-3 rounded-xl bg-pink-600 text-white font-black text-xs shadow-lotus hover:bg-pink-700 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <span>
+                          {quizIndex < quizQuestions.length - 1 ? 'Câu tiếp theo' : 'Xem tổng kết kết quả'}
+                        </span>
+                        <ChevronRight size={15} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Màn hình 3: Tổng kết kết quả (Quiz Result) */}
+          {quizState === 'result' && (
+            <div className="p-6 sm:p-10 rounded-3xl bg-white border border-pink-100 shadow-sm max-w-lg mx-auto text-center space-y-6">
+              <div className="w-20 h-20 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center mx-auto shadow-lotus">
+                <Trophy size={40} className="text-amber-500" />
+              </div>
+
+              <div>
+                <span className="text-[11px] font-extrabold uppercase px-3 py-1 rounded-full bg-pink-50 text-pink-700 border border-pink-100">
+                  Hoàn thành thử thách Kanji
+                </span>
+                <h2 className="text-2xl font-black text-slate-900 mt-2">
+                  Kết Quả Luyện Bài Tập
+                </h2>
+                <p className="text-xs text-slate-500 mt-1">
+                  Bạn đã hoàn thành toàn bộ {quizQuestions.length} câu hỏi Hán tự.
+                </p>
+              </div>
+
+              {/* Khối Điểm số */}
+              <div className="p-5 rounded-2xl bg-pink-50/60 border border-pink-100 grid grid-cols-2 gap-3 text-center">
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Số câu đúng</span>
+                  <span className="text-2xl font-black text-emerald-600">
+                    {quizScore} / {quizQuestions.length}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tỷ lệ chính xác</span>
+                  <span className="text-2xl font-black text-pink-600">
+                    {quizQuestions.length > 0 ? Math.round((quizScore / quizQuestions.length) * 100) : 0}%
+                  </span>
+                </div>
+              </div>
+
+              {/* Phần thưởng kinh nghiệm XP */}
+              <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center gap-2 text-amber-800 text-xs font-black">
+                <Award size={18} className="text-amber-600" />
+                <span>Thưởng +{quizScore * 10} XP vào tiến độ học tập và chuỗi ngày!</span>
+              </div>
+
+              {/* Nút hành động */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={function () { handleStartQuiz(); }}
+                  className="flex-1 py-3 rounded-2xl bg-pink-600 text-white font-black text-xs shadow-lotus hover:bg-pink-700 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <RotateCcw size={14} />
+                  <span>Làm bài tập mới</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={function () {
+                    setActiveTab('vault');
+                    setQuizState('setup');
+                  }}
+                  className="flex-1 py-3 rounded-2xl bg-slate-100 text-slate-700 font-black text-xs hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <Layers size={14} />
+                  <span>Về Kho Chữ Hán</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════ MODAL CHI TIẾT KANJI & CHIẾT TỰ ════════════════════ */}
       {selectedKanji && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in"
-          onClick={() => setSelectedKanji(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in"
+          onClick={function () { setSelectedKanji(null); }}
         >
           <div
-            className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden p-6 relative animate-in zoom-in-95 space-y-5"
-            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden relative animate-in zoom-in-95 flex flex-col max-h-[90vh]"
+            onClick={function (e) { e.stopPropagation(); }}
           >
+            {/* Nút đóng góc phải */}
             <button
               type="button"
-              onClick={() => setSelectedKanji(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1 rounded-full cursor-pointer"
+              onClick={function () { setSelectedKanji(null); }}
+              className="absolute top-4 right-4 z-20 text-slate-400 hover:text-slate-800 p-1.5 rounded-full bg-white/80 border border-slate-100 hover:bg-slate-100 transition-colors cursor-pointer"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
 
-            {/* Top Char */}
-            <div className="text-center pt-2">
-              <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-xs">
+            {/* Header Modal */}
+            <div className="p-6 pb-3 text-center border-b border-pink-50 relative bg-gradient-to-b from-pink-50/40 to-white">
+              <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-[11px]">
                 Kanji {activeLevel} - {selectedKanji.stroke_count || selectedKanji.stroke || 1} nét
               </span>
-              <h2 className="text-7xl font-black font-jp text-slate-900 my-2">
+
+              <h2 className="text-6xl sm:text-7xl font-black font-jp text-slate-900 my-2">
                 {selectedKanji.kanji}
               </h2>
-              <div className="text-xl font-black text-amber-600 mb-1">
+
+              <div className="text-xl sm:text-2xl font-black text-amber-600 mb-0.5">
                 {selectedKanji.han_viet}
               </div>
-              <p className="text-sm font-bold text-slate-700 mb-3">
+
+              <p className="text-xs sm:text-sm font-bold text-slate-700 mb-3">
                 {selectedKanji.meaning}
               </p>
 
-              <div className="flex justify-center gap-2">
+              {/* Các nút hành động chính */}
+              <div className="flex flex-wrap justify-center gap-2 mb-2">
                 <button
                   type="button"
-                  onClick={() => speakJapanese(selectedKanji.kanji)}
-                  className="px-4 py-1.5 rounded-full bg-pink-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lotus-sm hover:bg-pink-700 transition-colors cursor-pointer"
+                  onClick={function () { speakJapanese(selectedKanji.kanji); }}
+                  className="px-3.5 py-1.5 rounded-full bg-pink-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lotus-sm hover:bg-pink-700 transition-colors cursor-pointer"
                 >
-                  <Volume2 size={15} />
+                  <Volume2 size={14} />
                   <span>Nghe phát âm</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => askAi('explain_kanji', selectedKanji, `AI: Chữ Hán ${selectedKanji.kanji}`)}
-                  className="px-4 py-1.5 rounded-full border border-pink-200 text-pink-700 bg-pink-50 font-bold text-xs flex items-center gap-1.5 hover:bg-pink-100 transition-colors cursor-pointer"
+                  onClick={function () {
+                    askAi('explain_kanji', selectedKanji, 'AI: Phân tích chữ Hán ' + selectedKanji.kanji);
+                  }}
+                  className="px-3.5 py-1.5 rounded-full border border-pink-200 text-pink-700 bg-pink-50 font-bold text-xs flex items-center gap-1.5 hover:bg-pink-100 transition-colors cursor-pointer"
                 >
-                  <Sparkles size={15} className="text-pink-600" />
-                  <span>AI mẹo nhớ tượng hình</span>
+                  <Sparkles size={14} className="text-pink-600" />
+                  <span>AI Sensei phân tích</span>
                 </button>
               </div>
+
+              {/* Đánh dấu Đã thuộc / Cần ôn */}
+              <div className="flex justify-center gap-2 pt-2 border-t border-pink-100/60">
+                {getKanjiStatus(selectedKanji) === 'mastered' ? (
+                  <span className="px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-black flex items-center gap-1">
+                    <CheckCircle2 size={13} />
+                    <span>Đã thuộc lòng (+15 XP)</span>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={function () { handleMarkStatus(selectedKanji, 'mastered'); }}
+                    className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 text-xs font-black transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    <CheckCircle2 size={13} />
+                    <span>Đánh dấu Đã thuộc (+15 XP)</span>
+                  </button>
+                )}
+
+                {getKanjiStatus(selectedKanji) === 'needs_review' ? (
+                  <span className="px-3 py-1 rounded-xl bg-amber-100 text-amber-800 text-xs font-black flex items-center gap-1">
+                    <Flame size={13} />
+                    <span>Đang cần ôn tập</span>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={function () { handleMarkStatus(selectedKanji, 'needs_review'); }}
+                    className="px-3 py-1 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 text-xs font-black transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    <Flame size={13} />
+                    <span>Cần ôn tập</span>
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Reading Grid */}
-            <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-pink-50/50 border border-pink-100 text-center">
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Âm On</span>
-                <span className="text-sm font-black font-jp text-pink-600">
-                  {selectedKanji.onyomi || '—'}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Âm Kun</span>
-                <span className="text-sm font-black font-jp text-emerald-600">
-                  {selectedKanji.kunyomi || '—'}
-                </span>
-              </div>
+            {/* Thanh chuyển tab con trong modal: Chiết tự vs Luyện viết */}
+            <div className="flex border-b border-pink-100 bg-pink-50/50 px-4 text-xs font-black">
+              <button
+                type="button"
+                onClick={function () { setDetailModalTab('mnemonic'); }}
+                className={'py-2.5 px-4 border-b-2 transition-all ' + (detailModalTab === 'mnemonic' ? 'border-pink-600 text-pink-700' : 'border-transparent text-slate-500 hover:text-pink-600')}
+              >
+                Chiết Tự & Mẹo Nhớ
+              </button>
+
+              <button
+                type="button"
+                onClick={function () { setDetailModalTab('stroke'); }}
+                className={'py-2.5 px-4 border-b-2 transition-all ' + (detailModalTab === 'stroke' ? 'border-pink-600 text-pink-700' : 'border-transparent text-slate-500 hover:text-pink-600')}
+              >
+                Tập Viết Nét Bút Thuận
+              </button>
             </div>
 
-            {/* Compound Examples */}
-            {selectedKanji.examples && selectedKanji.examples.length > 0 && (
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <BookOpen size={14} className="text-pink-600" />
-                  <span>Từ ghép thông dụng:</span>
-                </span>
-                <div className="space-y-1.5 max-h-36 overflow-y-auto">
-                  {selectedKanji.examples.map((ex, exIdx) => (
-                    <div
-                      key={exIdx}
-                      className="p-2 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-between text-xs"
-                    >
-                      <div>
-                        <strong className="font-jp text-slate-900 mr-2">{ex.w}</strong>
-                        <span className="text-pink-600 font-jp mr-2">({ex.k})</span>
-                        <span className="text-slate-500">— {ex.m}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => speakJapanese(ex.k || ex.w)}
-                        className="text-pink-600 hover:text-pink-700 p-1 cursor-pointer"
-                      >
-                        <Volume2 size={14} />
-                      </button>
+            {/* Nội dung Modal cuộn được */}
+            <div className="p-5 overflow-y-auto space-y-4">
+              {detailModalTab === 'mnemonic' ? (
+                <>
+                  {/* Bảng On / Kun */}
+                  <div className="grid grid-cols-2 gap-3 p-3.5 rounded-2xl bg-pink-50/50 border border-pink-100 text-center">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Âm On</span>
+                      <span className="text-sm font-black font-jp text-pink-600">
+                        {selectedKanji.onyomi || '—'}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Âm Kun</span>
+                      <span className="text-sm font-black font-jp text-emerald-600">
+                        {selectedKanji.kunyomi || '—'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Chiết tự bộ thủ */}
+                  {selectedKanjiMnemonic && selectedKanjiMnemonic.radicals && (
+                    <div className="space-y-1.5">
+                      <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                        <BookOpen size={14} className="text-pink-600" />
+                        <span>Bộ thủ cấu thành (Radicals):</span>
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        {selectedKanjiMnemonic.radicals.map(function (rad, radIdx) {
+                          return (
+                            <div
+                              key={radIdx}
+                              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs flex items-center gap-2.5"
+                            >
+                              <span className="text-xl font-black font-jp text-pink-600">
+                                {rad.char}
+                              </span>
+                              <div>
+                                <strong className="text-slate-800 block">{rad.name}</strong>
+                                <span className="text-[11px] text-slate-500">{rad.meaning}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mẹo nhớ tượng hình */}
+                  {selectedKanjiMnemonic && selectedKanjiMnemonic.mnemonic && (
+                    <div className="p-4 rounded-2xl bg-pink-50/80 border border-pink-200 space-y-1">
+                      <span className="text-xs font-black text-pink-800 flex items-center gap-1.5">
+                        <Sparkles size={14} className="text-pink-600" />
+                        <span>Mẹo nhớ tượng hình:</span>
+                      </span>
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                        {selectedKanjiMnemonic.mnemonic}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Nguồn gốc chữ Hán */}
+                  {selectedKanjiMnemonic && selectedKanjiMnemonic.origin && (
+                    <div className="text-[11px] text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-200/60 leading-relaxed">
+                      <strong className="text-slate-700">Nguồn gốc: </strong>
+                      {selectedKanjiMnemonic.origin}
+                    </div>
+                  )}
+
+                  {/* Danh sách từ ghép mẫu */}
+                  {selectedKanji.examples && selectedKanji.examples.length > 0 && (
+                    <div className="space-y-2 pt-2">
+                      <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
+                        <BookOpen size={14} className="text-pink-600" />
+                        <span>Từ ghép thông dụng trong đời sống:</span>
+                      </span>
+
+                      <div className="space-y-1.5">
+                        {selectedKanji.examples.map(function (ex, exIdx) {
+                          const w = typeof ex === 'string' ? ex : (ex.word || ex.w || '');
+                          const k = typeof ex === 'object' ? (ex.reading || ex.k || '') : '';
+                          const m = typeof ex === 'object' ? (ex.meaning || ex.m || '') : '';
+
+                          return (
+                            <div
+                              key={exIdx}
+                              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-between text-xs"
+                            >
+                              <div>
+                                <strong className="font-jp text-slate-900 mr-2 text-sm">{w}</strong>
+                                {k && <span className="text-pink-600 font-jp mr-2">({k})</span>}
+                                {m && <span className="text-slate-500">{m}</span>}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={function () { speakJapanese(k || w); }}
+                                className="text-pink-600 hover:text-pink-700 p-1.5 rounded-lg hover:bg-pink-100 transition-colors cursor-pointer"
+                              >
+                                <Volume2 size={14} />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                /* Tab con Tập viết nét */
+                <KanjiStrokeCanvas
+                  kanjiChar={selectedKanji.kanji}
+                  strokeCount={selectedKanji.stroke_count || selectedKanji.stroke}
+                  strokeTip={selectedKanjiMnemonic ? selectedKanjiMnemonic.strokeOrderTip : ''}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
