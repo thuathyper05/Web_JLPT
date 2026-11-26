@@ -30,7 +30,7 @@ import {
   Check,
   Flame,
   BookmarkCheck,
-  Clock
+  Layers
 } from 'lucide-react';
 
 export default function ListeningPage() {
@@ -40,7 +40,7 @@ export default function ListeningPage() {
   // Chế độ xem: 'dialogue' (Luyện nghe đề thi), 'roadmap' (Lộ trình), 'methods' (Phương pháp), 'vocab' (Chuỗi từ vựng)
   const [activeTab, setActiveTab] = useState('dialogue');
 
-  // Lọc theo dạng câu hỏi JLPT trong tab dialogue: 'all', 'mondai1', 'mondai2', 'mondai3'
+  // Lọc theo dạng câu hỏi JLPT: 'all', 'mondai1', 'mondai2', 'mondai4'
   const [mondaiFilter, setMondaiFilter] = useState('all');
 
   // Lựa chọn bài học
@@ -61,25 +61,12 @@ export default function ListeningPage() {
   // Danh sách tracks sau khi lọc theo dạng bài Mondai
   const currentTracks = useMemo(function () {
     if (mondaiFilter === 'all') return filteredLessonTracks;
-    if (mondaiFilter === 'mondai1') {
-      // Mondai 1: Hiểu nhiệm vụ (Ai làm gì trước tiên)
-      return filteredLessonTracks.filter(function (t, idx) {
-        return idx % 3 === 0 || (t.question && t.question.includes('làm gì'));
-      });
-    }
-    if (mondaiFilter === 'mondai2') {
-      // Mondai 2: Điểm mấu chốt (Nguyên nhân, đặc điểm)
-      return filteredLessonTracks.filter(function (t, idx) {
-        return idx % 3 === 1 || (t.question && (t.question.includes('tại sao') || t.question.includes('như thế nào')));
-      });
-    }
-    // Mondai 3: Tình huống & Phản xạ
-    return filteredLessonTracks.filter(function (t, idx) {
-      return idx % 3 === 2;
+    return filteredLessonTracks.filter(function (t) {
+      return t.mondaiType === mondaiFilter || (t.partName && t.partName.toLowerCase().includes(mondaiFilter));
     });
   }, [filteredLessonTracks, mondaiFilter]);
 
-  // Vị trí track hiện tại
+  // Vị trí track hiện tại trong currentTracks
   const [currentIndex, setCurrentIndex] = useState(0);
   const track = currentTracks[currentIndex] || currentTracks[0] || levelTracks[0] || {
     id: 1,
@@ -225,7 +212,7 @@ export default function ListeningPage() {
     }, durationMs);
   }
 
-  // Tua lại 5 giây hoặc nghe lại
+  // Tua lại hoặc nghe lại từ đầu
   function handleRewind() {
     sounds.playFlip();
     if (typeof window !== 'undefined' && window.speechSynthesis) {
@@ -332,7 +319,7 @@ export default function ListeningPage() {
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold">
               <Award size={14} className="text-amber-500" />
-              <span>Điểm luyện nghe: <strong>{score}</strong>/{currentTracks.length}</span>
+              <span>Điểm trắc nghiệm: <strong>{score}</strong>/{currentTracks.length}</span>
             </div>
           </div>
 
@@ -342,7 +329,7 @@ export default function ListeningPage() {
                 Luyện Nghe Hiểu Choukai Chuẩn Giọng Tokyo (JLPT {activeLevel})
               </h1>
               <p className="text-xs text-slate-500 max-w-2xl mb-0">
-                Phương pháp nghe bắt ý, kỹ thuật săn bẫy từ nối chuyển ý và hệ thống bài thi mô phỏng 4 Mondai chuẩn đề thi thực tế.
+                Mỗi bài học được trang bị nhiều bài nghe phong phú: từ hội thoại thực tế, Mondai 1 (Hiểu nhiệm vụ), Mondai 2 (Điểm mấu chốt) đến Mondai 4 (Phản xạ tức thì).
               </p>
             </div>
 
@@ -431,12 +418,12 @@ export default function ListeningPage() {
         <div className="space-y-4">
           {/* Bộ lọc Mondai chuẩn đề thi JLPT */}
           <div className="flex items-center gap-2 overflow-x-auto p-2 bg-white rounded-2xl border border-pink-100 text-xs">
-            <span className="text-slate-400 font-bold shrink-0 ml-1">Cấu trúc đề thi:</span>
+            <span className="text-slate-400 font-bold shrink-0 ml-1">Dạng bài thi:</span>
             {[
-              { id: 'all', label: 'Tất cả dạng bài' },
+              { id: 'all', label: 'Tất cả bài (' + filteredLessonTracks.length + ')' },
               { id: 'mondai1', label: 'Mondai 1: Hiểu nhiệm vụ (課題理解)' },
               { id: 'mondai2', label: 'Mondai 2: Điểm mấu chốt (ポイント理解)' },
-              { id: 'mondai3', label: 'Mondai 3 & 4: Tình huống & Phản xạ (即時応答)' }
+              { id: 'mondai4', label: 'Mondai 4: Phản xạ câu ngắn (即時応答)' }
             ].map(function (m) {
               const isSelected = mondaiFilter === m.id;
               return (
@@ -455,11 +442,13 @@ export default function ListeningPage() {
             })}
           </div>
 
-          {/* Quick Track Switcher Pills */}
-          {currentTracks.length > 1 && (
+          {/* Quick Track Switcher Pills: Hiển thị các bài nghe của bài học đang chọn */}
+          {currentTracks.length > 0 && (
             <div className="flex items-center gap-2 overflow-x-auto p-2 bg-white/70 rounded-2xl border border-pink-50 text-xs">
-              <span className="text-slate-400 font-bold shrink-0 text-[11px] ml-1">BÀI NGHE:</span>
+              <span className="text-slate-400 font-bold shrink-0 text-[11px] ml-1">CÁC BÀI NGHE TRONG BÀI:</span>
               {currentTracks.map(function (t, idx) {
+                const isCurrent = currentIndex === idx;
+                const label = t.partName || ('Bài ' + t.lesson + ': ' + (t.topic.split(':')[1] || t.topic));
                 return (
                   <button
                     key={t.id || idx}
@@ -468,9 +457,9 @@ export default function ListeningPage() {
                       sounds.playFlip();
                       setCurrentIndex(idx);
                     }}
-                    className={'px-3 py-1 rounded-xl font-bold transition-all shrink-0 cursor-pointer ' + (currentIndex === idx ? 'bg-pink-600 text-white shadow-xs' : 'bg-slate-100 hover:bg-pink-50 text-slate-600')}
+                    className={'px-3 py-1 rounded-xl font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 ' + (isCurrent ? 'bg-pink-600 text-white shadow-xs' : 'bg-slate-100 hover:bg-pink-50 text-slate-600')}
                   >
-                    Bài {t.lesson < 10 ? '0' + t.lesson : t.lesson}: {t.topic.split(':')[1] || t.topic}
+                    <span>{label}</span>
                   </button>
                 );
               })}
@@ -481,9 +470,16 @@ export default function ListeningPage() {
           <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm space-y-6">
             <div className="space-y-2 border-b border-pink-50 pb-4">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="text-xs font-black text-pink-600 uppercase tracking-wider">
-                  {track.topic}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black text-pink-600 uppercase tracking-wider">
+                    {track.topic}
+                  </span>
+                  {track.partName && (
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-pink-100 text-pink-800">
+                      {track.partName}
+                    </span>
+                  )}
+                </div>
                 <span className="text-xs font-semibold text-slate-400">
                   Đã nghe: <strong>{listenCount}</strong> lần
                 </span>
@@ -522,7 +518,6 @@ export default function ListeningPage() {
 
               {/* Nút tua 5s + Tốc độ + Ẩn/Hiện Kịch bản */}
               <div className="flex items-center gap-2 flex-wrap justify-end">
-                {/* Nút Tua lại */}
                 <button
                   type="button"
                   onClick={handleRewind}
@@ -533,7 +528,6 @@ export default function ListeningPage() {
                   <span>Nghe lại</span>
                 </button>
 
-                {/* Tốc độ phát */}
                 <div className="flex items-center bg-white border border-slate-200 rounded-xl p-1 text-xs">
                   <Gauge size={13} className="text-slate-400 ml-1.5 mr-1" />
                   {[0.8, 1.0, 1.2].map(function (spd) {
@@ -553,7 +547,6 @@ export default function ListeningPage() {
                   })}
                 </div>
 
-                {/* Nút Ẩn/Hiện Kịch bản */}
                 <button
                   type="button"
                   onClick={function () {
@@ -884,7 +877,6 @@ export default function ListeningPage() {
             </div>
           </div>
 
-          {/* Bí quyết phòng thi */}
           <div className="p-6 rounded-3xl bg-white border border-pink-100 shadow-sm space-y-3">
             <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
               <BookmarkCheck size={16} className="text-emerald-600" />

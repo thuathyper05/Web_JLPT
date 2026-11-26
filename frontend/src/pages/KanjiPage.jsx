@@ -6,6 +6,8 @@ import { KANJI_TOPICS, getKanjiMnemonicInfo, TOPIC_STYLES } from '../data/kanjiT
 import { generateKanjiQuiz, generateJlptMockExam } from '../services/kanjiQuizGenerator.js';
 import KanjiStrokeCanvas from '../components/KanjiStrokeCanvas.jsx';
 import KanjiFlashcardMode from '../components/KanjiFlashcardMode.jsx';
+import KanjiWritingStudio from '../components/KanjiWritingStudio.jsx';
+import ConfusingKanjiStudio from '../components/ConfusingKanjiStudio.jsx';
 import {
   PenTool,
   Search,
@@ -31,7 +33,9 @@ import {
   Check,
   ChevronRight,
   GraduationCap,
-  Timer
+  Timer,
+  Edit3,
+  GitCompare
 } from 'lucide-react';
 
 const TOPIC_ICON_MAP = {
@@ -51,7 +55,7 @@ export default function KanjiPage() {
   const [kanjiList, setKanjiList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Chế độ xem: 'roadmap', 'vault', 'practice', 'flashcard', 'mock_exam'
+  // Chế độ xem: 'roadmap', 'vault', 'writing', 'confusing', 'flashcard', 'practice'
   const [activeTab, setActiveTab] = useState('roadmap');
 
   // Bộ lọc & Tìm kiếm trong Kho chữ Hán (Vault)
@@ -65,7 +69,7 @@ export default function KanjiPage() {
   const [detailModalTab, setDetailModalTab] = useState('mnemonic');
 
   // Trạng thái bài tập & thi thử JLPT
-  const [quizState, setQuizState] = useState('setup'); // 'setup', 'playing', 'result'
+  const [quizState, setQuizState] = useState('setup');
   const [quizSettings, setQuizSettings] = useState({
     count: 10,
     topicId: 'all',
@@ -117,7 +121,7 @@ export default function KanjiPage() {
     return 'unlearned';
   }
 
-  // Thống kê & Chỉ số sẵn sàng thi đậu JLPT (JLPT Readiness)
+  // Thống kê & Chỉ số sẵn sàng thi đậu JLPT
   const stats = useMemo(function () {
     const total = kanjiList.length;
     let masteredCount = 0;
@@ -132,7 +136,6 @@ export default function KanjiPage() {
     const unlearnedCount = Math.max(0, total - masteredCount - reviewCount);
     const masteryRate = total > 0 ? Math.round((masteredCount / total) * 100) : 0;
 
-    // Đánh giá mức độ sẵn sàng cho kỳ thi JLPT thật
     let readinessGrade = 'Khởi động';
     let readinessColor = 'text-rose-600 bg-rose-50 border-rose-200';
     if (masteryRate >= 80) {
@@ -257,7 +260,6 @@ export default function KanjiPage() {
     }
   }
 
-  // Khởi động bài tập hoặc đề thi chuẩn JLPT
   function handleStartQuiz(customTopicId, forceExam) {
     sounds.playFlip();
     const targetTopicId = customTopicId || quizSettings.topicId;
@@ -377,7 +379,7 @@ export default function KanjiPage() {
             Chinh Phục Chữ Hán Kanji JLPT {activeLevel}
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
-            Lộ trình học chiết tự tượng hình, giải nghĩa 214 bộ thủ, tập viết nét bút thuận trên canvas và bộ đề thi mô phỏng chuẩn cấu trúc kỳ thi quốc tế JLPT.
+            Lộ trình học chiết tự tượng hình, giải nghĩa 214 bộ thủ, phòng tập viết nét trên canvas, bí quyết phân biệt chữ dễ nhầm và bộ đề thi mô phỏng JLPT thật.
           </p>
 
           {/* 4 Khối thống kê tiến độ học tập */}
@@ -413,7 +415,7 @@ export default function KanjiPage() {
         </div>
       </div>
 
-      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG CÁC PHÂN HỆ ════════════════════ */}
+      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG 6 CHẾ ĐỘ CHUYÊN SÂU ════════════════════ */}
       <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-pink-50/70 border border-pink-100 shadow-sm overflow-x-auto">
         <button
           type="button"
@@ -424,7 +426,7 @@ export default function KanjiPage() {
           className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'roadmap' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
         >
           <Compass size={15} className={activeTab === 'roadmap' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>1. Lộ Trình Hán Tự</span>
+          <span>1. Lộ Trình</span>
         </button>
 
         <button
@@ -443,12 +445,36 @@ export default function KanjiPage() {
           type="button"
           onClick={function () {
             sounds.playFlip();
+            setActiveTab('writing');
+          }}
+          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'writing' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
+        >
+          <Edit3 size={15} className={activeTab === 'writing' ? 'text-pink-600' : 'text-slate-400'} />
+          <span>3. Tập Viết Nét</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
+            setActiveTab('confusing');
+          }}
+          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'confusing' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
+        >
+          <GitCompare size={15} className={activeTab === 'confusing' ? 'text-pink-600' : 'text-slate-400'} />
+          <span>4. Chữ Dễ Nhầm</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
             setActiveTab('flashcard');
           }}
           className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'flashcard' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
         >
           <Sparkles size={15} className={activeTab === 'flashcard' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>3. Flashcard Lật Thẻ</span>
+          <span>5. Flashcard</span>
         </button>
 
         <button
@@ -460,7 +486,7 @@ export default function KanjiPage() {
           className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'practice' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
         >
           <ListChecks size={15} className={activeTab === 'practice' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>4. Luyện Đề Chuẩn JLPT</span>
+          <span>6. Luyện Đề JLPT</span>
         </button>
       </div>
 
@@ -671,7 +697,6 @@ export default function KanjiPage() {
             </div>
           </div>
 
-          {/* Lưới Kanji Cards */}
           {loading ? (
             <div className="py-20 text-center bg-white rounded-3xl border border-pink-100 shadow-sm space-y-3">
               <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin mx-auto" />
@@ -757,7 +782,20 @@ export default function KanjiPage() {
         </div>
       )}
 
-      {/* ════════════════════ TAB 3: FLASHCARD LẬT THẺ TỐC ĐỘ ════════════════════ */}
+      {/* ════════════════════ TAB 3: PHÒNG TẬP VIẾT NÉT TƯƠNG TÁC ════════════════════ */}
+      {activeTab === 'writing' && (
+        <KanjiWritingStudio
+          kanjiList={filteredKanjiList}
+          onMasterWord={handleMarkStatus}
+        />
+      )}
+
+      {/* ════════════════════ TAB 4: PHÂN BIỆT CÁC CẶP CHỮ DỄ NHẦM ════════════════════ */}
+      {activeTab === 'confusing' && (
+        <ConfusingKanjiStudio />
+      )}
+
+      {/* ════════════════════ TAB 5: FLASHCARD LẬT THẺ TỐC ĐỘ ════════════════════ */}
       {activeTab === 'flashcard' && (
         <KanjiFlashcardMode
           kanjiList={filteredKanjiList}
@@ -767,7 +805,7 @@ export default function KanjiPage() {
         />
       )}
 
-      {/* ════════════════════ TAB 4: LUYỆN ĐỀ CHUẨN JLPT KANJI ════════════════════ */}
+      {/* ════════════════════ TAB 6: LUYỆN ĐỀ CHUẨN JLPT KANJI ════════════════════ */}
       {activeTab === 'practice' && (
         <div className="space-y-4">
           {quizState === 'setup' && (
@@ -784,7 +822,6 @@ export default function KanjiPage() {
                 </p>
               </div>
 
-              {/* Nút Thi Thử Toàn Diện Nhanh */}
               <div className="p-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lotus space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -808,7 +845,6 @@ export default function KanjiPage() {
                 </button>
               </div>
 
-              {/* Hoặc Tự Cấu Hình Ôn Tập Theo Dạng */}
               <div className="pt-2 border-t border-pink-100 space-y-4">
                 <span className="text-xs font-black text-slate-400 uppercase tracking-wider block">
                   Hoặc tự tùy chỉnh bài tập theo nhu cầu:
@@ -893,7 +929,6 @@ export default function KanjiPage() {
             </div>
           )}
 
-          {/* Đang làm bài tập */}
           {quizState === 'playing' && quizQuestions.length > 0 && (
             <div className="max-w-2xl mx-auto space-y-4">
               <div className="p-4 rounded-2xl bg-white border border-pink-100 shadow-sm flex items-center justify-between text-xs">
@@ -1042,7 +1077,6 @@ export default function KanjiPage() {
             </div>
           )}
 
-          {/* Màn hình tổng kết */}
           {quizState === 'result' && (
             <div className="p-6 sm:p-10 rounded-3xl bg-white border border-pink-100 shadow-sm max-w-lg mx-auto text-center space-y-6">
               <div className="w-20 h-20 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center mx-auto shadow-lotus">

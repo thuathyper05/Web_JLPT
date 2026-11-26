@@ -1,5 +1,6 @@
 // Hệ thống dữ liệu Luyện Nghe Choukai Đa Cấp Độ (N5 - N1)
 // Bám sát giáo trình chuẩn Minna no Nihongo I & II, Soumatome, Shinkanzen Master & Đề thi JLPT thật
+// ZERO ARROWS RULE: Không dùng ký tự mũi tên
 
 export const listeningTracksByLevel = {
   "N5": [
@@ -55,7 +56,128 @@ export const listeningTracksByLevel = {
       "explanation": "Anh Santos trả lời rõ: 「いいえ、私は学生です。ブラジルから来ました」(Không, tôi là sinh viên. Tôi đến từ Brazil). Đáp án đúng là B.",
       "keyword": "学生 (がくせい) & ブラジル",
       "tip": "Chú ý từ phủ định 「いいえ」 để loại trừ nghề nghiệp của người hỏi trước đó.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
+    },
+    {
+      "lesson": 1,
+      "partName": "Phần 2: Mondai 1 - Xác nhận thông tin bạn học",
+      "mondaiType": "mondai1",
+      "topic": "Bài 01 - Phần 2: Thủ tục ghi danh ký túc xá",
+      "situation": "Thầy quản lý ký túc xá người Nhật đang kiểm tra hồ sơ của một bạn học sinh mới đến.",
+      "audioText": "すみません、お名前は？ワンです。ワンさんは会社員ですか。いいえ、学生です。神戸大学の学生です。分かりました。じゃ、学生証を見せてください。はい、どうぞ。",
+      "dialogue": [
+        {
+          "speaker": "Thầy quản lý",
+          "role": "A",
+          "kanji": "すみません、お名前は？",
+          "kana": "すみません、おなまえは？",
+          "vi": "Xin lỗi, tên em là gì?"
+        },
+        {
+          "speaker": "Học sinh",
+          "role": "B",
+          "kanji": "ワンです。",
+          "kana": "わんです。",
+          "vi": "Em là Wang ạ."
+        },
+        {
+          "speaker": "Thầy quản lý",
+          "role": "A",
+          "kanji": "ワンさんは会社員ですか。",
+          "kana": "わんさんはかいしゃいんですか。",
+          "vi": "Em là nhân viên công ty phải không?"
+        },
+        {
+          "speaker": "Học sinh",
+          "role": "B",
+          "kanji": "いいえ、学生です。神戸大学の学生です。",
+          "kana": "いいえ、がくせいです。こうべだいがくのがくせいです。",
+          "vi": "Dạ không, em là sinh viên đại học Kobe ạ."
+        },
+        {
+          "speaker": "Thầy quản lý",
+          "role": "A",
+          "kanji": "分かりました。じゃ、学生証を見せてください。",
+          "kana": "わかりました。じゃ、がくせいしょうをみせてください。",
+          "vi": "Thầy hiểu rồi. Vậy em hãy cho thầy xem thẻ sinh viên nhé."
+        },
+        {
+          "speaker": "Học sinh",
+          "role": "B",
+          "kanji": "はい、どうぞ。",
+          "kana": "はい、どうぞ。",
+          "vi": "Vâng, xin mời thầy."
+        }
+      ],
+      "question": "Bạn Wang là sinh viên của trường nào và phải xuất trình giấy tờ gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sinh viên đại học Kobe, xuất trình thẻ sinh viên"
+        },
+        {
+          "id": "B",
+          "text": "Nhân viên công ty, xuất trình hộ chiếu"
+        },
+        {
+          "id": "C",
+          "text": "Sinh viên đại học Tokyo, xuất trình thẻ cư trú"
+        },
+        {
+          "id": "D",
+          "text": "Giáo viên đại học Kobe, xuất trình danh thiếp"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Bạn Wang trả lời 「神戸大学の学生です」 và thầy quản lý yêu cầu 「学生証を見せてください」. Đáp án đúng là A.",
+      "keyword": "神戸大学 (Kobe Daigaku) & 学生証 (Gakuseishou)",
+      "tip": "Bắt cụm từ chỉ tên trường đại học và từ khóa giấy tờ 「学生証」.",
+      "level": "N5",
+      "id": 1001
+    },
+    {
+      "lesson": 1,
+      "partName": "Phần 3: Mondai 4 - Phản xạ chào hỏi lần đầu",
+      "mondaiType": "mondai4",
+      "topic": "Bài 01 - Phần 3: Phản xạ chào hỏi lần đầu gặp mặt",
+      "situation": "Bạn gặp một đồng nghiệp người Nhật lần đầu tiên tại sảnh công ty.",
+      "audioText": "初めまして。山田です。どうぞよろしくお願いします。",
+      "dialogue": [
+        {
+          "speaker": "Yamada",
+          "role": "A",
+          "kanji": "初めまして。山田です。どうぞよろしくお願いします。",
+          "kana": "はじめまして。やまだです。どうぞよろしくおねがいします。",
+          "vi": "Rất vui được gặp bạn. Tôi là Yamada. Rất mong được giúp đỡ."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên và lịch sự nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "こちらこそ、どうぞよろしくお願いします。"
+        },
+        {
+          "id": "B",
+          "text": "いいえ、どういたしまして。"
+        },
+        {
+          "id": "C",
+          "text": "はい、そうです。"
+        },
+        {
+          "id": "D",
+          "text": "さようなら、またあした。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Khi đối phương nói 「どうぞよろしくお願いします」, câu đáp lại chuẩn tắc xã giao Nhật Bản là 「こちらこそ、どうぞよろしくお願いします」(Chính tôi mới là người mong được bạn giúp đỡ). Đáp án đúng là A.",
+      "keyword": "こちらこそ (chính tôi)",
+      "tip": "Đáp lại lời chào lần đầu luôn là cặp mẫu câu 「どうぞよろしく」 đi kèm 「こちらこそ」.",
+      "level": "N5",
+      "id": 1002
     },
     {
       "id": 2,
@@ -116,7 +238,79 @@ export const listeningTracksByLevel = {
       "explanation": "Chị Sato nói: 「あれは私の傘です」(Cái đó là ô của tôi). Đáp án chính xác là B.",
       "keyword": "私の傘 (わたしのかさ)",
       "tip": "Mẫu câu sở hữu danh từ 「〜の傘」 rất hay ra trong kỳ thi Choukai Minna Bài 2.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
+    },
+    {
+      "lesson": 2,
+      "partName": "Phần 2: Mondai 1 - Đồ đạc thất lạc",
+      "mondaiType": "mondai1",
+      "topic": "Bài 02 - Phần 2: Tìm đồ thất lạc trên xe bus",
+      "situation": "Hành khách đến quầy tìm đồ thất lạc tại bến xe bus hỏi về cuốn sổ tay.",
+      "audioText": "すみません、黒い手帳を忘れました。これですか。いいえ、それは英語の手帳です。私のは日本語の手帳です。あ、こちらですね。はい、それです！ありがとうございます。",
+      "dialogue": [
+        {
+          "speaker": "Hành khách",
+          "role": "A",
+          "kanji": "すみません、黒い手帳を忘れました。",
+          "kana": "すみません、くろいてちょうをわすれました。",
+          "vi": "Xin lỗi, tôi để quên một cuốn sổ tay màu đen."
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "これですか。",
+          "kana": "これですか。",
+          "vi": "Có phải cái này không?"
+        },
+        {
+          "speaker": "Hành khách",
+          "role": "A",
+          "kanji": "いいえ、それは英語の手帳です。私のは日本語の手帳です。",
+          "kana": "いいえ、それはえいごのてちょうです。わたしのはにほんごのてちょうです。",
+          "vi": "Không, cái đó là sổ tay tiếng Anh. Của tôi là sổ tay tiếng Nhật cơ ạ."
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "あ、こちらですね。",
+          "kana": "あ、こちらですね。",
+          "vi": "À, là cái này đúng không."
+        },
+        {
+          "speaker": "Hành khách",
+          "role": "A",
+          "kanji": "はい、それです！ありがとうございます。",
+          "kana": "はい、それです！ありがとうございます。",
+          "vi": "Vâng, đúng nó rồi! Cảm ơn anh."
+        }
+      ],
+      "question": "Cuốn sổ tay của hành khách là cuốn sổ như thế nào?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sổ tay màu đen, viết bằng tiếng Nhật"
+        },
+        {
+          "id": "B",
+          "text": "Sổ tay màu đỏ, viết bằng tiếng Anh"
+        },
+        {
+          "id": "C",
+          "text": "Sổ tay màu trắng, viết bằng tiếng Trung"
+        },
+        {
+          "id": "D",
+          "text": "Tạp chí tiếng Anh màu đen"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Hành khách nói rõ: 「黒い手帳」(sổ tay màu đen) và đính chính 「私のは日本語の手帳です」(của tôi là sổ tiếng Nhật). Đáp án đúng là A.",
+      "keyword": "黒い手帳 & 日本語の手帳",
+      "tip": "Chú ý từ phản bác 「いいえ」 để loại trừ cuốn sổ tiếng Anh đầu tiên được đưa ra.",
+      "level": "N5",
+      "id": 1003
     },
     {
       "id": 3,
@@ -170,7 +364,72 @@ export const listeningTracksByLevel = {
       "explanation": "Lễ tân hướng dẫn: 「階段の隣です」(Ngay cạnh cầu thang bộ). Đáp án là B.",
       "keyword": "階段の隣 (かいだんのとなり)",
       "tip": "Chú ý từ chỉ vị trí tương đối: 「隣」(bên cạnh), 「前」(phía trước), 「後ろ」(phía sau).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
+    },
+    {
+      "lesson": 3,
+      "partName": "Phần 2: Mondai 1 - Hỏi đường trong trung tâm thương mại",
+      "mondaiType": "mondai1",
+      "topic": "Bài 03 - Phần 2: Tìm thang máy và quầy mỹ phẩm",
+      "situation": "Khách hàng hỏi nhân viên hướng dẫn tại tầng 1 trung tâm thương mại Mitsukoshi.",
+      "audioText": "すみません、化粧品売り場はどこですか。化粧品売り場は１階のあちらです。では、エレベーターはどこですか。エレベーターはあそこの階段の隣にございます。ありがとうございます。",
+      "dialogue": [
+        {
+          "speaker": "Khách hàng",
+          "role": "A",
+          "kanji": "すみません、化粧品売り場はどこですか。",
+          "kana": "すみません、けしょうひんうりばはどこですか。",
+          "vi": "Xin lỗi, quầy mỹ phẩm ở đâu vậy ạ?"
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "化粧品売り場は１階のあちらです。",
+          "kana": "けしょうひんうりばはいっかいのあちらです。",
+          "vi": "Quầy mỹ phẩm ở đằng kia của tầng 1 ạ."
+        },
+        {
+          "speaker": "Khách hàng",
+          "role": "A",
+          "kanji": "では、エレベーターはどこですか。",
+          "kana": "では、えれべーたーはどこですか。",
+          "vi": "Thế thang máy thì ở đâu ạ?"
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "エレベーターはあそこの階段の隣にございます。",
+          "kana": "えれべーたーはあそportionのかいだんのとなりにございます。",
+          "vi": "Thang máy ở bên cạnh cầu thang bộ đằng kia ạ."
+        }
+      ],
+      "question": "Thang máy của trung tâm thương mại nằm ở vị trí nào?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ở bên cạnh cầu thang bộ"
+        },
+        {
+          "id": "B",
+          "text": "Ở tầng 3 cạnh nhà vệ sinh"
+        },
+        {
+          "id": "C",
+          "text": "Ở ngoài cổng chính tầng hầm"
+        },
+        {
+          "id": "D",
+          "text": "Ở đối diện quầy thu ngân"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Nhân viên trả lời rõ: 「エレベーターはあそこの階段の隣にございます」(Thang máy ở bên cạnh cầu thang bộ đằng kia). Đáp án đúng là A.",
+      "keyword": "階段の隣 (kaidan no tonari - cạnh cầu thang bộ)",
+      "tip": "Phân biệt giữa câu hỏi thứ nhất (quầy mỹ phẩm) và câu hỏi thứ hai (thang máy).",
+      "level": "N5",
+      "id": 1004
     },
     {
       "id": 4,
@@ -217,7 +476,72 @@ export const listeningTracksByLevel = {
       "explanation": "Nhân viên trả lời: 「土曜日と日曜日は休みです」(Thứ 7 và chủ nhật nghỉ). Đáp án là B.",
       "keyword": "土曜日と日曜日 (Thứ 7 và Chủ nhật)",
       "tip": "Mẫu câu thời gian 「〜から〜まで」 và danh sách ngày nghỉ với trợ từ 「と」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
+    },
+    {
+      "lesson": 4,
+      "partName": "Phần 2: Mondai 2 - Giờ làm việc của ngân hàng",
+      "mondaiType": "mondai2",
+      "topic": "Bài 04 - Phần 2: Xác nhận giờ mở cửa ngân hàng",
+      "situation": "Anh Tanaka gọi điện đến ngân hàng Tokyo-Mitsubishi để hỏi giờ giao dịch.",
+      "audioText": "もしもし、そちらの銀行は何時から何時までですか。午前９時から午後３時までです。土曜日も休みですか。はい、土曜日と日曜日は休みです。分かりました。",
+      "dialogue": [
+        {
+          "speaker": "Tanaka",
+          "role": "A",
+          "kanji": "もしもし、そちらの銀行は何時から何時までですか。",
+          "kana": "もしもし、そちらのぎんこうはなんじからなんじまでですか。",
+          "vi": "A lô, ngân hàng bên anh làm việc từ mấy giờ đến mấy giờ ạ?"
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "午前９時から午後３時までです。",
+          "kana": "ごぜんくじからごごさんじまでです。",
+          "vi": "Dạ từ 9 giờ sáng đến 3 giờ chiều ạ."
+        },
+        {
+          "speaker": "Tanaka",
+          "role": "A",
+          "kanji": "土曜日も休みですか。",
+          "kana": "どようびもやすみですか。",
+          "vi": "Thứ bảy cũng nghỉ phải không ạ?"
+        },
+        {
+          "speaker": "Nhân viên",
+          "role": "B",
+          "kanji": "はい、土曜日と日曜日は休みです。",
+          "kana": "はい、どようびとにちようびはやすみです。",
+          "vi": "Vâng, thứ bảy và chủ nhật đều nghỉ ạ."
+        }
+      ],
+      "question": "Ngân hàng mở cửa làm việc vào những thời gian nào?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Từ thứ hai đến thứ sáu, từ 9:00 sáng đến 15:00 chiều"
+        },
+        {
+          "id": "B",
+          "text": "Tất cả các ngày trong tuần từ 8:00 đến 17:00"
+        },
+        {
+          "id": "C",
+          "text": "Cả ngày thứ bảy từ 9:00 đến 12:00"
+        },
+        {
+          "id": "D",
+          "text": "Từ thứ hai đến thứ bảy, từ 9:00 đến 16:00"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Giờ làm việc là 「午前９時から午後３時まで」(9h đến 15h) và nghỉ 「土曜日と日曜日」(thứ 7 và CN), tức mở từ thứ hai đến thứ sáu. Đáp án đúng là A.",
+      "keyword": "午前９時から午後３時まで & 土曜日と日曜日は休み",
+      "tip": "Để ý liên từ 「から〜まで」 và xác nhận ngày nghỉ để loại trừ.",
+      "level": "N5",
+      "id": 1005
     },
     {
       "id": 5,
@@ -264,7 +588,72 @@ export const listeningTracksByLevel = {
       "explanation": "Bạn B xác nhận: 「友達と新幹線で行きます」(Đi cùng bạn, đi bằng tàu Shinkansen). Đáp án đúng là B.",
       "keyword": "友達と (Cùng bạn) & 新幹線で (Bằng Shinkansen)",
       "tip": "Trợ từ 「と」 chỉ đối tượng cùng hành động, trợ từ 「で」 chỉ phương tiện di chuyển.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
+    },
+    {
+      "lesson": 5,
+      "partName": "Phần 2: Mondai 1 - Lộ trình di chuyển về quê",
+      "mondaiType": "mondai1",
+      "topic": "Bài 05 - Phần 2: Đi Kyoto bằng phương tiện gì?",
+      "situation": "Hai người bạn cùng công ty đang nói chuyện về kế hoạch đi Kyoto cuối tuần.",
+      "audioText": "佐藤さん、日曜日どこへ行きますか。京都へ行きます。一人で行きますか。いいえ、家族と新幹線で行きます。いいですね。楽しんでください。",
+      "dialogue": [
+        {
+          "speaker": "Bạn",
+          "role": "A",
+          "kanji": "佐藤さん、日曜日どこへ行きますか。",
+          "kana": "さとうさん、にちようびどこへいきますか。",
+          "vi": "Chị Sato, chủ nhật chị đi đâu vậy?"
+        },
+        {
+          "speaker": "Sato",
+          "role": "B",
+          "kanji": "京都へ行きます。",
+          "kana": "きょうとへいきます。",
+          "vi": "Tôi đi Kyoto."
+        },
+        {
+          "speaker": "Bạn",
+          "role": "A",
+          "kanji": "一人で行きますか。",
+          "kana": "ひとりでいきますか。",
+          "vi": "Chị đi một mình à?"
+        },
+        {
+          "speaker": "Sato",
+          "role": "B",
+          "kanji": "いいえ、家族と新幹線で行きます。",
+          "kana": "いいえ、かぞくとしんかんせんでいきます。",
+          "vi": "Không, tôi đi với gia đình bằng tàu Shinkansen."
+        }
+      ],
+      "question": "Chị Sato đi Kyoto với ai và bằng phương tiện gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Đi cùng gia đình bằng tàu Shinkansen"
+        },
+        {
+          "id": "B",
+          "text": "Đi một mình bằng máy bay"
+        },
+        {
+          "id": "C",
+          "text": "Đi cùng bạn học bằng xe bus"
+        },
+        {
+          "id": "D",
+          "text": "Đi cùng đồng nghiệp bằng tàu điện thường"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Chị Sato nói: 「家族と新幹線で行きます」(Đi cùng gia đình bằng tàu Shinkansen). Đáp án đúng là A.",
+      "keyword": "家族と (cùng gia đình) & 新幹線で (bằng Shinkansen)",
+      "tip": "Bắt trợ từ 「と」 (cùng ai) và trợ từ 「で」 (phương tiện di chuyển).",
+      "level": "N5",
+      "id": 1006
     },
     {
       "id": 6,
@@ -311,7 +700,9 @@ export const listeningTracksByLevel = {
       "explanation": "Địa điểm được chọn là: 「駅前のレストラン」(Nhà hàng trước ga). Đáp án là B.",
       "keyword": "駅前のレストラン (Nhà hàng trước ga)",
       "tip": "Cấu trúc rủ rê lịch sự 「〜ませんか」 và đồng thuận 「〜ましょう」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 7,
@@ -358,7 +749,9 @@ export const listeningTracksByLevel = {
       "explanation": "Món quà được mở ra là: 「素敵なスプーン」(Chiếc thìa xinh xắn). Đáp án đúng là B.",
       "keyword": "スプーン (Chiếc thìa / muỗng)",
       "tip": "Trợ từ 「で」 chỉ công cụ, phương tiện thao tác: 「スプーンで」(bằng thìa).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 8,
@@ -405,7 +798,9 @@ export const listeningTracksByLevel = {
       "explanation": "Người nói miêu tả rõ: 「とても高くて、綺麗でした」(Rất cao và đẹp). Đáp án là B.",
       "keyword": "高くて、綺麗でした (Cao và đẹp)",
       "tip": "Mẫu câu hỏi cảm nhận trong quá khứ 「〜はどうでしたか」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 9,
@@ -452,7 +847,9 @@ export const listeningTracksByLevel = {
       "explanation": "Mike trả lời: 「サッカーが大好きです。でも、ピアノは全然できません」(Rất thích bóng đá, hoàn toàn không biết chơi piano). Đáp án là B.",
       "keyword": "サッカーが大好き & 全然できません",
       "tip": "Từ phủ định triệt để 「全然〜ません」(hoàn toàn không).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 10,
@@ -499,7 +896,9 @@ export const listeningTracksByLevel = {
       "explanation": "Nhân viên B chỉ rõ: 「箱の中にあります」(Ở trong hộp). Đáp án là B.",
       "keyword": "箱の中にあります (Trong hộp)",
       "tip": "Phân biệt: Đồ vật dùng 「あります」, người và động vật dùng 「います」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 11,
@@ -546,7 +945,9 @@ export const listeningTracksByLevel = {
       "explanation": "Khách gọi: 「りんごを3つ (3 quả táo)」 và 「みかんを5つ (5 quả quýt)」. Đáp án đúng là A.",
       "keyword": "りんごを3つ & みかんを5つ",
       "tip": "Học kỹ cách đếm đồ vật thuần Nhật: ひとつ, ふたつ, みっつ, よっつ, いつつ.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 12,
@@ -593,7 +994,9 @@ export const listeningTracksByLevel = {
       "explanation": "Bạn B nói: 「春が一番好きです。桜がとても綺麗ですから」(Thích mùa xuân nhất vì hoa anh đào đẹp). Đáp án là B.",
       "keyword": "春が一番好き (Thích mùa xuân nhất)",
       "tip": "Mẫu câu so sánh nhất: 「〜の中で〜が一番好きです」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 13,
@@ -640,7 +1043,9 @@ export const listeningTracksByLevel = {
       "explanation": "Mục đích là: 「飲みに行きます」(Đi để uống đồ lạnh). Đáp án là B.",
       "keyword": "飲みたい (Muốn uống) & 飲みに行きます (Đi để uống)",
       "tip": "Mẫu ngữ pháp mục đích di chuyển: Động từ thể Masu bỏ Masu + 「に行きます」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 14,
@@ -687,7 +1092,9 @@ export const listeningTracksByLevel = {
       "explanation": "Chị Mai nhờ: 「窓を閉めてください」(Hãy đóng cửa sổ giúp tôi). Đáp án là B.",
       "keyword": "窓を閉めてください (Hãy đóng cửa sổ)",
       "tip": "Mẫu câu thể Te nhờ vả lịch sự: 「〜てください」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 15,
@@ -734,7 +1141,9 @@ export const listeningTracksByLevel = {
       "explanation": "Bảo vệ thông báo cấm đoán: 「写真を撮ってはいけません」(Cấm chụp ảnh). Đáp án là B.",
       "keyword": "撮ってはいけません (Cấm chụp ảnh)",
       "tip": "Mẫu cấm đoán: 「〜てはいけません」 (Không được phép làm gì).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 16,
@@ -781,7 +1190,9 @@ export const listeningTracksByLevel = {
       "explanation": "Thứ tự hành động: 「ジョギングをして」(Chạy bộ trước tiên). Đáp án đúng là B.",
       "keyword": "ジョギングをして (Chạy bộ)",
       "tip": "Mẫu nối chuỗi hành động theo trình tự thời gian bằng thể Te: V1-te, V2-te, V3-masu.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 17,
@@ -828,7 +1239,9 @@ export const listeningTracksByLevel = {
       "explanation": "Bác sĩ yêu cầu: 「お風呂に入らないでください」(Xin đừng tắm bồn). Đáp án là B.",
       "keyword": "入らないでください (Xin đừng tắm)",
       "tip": "Mẫu phủ định lịch sự: Động từ thể Nai + 「でください」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 18,
@@ -875,7 +1288,9 @@ export const listeningTracksByLevel = {
       "explanation": "Ứng viên khẳng định: 「運転することができます。英語も話せます」. Đáp án đúng là B.",
       "keyword": "運転することができます (Có thể lái xe)",
       "tip": "Mẫu biểu thị năng lực: Động từ thể Từ điển (Jishokei) + 「ことができます」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 19,
@@ -922,7 +1337,9 @@ export const listeningTracksByLevel = {
       "explanation": "Bạn B xác nhận: 「一度だけ入ったことがあります」(Từng tắm một lần). Đáp án là B.",
       "keyword": "入ったことがあります (Đã từng tắm)",
       "tip": "Mẫu trải nghiệm trong đời: Động từ thể Ta + 「ことがあります」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 20,
@@ -969,7 +1386,9 @@ export const listeningTracksByLevel = {
       "explanation": "Chốt hẹn: 「10時に駅で」(10 giờ ở nhà ga). Đáp án đúng là B.",
       "keyword": "10時に駅で (10 giờ ở ga)",
       "tip": "Thể thân mật Futsuukei lược bỏ Desu/Masu, chuyển câu hỏi sang lên giọng ở cuối câu.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 21,
@@ -1016,7 +1435,9 @@ export const listeningTracksByLevel = {
       "explanation": "Người nói nêu ý kiến: 「高すぎると思います。特に家賃が高い」(Nghĩ là quá đắt, nhất là tiền thuê nhà). Đáp án là B.",
       "keyword": "高すぎると思います (Nghĩ là quá đắt)",
       "tip": "Mẫu nêu ý kiến cá nhân: Thể thông thường + 「と思います」.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 22,
@@ -1063,7 +1484,9 @@ export const listeningTracksByLevel = {
       "explanation": "Đặc điểm: 「眼鏡をかけている人」(Người đang đeo kính). Đáp án là B.",
       "keyword": "眼鏡をかけている人 (Người đeo kính)",
       "tip": "Mệnh đề bổ nghĩa đứng ngay trước danh từ, động từ chuyển sang thể thông thường.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 23,
@@ -1110,7 +1533,9 @@ export const listeningTracksByLevel = {
       "explanation": "Chỉ đường: 「真っ直ぐ行くと、右側にあります」(Đi thẳng, nằm ở bên phải). Đáp án đúng là B.",
       "keyword": "右側にあります (Ở bên phải)",
       "tip": "Mẫu chỉ đường tất yếu: Động từ thể Từ điển + 「と」 (Cứ làm hành động này thì kết quả sẽ xảy ra).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 24,
@@ -1157,7 +1582,9 @@ export const listeningTracksByLevel = {
       "explanation": "Chị Sato làm ơn cho người nói mượn: 「佐藤さんが貸してくれました」. Đáp án đúng là B.",
       "keyword": "貸してくれました (Làm ơn cho tôi mượn)",
       "tip": "Cấu trúc 「〜てくれました」 dùng khi người khác làm một việc tốt cho chính bản thân mình.",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     },
     {
       "id": 25,
@@ -1204,7 +1631,9 @@ export const listeningTracksByLevel = {
       "explanation": "Bạn B chọn: 「出かけません。家で本を読みます」(Không đi ra ngoài, ở nhà đọc sách). Đáp án đúng là B.",
       "keyword": "出かけません。家で本を読みます",
       "tip": "Mẫu câu điều kiện giả định phổ biến nhất JLPT N5: Động từ thể Ta + 「ら」 (Nếu... thì...).",
-      "level": "N5"
+      "level": "N5",
+      "partName": "Phần 1: Hội thoại tình huống cơ bản",
+      "mondaiType": "dialogue"
     }
   ],
   "N4": [
