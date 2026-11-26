@@ -8,6 +8,7 @@ import KanjiStrokeCanvas from '../components/KanjiStrokeCanvas.jsx';
 import KanjiFlashcardMode from '../components/KanjiFlashcardMode.jsx';
 import KanjiWritingStudio from '../components/KanjiWritingStudio.jsx';
 import ConfusingKanjiStudio from '../components/ConfusingKanjiStudio.jsx';
+import KanjiSpeedBlitz from '../components/KanjiSpeedBlitz.jsx';
 import {
   PenTool,
   Search,
@@ -35,7 +36,8 @@ import {
   GraduationCap,
   Timer,
   Edit3,
-  GitCompare
+  GitCompare,
+  Zap
 } from 'lucide-react';
 
 const TOPIC_ICON_MAP = {
@@ -488,6 +490,18 @@ export default function KanjiPage() {
           <ListChecks size={15} className={activeTab === 'practice' ? 'text-pink-600' : 'text-slate-400'} />
           <span>6. Luyện Đề JLPT</span>
         </button>
+
+        <button
+          type="button"
+          onClick={function () {
+            sounds.playFlip();
+            setActiveTab('blitz');
+          }}
+          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'blitz' ? 'bg-white text-rose-700 shadow-sm border border-rose-300' : 'text-slate-600 hover:text-rose-600')}
+        >
+          <Zap size={15} className={activeTab === 'blitz' ? 'text-amber-500 fill-amber-500' : 'text-slate-400'} />
+          <span>7. Phản Xạ 60s</span>
+        </button>
       </div>
 
       {/* ════════════════════ TAB 1: LỘ TRÌNH HÁN TỰ (ROADMAP) ════════════════════ */}
@@ -822,27 +836,59 @@ export default function KanjiPage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lotus space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Timer size={18} />
-                    <span className="font-black text-sm">Đề Thi Thử JLPT Kanji (15 câu)</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lotus space-y-2 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Timer size={18} />
+                        <span className="font-black text-sm">Đề Thi Thử JLPT (15 câu)</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase bg-white/20 px-2 py-0.5 rounded-full">
+                        Đủ 3 Mondai
+                      </span>
+                    </div>
+                    <p className="text-xs text-pink-100">
+                      Tập hợp ngẫu nhiên các câu hỏi Mondai 1, 2, 3 từ toàn bộ kho Kanji {activeLevel}.
+                    </p>
                   </div>
-                  <span className="text-[10px] font-bold uppercase bg-white/20 px-2 py-0.5 rounded-full">
-                    Đủ 3 Mondai
-                  </span>
+                  <button
+                    type="button"
+                    onClick={function () { handleStartQuiz(null, true); }}
+                    className="w-full mt-2 py-2.5 rounded-xl bg-white text-pink-700 font-black text-xs hover:bg-pink-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                  >
+                    <Timer size={15} />
+                    <span>Làm Đề Thi Thử Ngay</span>
+                  </button>
                 </div>
-                <p className="text-xs text-pink-100">
-                  Tập hợp ngẫu nhiên các câu hỏi Mondai 1, 2, 3 từ toàn bộ kho Kanji {activeLevel} giúp đánh giá chính xác năng lực thực chiến.
-                </p>
-                <button
-                  type="button"
-                  onClick={function () { handleStartQuiz(null, true); }}
-                  className="w-full mt-2 py-2.5 rounded-xl bg-white text-pink-700 font-black text-xs hover:bg-pink-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
-                >
-                  <Timer size={15} />
-                  <span>Bắt Đầu Làm Đề Thi Thử Ngay</span>
-                </button>
+
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-pink-600 text-white shadow-lotus space-y-2 flex flex-col justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Zap size={18} />
+                        <span className="font-black text-sm">Phản Xạ Thần Tốc 60s</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase bg-white/20 px-2 py-0.5 rounded-full">
+                        Combo XP
+                      </span>
+                    </div>
+                    <p className="text-xs text-amber-100">
+                      Nhìn chữ chọn nghĩa & âm trong 60 giây nghẹt thở, rèn tốc độ nhận diện đỉnh cao.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={function () {
+                      sounds.playFlip();
+                      setActiveTab('blitz');
+                    }}
+                    className="w-full mt-2 py-2.5 rounded-xl bg-white text-rose-700 font-black text-xs hover:bg-amber-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                  >
+                    <Zap size={15} className="text-amber-500 fill-amber-500" />
+                    <span>Thử Thách 60s Ngay</span>
+                  </button>
+                </div>
               </div>
 
               <div className="pt-2 border-t border-pink-100 space-y-4">
@@ -1140,6 +1186,22 @@ export default function KanjiPage() {
             </div>
           )}
         </div>
+      )}
+
+      {/* ════════════════════ TAB 7: THỬ THÁCH PHẢN XẠ 60S (SPEED BLITZ) ════════════════════ */}
+      {activeTab === 'blitz' && (
+        <KanjiSpeedBlitz
+          kanjiList={kanjiList}
+          activeLevel={activeLevel}
+          onComplete={function (result) {
+            if (typeof recordWordProgress === 'function' && result && result.score > 0) {
+              recordWordProgress('kanji_blitz_' + activeLevel, 'mastered');
+            }
+          }}
+          onBack={function () {
+            setActiveTab('practice');
+          }}
+        />
       )}
 
       {/* ════════════════════ MODAL CHI TIẾT KANJI & CHIẾT TỰ ════════════════════ */}

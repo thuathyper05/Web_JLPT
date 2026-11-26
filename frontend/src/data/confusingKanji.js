@@ -206,5 +206,134 @@ export const CONFUSING_KANJI_PAIRS = [
       }
     ],
     distinctionMemory: 'Con người (人) tựa lưng vững chãi; Cửa mở bước vào (入) nét phải che chở.'
+  },
+  {
+    id: 'nguu_ngo',
+    title: '牛 (NGƯU) và 午 (NGỌ)',
+    level: 'N5',
+    tip: 'Nét sổ thẳng đứng: 牛 (Ngưu - con bò) nét sổ nhô lên trên đỉnh tạo sừng bò. 午 (Ngọ - giữa trưa/con ngựa) nét sổ bằng đầu không nhô.',
+    items: [
+      {
+        kanji: '牛',
+        han_viet: 'NGƯU',
+        meaning: 'Con bò',
+        keyFeature: 'Nét sổ thẳng vươn cao vượt qua nét ngang thứ nhất (như sừng bò nhô lên)',
+        examples: '牛肉 (gyuuniku - thịt bò), 牛乳 (gyuunyuu - sữa bò)'
+      },
+      {
+        kanji: '午',
+        han_viet: 'NGỌ',
+        meaning: 'Buổi trưa, chi Ngọ',
+        keyFeature: 'Nét sổ bắt đầu từ đúng nét ngang thứ nhất, tuyệt đối không đâm xuyên lên trên',
+        examples: '午前 (gozen - buổi sáng), 午後 (gogo - buổi chiều)'
+      }
+    ],
+    distinctionMemory: 'Bò Ngưu (牛) có sừng nhô lên trời; Trưa Ngọ (午) bằng đầu mặt trời đứng bóng.'
+  },
+  {
+    id: 'vuong_ngoc',
+    title: '王 (VƯƠNG) và 玉 (NGỌC)',
+    level: 'N5',
+    tip: 'Dấu chấm bảo vật: 王 (Vương - vua) 3 nét ngang 1 nét sổ. 玉 (Ngọc - ngọc ngà) có thêm 1 dấu chấm nhỏ biểu thị viên ngọc vua đeo bên mình.',
+    items: [
+      {
+        kanji: '王',
+        han_viet: 'VƯƠNG',
+        meaning: 'Vua, người đứng đầu',
+        keyFeature: '3 nét ngang nối bởi nét sổ ở giữa, không có dấu chấm',
+        examples: '王様 (ousama - đức vua), 王国 (oukoku - vương quốc)'
+      },
+      {
+        kanji: '玉',
+        han_viet: 'NGỌC',
+        meaning: 'Viên ngọc, đồ tròn bóng, đồng xu',
+        keyFeature: 'Giống chữ Vương nhưng có thêm 1 dấu chấm ở góc dưới bên phải',
+        examples: '目玉 (medama - nhãn cầu/món hời), お年玉 (otoshidama - tiền lì xì)'
+      }
+    ],
+    distinctionMemory: 'Vua Vương (王) thống trị ba cõi; Vua đeo viên châu báu bên hông là Ngọc (玉).'
+  },
+  {
+    id: 'van_phuong',
+    title: '万 (VẠN) và 方 (PHƯƠNG)',
+    level: 'N5',
+    tip: 'Đỉnh đầu và nét phẩy: 万 (Vạn - mười nghìn) nét ngang liền phẳng. 方 (Phương - phương hướng/vị khách) có nét chấm trên đầu và nét cong móc.',
+    items: [
+      {
+        kanji: '万',
+        han_viet: 'VẠN',
+        meaning: 'Mười nghìn (10.000), vô số',
+        keyFeature: 'Nét ngang phẳng trên cùng, nét gập móc bên dưới',
+        examples: '一万円 (ichiman en - mười nghìn yên), 万歳 (banzai - vạn tuế)'
+      },
+      {
+        kanji: '方',
+        han_viet: 'PHƯƠNG',
+        meaning: 'Phương hướng, cách thức, vị (kính ngữ)',
+        keyFeature: 'Có nét chấm ở trên đỉnh đầu nét ngang, nét móc vểnh',
+        examples: '書き方 (kakikata - cách viết), あの方 (ano kata - vị kia)'
+      }
+    ],
+    distinctionMemory: 'Vạn (万) tiền xếp phẳng lì; Phương (方) hướng có la bàn chấm đỉnh chỉ lối.'
+  },
+  {
+    id: 'moc_ban_huu',
+    title: '木 (MỘC), 本 (BẢN) và 休 (HƯU)',
+    level: 'N5',
+    tip: 'Gốc rễ và người nghỉ ngơi: 木 là cây; 本 thêm nét ngang chỉ gốc rễ/sách; 休 có người đứng cạnh cây nghỉ ngơi.',
+    items: [
+      {
+        kanji: '木',
+        han_viet: 'MỘC',
+        meaning: 'Cây cối, gỗ',
+        keyFeature: 'Thân cây ở giữa và các cành nhánh tỏa ra hai bên',
+        examples: '木曜日 (mokuyoubi - thứ năm), 大木 (taiboku - cây cổ thụ)'
+      },
+      {
+        kanji: '本',
+        han_viet: 'BẢN',
+        meaning: 'Gốc rễ, cội nguồn, cuốn sách',
+        keyFeature: 'Chữ Mộc thêm một nét ngang ở dưới chỉ vị trí gốc rễ',
+        examples: '本 (hon - sách), 日本 (nihon - Nhật Bản)'
+      },
+      {
+        kanji: '休',
+        han_viet: 'HƯU',
+        meaning: 'Nghỉ ngơi, ngừng lại',
+        keyFeature: 'Bộ Nhân đứng (亻) bên trái ghép với chữ Mộc (木) bên phải',
+        examples: '休み (yasumi - ngày nghỉ), 休日 (kyuujitsu - ngày nghỉ lễ)'
+      }
+    ],
+    distinctionMemory: 'Cây cối là Mộc (木); Tìm về gốc rễ đọc sách là Bản (本); Người tựa bóng cây nghỉ mát là Hưu (休).'
+  },
+  {
+    id: 'than_giap_do',
+    title: '申 (THÂN), 甲 (GIÁP) và 由 (DO)',
+    level: 'N4',
+    tip: 'Vị trí nét sổ thẳng qua ô vuông Điền (田): 申 thấu suốt cả 2 đầu; 甲 thò chân xuống dưới; 由 nhô đầu lên trên.',
+    items: [
+      {
+        kanji: '申',
+        han_viet: 'THÂN',
+        meaning: 'Nói, bày tỏ, khiêm nhường',
+        keyFeature: 'Nét sổ thẳng xuyên suốt từ đỉnh đầu qua đáy (thấu suốt tâm tư)',
+        examples: '申し上げる (moushiageru - thưa gửi), 申請 (shinsei - đăng ký/xin phép)'
+      },
+      {
+        kanji: '甲',
+        han_viet: 'GIÁP',
+        meaning: 'Bộ giáp, đầu tiên, mai rùa',
+        keyFeature: 'Nét sổ thẳng đâm thò xuống dưới đáy như chân giá đỡ bộ giáp',
+        examples: '甲 (kou - giáp/bên A), 甲板 (kanpan - boong tàu)'
+      },
+      {
+        kanji: '由',
+        han_viet: 'DO',
+        meaning: 'Nguyên do, lý do, tự do',
+        keyFeature: 'Nét sổ thẳng nhô lên khỏi đỉnh nóc như mầm cây tự do vươn lên',
+        examples: '理由 (riyuu - lý do), 自由 (jiyuu - tự do)'
+      }
+    ],
+    distinctionMemory: 'Thân (申) thông suốt cả hai đầu; Giáp (甲) thò chân đất cắm sào; Do (由) nhô đầu mầm tự do bay lượn.'
   }
 ];
