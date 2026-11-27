@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
+import StudyHero from '../components/StudyHero.jsx';
+import StudyTabs from '../components/StudyTabs.jsx';
+import DailyPlanCard from '../components/DailyPlanCard.jsx';
+import ListeningExamGuide from '../components/ListeningExamGuide.jsx';
 import { speakJapanese, vocabService } from '../services/api';
 import { sounds } from '../services/sounds';
 import confetti from 'canvas-confetti';
@@ -304,114 +308,79 @@ export default function ListeningPage() {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-20 animate-in fade-in duration-300">
-      {/* ════════════════════ 1. HEADER BANNER CHOUKAI ════════════════════ */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden">
-        <div className="absolute right-4 top-2 text-pink-100/50 font-jp font-black text-8xl sm:text-9xl pointer-events-none select-none">
-          聴
-        </div>
+      {/* ════════════════════ 1. HERO CHOUKAI HIỆN ĐẠI ════════════════════ */}
+      <StudyHero
+        bigChar="聴"
+        kicker={'Choukai 聴解 - JLPT ' + activeLevel}
+        icon={<Headphones size={13} />}
+        title={'Luyện nghe JLPT ' + activeLevel + ' giọng Tokyo'}
+        subtitle="Học theo đúng cấu trúc đề thi: Mondai 1, 2, 4 kèm phân tích bẫy nghe, chép chính tả và luyện bắt chước giọng."
+        ring={{ percent: currentTracks.length > 0 ? Math.round((score / currentTracks.length) * 100) : 0, label: 'Chính xác' }}
+        stats={[
+          { label: 'Bài nghe', value: currentTracks.length },
+          { label: 'Điểm', value: score + '/' + currentTracks.length, tone: 'emerald' },
+          { label: 'Cấp độ', value: activeLevel, tone: 'sky' },
+          { label: 'Bài học', value: lessonChoice === 'all' ? 'Tất cả' : 'Bài ' + lessonChoice, tone: 'amber' }
+        ]}
+        actions={
+          <select
+            aria-label="Chọn bài học"
+            value={lessonChoice}
+            onChange={function (e) {
+              sounds.playFlip();
+              setLessonChoice(e.target.value);
+            }}
+            className="min-h-[44px] px-4 rounded-xl bg-white text-slate-800 text-xs font-bold shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-300 max-w-full"
+          >
+            <option value="all">Tất cả bài học (JLPT {activeLevel})</option>
+            {lessonList.map(function (n) {
+              return (
+                <option key={n} value={String(n)}>
+                  Bài {n < 10 ? '0' + n : n} - Giáo trình {activeLevel}
+                </option>
+              );
+            })}
+          </select>
+        }
+      />
 
-        <div className="relative z-10 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider border border-pink-100">
-              <Headphones size={13} className="text-pink-600" />
-              <span>CHOUKAI (聴解) - LUYỆN THI CHUẨN JLPT {activeLevel}</span>
-            </div>
-
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold">
-              <Award size={14} className="text-amber-500" />
-              <span>Điểm trắc nghiệm: <strong>{score}</strong>/{currentTracks.length}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mb-1">
-                Luyện Nghe Hiểu Choukai Chuẩn Giọng Tokyo (JLPT {activeLevel})
-              </h1>
-              <p className="text-xs text-slate-500 max-w-2xl mb-0">
-                Mỗi bài học được trang bị nhiều bài nghe phong phú: từ hội thoại thực tế, Mondai 1 (Hiểu nhiệm vụ), Mondai 2 (Điểm mấu chốt) đến Mondai 4 (Phản xạ tức thì).
-              </p>
-            </div>
-
-            {/* Bộ chọn bài học */}
-            <div className="flex items-center gap-2 shrink-0">
-              <select
-                value={lessonChoice}
-                onChange={function (e) {
-                  sounds.playFlip();
-                  setLessonChoice(e.target.value);
-                }}
-                className="px-3.5 py-2 rounded-xl border border-pink-200 bg-white text-xs font-bold text-slate-800 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-              >
-                <option value="all">Tất cả bài học (JLPT {activeLevel})</option>
-                {lessonList.map(function (n) {
-                  return (
-                    <option key={n} value={String(n)}>
-                      Bài {n < 10 ? '0' + n : n} - Giáo trình {activeLevel}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG 4 PHÂN HỆ ════════════════════ */}
-      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-pink-50/70 border border-pink-100 shadow-sm overflow-x-auto">
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('dialogue');
+      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG ════════════════════ */}
+      <StudyTabs
+        active={activeTab}
+        onChange={function (id) {
+          sounds.playFlip();
+          if (id !== 'vocab') {
             if (vocabTimerRef.current) clearTimeout(vocabTimerRef.current);
             setIsVocabAutoPlaying(false);
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'dialogue' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Radio size={15} className={activeTab === 'dialogue' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>1. Đề Thi & Hội Thoại ({currentTracks.length})</span>
-        </button>
+          }
+          if (id === 'vocab' && typeof window !== 'undefined' && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+          }
+          setActiveTab(id);
+        }}
+        tabs={[
+          { id: 'dialogue', label: 'Đề thi và hội thoại', icon: Radio, badge: currentTracks.length },
+          { id: 'roadmap', label: 'Lộ trình', icon: Compass },
+          { id: 'methods', label: 'Phương pháp', icon: Lightbulb },
+          { id: 'vocab', label: 'Chuỗi từ vựng', icon: ListMusic }
+        ]}
+      />
 
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('roadmap');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'roadmap' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Compass size={15} className={activeTab === 'roadmap' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>2. Lộ Trình 4 Giai Đoạn</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('methods');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'methods' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Lightbulb size={15} className={activeTab === 'methods' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>3. Phương Pháp & Bẫy Nghe</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('vocab');
-            if (typeof window !== 'undefined' && window.speechSynthesis) {
-              window.speechSynthesis.cancel();
-            }
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'vocab' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <ListMusic size={15} className={activeTab === 'vocab' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>4. Chuỗi Từ Vựng</span>
-        </button>
-      </div>
+      {activeTab === 'dialogue' && (
+        <div className="space-y-4">
+          <DailyPlanCard
+            storageKey={'jlpt_listening_daily_plan_' + activeLevel}
+            title="Kế hoạch luyện nghe hôm nay"
+            tasks={[
+              { id: 'blind', label: 'Nghe không xem chữ', hint: 'Nghe 1 bài hai lần, tự đoán nội dung trước khi mở phụ đề.', minutes: 5 },
+              { id: 'quiz', label: 'Làm 3 câu trắc nghiệm', hint: 'Mỗi dạng Mondai một câu và đọc phần giải thích.', minutes: 6 },
+              { id: 'shadow', label: 'Bắt chước từng câu', hint: 'Nghe câu riêng rồi nhại lại đúng nhịp và ngữ điệu.', minutes: 5 },
+              { id: 'dictate', label: 'Chép chính tả 1 câu', hint: 'Nghe và viết ra giấy, sau đó đối chiếu với bản gốc.', minutes: 4 }
+            ]}
+          />
+          <ListeningExamGuide active={mondaiFilter} onSelect={function (id) { sounds.playFlip(); setMondaiFilter(id); }} />
+        </div>
+      )}
 
       {/* ════════════════════ TAB 1: ĐỀ THI & HỘI THOẠI CHUẨN JLPT ════════════════════ */}
       {activeTab === 'dialogue' && track && (

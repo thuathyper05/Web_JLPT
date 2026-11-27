@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
+import StudyHero from '../components/StudyHero.jsx';
+import StudyTabs from '../components/StudyTabs.jsx';
+import DailyPlanCard from '../components/DailyPlanCard.jsx';
+import KanjiStudyMethod from '../components/KanjiStudyMethod.jsx';
 import { kanjiService, speakJapanese } from '../services/api';
 import { sounds } from '../services/sounds';
 import { KANJI_TOPICS, getKanjiMnemonicInfo, TOPIC_STYLES } from '../data/kanjiTopics.js';
@@ -38,6 +42,7 @@ import {
   Edit3,
   GitCompare,
   Zap
+  ,Lightbulb
 } from 'lucide-react';
 
 const TOPIC_ICON_MAP = {
@@ -358,151 +363,64 @@ export default function KanjiPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
-      {/* ════════════════════ 1. HEADER & CHỈ SỐ SẴN SÀNG JLPT ════════════════════ */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-pink-100 shadow-sm relative overflow-hidden">
-        <div className="absolute right-4 top-2 text-pink-100/40 font-jp font-black text-8xl sm:text-9xl pointer-events-none select-none">
-          漢
-        </div>
+      {/* ════════════════════ 1. HERO KANJI HIỆN ĐẠI ════════════════════ */}
+      <StudyHero
+        bigChar="漢"
+        kicker={'Chữ Hán Kanji - JLPT ' + activeLevel}
+        icon={<PenTool size={13} />}
+        title={'Chinh phục Kanji JLPT ' + activeLevel}
+        subtitle="Học theo quy trình 5 bước: chiết tự, đọc, viết, phân biệt và ôn ngắt quãng. Mọi bài tập đều theo đúng dạng đề thi."
+        ring={{ percent: stats.rate, label: 'Đã thuộc' }}
+        stats={[
+          { label: 'Tổng số chữ', value: stats.total },
+          { label: 'Đã thuộc', value: stats.mastered, tone: 'emerald' },
+          { label: 'Cần ôn', value: stats.review, tone: 'amber' },
+          { label: 'Sẵn sàng thi', value: stats.grade, tone: 'sky' }
+        ]}
+      />
 
-        <div className="relative z-10">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-2.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 font-extrabold text-[11px] uppercase tracking-wider">
-              <PenTool size={13} className="text-pink-600" />
-              <span>CHỮ HÁN KANJI - CHUẨN JLPT {activeLevel}</span>
-            </div>
+      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG ════════════════════ */}
+      <StudyTabs
+        active={activeTab}
+        onChange={function (id) {
+          sounds.playFlip();
+          setActiveTab(id);
+        }}
+        tabs={[
+          { id: 'roadmap', label: 'Lộ trình', icon: Compass },
+          { id: 'method', label: 'Phương pháp', icon: Lightbulb },
+          { id: 'vault', label: 'Kho Hán tự', icon: Layers, badge: filteredKanjiList.length },
+          { id: 'writing', label: 'Tập viết', icon: Edit3 },
+          { id: 'confusing', label: 'Dễ nhầm', icon: GitCompare },
+          { id: 'flashcard', label: 'Flashcard', icon: Sparkles },
+          { id: 'practice', label: 'Luyện đề', icon: ListChecks },
+          { id: 'blitz', label: 'Phản xạ 60s', icon: Zap }
+        ]}
+      />
 
-            <div className={'px-3 py-1 rounded-full border text-xs font-black flex items-center gap-1.5 ' + stats.badgeClass}>
-              <GraduationCap size={15} />
-              <span>Độ sẵn sàng thi JLPT: {stats.grade} ({stats.rate}%)</span>
-            </div>
-          </div>
+      {activeTab === 'roadmap' && (
+        <DailyPlanCard
+          storageKey={'jlpt_kanji_daily_plan_' + activeLevel}
+          title="Kế hoạch học Kanji hôm nay"
+          onGo={function (id) { setActiveTab(id); }}
+          tasks={[
+            { id: 'learn', label: 'Học 5 chữ mới', hint: 'Chiết tự và đọc to âm On, Kun, Hán Việt.', minutes: 8, goTo: 'vault' },
+            { id: 'cards', label: 'Ôn bằng Flashcard', hint: 'Lật thẻ, đánh dấu chữ đã thuộc và cần ôn.', minutes: 4, goTo: 'flashcard' },
+            { id: 'write', label: 'Viết lại 5 chữ', hint: 'Tô nét mờ rồi viết từ trí nhớ.', minutes: 5, goTo: 'writing' },
+            { id: 'quiz', label: 'Làm 10 câu đúng dạng JLPT', hint: 'Mondai 1, 2, 3 và xem giải thích câu sai.', minutes: 5, goTo: 'practice' }
+          ]}
+        />
+      )}
 
-          <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug mb-1.5">
-            Chinh Phục Chữ Hán Kanji JLPT {activeLevel}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mb-6">
-            Lộ trình học chiết tự tượng hình, giải nghĩa 214 bộ thủ, phòng tập viết nét trên canvas, bí quyết phân biệt chữ dễ nhầm và bộ đề thi mô phỏng JLPT thật.
-          </p>
-
-          {/* 4 Khối thống kê tiến độ học tập */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-pink-50">
-            <div className="p-3 rounded-2xl bg-pink-50/50 border border-pink-100 text-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tổng Kanji</span>
-              <span className="text-lg sm:text-xl font-black text-slate-800">{stats.total} chữ</span>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-emerald-50/60 border border-emerald-100 text-center">
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block flex items-center justify-center gap-1">
-                <CheckCircle2 size={11} />
-                <span>Đã thuộc</span>
-              </span>
-              <span className="text-lg sm:text-xl font-black text-emerald-700">
-                {stats.mastered} <span className="text-xs font-semibold text-emerald-500">({stats.rate}%)</span>
-              </span>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-amber-50/60 border border-amber-100 text-center">
-              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block flex items-center justify-center gap-1">
-                <Flame size={11} />
-                <span>Cần ôn</span>
-              </span>
-              <span className="text-lg sm:text-xl font-black text-amber-700">{stats.review} chữ</span>
-            </div>
-
-            <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Chưa học</span>
-              <span className="text-lg sm:text-xl font-black text-slate-600">{stats.unlearned} chữ</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ════════════════════ 2. THANH ĐIỀU HƯỚNG 6 CHẾ ĐỘ CHUYÊN SÂU ════════════════════ */}
-      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-pink-50/70 border border-pink-100 shadow-sm overflow-x-auto">
-        <button
-          type="button"
-          onClick={function () {
+      {activeTab === 'method' && (
+        <KanjiStudyMethod
+          level={activeLevel}
+          onGo={function (id) {
             sounds.playFlip();
-            setActiveTab('roadmap');
+            setActiveTab(id);
           }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'roadmap' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Compass size={15} className={activeTab === 'roadmap' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>1. Lộ Trình</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('vault');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'vault' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Layers size={15} className={activeTab === 'vault' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>2. Kho Hán Tự ({filteredKanjiList.length})</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('writing');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'writing' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Edit3 size={15} className={activeTab === 'writing' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>3. Tập Viết Nét</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('confusing');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'confusing' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <GitCompare size={15} className={activeTab === 'confusing' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>4. Chữ Dễ Nhầm</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('flashcard');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'flashcard' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <Sparkles size={15} className={activeTab === 'flashcard' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>5. Flashcard</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('practice');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'practice' ? 'bg-white text-pink-700 shadow-sm border border-pink-200' : 'text-slate-600 hover:text-pink-600')}
-        >
-          <ListChecks size={15} className={activeTab === 'practice' ? 'text-pink-600' : 'text-slate-400'} />
-          <span>6. Luyện Đề JLPT</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={function () {
-            sounds.playFlip();
-            setActiveTab('blitz');
-          }}
-          className={'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all whitespace-nowrap ' + (activeTab === 'blitz' ? 'bg-white text-rose-700 shadow-sm border border-rose-300' : 'text-slate-600 hover:text-rose-600')}
-        >
-          <Zap size={15} className={activeTab === 'blitz' ? 'text-amber-500 fill-amber-500' : 'text-slate-400'} />
-          <span>7. Phản Xạ 60s</span>
-        </button>
-      </div>
+        />
+      )}
 
       {/* ════════════════════ TAB 1: LỘ TRÌNH HÁN TỰ (ROADMAP) ════════════════════ */}
       {activeTab === 'roadmap' && (
