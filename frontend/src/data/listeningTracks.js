@@ -1,5 +1,5 @@
 // Hệ thống dữ liệu Luyện Nghe Choukai Đa Cấp Độ (N5 - N1)
-// Bám sát giáo trình chuẩn Minna no Nihongo I & II, Soumatome, Shinkanzen Master & Đề thi JLPT thật
+// Bám sát giáo trình chuẩn Minna no Nihongo I và II, Soumatome, Shinkanzen Master và đề thi JLPT thật
 // ZERO ARROWS RULE: Không dùng ký tự mũi tên
 
 export const listeningTracksByLevel = {
@@ -985,6 +985,48 @@ export const listeningTracksByLevel = {
       "id": 2005
     },
     {
+      "id": 3000,
+      "lesson": 6,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 06 - Phần 4: Phản xạ rủ ăn tối",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "一緒に晩ごはんを食べませんか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "一緒に晩ごはんを食べませんか。",
+          "kana": "いっしょにばんごはんをたべませんか。",
+          "vi": "Cùng ăn cơm tối nhé?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "ええ、いいですね。"
+        },
+        {
+          "id": "B",
+          "text": "はい、食べました。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、晩ごはんです。"
+        },
+        {
+          "id": "D",
+          "text": "どういたしまして。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Lời rủ 「〜ませんか」 được đáp lại bằng 「ええ、いいですね」 khi đồng ý. Đáp án đúng là A.",
+      "keyword": "〜ませんか và ええ、いいですね",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 7,
       "lesson": 7,
       "topic": "Bài 07: Tặng quà, Dụng cụ & Công cụ",
@@ -1139,6 +1181,48 @@ export const listeningTracksByLevel = {
       "id": 2007
     },
     {
+      "id": 3001,
+      "lesson": 7,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 07 - Phần 4: Phản xạ hỏi ai cho",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "それは誰にもらいましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "それは誰にもらいましたか。",
+          "kana": "それはだれにもらいましたか。",
+          "vi": "Cái đó bạn nhận từ ai vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "友達にあげました。"
+        },
+        {
+          "id": "B",
+          "text": "昨日もらいました。"
+        },
+        {
+          "id": "C",
+          "text": "きれいです。"
+        },
+        {
+          "id": "D",
+          "text": "友達にもらいました。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hỏi 「誰に」 thì trả lời tên người kèm 「にもらいました」. Đáp án đúng là D.",
+      "keyword": "誰に và もらいました",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 8,
       "lesson": 8,
       "topic": "Bài 08: Tính từ miêu tả phong cảnh & Trải nghiệm",
@@ -1249,6 +1333,48 @@ export const listeningTracksByLevel = {
       "tip": "Phân biệt giữa câu trả lời về thành phố/đồ ăn và câu trả lời riêng về thời tiết.",
       "level": "N5",
       "id": 2008
+    },
+    {
+      "id": 3002,
+      "lesson": 8,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 08 - Phần 4: Phản xạ hỏi cảm tưởng",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "日本の生活はどうですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "日本の生活はどうですか。",
+          "kana": "にほんのせいかつはどうですか。",
+          "vi": "Cuộc sống ở Nhật thế nào?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "先月来ました。"
+        },
+        {
+          "id": "B",
+          "text": "日本語で話します。"
+        },
+        {
+          "id": "C",
+          "text": "とても楽しいです。"
+        },
+        {
+          "id": "D",
+          "text": "東京に住んでいます。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "「どうですか」 hỏi cảm nhận nên đáp bằng tính từ. Đáp án đúng là C.",
+      "keyword": "どうですか và tính từ",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
     },
     {
       "id": 9,
@@ -1363,6 +1489,48 @@ export const listeningTracksByLevel = {
       "id": 2009
     },
     {
+      "id": 3003,
+      "lesson": 9,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 09 - Phần 4: Phản xạ hỏi sở thích",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "どんなスポーツが好きですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "どんなスポーツが好きですか。",
+          "kana": "どんなすぽーつがすきですか。",
+          "vi": "Bạn thích môn thể thao nào?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "公園でします。"
+        },
+        {
+          "id": "B",
+          "text": "サッカーが好きです。"
+        },
+        {
+          "id": "C",
+          "text": "毎日します。"
+        },
+        {
+          "id": "D",
+          "text": "上手じゃありません。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Hỏi 「どんな〜」 thì nêu tên môn cụ thể với 「が好きです」. Đáp án đúng là B.",
+      "keyword": "どんな và 好きです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 10,
       "lesson": 10,
       "topic": "Bài 10: Tồn tại Người & Đồ vật (Arimasu / Imasu)",
@@ -1468,6 +1636,48 @@ export const listeningTracksByLevel = {
       "id": 2010
     },
     {
+      "id": 3004,
+      "lesson": 10,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 10 - Phần 4: Phản xạ hỏi đồ vật",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "かばんの中に何がありますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "かばんの中に何がありますか。",
+          "kana": "かばんのなかになにがありますか。",
+          "vi": "Trong túi có gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "財布と傘があります。"
+        },
+        {
+          "id": "B",
+          "text": "田中さんがいます。"
+        },
+        {
+          "id": "C",
+          "text": "机の上です。"
+        },
+        {
+          "id": "D",
+          "text": "青いです。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Vật vô tri dùng 「あります」, câu trả lời liệt kê đồ vật. Đáp án đúng là A.",
+      "keyword": "何があります",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 11,
       "lesson": 11,
       "topic": "Bài 11: Số lượng, Thời lượng & Giá cả",
@@ -1515,6 +1725,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3005,
+      "lesson": 11,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 11 - Phần 4: Phản xạ hỏi thời lượng học",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "毎日何時間日本語を勉強しますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "毎日何時間日本語を勉強しますか。",
+          "kana": "まいにちなんじかんにほんごをべんきょうしますか。",
+          "vi": "Mỗi ngày bạn học tiếng Nhật mấy tiếng?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "九時から勉強します。"
+        },
+        {
+          "id": "B",
+          "text": "図書館で勉強します。"
+        },
+        {
+          "id": "C",
+          "text": "二人で勉強します。"
+        },
+        {
+          "id": "D",
+          "text": "二時間勉強します。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "「何時間」 hỏi khoảng thời gian nên đáp bằng số giờ. Đáp án đúng là D.",
+      "keyword": "何時間",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3045,
+      "lesson": 11,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 11 - Phần 5: Thời gian đi làm",
+      "situation": "Hai đồng nghiệp nói chuyện về đường đi làm.",
+      "audioText": "会社まで電車でどのぐらいかかりますか。四十分ぐらいかかります。バスはどうですか。バスは一時間かかりますから、電車で行きます。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "会社まで電車でどのぐらいかかりますか。",
+          "kana": "かいしゃまででんしゃでどのぐらいかかりますか。",
+          "vi": "Đến công ty bằng tàu mất khoảng bao lâu?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "四十分ぐらいかかります。",
+          "kana": "よんじゅっぷんぐらいかかります。",
+          "vi": "Mất khoảng 40 phút."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "バスはどうですか。",
+          "kana": "ばすはどうですか。",
+          "vi": "Xe bus thì sao?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "バスは一時間かかりますから、電車で行きます。",
+          "kana": "ばすはいちじかんかかりますから、でんしゃでいきます。",
+          "vi": "Xe bus mất 1 tiếng nên tôi đi tàu."
+        }
+      ],
+      "question": "Người nam đi làm bằng gì và mất bao lâu?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Xe bus, khoảng 1 giờ"
+        },
+        {
+          "id": "B",
+          "text": "Tàu điện, khoảng 1 giờ"
+        },
+        {
+          "id": "C",
+          "text": "Đi bộ, khoảng 40 phút"
+        },
+        {
+          "id": "D",
+          "text": "Tàu điện, khoảng 40 phút"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Anh ấy nói 「電車で行きます」 và tàu mất 「四十分」. Đáp án đúng là D.",
+      "keyword": "四十分 và 電車で",
+      "tip": "Nghe kỹ con số của từng phương tiện rồi mới chọn.",
+      "level": "N5"
     },
     {
       "id": 12,
@@ -1566,6 +1881,104 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3006,
+      "lesson": 12,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 12 - Phần 4: Phản xạ so sánh hai thứ",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "東京と大阪とどちらが大きいですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "東京と大阪とどちらが大きいですか。",
+          "kana": "とうきょうとおおさかとどちらがおおきいですか。",
+          "vi": "Tokyo và Osaka bên nào lớn hơn?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "新幹線で行きます。"
+        },
+        {
+          "id": "B",
+          "text": "先月でした。"
+        },
+        {
+          "id": "C",
+          "text": "東京のほうが大きいです。"
+        },
+        {
+          "id": "D",
+          "text": "大阪に行きました。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Câu so sánh trả lời bằng mẫu 「〜のほうが〜」. Đáp án đúng là C.",
+      "keyword": "どちらが và のほうが",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3046,
+      "lesson": 12,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 12 - Phần 5: Mùa yêu thích",
+      "situation": "Hai người bạn nói về mùa mình thích.",
+      "audioText": "夏と冬と、どちらが好きですか。冬のほうが好きです。スキーができますから。私は夏のほうが好きです。海で泳げますから。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "夏と冬と、どちらが好きですか。",
+          "kana": "なつとふゆと、どちらがすきですか。",
+          "vi": "Bạn thích mùa hè hay mùa đông hơn?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "冬のほうが好きです。スキーができますから。",
+          "kana": "ふゆのほうがすきです。すきーができますから。",
+          "vi": "Tôi thích mùa đông hơn vì có thể trượt tuyết."
+        },
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "私は夏のほうが好きです。海で泳げますから。",
+          "kana": "わたしはなつのほうがすきです。うみでおよげますから。",
+          "vi": "Tôi thích mùa hè hơn vì có thể bơi biển."
+        }
+      ],
+      "question": "Người nam thích mùa nào và vì sao?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mùa hè vì được nghỉ dài"
+        },
+        {
+          "id": "B",
+          "text": "Mùa đông vì không nóng"
+        },
+        {
+          "id": "C",
+          "text": "Mùa hè vì có thể bơi biển"
+        },
+        {
+          "id": "D",
+          "text": "Mùa đông vì có thể trượt tuyết"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Người nam nói 「夏のほうが好き」 vì 「海で泳げます」. Đáp án đúng là C.",
+      "keyword": "夏のほうが và 海で泳げます",
+      "tip": "Hai người chọn khác nhau, đừng nhầm ý người nữ.",
+      "level": "N5"
+    },
+    {
       "id": 13,
       "lesson": 13,
       "topic": "Bài 13: Mong muốn (Tai / Hoshii) & Mục đích di chuyển",
@@ -1613,6 +2026,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3007,
+      "lesson": 13,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 13 - Phần 4: Phản xạ hỏi điều muốn làm",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "休みの日に何がしたいですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "休みの日に何がしたいですか。",
+          "kana": "やすみのひになにがしたいですか。",
+          "vi": "Ngày nghỉ bạn muốn làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "休みは日曜日です。"
+        },
+        {
+          "id": "B",
+          "text": "温泉に行きたいです。"
+        },
+        {
+          "id": "C",
+          "text": "温泉に行きました。"
+        },
+        {
+          "id": "D",
+          "text": "はい、行きます。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "「したいです」 hỏi mong muốn nên đáp bằng 「〜たいです」. Đáp án đúng là B.",
+      "keyword": "〜たいです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3047,
+      "lesson": 13,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 13 - Phần 5: Quà sinh nhật",
+      "situation": "Hai người bàn kế hoạch mua quà.",
+      "audioText": "誕生日に何がほしいですか。新しいかばんがほしいです。今のは古いですから。じゃ、駅の前のデパートへ行きませんか。いいですね。日曜日に行きましょう。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "誕生日に何がほしいですか。",
+          "kana": "たんじょうびになにがほしいですか。",
+          "vi": "Sinh nhật bạn muốn gì?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "新しいかばんがほしいです。今のは古いですから。",
+          "kana": "あたらしいかばんがほしいです。いまのはふるいですから。",
+          "vi": "Tôi muốn một chiếc túi mới vì cái hiện tại cũ rồi."
+        },
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "じゃ、駅の前のデパートへ行きませんか。",
+          "kana": "じゃ、えきのまえのでぱーとへいきませんか。",
+          "vi": "Vậy mình đến cửa hàng bách hóa trước ga nhé?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "いいですね。日曜日に行きましょう。",
+          "kana": "いいですね。にちようびにいきましょう。",
+          "vi": "Hay đấy. Chủ nhật mình đi nhé."
+        }
+      ],
+      "question": "Hai người sẽ làm gì vào chủ nhật?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Đi du lịch"
+        },
+        {
+          "id": "B",
+          "text": "Đến cửa hàng bách hóa mua túi"
+        },
+        {
+          "id": "C",
+          "text": "Tổ chức tiệc sinh nhật ở nhà hàng"
+        },
+        {
+          "id": "D",
+          "text": "Mua đồng hồ cũ"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Họ hẹn 「日曜日に行きましょう」 đến 「デパート」 để mua túi. Đáp án đúng là B.",
+      "keyword": "デパート và 日曜日",
+      "tip": "Chú ý từ chỉ ngày và địa điểm đã chốt.",
+      "level": "N5"
     },
     {
       "id": 14,
@@ -1727,6 +2245,48 @@ export const listeningTracksByLevel = {
       "id": 2011
     },
     {
+      "id": 3008,
+      "lesson": 14,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 14 - Phần 4: Phản xạ nhờ mở cửa sổ",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "すみません、ちょっと窓を開けてください。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "すみません、ちょっと窓を開けてください。",
+          "kana": "すみません、ちょっとまどをあけてください。",
+          "vi": "Xin lỗi, làm ơn mở cửa sổ giúp."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "はい、分かりました。"
+        },
+        {
+          "id": "B",
+          "text": "ありがとうございました。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、そうです。"
+        },
+        {
+          "id": "D",
+          "text": "どういたしまして。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Lời nhờ 「〜てください」 được nhận bằng 「はい、分かりました」. Đáp án đúng là A.",
+      "keyword": "〜てください",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 15,
       "lesson": 15,
       "topic": "Bài 15: Thể Te - Xin phép (Te mo ii desu) & Cấm đoán",
@@ -1839,6 +2399,48 @@ export const listeningTracksByLevel = {
       "id": 2012
     },
     {
+      "id": 3009,
+      "lesson": 15,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 15 - Phần 4: Phản xạ xin phép chụp ảnh",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "ここで写真を撮ってもいいですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "ここで写真を撮ってもいいですか。",
+          "kana": "ここでしゃしんをとってもいいですか。",
+          "vi": "Tôi chụp ảnh ở đây được không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、撮りました。"
+        },
+        {
+          "id": "B",
+          "text": "はい、写真です。"
+        },
+        {
+          "id": "C",
+          "text": "どういたしまして。"
+        },
+        {
+          "id": "D",
+          "text": "はい、どうぞ。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Xin phép 「〜てもいいですか」, đồng ý trả lời 「はい、どうぞ」. Đáp án đúng là D.",
+      "keyword": "〜てもいいですか",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 16,
       "lesson": 16,
       "topic": "Bài 16: Thể Te - Nối hành động tuần tự (Te kara)",
@@ -1886,6 +2488,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3010,
+      "lesson": 16,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 16 - Phần 4: Phản xạ hỏi việc buổi sáng",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "今朝は何をしましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "今朝は何をしましたか。",
+          "kana": "けさはなにをしましたか。",
+          "vi": "Sáng nay bạn đã làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "公園へ行きます。"
+        },
+        {
+          "id": "B",
+          "text": "六時に起きます。"
+        },
+        {
+          "id": "C",
+          "text": "散歩して、朝ごはんを食べました。"
+        },
+        {
+          "id": "D",
+          "text": "明日散歩します。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Hỏi quá khứ nên đáp bằng thể 「〜ました」 nối bằng thể て. Đáp án đúng là C.",
+      "keyword": "今朝 và 〜ました",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3048,
+      "lesson": 16,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 16 - Phần 5: Buổi sáng của anh Tanaka",
+      "situation": "Đồng nghiệp hỏi về thói quen buổi sáng.",
+      "audioText": "朝は何をしますか。起きて、シャワーを浴びて、朝ごはんを食べます。それから？八時に家を出て、会社へ行きます。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "朝は何をしますか。",
+          "kana": "あさはなにをしますか。",
+          "vi": "Buổi sáng anh làm gì?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "起きて、シャワーを浴びて、朝ごはんを食べます。",
+          "kana": "おきて、しゃわーをあびて、あさごはんをたべます。",
+          "vi": "Tôi dậy, tắm vòi sen rồi ăn sáng."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "それから？",
+          "kana": "それから？",
+          "vi": "Sau đó?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "八時に家を出て、会社へ行きます。",
+          "kana": "はちじにいえをでて、かいしゃへいきます。",
+          "vi": "Tám giờ tôi ra khỏi nhà và đi làm."
+        }
+      ],
+      "question": "Người nam làm gì ngay sau khi thức dậy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tắm vòi sen"
+        },
+        {
+          "id": "B",
+          "text": "Ăn sáng"
+        },
+        {
+          "id": "C",
+          "text": "Ra khỏi nhà"
+        },
+        {
+          "id": "D",
+          "text": "Đi làm"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Thứ tự là 起きて、シャワーを浴びて、朝ごはん nên sau khi dậy là tắm. Đáp án đúng là A.",
+      "keyword": "起きて、シャワーを浴びて",
+      "tip": "Thể て nối các việc theo đúng thứ tự thời gian.",
+      "level": "N5"
     },
     {
       "id": 17,
@@ -2000,6 +2707,48 @@ export const listeningTracksByLevel = {
       "id": 2013
     },
     {
+      "id": 3011,
+      "lesson": 17,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 17 - Phần 4: Phản xạ nhắc đừng quên",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "宿題を忘れないでくださいね。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "宿題を忘れないでくださいね。",
+          "kana": "しゅくだいをわすれないでくださいね。",
+          "vi": "Đừng quên bài tập nhé."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "宿題は難しいです。"
+        },
+        {
+          "id": "B",
+          "text": "はい、気をつけます。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、忘れました。"
+        },
+        {
+          "id": "D",
+          "text": "どういたしまして。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "「〜ないでください」 là lời dặn, đáp 「はい、気をつけます」. Đáp án đúng là B.",
+      "keyword": "〜ないでください",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 18,
       "lesson": 18,
       "topic": "Bài 18: Thể Từ điển - Năng lực & Sở thích (Koto ga dekimasu)",
@@ -2112,6 +2861,48 @@ export const listeningTracksByLevel = {
       "id": 2014
     },
     {
+      "id": 3012,
+      "lesson": 18,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 18 - Phần 4: Phản xạ hỏi khả năng",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "ピアノが弾けますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "ピアノが弾けますか。",
+          "kana": "ぴあのがひけますか。",
+          "vi": "Bạn chơi được piano không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、弾けません。"
+        },
+        {
+          "id": "B",
+          "text": "はい、ピアノです。"
+        },
+        {
+          "id": "C",
+          "text": "ええ、買いました。"
+        },
+        {
+          "id": "D",
+          "text": "いいえ、弾きました。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "「弾けますか」 hỏi khả năng, đáp bằng 「弾けます」 hoặc 「弾けません」. Đáp án đúng là A.",
+      "keyword": "〜られます và 〜けます",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
       "id": 19,
       "lesson": 19,
       "topic": "Bài 19: Thể Ta - Trải nghiệm quá khứ (Koto ga arimasu)",
@@ -2159,6 +2950,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3013,
+      "lesson": 19,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 19 - Phần 4: Phản xạ hỏi kinh nghiệm",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "富士山に登ったことがありますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "富士山に登ったことがありますか。",
+          "kana": "ふじさんにのぼったことがありますか。",
+          "vi": "Bạn đã từng leo núi Phú Sĩ chưa?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "はい、登っています。"
+        },
+        {
+          "id": "B",
+          "text": "いいえ、富士山です。"
+        },
+        {
+          "id": "C",
+          "text": "来月登ります。"
+        },
+        {
+          "id": "D",
+          "text": "はい、一度あります。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mẫu 「〜たことがあります」 hỏi kinh nghiệm đã từng làm. Đáp án đúng là D.",
+      "keyword": "〜たことがありますか",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3049,
+      "lesson": 19,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 19 - Phần 5: Kinh nghiệm đi Kyoto",
+      "situation": "Hai bạn nói về chuyến đi Kyoto.",
+      "audioText": "京都へ行ったことがありますか。ええ、去年、一度行きました。お寺がきれいでした。私はまだ行ったことがありません。じゃ、今度いっしょに行きましょう。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "京都へ行ったことがありますか。",
+          "kana": "きょうとへいったことがありますか。",
+          "vi": "Bạn đã từng đến Kyoto chưa?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "ええ、去年、一度行きました。お寺がきれいでした。",
+          "kana": "ええ、きょねん、いちどいきました。おてらがきれいでした。",
+          "vi": "Rồi, năm ngoái tôi đi một lần. Chùa rất đẹp."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "私はまだ行ったことがありません。",
+          "kana": "わたしはまだいったことがありません。",
+          "vi": "Tôi vẫn chưa từng đi."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "じゃ、今度いっしょに行きましょう。",
+          "kana": "じゃ、こんどいっしょにいきましょう。",
+          "vi": "Vậy lần tới cùng đi nhé."
+        }
+      ],
+      "question": "Người nữ đã từng đến Kyoto chưa?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Đã đến một lần năm ngoái"
+        },
+        {
+          "id": "B",
+          "text": "Đã đến nhiều lần"
+        },
+        {
+          "id": "C",
+          "text": "Sẽ đến vào năm sau"
+        },
+        {
+          "id": "D",
+          "text": "Chưa từng đến"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Người nữ nói 「まだ行ったことがありません」, nghĩa là chưa từng đi. Đáp án đúng là D.",
+      "keyword": "まだ〜たことがありません",
+      "tip": "Đừng lẫn trải nghiệm của người nam với người nữ.",
+      "level": "N5"
     },
     {
       "id": 20,
@@ -2210,6 +3106,111 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3014,
+      "lesson": 20,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 20 - Phần 4: Phản xạ rủ bạn thể thường",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "明日、パーティーに行く？",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "明日、パーティーに行く？",
+          "kana": "あした、ぱーてぃーにいく？",
+          "vi": "Mai cậu có đi tiệc không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "ごめんください。"
+        },
+        {
+          "id": "B",
+          "text": "いいえ、パーティーです。"
+        },
+        {
+          "id": "C",
+          "text": "うん、行くよ。"
+        },
+        {
+          "id": "D",
+          "text": "うん、行ったよ。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Thể thường 「行く？」 đáp 「うん、行くよ」. Đáp án đúng là C.",
+      "keyword": "行く？ và うん",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3050,
+      "lesson": 20,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 20 - Phần 5: Hẹn xem phim",
+      "situation": "Hai bạn thân nói chuyện bằng thể thường.",
+      "audioText": "明日、暇？午後なら暇だよ。何かあるの？映画を見に行かない？いいね。三時に駅で会おう。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "明日、暇？",
+          "kana": "あした、ひま？",
+          "vi": "Mai cậu rảnh không?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "午後なら暇だよ。何かあるの？",
+          "kana": "ごごならひまだよ。なにかあるの？",
+          "vi": "Buổi chiều thì rảnh. Có chuyện gì à?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "映画を見に行かない？",
+          "kana": "えいがをみにいかない？",
+          "vi": "Đi xem phim không?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "いいね。三時に駅で会おう。",
+          "kana": "いいね。さんじにえきであおう。",
+          "vi": "Hay đấy. Ba giờ gặp ở ga nhé."
+        }
+      ],
+      "question": "Hai người hẹn gặp lúc nào và ở đâu?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Buổi sáng ở nhà ga"
+        },
+        {
+          "id": "B",
+          "text": "3 giờ chiều ở nhà"
+        },
+        {
+          "id": "C",
+          "text": "3 giờ chiều ở nhà ga"
+        },
+        {
+          "id": "D",
+          "text": "3 giờ chiều ở rạp phim"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Người nam đề nghị 「三時に駅で会おう」. Đáp án đúng là C.",
+      "keyword": "三時 và 駅",
+      "tip": "Rạp phim là nơi đến, không phải nơi hẹn.",
+      "level": "N5"
+    },
+    {
       "id": 21,
       "lesson": 21,
       "topic": "Bài 21: Bày tỏ ý kiến & Phỏng đoán (To omoimasu)",
@@ -2257,6 +3258,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3015,
+      "lesson": 21,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 21 - Phần 4: Phản xạ hỏi dự đoán",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "明日は雨が降ると思いますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "明日は雨が降ると思いますか。",
+          "kana": "あしたはあめがふるとおもいますか。",
+          "vi": "Bạn nghĩ mai trời sẽ mưa không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、傘です。"
+        },
+        {
+          "id": "B",
+          "text": "ええ、降ると思います。"
+        },
+        {
+          "id": "C",
+          "text": "ええ、降りました。"
+        },
+        {
+          "id": "D",
+          "text": "雨は嫌いです。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Hỏi 「と思いますか」 thì đáp lại bằng 「〜と思います」. Đáp án đúng là B.",
+      "keyword": "と思います",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3051,
+      "lesson": 21,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 21 - Phần 5: Trận đấu ngày mai",
+      "situation": "Hai đồng đội nói về trận đấu.",
+      "audioText": "明日の試合、勝つと思いますか。私は勝つと思います。みんな練習しましたから。でも、天気が悪いそうですよ。雨でも、試合はあるでしょう。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "明日の試合、勝つと思いますか。",
+          "kana": "あしたのしあい、かつとおもいますか。",
+          "vi": "Bạn nghĩ trận mai mình thắng không?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "私は勝つと思います。みんな練習しましたから。",
+          "kana": "わたしはかつとおもいます。みんなれんしゅうしましたから。",
+          "vi": "Tôi nghĩ sẽ thắng vì mọi người đã luyện tập."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "でも、天気が悪いそうですよ。",
+          "kana": "でも、てんきがわるいそうですよ。",
+          "vi": "Nhưng nghe nói thời tiết xấu đấy."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "雨でも、試合はあるでしょう。",
+          "kana": "あめでも、しあいはあるでしょう。",
+          "vi": "Dù mưa chắc trận đấu vẫn diễn ra."
+        }
+      ],
+      "question": "Người nam nghĩ thế nào về trận đấu?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Không biết kết quả"
+        },
+        {
+          "id": "B",
+          "text": "Sẽ thắng vì đã luyện tập nhiều"
+        },
+        {
+          "id": "C",
+          "text": "Trận đấu bị hủy vì mưa"
+        },
+        {
+          "id": "D",
+          "text": "Đội sẽ thua"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Anh nói 「勝つと思います」 vì 「練習しました」. Đáp án đúng là B.",
+      "keyword": "勝つと思います",
+      "tip": "Lời của người nữ về thời tiết chỉ là bẫy gây nhiễu.",
+      "level": "N5"
     },
     {
       "id": 22,
@@ -2308,6 +3414,97 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3016,
+      "lesson": 22,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 22 - Phần 4: Phản xạ hỏi người làm",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "これは誰が作ったケーキですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "これは誰が作ったケーキですか。",
+          "kana": "これはだれがつくったけーきですか。",
+          "vi": "Đây là bánh ai làm vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "母が作ったケーキです。"
+        },
+        {
+          "id": "B",
+          "text": "とても甘いです。"
+        },
+        {
+          "id": "C",
+          "text": "三つあります。"
+        },
+        {
+          "id": "D",
+          "text": "駅の前の店です。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "「誰が作った」 hỏi người làm nên đáp bằng tên người. Đáp án đúng là A.",
+      "keyword": "誰が作った",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3052,
+      "lesson": 22,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 22 - Phần 5: Chiếc túi màu đỏ",
+      "situation": "Hai người nói về chiếc túi của đồng nghiệp.",
+      "audioText": "あの赤いかばんを持っている人は誰ですか。山田さんです。昨日買ったかばんです。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "あの赤いかばんを持っている人は誰ですか。",
+          "kana": "あのあかいかばんをもっているひとはだれですか。",
+          "vi": "Người cầm chiếc túi đỏ kia là ai vậy?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "山田さんです。昨日買ったかばんです。",
+          "kana": "やまださんです。きのうかったかばんです。",
+          "vi": "Là chị Yamada. Chiếc túi mới mua hôm qua."
+        }
+      ],
+      "question": "Chiếc túi đỏ của ai và mua khi nào?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Của chị Yamada, mua hôm qua"
+        },
+        {
+          "id": "B",
+          "text": "Của người nữ, mua hôm qua"
+        },
+        {
+          "id": "C",
+          "text": "Của chị Yamada, mua tuần trước"
+        },
+        {
+          "id": "D",
+          "text": "Của người nam, mua hôm qua"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Người nam nói 「山田さんです。昨日買った」. Đáp án đúng là A.",
+      "keyword": "山田さん và 昨日買った",
+      "tip": "Mệnh đề 「昨日買った」 bổ nghĩa cho 「かばん」.",
+      "level": "N5"
+    },
+    {
       "id": 23,
       "lesson": 23,
       "topic": "Bài 23: Cấu trúc Khi nào (Toki) & Hướng dẫn đường đi",
@@ -2355,6 +3552,104 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3017,
+      "lesson": 23,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 23 - Phần 4: Phản xạ hỏi lúc đến Nhật",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "日本へ来たとき、何をしましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "日本へ来たとき、何をしましたか。",
+          "kana": "にほんへきたとき、なにをしましたか。",
+          "vi": "Lúc đến Nhật bạn đã làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "来年行きます。"
+        },
+        {
+          "id": "B",
+          "text": "飛行機で来ます。"
+        },
+        {
+          "id": "C",
+          "text": "日本が好きです。"
+        },
+        {
+          "id": "D",
+          "text": "空港で友達に会いました。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hỏi quá khứ 「とき、何をしましたか」 nên đáp bằng việc đã làm. Đáp án đúng là D.",
+      "keyword": "〜とき",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3053,
+      "lesson": 23,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 23 - Phần 5: Lúc rảnh rỗi",
+      "situation": "Hai người bàn về việc làm lúc rảnh.",
+      "audioText": "暇なとき、何をしますか。暇なとき、よく図書館で本を読みます。私は暇なとき、料理をします。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "暇なとき、何をしますか。",
+          "kana": "ひまなとき、なにをしますか。",
+          "vi": "Lúc rảnh bạn làm gì?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "暇なとき、よく図書館で本を読みます。",
+          "kana": "ひまなとき、よくとしょかんでほんをよみます。",
+          "vi": "Lúc rảnh tôi hay đọc sách ở thư viện."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "私は暇なとき、料理をします。",
+          "kana": "わたしはひまなとき、りょうりをします。",
+          "vi": "Lúc rảnh tôi nấu ăn."
+        }
+      ],
+      "question": "Người nam làm gì lúc rảnh?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Nấu ăn ở nhà"
+        },
+        {
+          "id": "B",
+          "text": "Xem phim"
+        },
+        {
+          "id": "C",
+          "text": "Đi dạo công viên"
+        },
+        {
+          "id": "D",
+          "text": "Đọc sách ở thư viện"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Người nam nói 「図書館で本を読みます」. Đáp án đúng là D.",
+      "keyword": "図書館で本を読む",
+      "tip": "Đừng lẫn với sở thích nấu ăn của người nữ.",
+      "level": "N5"
     },
     {
       "id": 24,
@@ -2406,6 +3701,104 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3018,
+      "lesson": 24,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 24 - Phần 4: Phản xạ hỏi người tặng quà",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "誕生日に誰がプレゼントをくれましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "誕生日に誰がプレゼントをくれましたか。",
+          "kana": "たんじょうびにだれがぷれぜんとをくれましたか。",
+          "vi": "Sinh nhật ai đã tặng quà cho bạn?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "昨日でした。"
+        },
+        {
+          "id": "B",
+          "text": "私の誕生日です。"
+        },
+        {
+          "id": "C",
+          "text": "姉がくれました。"
+        },
+        {
+          "id": "D",
+          "text": "姉にあげました。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "「誰がくれましたか」 đáp 「〜がくれました」 với chủ ngữ là người cho. Đáp án đúng là C.",
+      "keyword": "くれました",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3054,
+      "lesson": 24,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 24 - Phần 5: Cà vạt mới",
+      "situation": "Đồng nghiệp khen chiếc cà vạt.",
+      "audioText": "そのネクタイ、素敵ですね。ありがとうございます。妹がくれました。誕生日のプレゼントです。いい妹さんですね。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "そのネクタイ、素敵ですね。",
+          "kana": "そのねくたい、すてきですね。",
+          "vi": "Cà vạt đó đẹp nhỉ."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "ありがとうございます。妹がくれました。誕生日のプレゼントです。",
+          "kana": "ありがとうございます。いもうとがくれました。たんじょうびのぷれぜんとです。",
+          "vi": "Cảm ơn. Em gái tặng tôi, là quà sinh nhật."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "いい妹さんですね。",
+          "kana": "いいいもうとさんですね。",
+          "vi": "Em gái của anh tốt quá."
+        }
+      ],
+      "question": "Ai đã tặng chiếc cà vạt cho người nam?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mẹ"
+        },
+        {
+          "id": "B",
+          "text": "Anh tự mua"
+        },
+        {
+          "id": "C",
+          "text": "Em gái"
+        },
+        {
+          "id": "D",
+          "text": "Bạn gái"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Anh nói 「妹がくれました」. Đáp án đúng là C.",
+      "keyword": "妹がくれました",
+      "tip": "「くれる」 chỉ người khác cho mình.",
+      "level": "N5"
+    },
+    {
       "id": 25,
       "lesson": 25,
       "topic": "Bài 25: Cấu trúc điều kiện Nếu (Tara) & Giả định (Temo)",
@@ -2453,6 +3846,111 @@ export const listeningTracksByLevel = {
       "level": "N5",
       "partName": "Phần 1: Hội thoại tình huống cơ bản",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3019,
+      "lesson": 25,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 25 - Phần 4: Phản xạ hỏi giả định",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "もし宝くじに当たったら、どうしますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "もし宝くじに当たったら、どうしますか。",
+          "kana": "もしたからくじにあたったら、どうしますか。",
+          "vi": "Nếu trúng xổ số, bạn sẽ làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "はい、当たります。"
+        },
+        {
+          "id": "B",
+          "text": "世界旅行をしたいです。"
+        },
+        {
+          "id": "C",
+          "text": "昨日当たりました。"
+        },
+        {
+          "id": "D",
+          "text": "宝くじは高いです。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Câu điều kiện 「〜たら」 đáp bằng việc sẽ làm. Đáp án đúng là B.",
+      "keyword": "〜たら",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N5"
+    },
+    {
+      "id": 3055,
+      "lesson": 25,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 25 - Phần 5: Kế hoạch ngày mai",
+      "situation": "Hai người bàn kế hoạch tùy thời tiết.",
+      "audioText": "明日雨が降ったら、どうしますか。雨が降ったら、家で映画を見ます。晴れたら？晴れたら、公園で友達とテニスをします。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "明日雨が降ったら、どうしますか。",
+          "kana": "あしたあめがふったら、どうしますか。",
+          "vi": "Mai nếu mưa anh làm gì?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "雨が降ったら、家で映画を見ます。",
+          "kana": "あめがふったら、いえでえいがをみます。",
+          "vi": "Nếu mưa tôi xem phim ở nhà."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "晴れたら？",
+          "kana": "はれたら？",
+          "vi": "Còn nếu nắng?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "晴れたら、公園で友達とテニスをします。",
+          "kana": "はれたら、こうえんでともだちとてにすをします。",
+          "vi": "Nếu nắng tôi chơi tennis với bạn ở công viên."
+        }
+      ],
+      "question": "Nếu trời nắng người nam sẽ làm gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ở nhà ngủ"
+        },
+        {
+          "id": "B",
+          "text": "Chơi tennis với bạn ở công viên"
+        },
+        {
+          "id": "C",
+          "text": "Xem phim ở nhà"
+        },
+        {
+          "id": "D",
+          "text": "Đi mua sắm"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Anh nói 「晴れたら、公園で友達とテニス」. Đáp án đúng là B.",
+      "keyword": "晴れたら",
+      "tip": "Phải nghe đúng điều kiện đang được hỏi là mưa hay nắng.",
+      "level": "N5"
     }
   ],
   "N4": [
@@ -2625,6 +4123,48 @@ export const listeningTracksByLevel = {
       "id": 2016
     },
     {
+      "id": 3020,
+      "lesson": 26,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 26 - Phần 4: Phản xạ hỏi lý do về sớm",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "どうして今日は早く帰るんですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "どうして今日は早く帰るんですか。",
+          "kana": "どうしてきょうははやくかえるんですか。",
+          "vi": "Sao hôm nay bạn về sớm vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "子どもが熱を出したんです。"
+        },
+        {
+          "id": "B",
+          "text": "電車で帰ります。"
+        },
+        {
+          "id": "C",
+          "text": "六時に帰りました。"
+        },
+        {
+          "id": "D",
+          "text": "はい、早いです。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "「どうして〜んですか」 hỏi lý do, đáp bằng 「〜んです」. Đáp án đúng là A.",
+      "keyword": "どうして và んです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_27",
       "level": "N4",
       "lesson": 27,
@@ -2751,6 +4291,48 @@ export const listeningTracksByLevel = {
       "id": 2017
     },
     {
+      "id": 3021,
+      "lesson": 27,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 27 - Phần 4: Phản xạ hỏi khả năng đọc báo",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "日本語の新聞が読めますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "日本語の新聞が読めますか。",
+          "kana": "にほんごのしんぶんがよめますか。",
+          "vi": "Bạn đọc được báo tiếng Nhật không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "毎朝読んでいます。"
+        },
+        {
+          "id": "B",
+          "text": "新聞は安いです。"
+        },
+        {
+          "id": "C",
+          "text": "はい、読みました。"
+        },
+        {
+          "id": "D",
+          "text": "簡単な記事なら読めます。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Thể khả năng 「読めます」 đáp bằng mức độ đọc được. Đáp án đúng là D.",
+      "keyword": "読めます",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_28",
       "level": "N4",
       "lesson": 28,
@@ -2812,6 +4394,104 @@ export const listeningTracksByLevel = {
       "tip": "Trong mẫu V1-masu + ながら + V2, hành động V2 là hành động chính cần tập trung.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3022,
+      "lesson": 28,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 28 - Phần 4: Phản xạ vừa học vừa nghe nhạc",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "音楽を聞きながら勉強しますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "音楽を聞きながら勉強しますか。",
+          "kana": "おんがくをききながらべんきょうしますか。",
+          "vi": "Bạn vừa nghe nhạc vừa học à?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、勉強しませんでした。"
+        },
+        {
+          "id": "B",
+          "text": "音楽を聞きました。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、静かなほうが集中できます。"
+        },
+        {
+          "id": "D",
+          "text": "はい、音楽は静かです。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Mẫu 「ながら」 là làm hai việc cùng lúc, đáp kèm lý do. Đáp án đúng là C.",
+      "keyword": "〜ながら",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3056,
+      "lesson": 28,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 28 - Phần 5: Vừa ăn vừa xem",
+      "situation": "Hai người nói về thói quen ăn sáng.",
+      "audioText": "毎朝、何をしながら朝ごはんを食べますか。ニュースを見ながら食べます。私は音楽を聞きながら食べます。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "毎朝、何をしながら朝ごはんを食べますか。",
+          "kana": "まいあさ、なにをしながらあさごはんをたべますか。",
+          "vi": "Mỗi sáng bạn vừa ăn vừa làm gì?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "ニュースを見ながら食べます。",
+          "kana": "にゅーすをみながらたべます。",
+          "vi": "Tôi vừa ăn vừa xem tin tức."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "私は音楽を聞きながら食べます。",
+          "kana": "わたしはおんがくをききながらたべます。",
+          "vi": "Tôi vừa ăn vừa nghe nhạc."
+        }
+      ],
+      "question": "Người nam vừa ăn sáng vừa làm gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Xem tin tức"
+        },
+        {
+          "id": "B",
+          "text": "Nghe nhạc"
+        },
+        {
+          "id": "C",
+          "text": "Đọc báo"
+        },
+        {
+          "id": "D",
+          "text": "Nói chuyện điện thoại"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Người nam nói 「ニュースを見ながら」. Đáp án đúng là A.",
+      "keyword": "ニュースを見ながら",
+      "tip": "Hai người làm hai việc khác nhau, phân biệt chủ ngữ.",
+      "level": "N4"
     },
     {
       "id": "N4_29",
@@ -2933,6 +4613,48 @@ export const listeningTracksByLevel = {
       "id": 2018
     },
     {
+      "id": 3023,
+      "lesson": 29,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 29 - Phần 4: Phản xạ nhận xét cửa sổ mở",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "あれ、窓が開いていますね。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "あれ、窓が開いていますね。",
+          "kana": "あれ、まどがあいていますね。",
+          "vi": "Ủa, cửa sổ đang mở kìa."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "昨日開けます。"
+        },
+        {
+          "id": "B",
+          "text": "本当ですね。閉めましょうか。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、窓じゃありません。"
+        },
+        {
+          "id": "D",
+          "text": "どういたしまして。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "「開いています」 là trạng thái, đáp đồng tình và đề nghị đóng. Đáp án đúng là B.",
+      "keyword": "〜ています trạng thái",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_30",
       "level": "N4",
       "lesson": 30,
@@ -2994,6 +4716,111 @@ export const listeningTracksByLevel = {
       "tip": "V-てあります diễn tả kết quả có chủ đích sẵn; V-ておきます diễn tả hành động chuẩn bị trước cho một mục đích.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3024,
+      "lesson": 30,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 30 - Phần 4: Phản xạ hỏi chuẩn bị đi du lịch",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "旅行の準備はできましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "旅行の準備はできましたか。",
+          "kana": "りょこうのじゅんびはできましたか。",
+          "vi": "Bạn chuẩn bị xong chuyến du lịch chưa?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "はい、切符は買ってあります。"
+        },
+        {
+          "id": "B",
+          "text": "はい、切符は高いです。"
+        },
+        {
+          "id": "C",
+          "text": "いいえ、旅行はしました。"
+        },
+        {
+          "id": "D",
+          "text": "来週準備しました。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Mẫu 「〜てあります」 diễn tả việc đã chuẩn bị sẵn. Đáp án đúng là A.",
+      "keyword": "〜てあります",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3057,
+      "lesson": 30,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 30 - Phần 5: Chuẩn bị cuộc họp",
+      "situation": "Hai nhân viên kiểm tra việc chuẩn bị họp.",
+      "audioText": "会議の資料は準備しましたか。はい、コピーしてあります。机の上に置いてあります。部屋のエアコンは？それは今からつけておきます。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "会議の資料は準備しましたか。",
+          "kana": "かいぎのしりょうはじゅんびしましたか。",
+          "vi": "Tài liệu họp đã chuẩn bị chưa?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "はい、コピーしてあります。机の上に置いてあります。",
+          "kana": "はい、こぴーしてあります。つくえのうえにおいてあります。",
+          "vi": "Rồi, đã photo và đặt sẵn trên bàn."
+        },
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "部屋のエアコンは？",
+          "kana": "へやのえあこんは？",
+          "vi": "Còn điều hòa phòng thì sao?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "それは今からつけておきます。",
+          "kana": "それはいまからつけておきます。",
+          "vi": "Cái đó tôi sẽ bật sẵn ngay bây giờ."
+        }
+      ],
+      "question": "Người nữ sẽ làm gì ngay bây giờ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Photo tài liệu"
+        },
+        {
+          "id": "B",
+          "text": "Đặt tài liệu lên bàn"
+        },
+        {
+          "id": "C",
+          "text": "Chuẩn bị trà"
+        },
+        {
+          "id": "D",
+          "text": "Bật điều hòa"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Tài liệu đã xong, chỉ còn 「エアコンをつけておきます」. Đáp án đúng là D.",
+      "keyword": "つけておきます",
+      "tip": "「〜てあります」 là đã xong, 「〜ておきます」 là sắp làm.",
+      "level": "N4"
     },
     {
       "id": "N4_31",
@@ -3122,6 +4949,48 @@ export const listeningTracksByLevel = {
       "id": 2019
     },
     {
+      "id": 3025,
+      "lesson": 31,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 31 - Phần 4: Phản xạ hỏi dự định nghỉ hè",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "夏休みはどうするつもりですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "夏休みはどうするつもりですか。",
+          "kana": "なつやすみはどうするつもりですか。",
+          "vi": "Kỳ nghỉ hè bạn định làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "国へ帰りました。"
+        },
+        {
+          "id": "B",
+          "text": "夏休みは暑いです。"
+        },
+        {
+          "id": "C",
+          "text": "先週の休みでした。"
+        },
+        {
+          "id": "D",
+          "text": "国へ帰ろうと思っています。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Hỏi dự định đáp 「〜ようと思っています」. Đáp án đúng là D.",
+      "keyword": "つもり và 〜ようと思う",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_32",
       "level": "N4",
       "lesson": 32,
@@ -3185,6 +5054,111 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3026,
+      "lesson": 32,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 32 - Phần 4: Phản xạ bạn đau đầu",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "頭が痛いんです。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "頭が痛いんです。",
+          "kana": "あたまがいたいんです。",
+          "vi": "Tôi bị đau đầu."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "どういたしまして。"
+        },
+        {
+          "id": "B",
+          "text": "頭が大きいですね。"
+        },
+        {
+          "id": "C",
+          "text": "それはいけませんね。薬を飲んだほうがいいですよ。"
+        },
+        {
+          "id": "D",
+          "text": "それはよかったですね。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nghe tin xấu thì chia buồn và khuyên 「〜たほうがいい」. Đáp án đúng là C.",
+      "keyword": "それはいけませんね",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3058,
+      "lesson": 32,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 32 - Phần 5: Lời khuyên khi bị sốt",
+      "situation": "Đồng nghiệp thấy sắc mặt không tốt.",
+      "audioText": "顔色が悪いですね。ええ、昨日から熱があるんです。今日は早く帰って、休んだほうがいいですよ。そうします。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "顔色が悪いですね。",
+          "kana": "かおいろがわるいですね。",
+          "vi": "Sắc mặt anh không tốt nhỉ."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "ええ、昨日から熱があるんです。",
+          "kana": "ええ、きのうからねつがあるんです。",
+          "vi": "Vâng, từ hôm qua tôi bị sốt."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "今日は早く帰って、休んだほうがいいですよ。",
+          "kana": "きょうははやくかえって、やすんだほうがいいですよ。",
+          "vi": "Hôm nay anh nên về sớm nghỉ ngơi."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "そうします。",
+          "kana": "そうします。",
+          "vi": "Tôi sẽ làm vậy."
+        }
+      ],
+      "question": "Người nam được khuyên làm gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Làm việc thêm"
+        },
+        {
+          "id": "B",
+          "text": "Uống cà phê"
+        },
+        {
+          "id": "C",
+          "text": "Về sớm và nghỉ ngơi"
+        },
+        {
+          "id": "D",
+          "text": "Đi bệnh viện ngay"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Người nữ khuyên 「早く帰って、休んだほうがいい」. Đáp án đúng là C.",
+      "keyword": "休んだほうがいい",
+      "tip": "Chú ý nội dung lời khuyên đứng sau 「〜たほうがいい」.",
+      "level": "N4"
+    },
+    {
       "id": "N4_33",
       "level": "N4",
       "lesson": 33,
@@ -3241,6 +5215,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3027,
+      "lesson": 33,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 33 - Phần 4: Phản xạ hỏi biển báo",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "あの標識は何と書いてありますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "あの標識は何と書いてありますか。",
+          "kana": "あのひょうしきはなんとかいてありますか。",
+          "vi": "Biển báo kia viết gì vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "止まれと言いました。"
+        },
+        {
+          "id": "B",
+          "text": "止まれと書いてあります。"
+        },
+        {
+          "id": "C",
+          "text": "赤い色です。"
+        },
+        {
+          "id": "D",
+          "text": "駅の前にあります。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "「と書いてあります」 là mẫu nêu nội dung được viết. Đáp án đúng là B.",
+      "keyword": "〜と書いてあります",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_34",
       "level": "N4",
       "lesson": 34,
@@ -3295,6 +5311,104 @@ export const listeningTracksByLevel = {
       "tip": "V1-た + あとで diễn tả hành động V2 được tiến hành tuần tự sau khi V1 đã hoàn thành trọn vẹn.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3028,
+      "lesson": 34,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 34 - Phần 4: Phản xạ hỏi cách nấu",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "この料理はどうやって作りますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "この料理はどうやって作りますか。",
+          "kana": "このりょうりはどうやってつくりますか。",
+          "vi": "Món này làm như thế nào?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "説明書に書いてあるとおりに作ります。"
+        },
+        {
+          "id": "B",
+          "text": "とても簡単でした。"
+        },
+        {
+          "id": "C",
+          "text": "母が作りました。"
+        },
+        {
+          "id": "D",
+          "text": "昨日食べました。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "「どうやって」 hỏi cách làm, đáp 「〜とおりに」. Đáp án đúng là A.",
+      "keyword": "〜とおりに",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3059,
+      "lesson": 34,
+      "partName": "Phần 5: Mondai 1 - Hiểu nhiệm vụ",
+      "mondaiType": "mondai1",
+      "topic": "Bài 34 - Phần 5: Cách dùng máy",
+      "situation": "Nhân viên hướng dẫn cách dùng máy mới.",
+      "audioText": "この機械はどう使いますか。説明書に書いてあるとおりに、まず赤いボタンを押してください。分かりました。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "この機械はどう使いますか。",
+          "kana": "このきかいはどうつかいますか。",
+          "vi": "Máy này dùng như thế nào?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "説明書に書いてあるとおりに、まず赤いボタンを押してください。",
+          "kana": "せつめいしょにかいてあるとおりに、まずあかいぼたんをおしてください。",
+          "vi": "Làm theo hướng dẫn, trước hết hãy ấn nút đỏ."
+        },
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "分かりました。",
+          "kana": "わかりました。",
+          "vi": "Tôi hiểu rồi."
+        }
+      ],
+      "question": "Người nam cần làm gì đầu tiên?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Gọi nhân viên"
+        },
+        {
+          "id": "B",
+          "text": "Ấn nút đỏ"
+        },
+        {
+          "id": "C",
+          "text": "Cắm điện"
+        },
+        {
+          "id": "D",
+          "text": "Ấn nút xanh"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Từ 「まず」 chỉ việc đầu tiên là 「赤いボタンを押す」. Đáp án đúng là B.",
+      "keyword": "まず赤いボタン",
+      "tip": "Từ 「まず」 luôn đánh dấu hành động đầu tiên.",
+      "level": "N4"
     },
     {
       "id": "N4_35",
@@ -3360,6 +5474,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3029,
+      "lesson": 35,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 35 - Phần 4: Phản xạ hỏi điều kiện mua",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "安ければ買いますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "安ければ買いますか。",
+          "kana": "やすければかいますか。",
+          "vi": "Nếu rẻ thì bạn sẽ mua chứ?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "ええ、安かったです。"
+        },
+        {
+          "id": "B",
+          "text": "いいえ、店です。"
+        },
+        {
+          "id": "C",
+          "text": "はい、買いました。"
+        },
+        {
+          "id": "D",
+          "text": "ええ、安ければ買います。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Thể điều kiện 「〜ば」 được đáp lại bằng cùng cấu trúc. Đáp án đúng là D.",
+      "keyword": "〜ば",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_36",
       "level": "N4",
       "lesson": 36,
@@ -3416,6 +5572,97 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3030,
+      "lesson": 36,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 36 - Phần 4: Phản xạ hỏi thói quen vận động",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "毎日運動していますね。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "毎日運動していますね。",
+          "kana": "まいにちうんどうしていますね。",
+          "vi": "Ngày nào bạn cũng tập thể dục nhỉ."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、運動しました。"
+        },
+        {
+          "id": "B",
+          "text": "ありがとうございました。"
+        },
+        {
+          "id": "C",
+          "text": "ええ、健康でいられるようにしているんです。"
+        },
+        {
+          "id": "D",
+          "text": "ええ、運動は健康です。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Mẫu 「〜ようにしている」 là cố gắng duy trì thói quen. Đáp án đúng là C.",
+      "keyword": "〜ようにしている",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3060,
+      "lesson": 36,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 36 - Phần 5: Đi bộ mỗi ngày",
+      "situation": "Hai người nói về thói quen đi bộ.",
+      "audioText": "毎日歩いているんですか。ええ、健康のために、一日一時間歩くようにしています。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "毎日歩いているんですか。",
+          "kana": "まいにちあるいているんですか。",
+          "vi": "Ngày nào anh cũng đi bộ à?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "ええ、健康のために、一日一時間歩くようにしています。",
+          "kana": "ええ、けんこうのために、いちにちいちじかんあるくようにしています。",
+          "vi": "Vâng, để giữ sức khỏe, tôi cố gắng đi bộ một giờ mỗi ngày."
+        }
+      ],
+      "question": "Tại sao người nam đi bộ mỗi ngày?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Để giữ sức khỏe"
+        },
+        {
+          "id": "B",
+          "text": "Vì không có xe"
+        },
+        {
+          "id": "C",
+          "text": "Để giảm cân thi đấu"
+        },
+        {
+          "id": "D",
+          "text": "Vì thích ngắm cảnh"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Anh nói 「健康のために」. Đáp án đúng là A.",
+      "keyword": "健康のために",
+      "tip": "「〜ために」 nêu mục đích.",
+      "level": "N4"
+    },
+    {
       "id": "N4_37",
       "level": "N4",
       "lesson": 37,
@@ -3470,6 +5717,48 @@ export const listeningTracksByLevel = {
       "tip": "Thể bị động phiền toái (迷惑受身) thường dùng trợ từ に chỉ đối tượng gây ra hành vi phiền phức.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3031,
+      "lesson": 37,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 37 - Phần 4: Phản xạ hỏi chuyện bị mưa",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "昨日は雨が降って、大変でしたね。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "昨日は雨が降って、大変でしたね。",
+          "kana": "きのうはあめがふって、たいへんでしたね。",
+          "vi": "Hôm qua mưa vất vả nhỉ."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "昨日は日曜日でした。"
+        },
+        {
+          "id": "B",
+          "text": "ええ、傘がなくて、びしょぬれになりました。"
+        },
+        {
+          "id": "C",
+          "text": "はい、傘を買いに行きます。"
+        },
+        {
+          "id": "D",
+          "text": "どういたしまして。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Đáp đồng cảm và kể thêm tình huống đã trải qua. Đáp án đúng là B.",
+      "keyword": "ええ và kể thêm",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
     },
     {
       "id": "N4_38",
@@ -3535,6 +5824,104 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3032,
+      "lesson": 38,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 38 - Phần 4: Phản xạ hỏi sở thích",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "趣味は何ですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "趣味は何ですか。",
+          "kana": "しゅみはなんですか。",
+          "vi": "Sở thích của bạn là gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "写真を撮ることです。"
+        },
+        {
+          "id": "B",
+          "text": "写真を撮りました。"
+        },
+        {
+          "id": "C",
+          "text": "カメラは高いです。"
+        },
+        {
+          "id": "D",
+          "text": "趣味は昨日でした。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Mẫu 「〜ことです」 dùng khi nói sở thích. Đáp án đúng là A.",
+      "keyword": "〜ことです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3061,
+      "lesson": 38,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 38 - Phần 5: Sở thích chụp ảnh",
+      "situation": "Hai bạn trò chuyện về sở thích.",
+      "audioText": "趣味は何ですか。写真を撮ることです。休みの日は山へ行って撮ります。私は料理を作ることです。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "趣味は何ですか。",
+          "kana": "しゅみはなんですか。",
+          "vi": "Sở thích của anh là gì?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "写真を撮ることです。休みの日は山へ行って撮ります。",
+          "kana": "しゃしんをとることです。やすみのひはやまへいってとります。",
+          "vi": "Là chụp ảnh. Ngày nghỉ tôi lên núi chụp."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "私は料理を作ることです。",
+          "kana": "わたしはりょうりをつくることです。",
+          "vi": "Sở thích của tôi là nấu ăn."
+        }
+      ],
+      "question": "Sở thích của người nam là gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Nấu ăn"
+        },
+        {
+          "id": "B",
+          "text": "Leo núi"
+        },
+        {
+          "id": "C",
+          "text": "Vẽ tranh"
+        },
+        {
+          "id": "D",
+          "text": "Chụp ảnh"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Anh nói 「写真を撮ること」; leo núi chỉ là nơi anh đi chụp. Đáp án đúng là D.",
+      "keyword": "写真を撮ること",
+      "tip": "Phân biệt sở thích với nơi chốn hay phương tiện.",
+      "level": "N4"
+    },
+    {
       "id": "N4_39",
       "level": "N4",
       "lesson": 39,
@@ -3596,6 +5983,111 @@ export const listeningTracksByLevel = {
       "tip": "Mẫu ～ので biểu thị lý do một cách nhẹ nhàng, khách quan, rất thích hợp khi báo cáo công việc.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3033,
+      "lesson": 39,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 39 - Phần 4: Phản xạ hỏi lý do đến muộn",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "どうして遅れたんですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "どうして遅れたんですか。",
+          "kana": "どうしておくれたんですか。",
+          "vi": "Sao bạn đến muộn vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "電車で来ました。"
+        },
+        {
+          "id": "B",
+          "text": "もう遅いです。"
+        },
+        {
+          "id": "C",
+          "text": "次は遅れません。"
+        },
+        {
+          "id": "D",
+          "text": "電車が遅れたので、遅くなりました。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Giải thích lý do bằng 「〜ので」. Đáp án đúng là D.",
+      "keyword": "〜ので",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3062,
+      "lesson": 39,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 39 - Phần 5: Vì sao buồn ngủ",
+      "situation": "Đồng nghiệp hỏi thăm vì thấy buồn ngủ.",
+      "audioText": "今日は元気がありませんね。昨日、寝るのが遅かったので、眠いんです。何をしていたんですか。友達とゲームをしていました。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "今日は元気がありませんね。",
+          "kana": "きょうはげんきがありませんね。",
+          "vi": "Hôm nay anh trông không khỏe nhỉ."
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "昨日、寝るのが遅かったので、眠いんです。",
+          "kana": "きのう、ねるのがおそかったので、ねむいんです。",
+          "vi": "Hôm qua tôi ngủ muộn nên buồn ngủ."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "何をしていたんですか。",
+          "kana": "なにをしていたんですか。",
+          "vi": "Anh đã làm gì vậy?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "友達とゲームをしていました。",
+          "kana": "ともだちとげーむをしていました。",
+          "vi": "Tôi chơi game với bạn."
+        }
+      ],
+      "question": "Tại sao người nam buồn ngủ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Làm thêm đến khuya"
+        },
+        {
+          "id": "B",
+          "text": "Thức học bài"
+        },
+        {
+          "id": "C",
+          "text": "Hôm qua ngủ muộn vì chơi game"
+        },
+        {
+          "id": "D",
+          "text": "Bị ốm"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Nguyên nhân 「寝るのが遅かった」 vì 「ゲームをしていた」. Đáp án đúng là C.",
+      "keyword": "ので và ゲーム",
+      "tip": "Nghe hết câu để biết nguyên nhân gốc.",
+      "level": "N4"
     },
     {
       "id": "N4_40",
@@ -3661,6 +6153,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3034,
+      "lesson": 40,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 40 - Phần 4: Phản xạ hỏi giờ họp",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "会議は何時からか分かりますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "会議は何時からか分かりますか。",
+          "kana": "かいぎはなんじからかわかりますか。",
+          "vi": "Bạn có biết cuộc họp từ mấy giờ không?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "はい、会議でした。"
+        },
+        {
+          "id": "B",
+          "text": "三時間かかります。"
+        },
+        {
+          "id": "C",
+          "text": "三時からだと思います。"
+        },
+        {
+          "id": "D",
+          "text": "会議室は二階です。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Câu hỏi có 「〜か分かりますか」 vẫn đáp thông tin giờ giấc. Đáp án đúng là C.",
+      "keyword": "何時からか",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_41",
       "level": "N4",
       "lesson": 41,
@@ -3722,6 +6256,48 @@ export const listeningTracksByLevel = {
       "tip": "～ていただきます là dạng khiêm nhường của ～てもらいます; ～てくださいます là dạng tôn kính của ～てくれます.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3035,
+      "lesson": 41,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 41 - Phần 4: Phản xạ hỏi nhận gì từ thầy",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "先生に何をいただきましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "先生に何をいただきましたか。",
+          "kana": "せんせいになにをいただきましたか。",
+          "vi": "Bạn đã nhận gì từ thầy giáo?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "昨日いただきます。"
+        },
+        {
+          "id": "B",
+          "text": "辞書をいただきました。"
+        },
+        {
+          "id": "C",
+          "text": "辞書を差し上げました。"
+        },
+        {
+          "id": "D",
+          "text": "先生はやさしいです。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "「いただく」 là khiêm nhường ngữ của 「もらう」. Đáp án đúng là B.",
+      "keyword": "いただきました",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
     },
     {
       "id": "N4_42",
@@ -3787,6 +6363,97 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3036,
+      "lesson": 42,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 42 - Phần 4: Phản xạ hỏi công dụng cái kéo",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "このはさみは何に使いますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "このはさみは何に使いますか。",
+          "kana": "このはさみはなににつかいますか。",
+          "vi": "Cái kéo này dùng để làm gì?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "紙を切るのに使います。"
+        },
+        {
+          "id": "B",
+          "text": "昨日使いました。"
+        },
+        {
+          "id": "C",
+          "text": "机の上にあります。"
+        },
+        {
+          "id": "D",
+          "text": "とても便利でした。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Mẫu 「〜のに使います」 nêu công dụng. Đáp án đúng là A.",
+      "keyword": "〜のに使います",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3063,
+      "lesson": 42,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 42 - Phần 5: Công dụng của thẻ",
+      "situation": "Nhân viên giải thích về một chiếc thẻ.",
+      "audioText": "このカードは何に使いますか。電車に乗るのに使います。バスも乗れますよ。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "このカードは何に使いますか。",
+          "kana": "このかーどはなににつかいますか。",
+          "vi": "Thẻ này dùng để làm gì?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "電車に乗るのに使います。バスも乗れますよ。",
+          "kana": "でんしゃにのるのにつかいます。ばすものれますよ。",
+          "vi": "Dùng để đi tàu. Đi xe bus cũng được."
+        }
+      ],
+      "question": "Chiếc thẻ dùng để làm gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rút tiền"
+        },
+        {
+          "id": "B",
+          "text": "Đi tàu và xe bus"
+        },
+        {
+          "id": "C",
+          "text": "Mua đồ ăn"
+        },
+        {
+          "id": "D",
+          "text": "Vào thư viện"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Người nữ nói dùng 「電車に乗るのに」 và 「バスも乗れる」. Đáp án đúng là B.",
+      "keyword": "電車に乗るのに",
+      "tip": "「〜のに使います」 nêu công dụng.",
+      "level": "N4"
+    },
+    {
       "id": "N4_43",
       "level": "N4",
       "lesson": 43,
@@ -3848,6 +6515,48 @@ export const listeningTracksByLevel = {
       "tip": "V-masu bỏ masu + そうです diễn tả phán đoán dựa trên thị giác về sự việc sắp xảy ra trong khoảnh khắc.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3037,
+      "lesson": 43,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 43 - Phần 4: Phản xạ nhận xét bánh ngon",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "このケーキ、おいしそうですね。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "このケーキ、おいしそうですね。",
+          "kana": "このけーき、おいしそうですね。",
+          "vi": "Cái bánh này trông ngon nhỉ."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、ケーキです。"
+        },
+        {
+          "id": "B",
+          "text": "どういたしまして。"
+        },
+        {
+          "id": "C",
+          "text": "ええ、昨日そうでした。"
+        },
+        {
+          "id": "D",
+          "text": "ええ、食べてみましょう。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Đồng tình với phán đoán 「そうですね」 rồi rủ thử. Đáp án đúng là D.",
+      "keyword": "〜そうです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
     },
     {
       "id": "N4_44",
@@ -3913,6 +6622,104 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3038,
+      "lesson": 44,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 44 - Phần 4: Phản xạ hỏi cảm nhận món cà ri",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "このカレー、どうですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "このカレー、どうですか。",
+          "kana": "このかれー、どうですか。",
+          "vi": "Món cà ri này thế nào?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "駅の近くの店です。"
+        },
+        {
+          "id": "B",
+          "text": "二人で行きます。"
+        },
+        {
+          "id": "C",
+          "text": "ちょっと辛すぎますね。"
+        },
+        {
+          "id": "D",
+          "text": "カレーを食べました。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Hỏi cảm nhận nên đáp bằng đánh giá có 「〜すぎる」. Đáp án đúng là C.",
+      "keyword": "〜すぎる",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3064,
+      "lesson": 44,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 44 - Phần 5: Nhận xét món ramen",
+      "situation": "Hai người nói về bữa ăn vừa rồi.",
+      "audioText": "ラーメンはいかがでしたか。おいしかったですが、ちょっと量が多すぎました。半分、私が食べますよ。",
+      "dialogue": [
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "ラーメンはいかがでしたか。",
+          "kana": "らーめんはいかがでしたか。",
+          "vi": "Ramen thế nào ạ?"
+        },
+        {
+          "speaker": "Nam",
+          "role": "B",
+          "kanji": "おいしかったですが、ちょっと量が多すぎました。",
+          "kana": "おいしかったですが、ちょっとりょうがおおすぎました。",
+          "vi": "Ngon nhưng hơi nhiều quá."
+        },
+        {
+          "speaker": "Nữ",
+          "role": "A",
+          "kanji": "半分、私が食べますよ。",
+          "kana": "はんぶん、わたしがたべますよ。",
+          "vi": "Để tôi ăn giúp một nửa."
+        }
+      ],
+      "question": "Người nam thấy món ramen thế nào?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ngon nhưng nhiều quá"
+        },
+        {
+          "id": "B",
+          "text": "Dở và đắt"
+        },
+        {
+          "id": "C",
+          "text": "Ít quá"
+        },
+        {
+          "id": "D",
+          "text": "Ngon vừa đủ"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Anh nói 「おいしかったが、量が多すぎた」. Đáp án đúng là A.",
+      "keyword": "多すぎました",
+      "tip": "Chú ý ý sau chữ 「が」 vì đó là điểm chính.",
+      "level": "N4"
+    },
+    {
       "id": "N4_45",
       "level": "N4",
       "lesson": 45,
@@ -3967,6 +6774,97 @@ export const listeningTracksByLevel = {
       "tip": "～ばあいは (場合は) dùng trong các văn bản thông báo hoặc quy định chỉ trường hợp cụ thể có thể xảy ra.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3039,
+      "lesson": 45,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 45 - Phần 4: Phản xạ hỏi khi tàu dừng",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "電車が止まった場合は、どうしますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "電車が止まった場合は、どうしますか。",
+          "kana": "でんしゃがとまったばあいは、どうしますか。",
+          "vi": "Nếu tàu dừng chạy thì bạn làm sao?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "駅にいます。"
+        },
+        {
+          "id": "B",
+          "text": "バスで行きます。"
+        },
+        {
+          "id": "C",
+          "text": "昨日止まりました。"
+        },
+        {
+          "id": "D",
+          "text": "電車は速いです。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Mẫu 「場合は」 hỏi cách xử lý, đáp bằng hành động. Đáp án đúng là B.",
+      "keyword": "〜場合は",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
+      "id": 3065,
+      "lesson": 45,
+      "partName": "Phần 5: Mondai 2 - Điểm mấu chốt",
+      "mondaiType": "mondai2",
+      "topic": "Bài 45 - Phần 5: Quy định khi có bão",
+      "situation": "Nhân viên hỏi về quy định nghỉ làm khi có bão.",
+      "audioText": "台風が来た場合は、会社を休んでもいいですか。危ない場合は、休んでもいいです。ただし、連絡してください。",
+      "dialogue": [
+        {
+          "speaker": "Nam",
+          "role": "A",
+          "kanji": "台風が来た場合は、会社を休んでもいいですか。",
+          "kana": "たいふうがきたばあいは、かいしゃをやすんでもいいですか。",
+          "vi": "Khi bão đến có được nghỉ làm không?"
+        },
+        {
+          "speaker": "Nữ",
+          "role": "B",
+          "kanji": "危ない場合は、休んでもいいです。ただし、連絡してください。",
+          "kana": "あぶないばあいは、やすんでもいいです。ただし、れんらくしてください。",
+          "vi": "Nếu nguy hiểm thì được nghỉ. Nhưng hãy liên lạc."
+        }
+      ],
+      "question": "Khi nào được nghỉ làm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Bão đến là nghỉ ngay không cần báo"
+        },
+        {
+          "id": "B",
+          "text": "Không được nghỉ"
+        },
+        {
+          "id": "C",
+          "text": "Chỉ khi có giấy bác sĩ"
+        },
+        {
+          "id": "D",
+          "text": "Khi nguy hiểm, nhưng phải liên lạc"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Quy định là 「危ない場合は休んでもいい、ただし連絡」. Đáp án đúng là D.",
+      "keyword": "ただし連絡してください",
+      "tip": "Từ 「ただし」 đi kèm điều kiện bổ sung.",
+      "level": "N4"
     },
     {
       "id": "N4_46",
@@ -4032,6 +6930,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3040,
+      "lesson": 46,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 46 - Phần 4: Phản xạ hỏi đã ăn trưa chưa",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "もう昼ご飯を食べましたか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "もう昼ご飯を食べましたか。",
+          "kana": "もうひるごはんをたべましたか。",
+          "vi": "Bạn ăn trưa chưa?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いいえ、今から食べるところです。"
+        },
+        {
+          "id": "B",
+          "text": "いいえ、さっき食べたところです。"
+        },
+        {
+          "id": "C",
+          "text": "はい、これから食べます。"
+        },
+        {
+          "id": "D",
+          "text": "いいえ、昼ご飯でした。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "「〜ところです」 diễn tả thời điểm sắp làm, vừa làm hoặc đang làm. Đáp án đúng là A.",
+      "keyword": "〜ところです",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_47",
       "level": "N4",
       "lesson": 47,
@@ -4086,6 +7026,48 @@ export const listeningTracksByLevel = {
       "tip": "～によると + Thể thông thường + そうです dùng để trích dẫn nguồn tin khách quan nghe được từ báo đài, người khác.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3041,
+      "lesson": 47,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 47 - Phần 4: Phản xạ hỏi dự báo thời tiết",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "天気予報によると、明日はどうですか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "天気予報によると、明日はどうですか。",
+          "kana": "てんきよほうによると、あしたはどうですか。",
+          "vi": "Theo dự báo thời tiết thì ngày mai thế nào?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "昨日は晴れました。"
+        },
+        {
+          "id": "B",
+          "text": "天気予報は見ません。"
+        },
+        {
+          "id": "C",
+          "text": "明日は水曜日です。"
+        },
+        {
+          "id": "D",
+          "text": "雪が降るそうです。"
+        }
+      ],
+      "correctAnswer": "D",
+      "explanation": "Mẫu 「〜によると〜そうです」 là truyền đạt thông tin nghe được. Đáp án đúng là D.",
+      "keyword": "〜によると",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
     },
     {
       "id": "N4_48",
@@ -4151,6 +7133,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3042,
+      "lesson": 48,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 48 - Phần 4: Phản xạ hỏi việc cho con làm",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "子どもに何をさせていますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "子どもに何をさせていますか。",
+          "kana": "こどもになにをさせていますか。",
+          "vi": "Bạn bắt con làm gì vậy?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "子どもは元気です。"
+        },
+        {
+          "id": "B",
+          "text": "ピアノは高かったです。"
+        },
+        {
+          "id": "C",
+          "text": "毎日ピアノを練習させています。"
+        },
+        {
+          "id": "D",
+          "text": "毎日ピアノを弾かれています。"
+        }
+      ],
+      "correctAnswer": "C",
+      "explanation": "Thể sai khiến 「させています」 nói người khiến người khác làm. Đáp án đúng là C.",
+      "keyword": "〜させる",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_49",
       "level": "N4",
       "lesson": 49,
@@ -4214,6 +7238,48 @@ export const listeningTracksByLevel = {
       "mondaiType": "dialogue"
     },
     {
+      "id": 3043,
+      "lesson": 49,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 49 - Phần 4: Phản xạ mời ngồi lịch sự",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "どうぞお座りください。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "どうぞお座りください。",
+          "kana": "どうぞおすわりください。",
+          "vi": "Xin mời ngồi."
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "いただきます。"
+        },
+        {
+          "id": "B",
+          "text": "ありがとうございます。失礼します。"
+        },
+        {
+          "id": "C",
+          "text": "どういたしまして。"
+        },
+        {
+          "id": "D",
+          "text": "行ってきます。"
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Được mời ngồi thì cảm ơn và nói 「失礼します」. Đáp án đúng là B.",
+      "keyword": "失礼します",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
+    },
+    {
       "id": "N4_50",
       "level": "N4",
       "lesson": 50,
@@ -4275,6 +7341,48 @@ export const listeningTracksByLevel = {
       "tip": "Khiêm nhường ngữ (謙譲語) hạ thấp hành vi của bản thân hoặc người thuộc nhóm mình (In-group) để biểu thị sự tôn trọng tuyệt đối với đối tác.",
       "partName": "Phần 1: Hội thoại trọng tâm bài học",
       "mondaiType": "dialogue"
+    },
+    {
+      "id": 3044,
+      "lesson": 50,
+      "partName": "Phần 4: Mondai 4 - Phản xạ nhanh",
+      "mondaiType": "mondai4",
+      "topic": "Bài 50 - Phần 4: Phản xạ hỏi tên lịch sự",
+      "situation": "Nghe một câu ngắn và chọn câu đáp lại tự nhiên nhất.",
+      "audioText": "お名前は何とおっしゃいますか。",
+      "dialogue": [
+        {
+          "speaker": "Người nói",
+          "role": "A",
+          "kanji": "お名前は何とおっしゃいますか。",
+          "kana": "おなまえはなんとおっしゃいますか。",
+          "vi": "Quý danh của anh là gì ạ?"
+        }
+      ],
+      "question": "Hãy chọn câu đáp lại tự nhiên nhất:",
+      "options": [
+        {
+          "id": "A",
+          "text": "山田と申します。"
+        },
+        {
+          "id": "B",
+          "text": "山田とおっしゃいます。"
+        },
+        {
+          "id": "C",
+          "text": "山田さんと言われます。"
+        },
+        {
+          "id": "D",
+          "text": "何と申しますか。"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Nói về bản thân dùng khiêm nhường ngữ 「申します」. Đáp án đúng là A.",
+      "keyword": "申します",
+      "tip": "Nhận ra từ để hỏi hoặc mẫu câu rồi loại ngay các phương án trả lời sai câu hỏi.",
+      "level": "N4"
     }
   ],
   "N3": [

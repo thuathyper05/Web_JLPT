@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
+import KanjiRoadmap from '../components/KanjiRoadmap.jsx';
 import StudyHero from '../components/StudyHero.jsx';
 import StudyTabs from '../components/StudyTabs.jsx';
 import DailyPlanCard from '../components/DailyPlanCard.jsx';
@@ -424,133 +425,26 @@ export default function KanjiPage() {
 
       {/* ════════════════════ TAB 1: LỘ TRÌNH HÁN TỰ (ROADMAP) ════════════════════ */}
       {activeTab === 'roadmap' && (
-        <div className="space-y-4">
-          <div className="p-4 rounded-2xl bg-white border border-pink-100 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2 text-slate-700 font-bold">
-              <Compass size={16} className="text-pink-600" />
-              <span>Lộ trình {KANJI_TOPICS.length} chặng chủ đề thiết yếu cho JLPT {activeLevel}</span>
-            </div>
-            <div className="text-slate-400">
-              Nhấp vào chữ để xem chi tiết chiết tự hoặc chọn chặng để giải bài tập ngay
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {KANJI_TOPICS.map(function (topic, topicIndex) {
-              const currentTopicStat = topicStats[topic.id] || { total: 0, mastered: 0, percent: 0, items: [] };
-              const IconComp = TOPIC_ICON_MAP[topic.iconName] || BookOpen;
-              const style = TOPIC_STYLES[topic.id] || TOPIC_STYLES.numbers;
-
-              return (
-                <div
-                  key={topic.id}
-                  className="p-5 sm:p-6 rounded-3xl bg-white border border-pink-100 shadow-sm hover:shadow-lotus-sm transition-all relative overflow-hidden"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className={'w-11 h-11 rounded-2xl flex items-center justify-center ' + style.bgLight + ' border ' + style.border}>
-                        <IconComp size={20} className={style.text} />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-pink-50 text-pink-700 border border-pink-100">
-                            Chặng {topicIndex + 1}
-                          </span>
-                          <h3 className="text-base sm:text-lg font-black text-slate-900">
-                            {topic.name}
-                          </h3>
-                        </div>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          {topic.desc}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="text-right">
-                      <div className="text-xs font-black text-slate-800">
-                        {currentTopicStat.mastered} / {currentTopicStat.total} chữ
-                      </div>
-                      <div className="text-[11px] font-bold text-emerald-600">
-                        {currentTopicStat.percent}% hoàn thành
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="w-full h-2 rounded-full bg-pink-50 overflow-hidden mb-4">
-                    <div
-                      className={'h-full rounded-full transition-all duration-500 ' + style.progress}
-                      style={{ width: currentTopicStat.percent + '%' }}
-                    />
-                  </div>
-
-                  {currentTopicStat.items.length === 0 ? (
-                    <div className="p-4 text-center text-xs text-slate-400 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                      Chủ đề này chưa có chữ Hán nào trong cấp độ {activeLevel}.
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2.5 mb-4">
-                      {currentTopicStat.items.map(function (kItem) {
-                        const kStatus = getKanjiStatus(kItem);
-                        const isMastered = kStatus === 'mastered';
-                        const isReview = kStatus === 'needs_review';
-
-                        return (
-                          <button
-                            key={kItem.id || kItem.kanji}
-                            type="button"
-                            onClick={function () { openDetail(kItem); }}
-                            className={'p-2.5 rounded-2xl border transition-all text-center flex flex-col items-center justify-between cursor-pointer group relative ' + (isMastered ? 'bg-emerald-50/50 border-emerald-200 hover:border-emerald-400' : isReview ? 'bg-amber-50/50 border-amber-200 hover:border-amber-400' : 'bg-white border-pink-100 hover:border-pink-300 hover:shadow-sm')}
-                          >
-                            {isMastered && (
-                              <div className="absolute top-1 right-1 text-emerald-600">
-                                <Check size={10} strokeWidth={3} />
-                              </div>
-                            )}
-                            {isReview && (
-                              <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-500" />
-                            )}
-
-                            <span className="text-2xl sm:text-3xl font-black font-jp text-slate-800 group-hover:text-pink-600 group-hover:scale-110 transition-transform my-0.5">
-                              {kItem.kanji}
-                            </span>
-                            <span className="text-[10px] font-bold text-amber-700 truncate max-w-full">
-                              {kItem.han_viet || '—'}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-pink-50 text-xs">
-                    <button
-                      type="button"
-                      onClick={function () { handleJumpToTopicVault(topic.id); }}
-                      className="text-pink-600 font-extrabold flex items-center gap-1 hover:text-pink-700 cursor-pointer"
-                    >
-                      <span>Xem toàn bộ chữ trong chủ đề này</span>
-                      <ChevronRight size={14} />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={function () {
-                        setQuizSettings(function (prev) {
-                          return { ...prev, topicId: topic.id };
-                        });
-                        handleStartQuiz(topic.id, false);
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-pink-50 border border-pink-200 text-pink-700 font-extrabold hover:bg-pink-100 transition-colors flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <ListChecks size={13} className="text-pink-600" />
-                      <span>Luyện bài tập chặng này</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <KanjiRoadmap
+          topics={KANJI_TOPICS}
+          topicStats={topicStats}
+          topicStyles={TOPIC_STYLES}
+          iconMap={TOPIC_ICON_MAP}
+          level={activeLevel}
+          getKanjiStatus={getKanjiStatus}
+          onOpenDetail={openDetail}
+          onVault={handleJumpToTopicVault}
+          onQuiz={function (topicId) {
+            setQuizSettings(function (prev) {
+              return { ...prev, topicId: topicId };
+            });
+            handleStartQuiz(topicId, false);
+          }}
+          onGo={function (id) {
+            sounds.playFlip();
+            setActiveTab(id);
+          }}
+        />
       )}
 
       {/* ════════════════════ TAB 2: KHO HÁN TỰ (VAULT) ════════════════════ */}
